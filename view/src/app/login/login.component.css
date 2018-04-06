@@ -1,0 +1,180 @@
+.LoginPage_Tabs .Tabs{
+    border-bottom: 4px solid #ffffff;
+    padding: 10px 0px;
+    color: #777777;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+    cursor: pointer;
+}
+.LoginPage_Tabs .Tabs.Active{
+    border-bottom: 4px solid #DE593D;
+    cursor: default
+}
+
+.LinK_Style_1 p {
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    font-size:14px;
+    margin: 0px 20px
+}
+
+.LinK_Style_1 p:hover {
+    color: #f85a39;
+}
+
+
+/* ------------------------------ Register Tab --------------------------------------- */
+.Register_Tab{
+    text-align-last: left;
+    border-radius: 0px;
+    font-family: 'Lato', sans-serif;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    padding: 0px 25px;
+}
+.Register_Tab h4{
+    color: #DE593D;
+    font-size: 24px;
+}
+.Register_Tab .textstyle_1{
+    color: #939598;
+    font-size: 14px;
+    margin: 10px 0px;
+}
+.Register_Tab input{
+    background: #fff;
+    border: 1px solid #dce0e0;
+    box-shadow: none;
+    border-radius: 4px;
+    color: #939598;
+    width: 100% !important;
+    display: block;
+    height: 40px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    background-image: none;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    outline: none;
+    margin-bottom: 20px;
+}
+.Register_Tab input:focus{
+    border-color: #2196f3d6 !important;
+    box-shadow: 0px 0px 1px 1px #2196f363 !important;
+}
+.Register_Tab input:-ms-input-placeholder { color: #939598 !important; }
+.Register_Tab input::-webkit-input-placeholder { color: #939598 !important; }
+.Register_Tab input::-moz-placeholder { color: #939598 !important; }
+.Register_Tab input:-moz-placeholder  { color: #939598 !important; }
+
+.Register_Tab .style_2{
+    font-size: 13px;
+    color: #939598;
+}
+.Register_Tab .style_2 span{
+    color: #DE593D;
+    cursor: pointer;
+}
+.Register_Tab button{
+    background: #DE593D;
+    padding: 7px 25px;
+    border: none;
+    font-size: 14px;
+    color: #fff;
+    position: relative;
+    font-weight: 600;
+    outline: none;
+    border-radius: 30px;
+    box-shadow: none !important;
+}
+.Register_Tab button:hover{
+    background: #149AC9;
+    transition: all 1s;
+}
+.Register_Tab .style_3{
+    color: #DE593D;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+
+
+/* ------------------------------ Login Tab --------------------------------------- */
+.Login_Tab{
+    text-align-last: left;
+    border-radius: 0px;
+    font-family: 'Lato', sans-serif;
+    margin-top: 25px;
+    margin-bottom: 15px;
+    padding: 0px 25px;
+}
+.Login_Tab .textstyle_1{
+    color: #939598;
+    font-size: 14px;
+    margin: 10px 0px;
+}
+.Login_Tab input{
+    background: #fff;
+    border: 1px solid #dce0e0;
+    box-shadow: none;
+    border-radius: 4px;
+    color: #939598;
+    width: 100% !important;
+    display: block;
+    height: 40px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    background-color: #fff;
+    background-image: none;
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+    outline: none;
+    margin-bottom: 20px;
+}
+.Login_Tab input:focus{
+    border-color: #2196f3d6 !important;
+    box-shadow: 0px 0px 1px 1px #2196f363 !important;
+}
+.Login_Tab input:-ms-input-placeholder { color: #939598 !important; }
+.Login_Tab input::-webkit-input-placeholder { color: #939598 !important; }
+.Login_Tab input::-moz-placeholder { color: #939598 !important; }
+.Login_Tab input:-moz-placeholder  { color: #939598 !important; }
+
+.Login_Tab .style_2{
+    font-size: 13px;
+    color: #939598;
+}
+.Login_Tab .style_2 span{
+    color: #DE593D;
+    cursor: pointer;
+}
+.Login_Tab button{
+    background: #DE593D;
+    padding: 7px 25px;
+    border: none;
+    font-size: 14px;
+    color: #fff;
+    position: relative;
+    font-weight: 600;
+    outline: none;
+    border-radius: 30px;
+    box-shadow: none !important;
+}
+.Login_Tab button:hover{
+    background: #149AC9;
+    transition: all 1s;
+}
+.Login_Tab .style_3{
+    color: #DE593D;
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 10px;
+}

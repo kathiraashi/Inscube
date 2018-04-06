@@ -1,0 +1,68 @@
+<div class="LoginBackground" style="position: absolute; height: 100%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
+
+  <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start">
+    <!-- ----------------------- Right Bar ------------------------- -->
+    <div fxFlex="55%" style="margin-top:30px"> 
+        <p-galleria [images]="SliderImages" panelWidth="100%" panelHeight="390" [autoPlay]="true" [transitionInterval] ="3000" [showFilmstrip]="false" [showCaption]="false"></p-galleria>
+        <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="center start">
+            <div class='LinK_Style_1' fxFlex="100px">
+                <p> About </p>
+            </div>
+            <div class='LinK_Style_1' fxFlex="100px">
+                <p> Careers </p>
+            </div>
+            <div class='LinK_Style_1' fxFlex="100px">
+                <p> Terms </p>
+            </div>
+            <div class='LinK_Style_1' fxFlex="100px">
+                <p> Privacy </p>
+            </div>
+            <div class='LinK_Style_1' fxFlex="100px">
+                <p> Contact </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ----------------------- Left Bar ------------------------- -->
+    <div fxFlex="31%" style="border-radius: 5px; background-color:#fff">
+
+      <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
+        <img src="assets/images/logo.png"> 
+        <hr style="margin: 3px;border-radius: 0px;">
+        <div class="LoginPage_Tabs" fxLayout="row" fxLayoutAlign="start start">
+            <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Register' }" (click)="ActiveTabchange('Register')" fxFlex="50%"> Register </div>
+            <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Login' }" (click)="ActiveTabchange('Login')" fxFlex="50%"> Login </div>
+        </div>
+
+        <!-- ----------------------- Register Tab ------------------------- -->
+        <div *ngIf="ActiveTab === 'Register'" class="Register_Tab">
+            <h4> Are You In The Cube ? </h4>
+            <p class="textstyle_1"> Register to Meet Millions of Like Minded People. </p>
+            <input type="text" placeholder="@ Inscube Name">
+            <input type="email" placeholder="Your Email">
+            <input type="password" placeholder="Password">
+            <p class="style_2"> By signing up, you agree to the <span> terms of service </span>  and <span>  privacy policy </span> </p>
+            <button class="btn ptn-primary" (click)="Register_Now()"> Register Now </button>
+            <p class="style_3"> Already have an account? </p>
+            <div fxLayout="row" fxLayoutAlign="center start">
+                <img fxFlex="200px" src="assets/images/playsotre.png">
+            </div>
+        </div>
+
+        <!-- ----------------------- Login Tab ------------------------- -->
+        <div *ngIf="ActiveTab === 'Login'" class="Login_Tab">
+                <p class="textstyle_1"> Log into your account </p>
+                <input type="email" placeholder="Your Email">
+                <input type="password" placeholder="Password">
+                <p class="style_2"> <span> Forgot Password? </span>   </p>
+                <button class="btn ptn-primary"> Login Now </button>
+                <p class="style_3"> Create New Account !! </p>
+                <div fxLayout="row" fxLayoutAlign="center start">
+                    <img fxFlex="200px" src="assets/images/playsotre.png">
+                </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>
