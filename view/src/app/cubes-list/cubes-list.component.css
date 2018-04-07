@@ -1,0 +1,60 @@
+.header .header_left{
+    text-align: left;
+}
+.header .header_left span{
+    color: #d75839;
+    font-size: 20px;
+    font-weight: 600;
+}
+.header .header_right{
+    text-align: right;
+}
+.header .header_right span{
+    background-color: #d75739;
+    padding: 5px 15px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #ffffff;
+    border-radius: 50px;
+    cursor: pointer;
+}
+.Cat_list{
+    margin: 15px 10px;
+}
+.Cat_list_item{
+    margin-bottom: 25px;
+}
+.Cat_list_item_parts{
+    background-color: #efefef;
+    padding: 0px;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.Cat_list_item_img{
+    width: 60px;
+    height: 60px;
+}
+.Cat_list_item_part_2{
+    text-align: left;
+}
+.Cat_list_item_part_2 h5{
+    font-size: 15px;
+}
+.Cat_list_item_part_2 p{
+    font-size: 14px;
+    margin: 0px;
+}
+.Cat_list_item_part_3 p{
+    background-color: #d75839;
+    margin: 10px;
+    color: #ffffff;
+    width: 75px;
+    margin-left: 0px;
+    padding: 2px 0px;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer; 
+}
+.Cat_list_item_part_3 i{
+    font-size: 28px;
+    color: #2b546b;
+}

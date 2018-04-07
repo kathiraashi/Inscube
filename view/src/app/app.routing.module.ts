@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 // Default
     import { LoginComponent } from './login/login.component';
     import { ProfileCompletionComponent } from './profile-completion/profile-completion.component';
+    import { CategoriesComponent } from './categories/categories.component';
+    import { CubesListComponent } from './cubes-list/cubes-list.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -14,6 +16,14 @@ const appRoutes: Routes = [
         component: ProfileCompletionComponent,
         data: { animation: { value: 'Profile_Completion', } }
     },
+    { path: 'Categories',
+        component: CategoriesComponent,
+        data: { animation: { value: 'Categories', } }
+    },
+    { path: 'Cubes_List',
+        component: CubesListComponent,
+        data: { animation: { value: 'Cubes_List', } }
+    }
 ];
 
 

@@ -1,0 +1,36 @@
+.Tab{
+    padding: 10px 0px;
+    color: #777777;
+    font-weight: 600;
+    font-size: 14px;
+    font-family: 'Lato', sans-serif;
+}
+.Cat_list{
+    margin: 15px 10px
+}
+.Cat_list_item{
+    margin-bottom: 25px;
+}
+.Cat_list_item_parts{
+    background-color: #efefef;
+    padding: 5px 0px;
+    cursor: pointer;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.16), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+.Cat_list_item_parts:hover{
+    box-shadow: 0px 1px 7px 1px #4c4c4c73;
+}
+.Cat_list_item_img{
+    width: 80px;
+    height: 80px;
+}
+.Cat_list_item_part_2{
+    text-align: left;
+}
+.Cat_list_item_part_2 h5{
+    font-size: 15px;
+}
+.Cat_list_item_part_2 p{
+    font-size: 14px;
+    margin: 0px;
+}

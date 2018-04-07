@@ -7,4 +7,5 @@
 
 
 
-@import './assets/OverWriteCss/primeng_overwrite.css'
+@import './assets/OverWriteCss/primeng_overwrite.css';
+@import './assets/OverWriteCss/ngx_bootstrap_overwrite.css';

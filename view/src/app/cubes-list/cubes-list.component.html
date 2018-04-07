@@ -1,0 +1,189 @@
+<div style="position: absolute; height: 100%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
+
+  <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start">
+
+    <!-- ----------------------- Center Content ------------------------- -->
+    <div fxFlex="80%" style="border-radius: 5px; background-color:#fff">
+
+      <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
+        <img src="assets/images/logo.png"> 
+        <hr style="margin: 3px;border-radius: 0px;">
+
+        <div class="header" fxLayout="row" fxLayoutAlign="space-around end" style="height: 35px;">
+            <div class="header_left" fxFlex="46%" > <span> Category Name </span> Cubs List </div>
+            <div class="header_right" fxFlex="46%" > <span (click)="openConfirmDialog()"> Create Your Owen Social Media </span> </div>
+        </div>
+
+        <div style="max-height:550px;overflow-y: auto">
+          <div class="row Cat_list">
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">public</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}company.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Company </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">public</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">public</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}company.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Company </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}company.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Company </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">lock</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="80px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> Members : 10</p>
+                </div>
+                <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <p> Join </p>
+                  <i class="material-icons">public</i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

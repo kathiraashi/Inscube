@@ -6,7 +6,7 @@ module.exports = function(app) {
         
         app.post('/API/Cubes/Cube_Creation', Controller.CreateCube);
 
-        app.post('/API/Cubes/AddCubeTopic', Controller.AddCubeTopic);
+        app.post('/API/Cubes/Add_Cube_Topic', Controller.AddCubeTopic);
 
         app.get('/API/Cubes/Cube_List/:Category_Id', Controller.CubesList);
 

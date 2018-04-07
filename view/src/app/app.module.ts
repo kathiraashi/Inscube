@@ -17,17 +17,23 @@
 
 // Feture Module
   import { FlexLayoutModule } from '@angular/flex-layout';
-  import { BsDatepickerModule } from 'ngx-bootstrap';
+  import { BsDatepickerModule, TypeaheadModule, ModalModule  } from 'ngx-bootstrap';
 
 import { LoginComponent } from './login/login.component';
 import { ProfileCompletionComponent } from './profile-completion/profile-completion.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CubesListComponent } from './cubes-list/cubes-list.component';
+import { CreateCubeComponent } from './Modal_Components/create-cube/create-cube.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    ProfileCompletionComponent
+    ProfileCompletionComponent,
+    CategoriesComponent,
+    CubesListComponent,
+    CreateCubeComponent
   ],
   imports: [
       // Default Modules
@@ -45,9 +51,14 @@ import { ProfileCompletionComponent } from './profile-completion/profile-complet
         PrimengModule,
       // Feture Module
         FlexLayoutModule,
-        BsDatepickerModule.forRoot()
+        BsDatepickerModule.forRoot(),
+        TypeaheadModule.forRoot(),
+        ModalModule.forRoot()
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+                    CreateCubeComponent
+                  ]
 })
 export class AppModule { }

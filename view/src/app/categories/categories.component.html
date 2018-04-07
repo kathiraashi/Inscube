@@ -1,0 +1,155 @@
+<div style="position: absolute; height: 100%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
+
+  <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start">
+
+    <!-- ----------------------- Center Content ------------------------- -->
+    <div fxFlex="70%" style="border-radius: 5px; background-color:#fff">
+
+      <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
+        <img src="assets/images/logo.png"> 
+        <hr style="margin: 3px;border-radius: 0px;">
+
+        <div fxLayout="row" fxLayoutAlign="start start">
+            <div class="Tab" fxFlex="100%"> Select Category </div>
+        </div>
+
+        <div style="max-height:550px;overflow-y: auto">
+          <div class="row Cat_list">
+            <div class="col-sm-4 Cat_list_item" (click)="Cube_List_Now()">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item" (click)="Cube_List_Now()">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item" (click)="Cube_List_Now()">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}company.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Company </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item" (click)="Cube_List_Now()">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}community.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Community/Organization </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}entertainment.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Entertainment </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}company.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Company </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}community.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Community/Organization </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}entertainment.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Entertainment </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}college.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Institution/Uni </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-4 Cat_list_item">
+              <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="100px" class="Cat_list_item_part_1">
+                  <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}event.png" alt="">
+                </div>
+                <div fxFlex class="Cat_list_item_part_2">
+                  <h5> Events </h5>
+                  <p> No.of Cubes : 10</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

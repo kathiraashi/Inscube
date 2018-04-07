@@ -3,7 +3,7 @@
   <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start">
 
     <!-- ----------------------- Center Content ------------------------- -->
-    <div fxFlex="50%" style="border-radius: 5px; background-color:#fff">
+    <div fxFlex="40%" style="border-radius: 5px; background-color:#fff">
 
       <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
         <img src="assets/images/logo.png"> 
@@ -20,13 +20,58 @@
                   <span> <i class="material-icons">add_a_photo</i> </span>
               </div>
             </div>
-            <p class="textstyle_1"> Register to Meet Millions of Like Minded People. </p>
-            <input type="text" placeholder="@ Inscube Name">
-            <input type="email" placeholder="Your Email">
-            <input type="password" placeholder="Password">
-            <p class="style_2"> By signing up, you agree to the <span> terms of service </span>  and <span>  privacy policy </span> </p>
-            <button class="btn ptn-primary" > Submit </button>
-            <p class="style_3"> Already have an account? </p>
+            <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start"> 
+              <div fxFlex="33%"> 
+                <input type="text" placeholder="#">
+              </div>
+              <div fxFlex="33%"> 
+                  <input type="text" placeholder="#"> 
+              </div>
+              <div fxFlex="33%"> 
+                  <input type="text" placeholder="#">
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between start"> 
+              <div fxFlex="49%"> 
+                  <p-dropdown class="Select_Box_Style_1" 
+                              [options]="Gender" 
+                              [(ngModel)]="selectedGender" 
+                              optionLabel="name" 
+                              [style]="{'width':'100%'}" 
+                              placeholder="Gender" 
+                              [showClear]="false">
+                  </p-dropdown>
+              </div>
+              <div fxFlex="49%"> 
+                  <input type="text" placeholder="Date Of Birth" bsDatepicker [bsConfig]="bsConfig"> 
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between start"> 
+              <div fxFlex="49%" class="Search_templete_Style_1"> 
+                  <input placeholder="Country" 
+                        [(ngModel)]="selectedCountry" 
+                        [typeahead]="countries" 
+                        [typeaheadItemTemplate]="SearchItemTemplate"
+                        [typeaheadScrollable]="true"
+                        [typeaheadOptionsInScrollableView]="7">
+              </div>
+              <div fxFlex="49%" class="Search_templete_Style_1"> 
+                  <input placeholder="City" 
+                        [(ngModel)]="selectedCities" 
+                        [typeahead]="cities" 
+                        [typeaheadItemTemplate]="SearchItemTemplate"
+                        [typeaheadScrollable]="true"
+                        [typeaheadOptionsInScrollableView]="7"> 
+              </div>
+            </div>
+
+            <ng-template #SearchItemTemplate let-model="item" let-index="index">
+                <small> {{model}}</small>
+            </ng-template>
+
+            <button class="btn ptn-primary" (click)="Complete_Now()" > Submit </button>
         </div>
       </mat-card>
     </div>

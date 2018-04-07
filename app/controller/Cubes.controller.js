@@ -130,6 +130,7 @@ exports.CreateCube = function(req, res) {
 // ---------------------------------------------------------------------- Add Cube Topic ----------------------------------------------------------
 exports.AddCubeTopic = function(req, res) {
     Cube_Topic_File_Upload(req, res, function(upload_err) {
+
         if(!req.body.User_Id && req.body.User_Id !== '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         }else if(!req.body.Cube_Id && req.body.Cube_Id !== ''){
@@ -174,7 +175,7 @@ exports.AddCubeTopic = function(req, res) {
 
 // ---------------------------------------------------------------------- Cube View ----------------------------------------------------------
 exports.CubeView = function(req, res) {
-    CubeModel.CubesSchema.findOne({'_id': req.params.Cube_Id, 'Active_Status': 'Active'}, { Security_Code: 0, __v:0}, function(err, result) {
+    CubeModel.CubesSchema.findOne({'_id': req.params.Cube_Id, 'Active_Status': 'Active'}, { __v:0}, function(err, result) {
         if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube View Find Query Error', 'Cubes.controller.js - 101', err);
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cube Info."});
@@ -237,6 +238,8 @@ exports.CubesList = function(req, res) {
 
 // ---------------------------------------------------------------------- Follow Cube Creation ----------------------------------------------------------
 exports.Follow_Cube = function(req, res) {
+    console.log(req.body);
+    
     if(!req.body.User_Id && req.body.User_Id !== '') {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
     }else if(!req.body.Cube_Id && req.body.Cube_Id !== ''){

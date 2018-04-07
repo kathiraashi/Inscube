@@ -1,0 +1,31 @@
+/* Datepicker Color Overwrite */
+    .theme-red .bs-datepicker-body table td.selected span, 
+    .theme-red .bs-datepicker-body table td[class*=select-] span:after, 
+    .theme-red .bs-datepicker-body table td span.selected, 
+    .theme-red .bs-datepicker-body table td span[class*=select-]:after, 
+    .theme-red .bs-datepicker-head{
+        background-color: #d75839 !important;
+    }
+
+/* Typerhead Overwrite Style One*/
+    .Search_templete_Style_1{
+        position: relative;
+    }
+    .Search_templete_Style_1 .bs-datepicker-container{
+        padding: 5px !important
+    }
+    .Search_templete_Style_1 .dropdown-item.active, .dropdown-item:active {
+        background-color: #d75839;
+        color: #ffffff;
+    }
+    .Search_templete_Style_1 .dropdown-menu{
+        padding: 0px;
+        width: 100%;
+        border-radius: 0px;
+    }
+    .Search_templete_Style_1 .dropdown-item{
+        padding: 4px 10px;
+        font-size: 16px;
+        letter-spacing: 0.5px;
+        color: #6b6b6b
+    }
