@@ -6,6 +6,7 @@ import { NgModule } from '@angular/core';
     import { ProfileCompletionComponent } from './profile-completion/profile-completion.component';
     import { CategoriesComponent } from './categories/categories.component';
     import { CubesListComponent } from './cubes-list/cubes-list.component';
+    import { FeedsMainComponent } from './feeds/feeds-main/feeds-main.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -23,6 +24,10 @@ const appRoutes: Routes = [
     { path: 'Cubes_List',
         component: CubesListComponent,
         data: { animation: { value: 'Cubes_List', } }
+    },
+    { path: 'Cube_Posts',
+        component: FeedsMainComponent,
+        data: { animation: { value: 'Cube_Posts', } }
     }
 ];
 

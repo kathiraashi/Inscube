@@ -18,12 +18,19 @@
 // Feture Module
   import { FlexLayoutModule } from '@angular/flex-layout';
   import { BsDatepickerModule, TypeaheadModule, ModalModule  } from 'ngx-bootstrap';
+  import { ScrollbarModule } from 'ngx-scrollbar';
 
 import { LoginComponent } from './login/login.component';
 import { ProfileCompletionComponent } from './profile-completion/profile-completion.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { CubesListComponent } from './cubes-list/cubes-list.component';
 import { CreateCubeComponent } from './Modal_Components/create-cube/create-cube.component';
+import { FeedsMainComponent } from './feeds/feeds-main/feeds-main.component';
+import { FeedsHeaderComponent } from './feeds/feeds-header/feeds-header.component';
+import { FeedsLeftComponent } from './feeds/feeds-left/feeds-left.component';
+import { FeedsRightComponent } from './feeds/feeds-right/feeds-right.component';
+import { FeedsCenterComponent } from './feeds/feeds-center/feeds-center.component';
+import { CreatePostComponent } from './Modal_Components/create-post/create-post.component';
 
 
 @NgModule({
@@ -33,7 +40,13 @@ import { CreateCubeComponent } from './Modal_Components/create-cube/create-cube.
     ProfileCompletionComponent,
     CategoriesComponent,
     CubesListComponent,
-    CreateCubeComponent
+    CreateCubeComponent,
+    FeedsMainComponent,
+    FeedsHeaderComponent,
+    FeedsLeftComponent,
+    FeedsRightComponent,
+    FeedsCenterComponent,
+    CreatePostComponent
   ],
   imports: [
       // Default Modules
@@ -53,12 +66,14 @@ import { CreateCubeComponent } from './Modal_Components/create-cube/create-cube.
         FlexLayoutModule,
         BsDatepickerModule.forRoot(),
         TypeaheadModule.forRoot(),
-        ModalModule.forRoot()
+        ModalModule.forRoot(),
+        ScrollbarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
   entryComponents: [
-                    CreateCubeComponent
+                    CreateCubeComponent,
+                    CreatePostComponent
                   ]
 })
 export class AppModule { }

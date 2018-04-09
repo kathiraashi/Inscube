@@ -1,0 +1,86 @@
+
+.feedsLefBar .followheader{
+    text-align: center;
+    font-size: 14px;
+    line-height: 32px;
+    font-weight: 500;
+    padding-left: 10px;
+    color: #333333;
+    border-bottom: 3px solid #d75739;
+    margin-bottom: 15px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+.feedsLefBar .userlistImg{
+    height: 50px;
+    width: 50px;
+    padding: 0px;
+    background-color: #e2e2e2;
+    border-radius: 0px;
+    cursor: pointer;
+}
+.feedsLefBar .userlistname {
+    margin: 0px;
+    font-size: 13px;
+    line-height: 16px;
+    color: #333333;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+    font-family: 'Ubuntu', sans-serif;
+    margin-left: 5px;
+}
+
+.feedsLefBar .userlistname span{
+    cursor: pointer;
+}
+
+.feedsLefBar .userlistcategory {
+    margin: 0px;
+    font-size: 12px;
+    line-height: 14px;
+    letter-spacing: 0.4px;
+    color: #999999;
+    font-family: 'Ubuntu', sans-serif;
+    margin-left: 5px;
+}
+
+.feedsLefBar .userlistfollowers {
+    margin: 0px;
+    font-size: 11px;
+    line-height: 14px;
+    color: #999999;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 0.3px;
+    margin-left: 5px;
+}
+.feedsLefBar .Join_Part p {
+    background-color: #d75839;
+    color: #ffffff;
+    width: 60px;
+    margin: 0px 4px;
+    padding: 1px 0px;
+    border-radius: 30px;
+    font-weight: 400;
+    cursor: pointer;
+    font-size: 14px;
+}
+.feedsLefBar .Join_Part i{
+    color: #2b546b;
+    margin-top: 3px;
+    font-size: 20px;
+}
+
+.feedsLefBar .viewall{
+    margin: 0px;
+    font-size: 12px;
+    color: #999999;
+    letter-spacing: 0.6px;
+    margin-right: 5px;
+    padding-bottom: 3px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.feedsLefBar .viewall span{
+   cursor: pointer;
+}

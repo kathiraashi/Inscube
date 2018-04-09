@@ -57,6 +57,11 @@
     font-size: 14px;
     margin: 10px 0px;
 }
+label{
+    margin-bottom: 0px;
+    font-size: 15px;
+    color: #7a7a7a;
+}
 .TabData input{
     background: #fff;
     border: 1px solid #dce0e0;
@@ -94,7 +99,7 @@
     color: #DE593D;
     cursor: pointer;
 }
-.TabData button{
+.TabData button.ptn-primary{
     background: #DE593D;
     padding: 7px 50px;
     border: none;
@@ -105,11 +110,8 @@
     outline: none;
     border-radius: 30px;
     box-shadow: none !important;
-    margin-left: 70%;
-    margin-bottom: 20px;
-    margin-top: 10px;
 }
-.TabData button:hover{
+.TabData button.ptn-primary:hover{
     background: #149AC9;
     transition: all 1s;
 }

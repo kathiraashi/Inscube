@@ -3,11 +3,11 @@ import { Subject } from 'rxjs/Subject';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
-  selector: 'app-create-cube',
-  templateUrl: './create-cube.component.html',
-  styleUrls: ['./create-cube.component.css']
+  selector: 'app-create-post',
+  templateUrl: './create-post.component.html',
+  styleUrls: ['./create-post.component.css']
 })
-export class CreateCubeComponent implements OnInit {
+export class CreatePostComponent implements OnInit {
 
 
   UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';

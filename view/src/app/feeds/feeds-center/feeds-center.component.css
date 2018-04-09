@@ -1,0 +1,484 @@
+
+.Highlights .headerPost{
+    height: 50px;
+    background-color: #ffffff;
+    margin: 0px 3px 5px 3px;
+    box-shadow: rgba(102, 102, 102, 0.47) 0px 1px 8px 0px;
+}
+
+.Highlights .headerPost .leftArea{    
+    padding: 0px 10px;
+    line-height: 50px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #333333;
+    letter-spacing: 0.5px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.Highlights .headerPost .leftArea i{    
+    font-size: 19px;
+    padding: 0px 10px;
+}
+
+.Highlights .HighlightsPost{
+    background-color:#ffffff;
+    box-shadow: 0px 0px 5px 1px #607d8b63;
+    margin: 3px;
+    padding-bottom: 5px;
+}
+
+
+.Highlights .HighlightsPost .PostHeader{
+    padding: 0px 10px;
+}
+.Highlights .HighlightsPost .leftSide .postuserImg{
+    height: 38px;
+    width: 38px;
+    margin-top: 0px;
+    cursor: pointer;
+    border-radius: 60px;
+}
+.Highlights .HighlightsPost .leftSide .postusername{
+    line-height: 17px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    margin: 0px;
+    color: #333333;
+    font-family: 'Ubuntu', sans-serif;
+}
+.Highlights .HighlightsPost .leftSide .postusercategory{
+    margin: 0px;
+    line-height: 15px;
+    font-size: 11px;
+    color: #9c9a9a;
+    font-family: 'Ubuntu', sans-serif;
+}
+.Highlights .HighlightsPost .leftSide .postuserfollowers{
+    margin: 0px;
+    line-height: 14px;
+    font-size: 10px;
+    color: #9c9a9a;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+.Highlights .HighlightsPost .rightSide .postaction{
+    line-height: 10px;
+    font-size: 24px;
+    margin: 0px;
+    color: gray;
+}
+.Highlights .HighlightsPost .rightSide .postaction i{
+    height: 11px;
+    line-height: 11px;
+    margin-bottom: 0px;
+    margin-top: 4px;
+    cursor: pointer;
+    font-size: 27px;
+}
+.Highlights .HighlightsPost .rightSide .postdate{
+    margin: 0px;
+    line-height: 10px;
+    margin-top: -4px;
+    color: #9c9a9a;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.Highlights .Selected_Cubes{
+    margin: 2px 0px;
+    display: flex;
+    float: right;
+}
+.Highlights .Selected_Cubes img{
+    width: 28px;
+    height: 28px;
+    margin-left: 10px;
+    border-radius: 30px;
+}
+
+
+.Highlights .HighlightsPost .postLikes .like{
+    display: inline-flex;
+    margin-top: 0px;
+}
+.Highlights .HighlightsPost .postLikes {
+    padding: 3px 15px;
+}
+.Highlights .HighlightsPost .postLikes .like img{
+    width: 35px;
+    height: 35px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+.Highlights .HighlightsPost .postLikes .share{
+    display: inline-flex;
+    cursor: pointer;
+    margin-top: 0px;
+}
+.Highlights .HighlightsPost .postLikes .share img{
+    width: 35px;
+    height: 35px;
+}
+
+
+.Highlights .HighlightsPost .postchat {
+    padding: 0px;
+    padding-top: 5px;
+}
+
+.Highlights .HighlightsPost .postchat .chatUserImg img{
+    width: 32px;
+    height: 32px;
+    border-radius: 50px;
+}
+
+.Highlights .HighlightsPost .postchat .chatInput input{
+    width: 100%;
+    height: 32px;
+    outline: transparent;
+    border: 1px solid #333f4f3b;
+    padding: 0px 10px;
+    font-size: 12px;
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    color: #333333;
+}
+
+.Highlights .HighlightsPost .postchat .chatsend i{
+    font-size: 26px;
+    color: #333333;
+    transform: rotate(-35deg);
+    cursor: pointer;
+}
+
+
+.scrolldiv{
+    overflow-Y: auto;
+    overflow-x: hidden;
+}
+
+
+
+
+.Highlights .commentPost{
+    background-color: #ffffff;
+    box-shadow: 0px 0px 3px 1px #607d8b63;
+    margin:4px 10px 15px 10px;
+    padding: 2px;
+}
+
+.Highlights .commentPost .commentbody .commenttext{
+    font-size: 15px;
+    color: gray;
+    margin: 2px 10px;
+    word-spacing: 2.5px;
+    line-height: 20px;
+}
+.Highlights .commentPost .PostHeader{
+    padding: 0px 2px;
+}
+.Highlights .commentPost .leftSide .postuserImg{
+    height: 33px;
+    width: 33px;
+    border-radius: 35px;
+}
+.Highlights .commentPost .leftSide .postusername{
+    margin: 0px;
+    line-height: 17px;
+    font-size: 13px;
+    /* font-weight: 600; */
+    color: #827f7f;
+    letter-spacing: 0.5px;
+}
+.Highlights .commentPost .leftSide .postusercategory{
+    margin: 0px;
+    line-height: 17px;
+    font-size: 12px;
+    color: #9c9a9a;
+}
+.Highlights .commentPost .leftSide .postuserfollowers{
+    margin: 0px;
+    line-height: 17px;
+    font-size: 12px;
+    color: #9c9a9a;
+}
+
+.Highlights .commentPost .rightSide .postaction{
+    line-height: 5px;
+    font-size: 24px;
+    margin: 0px;
+    color: gray;
+}
+.Highlights .commentPost .rightSide .postaction i{
+    height: 11px;
+    line-height: 11px;
+    margin-bottom: 0px;
+    margin-top: 0px;
+    cursor: pointer;
+    font-size: 25px;
+}
+.Highlights .commentPost .rightSide .postdate{
+    margin: 0px;
+    line-height: 16px;
+    margin-top: -4px;
+    color: #9c9a9a;
+    font-size: 11px;
+    letter-spacing: 0.4px;
+}
+
+
+.Highlights .commentPost .postLikesLevel2 {
+    padding: 2px 15px;
+}
+.Highlights .commentPost .postLikesLevel2 .like{
+    display: inline-flex;
+    cursor: pointer;
+    margin-top: 0px;
+}
+
+.Highlights .commentPost .postLikesLevel2 .like img{
+    width: 20px;
+    height: 20px;
+}
+.Highlights .commentPost .postLikesLevel2 .like .count{
+    line-height: 20px;
+    font-size: 12px;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+    margin: 0px 5px;
+    color: #666666cf;
+}
+.Highlights .commentPost .postLikesLevel2 .chat{
+    display: inline-flex;
+    cursor: pointer;
+    margin-top: 0px;
+}
+.Highlights .commentPost .postLikesLevel2 .chat img{
+    width: 20px;
+    height: 20px;
+}
+.Highlights .commentPost .postLikesLevel2 .chat .count{
+    line-height: 20px;
+    font-size: 12px;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+    margin: 0px 5px;
+    color: #666666cf;
+}
+.Highlights .commentPost .postLikesLevel2 .share{
+    display: inline-flex;
+    cursor: pointer;
+    margin-top: 0px;
+}
+.Highlights .commentPost .postLikesLevel2 .share img{
+    width: 20px;
+    height: 20px;
+}
+.Highlights .commentPost .postLikesLevel2 .share .count{
+    line-height: 20px;
+    font-size: 12px;
+    letter-spacing: 0.7px;
+    font-weight: 600;
+    margin: 0px 5px;
+    color: #666666cf;
+}
+
+
+
+.viewAll{
+    margin: 0px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #999999;
+    letter-spacing: 0.6px;
+    margin-right: 5px;
+    padding-bottom: 3px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+.html5gallery-container-0{
+    background:  #ffffff !important;
+}
+
+.DisplayNone{
+    display: none !important;
+}
+
+
+
+
+
+
+
+
+
+.dropd{
+    width: 150px;
+    padding: 3px 5px;
+    background-color: #f3f3f3;
+}
+
+.dropd .dropd_text{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #666666a3;
+    line-height: 33px;
+    margin: 0px;
+}
+
+.dropd .dropd_icon i{
+    color: #666666a3;
+    font-size: 23px;
+    margin-top: 6px;
+}
+.dropdarrow{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #f3f3f3;
+    top: -3px;
+    left: 15px;
+    transform: rotate(45DEG);
+    z-index: -1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.thumpnailbox{
+    margin: 0px 15px;
+    background-color: #f3f3f38a;
+    box-shadow: 0px 0px 5px 1px #3333332e;
+    padding: 2px;
+}
+.thumpnailbox-left{
+    padding: 0px;
+}
+.thumpnailbox-img{
+    height: 130px;
+}
+.thumpnailbox-right{
+    padding: 0px;
+    text-align: left;
+    padding-left: 10px;
+}
+.thumpnailbox-textField{
+    height: 90px;
+    overflow: hidden;
+}
+.thumpnailbox-header{
+    text-align: left;
+    font-size: 15px;
+    margin: 0px;
+    font-weight: 600;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 0.4px;
+}
+.thumpnailbox-decription{
+    text-align: left;
+    font-size: 13px;
+    margin: 0px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #888888;
+    line-height: 18px;
+}
+.thumpnailbox-link{
+    text-align: left;
+    font-size: 13px;
+    margin: 0px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #114d72;
+    line-height: 17px;
+}
+.thumpnailbox-link a{
+    color: #3190e4;
+}
+.postLink{
+    text-align: left;
+    margin: 10px 5px 0px 15px;
+    font-size: 13px;
+    font-family: 'Ubuntu', sans-serif;
+    color: #114d72;
+    line-height: 17px;
+}
+.postLink a{
+    color: #3190e4;
+}
+
+.share_drop{
+    background-color: #f3f3f3;
+    padding: 5px;
+    text-align: center;
+}
+.share_drop_icon{
+    text-align: center;
+}
+.share_drop img{
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+}
+.share_drop i{
+    font-size: 20px;
+    color: #38508E;
+    border: 2px solid #38508E;
+    padding: 3px 7px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+
+.LoadMore{
+    margin-bottom: 30px;
+    font-size: 13px;
+    letter-spacing: 0.3px;
+    color: #333;
+}
+.LoadMore span{
+    padding: 5px 10px;
+    background-color: #ffda00;
+    cursor: pointer;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+
+.emote_grid{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+    grid-gap: 10px;
+    padding: 10px;
+}
+.emote{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    border: 1px solid #d75739;
+    border-radius: 30px;
+    padding: 4px 5px;
+    font-size: 13px;
+    color: #666;
+    cursor: pointer;
+}
+
+.emote p{
+    margin: 0px;
+    text-align: center;
+}

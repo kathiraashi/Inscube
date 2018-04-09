@@ -1,0 +1,49 @@
+<div class="feedsHeader">
+    <div fxLayout="row" fxLayoutGap="2.5%" fxLayoutAlign="center center" >
+        <div fxFlex="19%">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div class="headerLogo">
+                    <img src="assets/images/logo.png" alt="">
+                </div>
+                <div class="header_post_button">
+                    <button class="btn btn-primary"> Post </button>
+                </div>
+
+            </div>  
+        </div><!-- header left -->
+
+        <div fxFlex="47%">
+            <div style="position:relative">
+              <input  [(ngModel)]="selected" 
+                    [typeahead]="SearchList"
+                    typeaheadGroupField="Category"
+                    (typeaheadOnSelect)="typeaheadOnSelect($event)"
+                    typeaheadOptionField="SearchText"
+                    [typeaheadScrollable]="true"
+                    [typeaheadOptionsInScrollableView]="8"
+                    [typeaheadItemTemplate]="customItemTemplate"
+                    class="SearchStyle" type="text"
+                    placeholder="Search">
+                <ng-template #customItemTemplate let-value="item" let-index="index">
+                </ng-template>
+              <span class="searchIncon"> <img class="icon" src="assets/images/search.png" alt=""> </span>
+          </div>
+        </div><!-- header center -->
+
+        <div fxFlex="19%">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="33%" class="header_home_icon text-center">
+                    <i class="material-icons">home</i>
+                </div>
+                <div fxFlex="33%" class="header_notify_icon text-center">
+                    <img  class="icon" src="./assets/images/notification.png" alt="">
+                    <span class="notifyCount"> 0 </span>
+                </div>
+                <div fxFlex="33%" class="header_user_image text-center" style="line-height:50px">
+                    <img src="assets/images/UserImage.png" alt="" >
+                </div>
+            </div> 
+        </div><!-- header right -->
+
+    </div>
+</div> <!-- feedsHeader -->

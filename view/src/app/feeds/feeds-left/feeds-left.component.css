@@ -1,0 +1,102 @@
+.feedsRightBar{
+    position: relative;
+}
+.feedsRightBar .userdiv{
+    padding: 7px;
+}
+
+.feedsRightBar .userimg{
+    width: 120px;
+    height: 120px;
+    border-radius: 100px;
+}
+.feedsRightBar .username{
+    font-size: 16px;
+    font-weight: 700;
+    color: #333333;
+    margin: 0px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+}
+.Left_bar_Button button{
+    width: 86%;
+    margin-left: 7%;
+    display: block;
+    margin-bottom: 15px;
+    height: 35px;
+    background-color: #d75839;
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #d75839;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.Left_bar_Button button:hover{
+    background-color: #fff;
+    color: #d75839;
+}
+
+
+.feedsRightBar .headerstyle{
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    margin: 0px 15px;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 12px;
+}
+
+
+
+.feedsRightBar .listFlexDiv{
+    display: inline-flex;
+    padding: 0px 20px 0px 20px;
+}
+
+.feedsRightBar .followPart{
+    height: 60px;
+    text-align: center;
+    padding: 0px;
+    width: 25%;
+}
+.feedsRightBar .followimg{
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.feedsRightBar .followname{
+    font-size: 11px;
+    margin: 0px;
+    font-weight: 500;
+    color: #666666;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+}
+
+
+
+.feedsRightBar .viewAll{
+    margin: 0px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #999999;
+    letter-spacing: 0.6px;
+    margin-right: 5px;
+    padding-bottom: 3px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.feedsRightBar .viewAll span{
+   cursor: pointer;
+}
+

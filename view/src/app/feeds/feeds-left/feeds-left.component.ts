@@ -5,14 +5,14 @@ import { Subject } from 'rxjs/Subject';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
-import { CreateCubeComponent } from './../Modal_Components/create-cube/create-cube.component';
+import { CreatePostComponent } from './../../Modal_Components/create-post/create-post.component';
 
 @Component({
-  selector: 'app-cubes-list',
-  templateUrl: './cubes-list.component.html',
-  styleUrls: ['./cubes-list.component.css']
+  selector: 'app-feeds-left',
+  templateUrl: './feeds-left.component.html',
+  styleUrls: ['./feeds-left.component.css']
 })
-export class CubesListComponent implements OnInit {
+export class FeedsLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
@@ -20,14 +20,14 @@ export class CubesListComponent implements OnInit {
 
   lists;
 
-  constructor(private modalService: BsModalService, private router: Router ) {}
+  constructor( private modalService: BsModalService, private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit( ) {
   }
 
   openConfirmDialog() {
     const initialState = { title: 'Modal with component' };
-      this.modalRef = this.modalService.show(CreateCubeComponent, {initialState});
+      this.modalRef = this.modalService.show(CreatePostComponent, {initialState});
       this.modalRef.content.onClose.subscribe(result => {
           this.router.navigate(['Cube_Posts']);
       });

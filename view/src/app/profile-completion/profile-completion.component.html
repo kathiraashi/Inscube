@@ -20,9 +20,10 @@
                   <span> <i class="material-icons">add_a_photo</i> </span>
               </div>
             </div>
-            <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start"> 
+            <label> Tell About Your Self</label>
+            <div  fxLayout="row" fxLayoutAlign="space-around start"> 
               <div fxFlex="33%"> 
-                <input type="text" placeholder="#">
+                <input type="text" placeholder="# ">
               </div>
               <div fxFlex="33%"> 
                   <input type="text" placeholder="#"> 
@@ -33,7 +34,8 @@
             </div>
 
             <div fxLayout="row" fxLayoutAlign="space-between start"> 
-              <div fxFlex="49%"> 
+              <div fxFlex="49%" style="text-align: left"> 
+                <label> Gender </label>
                   <p-dropdown class="Select_Box_Style_1" 
                               [options]="Gender" 
                               [(ngModel)]="selectedGender" 
@@ -43,13 +45,15 @@
                               [showClear]="false">
                   </p-dropdown>
               </div>
-              <div fxFlex="49%"> 
+              <div fxFlex="49%" style="text-align: left"> 
+                  <label> Date of Birth </label>
                   <input type="text" placeholder="Date Of Birth" bsDatepicker [bsConfig]="bsConfig"> 
               </div>
             </div>
 
             <div fxLayout="row" fxLayoutAlign="space-between start"> 
               <div fxFlex="49%" class="Search_templete_Style_1"> 
+                  <label> Country </label>
                   <input placeholder="Country" 
                         [(ngModel)]="selectedCountry" 
                         [typeahead]="countries" 
@@ -58,6 +62,7 @@
                         [typeaheadOptionsInScrollableView]="7">
               </div>
               <div fxFlex="49%" class="Search_templete_Style_1"> 
+                  <label> City </label>
                   <input placeholder="City" 
                         [(ngModel)]="selectedCities" 
                         [typeahead]="cities" 
@@ -71,7 +76,16 @@
                 <small> {{model}}</small>
             </ng-template>
 
-            <button class="btn ptn-primary" (click)="Complete_Now()" > Submit </button>
+            <div class="row">
+              <div class="col-sm-6">
+                  <button class="btn ptn-primary" (click)="Complete_Now()" > Submit </button>
+              </div>
+              <div class="col-sm-6" style="text-align: left;">
+                  <button style="float:right" class="btn ptn-warning" (click)="Complete_Now()" > Skip </button> 
+              </div>
+            </div>
+            
+            
         </div>
       </mat-card>
     </div>
