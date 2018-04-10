@@ -34,7 +34,7 @@
 .TabData .UserImage img{
     width: 130px;
     height: 130px;
-    border-radius: 55px;
+    border-radius: 150px;
 }
 .TabData .UserImage span{
     position: absolute;

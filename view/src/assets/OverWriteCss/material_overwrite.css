@@ -1,0 +1,10 @@
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+    border-color: #e9472c;
+}
+.mat-radio-button.mat-accent .mat-radio-inner-circle {
+    background-color: #e9472c;
+}
+.mat-radio-label-content {
+    padding-left: 3px  !important;
+    font-size: 13px;
+}

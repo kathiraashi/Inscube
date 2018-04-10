@@ -15,10 +15,18 @@
   import { MaterialModule } from './material.module';
   import { PrimengModule } from './primeng.module';
 
+
+  import { AuthGuard } from './guard/auth.guard';
+  import { NotAuthGuard } from './guard/not-auth.guard';
+
 // Feture Module
   import { FlexLayoutModule } from '@angular/flex-layout';
   import { BsDatepickerModule, TypeaheadModule, ModalModule  } from 'ngx-bootstrap';
   import { ScrollbarModule } from 'ngx-scrollbar';
+
+// Searvice Module
+  import { DataSharedVarServiceService } from './service/data-shared-var-service/data-shared-var-service.service';
+  import { SigninSignupService } from './service/signin-signup/signin-signup.service';
 
 import { LoginComponent } from './login/login.component';
 import { ProfileCompletionComponent } from './profile-completion/profile-completion.component';
@@ -31,6 +39,8 @@ import { FeedsLeftComponent } from './feeds/feeds-left/feeds-left.component';
 import { FeedsRightComponent } from './feeds/feeds-right/feeds-right.component';
 import { FeedsCenterComponent } from './feeds/feeds-center/feeds-center.component';
 import { CreatePostComponent } from './Modal_Components/create-post/create-post.component';
+import { CubeService } from './service/cube/cube.service';
+
 
 
 @NgModule({
@@ -69,7 +79,13 @@ import { CreatePostComponent } from './Modal_Components/create-post/create-post.
         ModalModule.forRoot(),
         ScrollbarModule
   ],
-  providers: [],
+  providers: [
+              AuthGuard,
+              NotAuthGuard,
+              DataSharedVarServiceService,
+              SigninSignupService,
+              CubeService,
+            ],
   bootstrap: [AppComponent],
   entryComponents: [
                     CreateCubeComponent,

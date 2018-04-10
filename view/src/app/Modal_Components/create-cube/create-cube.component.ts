@@ -20,6 +20,9 @@ export class CreateCubeComponent implements OnInit {
 
   onClose: Subject<boolean>;
 
+  SecurityType: String = 'Close';
+  SecurityCode: Boolean = false;
+
   constructor(public _bsModalRef: BsModalRef) {
 
   }
@@ -68,5 +71,12 @@ export class CreateCubeComponent implements OnInit {
       this._bsModalRef.hide();
   }
 
+  radioChange(event) {
+      if ( event.value === 'Open') {
+        this.SecurityCode = true;
+      } else {
+        this.SecurityCode = false;
+      }
+}
 
 }

@@ -16,6 +16,24 @@
         <input type="text" placeholder="Cube Name">
     </div>
 
+
+    <div fxLayout="row" fxLayoutAlign="space-around start">
+        <div fxFlex="50%" style=" display: flex">
+            <p style=" margin-top: -3px; font-weight: 600;"> Security : </p>
+            <mat-radio-group [(ngModel)]="SecurityType" ng-change="">
+                <mat-radio-button style="margin-left:10px; margin-right:10px;" (change)="radioChange($event)" [value]="'Open'">  Open </mat-radio-button>
+                <mat-radio-button [value]="'Close'" (change)="radioChange($event)"> Close </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <div fxFlex="50%" class="input_style_1">
+            <ng-container>
+                    <input type="text" *ngIf="SecurityCode" style="margin-top: -5px;height: 35px;"  placeholder="Security Code">
+            </ng-container>
+        </div>
+    </div>
+
+
+
     <div class="textarea_style_1"> 
         <textarea type="text" placeholder="Cube Description"></textarea>
     </div>

@@ -54,7 +54,27 @@ exports.CategoryList = function(req, res) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Category List Find Query Error', 'Cubes.controller.js - 12', err);
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Category List."});
         } else {
-            res.status(200).send({ Status:"True", Output: "True", Response: data });
+
+            const GetCubeCount = (result) => Promise.all(  // Main Promise For Cube List Get --------------
+                result.map(info => getCubeInfo(info)) 
+            ).then( result_1 => {  
+                res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+            }).catch( err_1 => { 
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Category List Cube Count Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
+                res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Category List Cube Count Find Promise Error "});
+            });
+
+            const getCubeInfo = info => // Sub Promise For Cube Count Find --------------
+                Promise.all([ 
+                    CubeModel.CubesSchema.count({ 'Category_Id': info._id }).exec(),
+                    ]).then( Data => {
+                        var result = JSON.parse(JSON.stringify(info)); 
+                        result.Cubes_Count = Data[0];
+                        return result;
+                    }).catch(error => {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Category List Cube Count Find Sub Promise Error', 'Cubes.controller.js - 67', error);
+                    });     
+            GetCubeCount(data); // Main Promise Call Function Cube --------------
         }
     });
 };
@@ -64,13 +84,13 @@ exports.CategoryList = function(req, res) {
 exports.CreateCube = function(req, res) {
     Cube_Image_Upload(req, res, function(upload_err) {
 
-        if(!req.body.User_Id && req.body.User_Id !== '') {
+        if(!req.body.User_Id && req.body.User_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Category_Id && req.body.Category_Id !== ''){
+        }else if(!req.body.Category_Id && req.body.Category_Id === ''){
             res.status(200).send({Status:"True", Output:"False", Message: "Category Id can not be empty" });
-        }else if(!req.body.Name && req.body.Name !== '' ){
+        }else if(!req.body.Name && req.body.Name === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Name can not be empty" });
-        }else if(!req.body.Security && req.body.Security !== '' ){
+        }else if(!req.body.Security && req.body.Security === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Security Status can not be empty" });
         }else{
 
@@ -131,11 +151,11 @@ exports.CreateCube = function(req, res) {
 exports.AddCubeTopic = function(req, res) {
     Cube_Topic_File_Upload(req, res, function(upload_err) {
 
-        if(!req.body.User_Id && req.body.User_Id !== '') {
+        if(!req.body.User_Id && req.body.User_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Cube_Id && req.body.Cube_Id !== ''){
+        }else if(!req.body.Cube_Id && req.body.Cube_Id === ''){
             res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
-        }else if(!req.body.Name && req.body.Name !== '' ){
+        }else if(!req.body.Name && req.body.Name === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Name can not be empty" });
         }else{
 
@@ -192,8 +212,8 @@ exports.CubeView = function(req, res) {
                         info.Category_Name =  Data[2].Name;
                         res.status(200).send({ Status:"True", Output: "True", Response: info });
                     }).catch(error => {
-                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes View Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
-                        res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube View Promise Error "});
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes View Find Main Promise Error', 'Cubes.controller.js - 226', error);
+                        res.status(500).send({Status:"False", Error:error, Message: "Some error occurred while Find the Cube View Promise Error "});
                     });
 
             getCubeRelatedInfo(result); // Main Promise Call Function Cube --------------
@@ -204,16 +224,17 @@ exports.CubeView = function(req, res) {
 
 // ---------------------------------------------------------------------- Cubes List ----------------------------------------------------------
 exports.CubesList = function(req, res) {
-    CubeModel.CubesSchema.find({'Category_Id': req.params.Category_Id, 'Active_Status': 'Active'}, {__v: 0}, function(err, result) {
+    CubeModel.CubesSchema.find({ 'User_Id': { $ne: req.params.User_Id }, 'Category_Id': req.params.Category_Id, 'Active_Status': 'Active'}, {__v: 0}, function(err, result) {
         if(err) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes List Find Query Error', 'Cubes.controller.js - 12', err);
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cubes List."});
         } else {
             
+            var Return_Cube_List = [];
             const GetCubeList = (result) => Promise.all(  // Main Promise For Cube List Get --------------
                     result.map(info => getCubeRelatedInfo(info)) 
                 ).then( result_1 => {  
-                    res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                    res.status(200).send({ Status:"True", Output: "True", Response: Return_Cube_List });
                 }).catch( err_1 => { 
                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
                     res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
@@ -221,10 +242,16 @@ exports.CubesList = function(req, res) {
 
             const getCubeRelatedInfo = info => // Sub Promise For Cube Related Info Find --------------
                 Promise.all([ 
-                    CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id }).exec(),
+                    CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
+                    CubeModel.Cube_Followersschema.findOne({'User_Id': req.params.User_Id, 'Cube_Id': info._id, 'Active_Status': 'Active' }).exec(),
                     ]).then( Data => {
-                        info = JSON.parse(JSON.stringify(info)); 
-                        info.Members = Data[0];
+
+                        if ( Data[1] === null ) {
+                            info = JSON.parse(JSON.stringify(info)); 
+                            info.Members = Data[0];
+                            Return_Cube_List.push(info);
+                        }
+                        
                         return info;
                     }).catch(error => { 
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
@@ -240,9 +267,9 @@ exports.CubesList = function(req, res) {
 exports.Follow_Cube = function(req, res) {
     console.log(req.body);
     
-    if(!req.body.User_Id && req.body.User_Id !== '') {
+    if(!req.body.User_Id && req.body.User_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-    }else if(!req.body.Cube_Id && req.body.Cube_Id !== ''){
+    }else if(!req.body.Cube_Id && req.body.Cube_Id === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
     }else{
         CubeModel.Cube_Followersschema.findOne({'User_Id': req.body.User_Id, 'Cube_Id': req.body.Cube_Id }, function(err, result) {

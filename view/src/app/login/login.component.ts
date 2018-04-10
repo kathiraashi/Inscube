@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+
+import { MatSnackBar } from '@angular/material';
+
+import { DataSharedVarServiceService } from './../service/data-shared-var-service/data-shared-var-service.service';
+import { SigninSignupService } from './../service/signin-signup/signin-signup.service';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +15,50 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   ActiveTab = 'Register';
+  ActiveTab_New: any;
 
-  SliderImages: any[];
+  Register_Form_Valid: Boolean = false;
+  Inscube_NameAvailabel: Boolean = false;
+  Available_Ins_Name: String = '';
+  EmailAvailabel: Boolean = false;
+  EmailFormat_Error: Boolean = false;
+  Inscube_NameNotAvailabel: Boolean = false;
+  EmailNotAvailabel: Boolean = false;
 
-  constructor(private router: Router) { }
+  RegisterForm: FormGroup;
+  SignInForm: FormGroup;
+
+  constructor(private router: Router,
+              private formBuilder: FormBuilder,
+              private Service: SigninSignupService,
+              private ShareingService: DataSharedVarServiceService,
+              public snackBar: MatSnackBar) {
+                this.ActiveTab_New = this.ShareingService.GetActiveSinInsignUpTab();
+               }
 
   ngOnInit() {
-    this.SliderImages = [];
-        this.SliderImages.push({source: 'assets/images/s1.png', alt: '', title: '1'});
-        this.SliderImages.push({source: 'assets/images/s2.png', alt: '', title: '2'});
-        this.SliderImages.push({source: 'assets/images/s3.png', alt: '', title: '3'});
-        this.SliderImages.push({source: 'assets/images/s4.png', alt: '', title: '4'});
-        this.SliderImages.push({source: 'assets/images/s5.png', alt: '', title: '5'});
-        this.SliderImages.push({source: 'assets/images/s6.png', alt: '', title: '6'});
+    this.RegisterForm = new FormGroup({
+      Inscube_Name: new FormControl('', Validators.required),
+      Email: new FormControl('', Validators.required),
+      Password: new FormControl('',  Validators.required)
+    });
+
+    this.SignInForm = new FormGroup({
+      Email: new FormControl('', Validators.required),
+      Password: new FormControl('',  Validators.required)
+    });
+
+    if (this.ActiveTab_New['ActiveTab'] === 'SingIn') {
+      this.ActiveTab = 'Login';
+      if (this.ActiveTab_New['Email'] !== '') {
+        this.SignInForm.controls['Email'].setValue(this.ActiveTab_New['Email']);
+      }
+    } else {
+      this.ActiveTab = 'Register';
+      if (this.ActiveTab_New['Email'] !== '') {
+        this.RegisterForm.controls['Email'].setValue(this.ActiveTab_New['Email']);
+      }
+    }
   }
 
   ActiveTabchange(name) {
@@ -30,8 +67,113 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  Register_Now() {
-    this.router.navigate(['Profile_Completion']);
+  Check_Inscube_Name_Availabel() {
+    if (this.RegisterForm.value.Inscube_Name !== '') {
+      this.Service.NameValidate(this.RegisterForm.value.Inscube_Name).subscribe( datas => {
+          if (datas['Available'] === 'True') {
+            this.Inscube_NameAvailabel = true;
+            this.Inscube_NameNotAvailabel = false;
+            const Ins_Name = this.RegisterForm.value.Inscube_Name;
+            this.Available_Ins_Name = Ins_Name.replace(/@/gi, '');
+          } else {
+            this.Inscube_NameAvailabel = false;
+            this.Inscube_NameNotAvailabel = true;
+            this.checkFormValidation();
+          }
+      });
+    }
   }
+
+
+  get Email() {
+    return this.RegisterForm.get('Email');
+  }
+
+  Check_Email_Availabel() {
+    if (this.RegisterForm.value.Email !== '') {
+      this.Service.EmailValidate(this.RegisterForm.value.Email).subscribe( datas => {
+        if (datas['Output'] === 'True') {
+            this.EmailFormat_Error = false;
+            if (datas['Available'] === 'False') {
+              this.EmailAvailabel = false;
+              this.EmailNotAvailabel = true;
+            } else {
+              this.EmailAvailabel = true;
+              this.EmailNotAvailabel = false;
+              this.checkFormValidation();
+            }
+        } else {
+          this.EmailFormat_Error = true;
+          this.EmailNotAvailabel = false;
+          this.EmailAvailabel = false;
+          this.checkFormValidation();
+        }
+      });
+    }
+  }
+
+  checkFormValidation() {
+    if ( this.RegisterForm.value.Inscube_Name !== '' &&
+        this.RegisterForm.value.Email !== '' &&
+        this.RegisterForm.value.Password !== '' &&
+        this.Inscube_NameAvailabel && this.EmailAvailabel && this.RegisterForm.valid ) {
+          this.Register_Form_Valid = true;
+    } else {
+        this.Register_Form_Valid = false;
+    }
+  }
+
+  submit() {
+    this.checkFormValidation();
+    if (this.Register_Form_Valid) {
+        this.Service.Register(this.RegisterForm.value).subscribe( datas => {
+          if (datas['Status'] === 'True') {
+              if (datas['Output'] === 'True') {
+              this.router.navigate(['Profile_Completion']);
+              } else {
+              this.snackBar.open( datas['Message'] , ' ', {
+                horizontalPosition: 'center',
+                duration: 3000,
+                verticalPosition: 'top',
+              });
+              }
+          } else {
+            this.snackBar.open( 'Registration Failed Please Try Again !!', ' ', {
+              horizontalPosition: 'center',
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+          }
+        });
+      }
+    }
+
+
+  LoginFormsubmit() {
+    if ( this.SignInForm.valid ) {
+      this.Service.UserValidate(this.SignInForm.value)
+      .subscribe( datas => {
+        if (datas['Status'] === 'True') {
+           if (datas['Output'] === 'True') {
+            this.router.navigate(['Cube_Posts']);
+           } else {
+            this.snackBar.open( datas['Message'] , ' ', {
+              horizontalPosition: 'center',
+              duration: 3000,
+              verticalPosition: 'top',
+            });
+           }
+        } else {
+          this.snackBar.open( 'Login Failed Please Try Again !!', ' ', {
+            horizontalPosition: 'center',
+            duration: 3000,
+            verticalPosition: 'top',
+          });
+        }
+       });
+    }
+
+  }
+
 
 }

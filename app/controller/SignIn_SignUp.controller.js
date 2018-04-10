@@ -28,9 +28,12 @@ var User_Image_Upload = multer({
 
 // ---------------------------------------------------------------------- Inscube Name Validate ----------------------------------------------------------
 exports.InscubeNameValidate = function(req, res) {
+
     var Inscube_NameValidater = /inscube/gi;
     if(!Inscube_NameValidater.test(req.params.Inscube_Name)){
-        UserModel.UserSchema.findOne({'Inscube_Name': req.params.Inscube_Name.toLowerCase()}, function(err, data) {
+        var Ins_name = req.params.Inscube_Name;
+            Ins_name = Ins_name.replace(/@/gi, "");
+        UserModel.UserSchema.findOne({'Inscube_Name': '@' + Ins_name}, function(err, data) {
             if(err) {
                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Inscube Name Validate Query Error', 'SignIn_SignUp.controller.js - 11', err);
                 res.status(500).send({status:"False", Error:err, message: "Some error occurred while Validate The Inscube Name."});
@@ -72,15 +75,17 @@ exports.UserEmailValidate = function(req, res) {
 
 // ---------------------------------------------------------------------- User Register ---------------------------------------------------------------
 exports.UserRegister = function(req, res) {
-    if(!req.body.Inscube_Name && req.body.Inscube_Name !== '') {
+    if(!req.body.Inscube_Name && req.body.Inscube_Name === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "Inscube Name can not be empty" });
-    }else if(!req.body.Email && req.body.Email !== ''){
+    }else if(!req.body.Email && req.body.Email === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
-    }else if(!req.body.Password && req.body.Password !== '' ){
+    }else if(!req.body.Password && req.body.Password === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Password can not be empty" });
     }else{
+        var Ins_name = req.body.Inscube_Name;
+            Ins_name = Ins_name.replace(/@/gi, "");
         var varUserSchema = new UserModel.UserSchema({
-            Inscube_Name: req.body.Inscube_Name,
+            Inscube_Name: '@' + Ins_name,
             Email: req.body.Email,
             Password: req.body.Password,
             Color_Code: req.body.Color_Code || '',
@@ -176,11 +181,11 @@ exports.UserRegister = function(req, res) {
 exports.UserRegisterCompletion = function(req, res) {
     User_Image_Upload(req, res, function(upload_err) {
 
-        if(!req.body.User_Id && req.body.User_Id !== '') {
+        if(!req.body.User_Id && req.body.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Color_Code && req.body.Color_Code !== '' ){
+        }else if(!req.body.Color_Code && req.body.Color_Code === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Color Code can not be empty" });
-        }else if(upload_err && upload_err !== '' && upload_err !== undefined && upload_err !== null){
+        }else if(upload_err && upload_err === '' && upload_err === undefined && upload_err === null){
             res.status(200).send({Status:"True", Output:"False", Message: "Only 'png, gif, jpg and jpeg' images are allowed" });
         }else{
             UserModel.UserSchema.findOne({'_id': req.body.User_Id}, function(err, result) {
@@ -227,9 +232,9 @@ exports.UserRegisterCompletion = function(req, res) {
 
 // ---------------------------------------------------------------------- User Sign in Validate ---------------------------------------------------------------
 exports.UserValidate = function(req, res) {
-    if(!req.body.Email && req.body.Email !== ''){
+    if(!req.body.Email && req.body.Email === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
-    }else if(!req.body.Password && req.body.Password !== '' ){
+    }else if(!req.body.Password && req.body.Password === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Password can not be empty" });
     }else{
         UserModel.UserSchema.findOne({'Email': req.body.Email.toLowerCase(), 'Password': req.body.Password, 'Active_Status': 'Active' }, { Password: 0 }, {}, function(err, result) { // User Validate -----------------------------

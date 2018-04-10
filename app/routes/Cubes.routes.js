@@ -8,7 +8,7 @@ module.exports = function(app) {
 
         app.post('/API/Cubes/Add_Cube_Topic', Controller.AddCubeTopic);
 
-        app.get('/API/Cubes/Cube_List/:Category_Id', Controller.CubesList);
+        app.get('/API/Cubes/Cube_List/:Category_Id/:User_Id', Controller.CubesList);
 
         app.get('/API/Cubes/View_Cube/:Cube_Id', Controller.CubeView);
 
