@@ -6,6 +6,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { CreateCubeComponent } from './../Modal_Components/create-cube/create-cube.component';
+import { JoinConfirmationComponent } from './../Modal_Components/join-confirmation/join-confirmation.component';
 
 import { CubeService } from './../service/cube/cube.service';
 import { DataSharedVarServiceService } from './../service/data-shared-var-service/data-shared-var-service.service';
@@ -24,18 +25,18 @@ export class CubesListComponent implements OnInit {
   Cubes_List;
   LoginUser;
   Category_Name;
-
-  lists;
+  Category_Info;
 
   constructor(private modalService: BsModalService,
               private router: Router,
               private Service: CubeService,
-              private ShareingService: DataSharedVarServiceService ) {}
+              private ShareingService: DataSharedVarServiceService ) {
+                this.Category_Name = this.ShareingService.GetCategory_Id()['Category_Name'];
+                this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
+              }
 
   ngOnInit() {
     const Category_Id = this.ShareingService.GetCategory_Id()['Category_Id'];
-    this.Category_Name = this.ShareingService.GetCategory_Id()['Category_Name'];
-    this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
     if (Category_Id !== '') {
       this.Service.Cubes_List(Category_Id, this.LoginUser._id).subscribe( datas => {
         if (datas['Status'] === 'True') {
@@ -44,6 +45,11 @@ export class CubesListComponent implements OnInit {
           this.router.navigate(['Categories']);
         }
       });
+          this.Service.Category_Info(Category_Id).subscribe( datas => {
+      if (datas['Status'] === 'True') {
+        this.Category_Info = datas['Response'];
+      }
+    });
     } else {
       this.router.navigate(['Categories']);
     }
@@ -51,15 +57,40 @@ export class CubesListComponent implements OnInit {
   }
 
   openConfirmDialog() {
-    const initialState = { title: 'Modal with component' };
+    const initialState = { data: { Category_Info : this.Category_Info } };
       this.modalRef = this.modalService.show(CreateCubeComponent, {initialState});
       this.modalRef.content.onClose.subscribe(result => {
+        if (result.Status === 'Success') {
           this.router.navigate(['Cube_Posts']);
+        }
       });
   }
 
-  logDate() {
-    console.log(this.lists);
+  JoinCodeGet(Cube_Index) {
+    const initialState = { data: { Cube_Info:  this.Cubes_List[Cube_Index] } };
+      this.modalRef = this.modalService.show(JoinConfirmationComponent, {initialState});
+      this.modalRef.content.onClose.subscribe(result => {
+        if (result.Status === 'Success') {
+          this.Cubes_List.splice(Cube_Index, 1);
+        }
+      });
+  }
+
+  DirectJoin(Cube_Index) {
+    const data = { User_Id: this.LoginUser._id, Cube_Id: this.Cubes_List[Cube_Index]._id };
+        this.Service.Follow_Cube(data).subscribe( datas => {
+          if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+              this.Cubes_List.splice(Cube_Index, 1);
+          }
+      });
+  }
+
+  backtocategories() {
+    this.router.navigate(['Categories']);
+  }
+
+  gotofeed() {
+    this.router.navigate(['Cube_Posts']);
   }
 
 }

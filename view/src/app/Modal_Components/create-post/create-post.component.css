@@ -1,119 +1,180 @@
-
-.modal-header{
-    padding: 5px 20px;
-}
-.Create_Cube .CubeImage{
-    position: relative;
-}
-.Create_Cube .CubeImage img{
-    width: 130px;
-    height: 130px;
-    border-radius: 55px;
-}
-.Create_Cube .CubeImage span{
-    position: absolute;
-    width: 35px;
-    height: 35px;
-    top: -7px;
-    right: -7px;
-    background-color: #d75839;
-    border-radius: 50%;
-    line-height: 45px;
-    cursor: pointer;
-}
-.Create_Cube .CubeImage span i{
-    color: #fff;
-    margin-left: 5px;
-    font-size: 23px;
-}
-.Create_Cube .input_style_1 input{
-    background: #fff;
-    border: 1px solid #dce0e0;
-    box-shadow: none;
-    border-radius: 4px;
-    color: #3e3e3e;
-    width: 100% !important;
-    display: block;
-    height: 40px;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    background-color: #fff;
-    background-image: none;
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-    outline: none;
-    margin-bottom: 20px;
-}
-.Create_Cube .input_style_1 input:focus{
-    border-color: #2196f3d6 !important;
-    box-shadow: 0px 0px 1px 1px #2196f363 !important;
-}
-.Create_Cube .input_style_1 input:-ms-input-placeholder { color: #939598 !important; }
-.Create_Cube .input_style_1 input::-webkit-input-placeholder { color: #939598 !important; }
-.Create_Cube .input_style_1 input::-moz-placeholder { color: #939598 !important; }
-.Create_Cube .input_style_1 input:-moz-placeholder  { color: #939598 !important; }
-
-
-.Create_Cube .textarea_style_1 textarea{
-    background: #fff;
-    border: 1px solid #dce0e0;
-    box-shadow: none;
-    border-radius: 4px;
-    color: #3e3e3e;
-    width: 100% !important;
-    display: block;
-    padding: 6px 12px;
-    font-size: 14px;
-    height: 100px;
-    margin-bottom: 20px;
+.CreatePost .postheader{
+    padding: 3px 0px
+ }
+ .CreatePost .userimg{
+     width: 45px;
+     height: 45px;
+     border-radius: 45px;
+ }
+ .CreatePost .posttype{
+     line-height: 45px;
+     font-size: 19px;
+     font-weight: 700;
+     color: #333333;
+     letter-spacing: 0.7px;
+     font-family: 'Ubuntu', sans-serif;
+ }
+ 
+ .CreatePost .postlink{
+     border: none; 
+     border-radius: 5px;
+     width: 100%;
+     height: 40px;
+     padding: 5px;
+     color: #333333;
+     font-weight: 600;
+     font-size: 14px;
+     letter-spacing: 0.7px;
+     font-family: 'Ubuntu', sans-serif;
+     border: 1px solid #dedede;
+     margin: 10px 0px;
+ }
+ 
+ .CreatePost .posttext{
+     border-radius: 5px;
+     width: 100%;
+     min-height: 100px;
+     padding: 5px;
+     border-color: #dedede;
+     color: #333333;
+     font-weight: 600;
+     font-size: 14px;
+     letter-spacing: 0.7px;
+     font-family: 'Ubuntu', sans-serif;
+ }
+ 
+ .CreatePost .postaddon_icon i{
+     font-size: 30px;
+     color: #333333;
+     cursor: pointer;
+ }
+ 
+ 
+ .CreatePost .cat-img-item img{
+     width: 40px;
+     height: 40px;
+     border-radius: 50px;
+     cursor: pointer;
+ }
+ 
+ .CreatePost .cat-img-item img.Selected{
+    border: 2px solid #d75739;
 }
 
-.Create_Cube .textarea_style_1 textarea:focus{
-    border-color: #2196f3d6 !important;
-    box-shadow: 0px 0px 1px 1px #2196f363 !important;
-}
-.Create_Cube .textarea_style_1 textarea:-ms-input-placeholder { color: #939598 !important; }
-.Create_Cube .textarea_style_1 textarea::-webkit-input-placeholder { color: #939598 !important; }
-.Create_Cube .textarea_style_1 textarea::-moz-placeholder { color: #939598 !important; }
-.Create_Cube .textarea_style_1 textarea:-moz-placeholder  { color: #939598 !important; }
-
-.Addons {
-    text-align: center;
-}
-.Addons i{
-    font-size: 30px;
-    color: #8c8c8c;
-    cursor: pointer;
-}
-.Addons i:hover{
-    color: #d75839;
-}
-.Addons i.active{
-    color: #d75839;
-}
-.modal-footer{
-    padding: 0px 20px;
-    width: 100%;
-    justify-content: initial;
-    display: block;
-}
-.modal-footer button{
-    background: #DE593D;
-    padding: 7px 20px;
-    border: none;
-    font-size: 14px;
-    color: #fff;
-    position: relative;
+ .CreatePost .cat-img-item p{
+     font-size: 11px;
+     font-weight: 500;
+     font-family: 'Ubuntu', sans-serif;
+     letter-spacing: 0.4px;
+     margin: 0px
+ }
+ .CreatePost .cat-img-item{
+     width: 50px;
+     height: 50px;
+     text-align: center;
+     border-radius: 50px;
+     margin-right: 15px;
+ }
+ 
+ .CreatePost .cat-img-item.selected{
+     width: 55px;
+     height: 55px;
+ }
+ .CreatePost .cat-img-item.selected img{
+     width: 42px;
+     height: 42px;
+     border: 3px solid #333333;
+ }
+ 
+ 
+ .viewall{
+    font-size: 13px;
     font-weight: 600;
-    outline: none;
-    border-radius: 30px;
-    box-shadow: none !important;
+    color: #999999;
+    letter-spacing: 0.6px;
+    font-family: 'Ubuntu', sans-serif;
+    cursor: pointer;
+    margin-bottom: 0px;
+ }
+ 
+ 
+ 
+ 
+
+ 
+ 
+ .ImgselectedList{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    padding: 0px;
+    list-style: none;
+ }
+ .ImgselectedList li{
+    position: relative;
+    margin: 0px 10px;
     margin-bottom: 20px;
-    margin-top: 10px;
-}
-.modal-footer button:hover{
-    background: #149AC9;
-    transition: all 1s;
-}
+ }
+ .ImgselectedList li .selectedImg{
+    text-align: center;
+    border: 1px solid #89898952;
+ }
+ .ImgselectedList li .selectedImg img{
+    height: 100px;
+    width: 100px;
+ }
+ .ImgselectedList li .selectedImg .clearbutton{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: #e7e5e5;
+    height: 22px;
+    width: 22px;
+    border-radius: 50px;
+    color: red;
+    cursor: pointer;
+ }
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ .vidselectedList{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 0px;
+    list-style: none;
+ }
+ .vidselectedList li{
+    position: relative;
+    margin: 0px 10px;
+    margin-bottom: 20px;
+ }
+ .vidselectedList li .selectedvid{
+    text-align: center;
+    border: 1px solid #89898952;
+ }
+ .vidselectedList li .selectedvid .clearbutton{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: #e7e5e5;
+    height: 22px;
+    width: 22px;
+    border-radius: 50px;
+    color: red;
+    cursor: pointer;
+ }

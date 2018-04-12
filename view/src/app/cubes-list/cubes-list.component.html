@@ -6,7 +6,11 @@
     <div fxFlex="80%" style="border-radius: 5px; background-color:#fff">
 
       <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
-        <img src="assets/images/logo.png"> 
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div> <span (click)="backtocategories()" class="button_1"> Back to Categories </span></div>
+          <div fxFlex="50%"> <img src="assets/images/logo.png"> </div>
+          <div> <span (click)="gotofeed()" class="button_1"> Go to Feeds </span> </div>
+        </div>
         <hr style="margin: 3px;border-radius: 0px;">
 
         <div class="header" fxLayout="row" fxLayoutAlign="space-around end" style="height: 35px;">
@@ -17,7 +21,7 @@
         <div style="max-height:550px;overflow-y: auto">
           <div class="row Cat_list">
 
-            <div *ngFor="let item of Cubes_List" class="col-sm-4 Cat_list_item">
+            <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item">
               <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
                 <div fxFlex="80px" class="Cat_list_item_part_1">
                   <img class="Cat_list_item_img" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
@@ -27,7 +31,13 @@
                   <p> {{item.Members}} Members </p>
                 </div>
                 <div fxFlex="80px" class="Cat_list_item_part_3">
-                  <p> Join </p>
+                    <ng-container *ngIf="item.Security === 'Close'">
+                        <p (click)="JoinCodeGet(i)" > Join </p>
+                    </ng-container>
+                    <ng-container *ngIf="item.Security === 'Open'">
+                        <p (click)="DirectJoin(i)" > Join </p>
+                    </ng-container>
+                  
                   <ng-container *ngIf="item.Security === 'Close'">
                       <i class="material-icons">lock</i>
                   </ng-container>

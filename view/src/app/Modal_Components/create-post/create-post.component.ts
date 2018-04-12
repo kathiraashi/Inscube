@@ -1,6 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+
+import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
+
+import { MatSnackBar } from '@angular/material';
+
+import { CubeService } from './../../service/cube/cube.service';
+import { PostService } from './../../service/post/post.service';
+
+import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 
 @Component({
   selector: 'app-create-post',
@@ -10,63 +19,200 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 export class CreatePostComponent implements OnInit {
 
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+    UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+    CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
 
-  title: string;
-  Locatin_Input: Boolean = false;
-  Website_Input: Boolean = false;
-  Email_Input: Boolean = false;
-  Contact_Input: Boolean = false;
+    title: string;
+    types = [
+        {label: 'Story', value: 'Story'},
+        {label: 'News', value: 'News'},
+        {label: 'Article/Blog', value: 'Article/Blog'},
+        {label: 'Idea', value: 'Idea'},
+        {label: 'Curiosity', value: 'Curiosity'},
+        {label: 'Talent', value: 'Talent'},
+        {label: 'Question', value: 'Question'},
+        {label: 'Moments', value: 'Moments'}
+    ];
 
-  onClose: Subject<boolean>;
+    selectedType: String = 'Story';
 
-  constructor(public _bsModalRef: BsModalRef) {
+    ImageInputActive: Boolean = false;
+    VideoInputActive: Boolean = false;
+    LinkInputActive: Boolean = false;
 
-  }
+    onClose: Subject<Object>;
 
-  ngOnInit(): void {
-      this.onClose = new Subject();
-      console.log(this.title);
-  }
+    @ViewChild('imageInput') imageInput: ElementRef;
+    @ViewChild('videoInput') videoInput: ElementRef;
 
-    View_Location_Input( ) {
-        if (this.Locatin_Input) {
-            this.Locatin_Input = false;
+    List_Img_Files: any[] = [];
+    List_Img_Preview: any[] = [];
+    List_Video_Files: any[] = [];
+    List_Video_Preview: any[] = [];
+
+    Cubes_List: any[] = [];
+    Selected_Cube: any[] = [];
+
+    Post_Submit: Boolean = false;
+
+    LoginUser;
+    Form: FormGroup;
+    FormData: FormData = new FormData;
+
+    constructor(
+        public _bsModalRef: BsModalRef,
+        private formBuilder: FormBuilder,
+        public snackBar: MatSnackBar,
+        public Cube_Service: CubeService,
+        public Post_Service: PostService,
+        public Post_Submit_change: PostSubmitService
+    ) {
+        this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
+        this.Cube_Service.User_Followed_Cubes(this.LoginUser._id).subscribe( datas => {
+            if (datas['Status'] === 'True') {
+                this.Cubes_List = datas['Response'];
+                this.Cubes_List.map(v => v.Selected = false);
+            }
+        });
+    }
+
+    ngOnInit(): void {
+        this.onClose = new Subject();
+
+        this.Form = this.formBuilder.group({
+            User_Id: new FormControl(this.LoginUser._id, Validators.required),
+            Post_Type: new FormControl('Story',  Validators.required),
+            Post_Text: new FormControl('', Validators.required),
+            Post_Link: new FormControl('')
+          });
+
+    }
+
+    LinkInputActiveToggle() {
+        this.LinkInputActive = !this.LinkInputActive;
+    }
+
+    onImageFileChange(event) {
+        if (event.target.files && event.target.files.length > 0) {
+            const files = event.target.files;
+            for (let index = 0; index < files.length; index++) {
+                const element = files[index];
+                this.List_Img_Files.push(element);
+                const reader = new FileReader();
+                reader.readAsDataURL(element);
+                reader.onload = (events) => {
+                    this.List_Img_Preview.push(events.target['result']);
+                };
+            }
         } else {
-            this.Locatin_Input = true;
+            console.log('Close');
         }
     }
-    View_Website_Input( ) {
-        if (this.Website_Input) {
-            this.Website_Input = false;
-        } else {
-            this.Website_Input = true;
-        }
+
+    Remove_Img_file(index) {
+        this.List_Img_Files.splice(index, 1);
+        this.List_Img_Preview.splice(index, 1);
     }
-    View_Email_Input( ) {
-        if (this.Email_Input) {
-            this.Email_Input = false;
+
+    onVideoFileChange(event) {
+        if (event.target.files && event.target.files.length > 0) {
+            const files = event.target.files;
+            for (let index = 0; index < files.length; index++) {
+                const element = files[index];
+                this.List_Video_Files.push(element);
+                const reader = new FileReader();
+                reader.readAsDataURL(element);
+                reader.onload = (events) => {
+                    this.List_Video_Preview.push(events.target['result']);
+                };
+            }
         } else {
-            this.Email_Input = true;
-        }
-    }
-    View_Contact_Input() {
-        if (this.Contact_Input) {
-            this.Contact_Input = false;
-        } else {
-            this.Contact_Input = true;
+            console.log('Close');
         }
     }
 
-    onConfirm(): void {
-        this.onClose.next(true);
-        this._bsModalRef.hide();
+    Remove_Video_file(index) {
+        this.List_Video_Files.splice(index, 1);
+        this.List_Video_Preview.splice(index, 1);
     }
 
-  onCancel(): void {
-      this.onClose.next(false);
-      this._bsModalRef.hide();
-  }
+    Select_Cube(index) {
+        if ( this.Cubes_List[index].Selected ) {
+            this.Cubes_List[index].Selected = false;
+            const _index = this.Selected_Cube.findIndex(x => x === this.Cubes_List[index]._id);
+            this.Selected_Cube.splice(_index, 1);
+        } else {
+            this.Cubes_List[index].Selected = true;
+            this.Selected_Cube.push(this.Cubes_List[index]._id);
+        }
+    }
+
+    onSubmit() {
+        if (this.Form.valid && this.Selected_Cube.length > 0 && this.Form.controls['Post_Text'].value !== ''  ) {
+            this.Post_Submit = true;
+            this.FormData.set('attachments', '');
+            const Cubes_List = JSON.stringify(this.Selected_Cube);
+            this.FormData.set('User_Id', this.Form.controls['User_Id'].value);
+            this.FormData.set('Post_Category', this.Form.controls['Post_Type'].value);
+            this.FormData.set('Cubes_Id', Cubes_List);
+            this.FormData.set('Post_Text', this.Form.controls['Post_Text'].value);
+            this.FormData.set('Post_Link', this.Form.controls['Post_Link'].value);
+
+            if (this.List_Img_Files.length > 0 || this.List_Video_Files.length > 0 ) {
+                let Files = [];
+                if (this.List_Video_Files.length > 0) {
+                    Files = Files.concat(this.List_Video_Files);
+                }
+                if (this.List_Img_Files.length > 0) {
+                    Files = Files.concat(this.List_Img_Files);
+                }
+                for (let index = 0; index < Files.length; index++) {
+                    const file = Files[index];
+                    this.FormData.append('attachments', file, file.name);
+                }
+            }
+
+            this.Post_Service.Cube_Post_Submit(this.FormData).subscribe( datas => {
+                if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+                        this.snackBar.open( 'Post Successfully Submitted' , ' ', {
+                        horizontalPosition: 'center',
+                        duration: 3000,
+                        verticalPosition: 'top',
+                        });
+                        this.Post_Submit_change.Post_Submited(datas['Response']);
+                        this.onClose.next({Status: true, Response: datas['Response'] });
+                        this._bsModalRef.hide();
+
+                } else {
+                    this.Post_Submit = false;
+                    this.snackBar.open( 'Post Submit Failed Please Try Again !!', ' ', {
+                    horizontalPosition: 'center',
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    });
+                    this.onClose.next({Status: false });
+                    this._bsModalRef.hide();
+                }
+            });
+        } else {
+            if ( this.Selected_Cube.length <= 0 ) {
+                this.snackBar.open( 'Select At least One Cube !', ' ', {
+                    horizontalPosition: 'center',
+                    duration: 3000,
+                    verticalPosition: 'top',
+                    });
+            }
+            if (this.Form.controls['Post_Text'].value === '' ) {
+                this.snackBar.open( 'Write Some Words !', ' ', {
+                    horizontalPosition: 'center',
+                    duration: 3000,
+                    verticalPosition: 'top',
+                });
+            }
+
+        }
+    }
+
 
 
 }

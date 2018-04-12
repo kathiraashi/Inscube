@@ -6,7 +6,7 @@
                     <img src="assets/images/logo.png" alt="">
                 </div>
                 <div class="header_post_button">
-                    <button class="btn btn-primary"> Post </button>
+                    <button (click)="openConfirmDialog()" class="btn btn-primary"> Post </button>
                 </div>
 
             </div>  
@@ -39,11 +39,24 @@
                     <img  class="icon" src="./assets/images/notification.png" alt="">
                     <span class="notifyCount"> 0 </span>
                 </div>
-                <div fxFlex="33%" class="header_user_image text-center" style="line-height:50px">
-                    <img src="assets/images/UserImage.png" alt="" >
+                <div fxFlex="33%" [matMenuTriggerFor]="userView" class="header_user_image text-center" style="line-height:50px">
+                    <img src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" >
                 </div>
             </div> 
         </div><!-- header right -->
 
     </div>
 </div> <!-- feedsHeader -->
+
+
+<mat-menu #userView="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuUserView" >   
+    <div class="userdropdarrow"></div>
+    <div style="cursor:pointer" (click)="LogOut()" class="userdropd" fxLayout="row" fxLayoutAlign="space-between  center">
+        <div class="userdropd_icon" fxFlex="40px">
+            <i class="material-icons">power_settings_new</i>
+        </div>
+        <div fxFlex>
+            <p class="userdropd_text"> Log Out </p>
+        </div>
+    </div>
+</mat-menu>

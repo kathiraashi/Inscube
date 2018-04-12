@@ -1,58 +1,100 @@
-<div class="modal-header">
-    <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> Create Your Own Social Media </h4>
-    <button type="button" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-<div class="modal-body Create_Cube">
-    <div style="margin-bottom:2px;" fxLayout="row" fxLayoutAlign="space-around start">
-        <div fxFlex="110px" class="CubeImage">
-            <img src="{{UsersBaseUrl}}UserImage.png" alt="" style="width: 110px;height:110px;">
-            <span> <i class="material-icons">add_a_photo</i> </span>
+<div class="CreatePost">
+    <div class="postheader" fxLayout="row" fxLayoutAlign="start" >
+      <div fxFlex="65px" class="text-center">
+          <img  src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userimg">
+      </div>
+      <div fxFlex class="text-left">
+        <h5 class="m-0 posttype"> Share Your Post </h5>
+      </div>
+      <div fxFlex class="text-left">
+            <button type="button" style="padding: 0px 15px; font-size: 35px;" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     </div>
+  
+    <hr style="margin-top:3px;margin-bottom:0px">
 
-    <div class="input_style_1" > 
-        <input type="text" placeholder="Cube Name">
+    <div class="modal-body">
+
+      <form [formGroup]="Form" (ngSubmit)="onSubmit()" enctype="multipart/form-data" style="padding:0px 15px">
+
+        <p-selectButton formControlName="Post_Type" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+
+            <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="Enter Your {{Form.controls.Post_Type.value}}..."></textarea>
+    
+            <input *ngIf="LinkInputActive" formControlName="Post_Link" class="postlink mb-20" placeholder="Enter Link...">
+    
+            <div class="imgUpload" *ngIf="List_Img_Preview.length > 0">
+                <div style="display:inline-flex;">
+                    <ul class="ImgselectedList">
+                        <li *ngFor="let item of List_Img_Preview; let i=index">
+                            <div class="selectedImg">
+                                <img src="{{item}}" />
+                                <div class="clearbutton" (click)="Remove_Img_file(i)"> <i class="material-icons">clear</i> </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    
+    
+            <div class="vidUpload" *ngIf="List_Video_Preview.length > 0" >
+                <div style="display:inline-flex;">
+                    <ul class="vidselectedList">
+                        <li *ngFor="let item of List_Video_Preview; let i=index">
+                            <div class="selectedvid">
+                                    <video controls width="180px" height="90px" controlsList="nodownload">
+                                        <source src="{{item}}" type="{{List_Video_Files[i].type}}">
+                                    </video>
+                                <div class="clearbutton" (click)="Remove_Video_file(i)"> <i class="material-icons">clear</i> </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+          
+  
+  
+            <div class="postaddon" fxLayout="row" fxLayoutAlign="start" >
+                <div fxFlex="50px" class="text-center postaddon_icon">
+                    <input type="file" multiple (change)="onImageFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #imageInput style="display:none;">
+                    <i (click)="imageInput.click()" class="material-icons">burst_mode</i>
+                </div>
+                <div fxFlex="50px" class="text-center postaddon_icon">
+                        <input type="file" multiple (change)="onVideoFileChange($event)" accept=".3gp, .mp4, .vlc, .mkv, .MKV, .VLC, .MP4, .3GP" #videoInput style="display:none;">
+                    <i (click)="videoInput.click()" class="material-icons" style="transform:rotate(90deg)">local_movies</i>
+                </div>
+                <div fxFlex="50px" class="text-center postaddon_icon">
+                    <i (click)="LinkInputActiveToggle()" class="material-icons">insert_link</i>
+                </div>
+            </div>
+    
+    
+            <div fxLayout fxLayoutAlign="space-between">
+                <div fxFlex="85%">
+                    <div class="mt-10" fxLayout fxLayoutAlign="start end">
+    
+                    <div *ngFor="let item of Cubes_List | slice:0:6; let i=index" class="cat-img-item">
+                        <img [ngClass]="{'Selected': item.Selected }" id="1" src="{{CubeBaseUrl}}{{item.Image}}" alt="" (click)="Select_Cube(i)">
+                        <p (click)="Select_Cube(i)" > {{item.Name | slice:0:4 }}{{ item.Name?.length > 4 ? '...' : ' ' }}  </p>
+                    </div>
+
+
+                    <!-- <div *ngIf="Cubes_List?.length > 6">
+                        <p class="viewall"> View All...</p>
+                    </div> -->
+    
+                    </div>
+                </div>
+                <div fxFlex="15%" style="line-height:75px;">
+                    <button type="submit" [ngClass]="{'disabled': Post_Submit }" [disabled]="Post_Submit" mat-raised-button color="primary" style="background-color: #d75739"> 
+                        <span *ngIf="!Post_Submit"> Post </span>
+                        <span *ngIf="Post_Submit" style="color:#fff"> Uploading... </span>
+                     </button>
+                </div>
+            </div>
+    
+        </form>
     </div>
-
-    <div class="textarea_style_1"> 
-        <textarea type="text" placeholder="Cube Description"></textarea>
-    </div>
-
-    <div *ngIf="Locatin_Input" class="input_style_1" > 
-        <input type="text" placeholder=" Location">
-    </div>
-
-    <div *ngIf="Website_Input" class="input_style_1" > 
-        <input type="text" placeholder="Website Address">
-    </div>
-
-    <div *ngIf="Email_Input" class="input_style_1" > 
-        <input type="text" placeholder="E-mail Address">
-    </div>
-
-    <div *ngIf="Contact_Input" class="input_style_1" > 
-        <input type="text" placeholder=" Cantact Number">
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top: 20px"> 
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Locatin_Input}"  (click)="View_Location_Input()" >location_on</i>
-        </div>
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Website_Input}"  (click)="View_Website_Input()" >language</i>
-        </div>
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Email_Input}"  (click)="View_Email_Input()" >mail_outline</i>
-        </div>
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Contact_Input}"  (click)="View_Contact_Input()" >call</i>
-        </div>
-    </div>
-</div>
-
-<div class="modal-footer">
-    <!-- <button type="button" class="btn btn-primary" (click)="onConfirm()"> Submit & Add Topic </button> -->
-    <button type="button" style="float: right;" class="btn btn-primary" (click)="onConfirm()"> Submit </button>    
-</div>
+  </div>

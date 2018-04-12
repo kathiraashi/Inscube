@@ -42,6 +42,8 @@ app.use('/API/Uploads', express.static('Uploads'));
 
     require('./app/routes/Cubes.routes.js')(app);
 
+    require('./app/routes/Posts.routes.js')(app);
+
 
 
 app.get('*', function(req, res, next){

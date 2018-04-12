@@ -56,15 +56,15 @@
 
 
 .feedsRightBar .listFlexDiv{
-    display: inline-flex;
-    padding: 0px 20px 0px 20px;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-gap: 10px;
 }
 
 .feedsRightBar .followPart{
     height: 60px;
     text-align: center;
     padding: 0px;
-    width: 25%;
 }
 .feedsRightBar .followimg{
     width: 40px;

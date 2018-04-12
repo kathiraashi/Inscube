@@ -49,3 +49,28 @@
         border-color: #2196f3d6 !important;
         box-shadow: 0px 0px 1px 1px #2196f363 !important;
     }
+
+/* create post selectButton css */
+    .ui-selectbutton{
+        display: grid;
+        grid-template-columns: auto auto auto auto auto auto auto auto;
+        padding: 0px;
+    }
+    .ui-button-text-only .ui-button-text{
+        padding: 8px 0px;
+        font-size: 14px;
+    }
+    .ui-togglebutton.ui-button.ui-state-focus,
+    .ui-selectbutton .ui-button.ui-state-focus.ui-state-active,
+    .ui-selectbutton .ui-button.ui-state-active:focus{
+        box-shadow: none;
+    }
+    .ui-togglebutton.ui-button.ui-state-default, .ui-selectbutton .ui-button.ui-state-default{
+        border: none !important;
+        background: #8989891a;
+    }
+    .ui-togglebutton.ui-button.ui-state-active, .ui-selectbutton .ui-button.ui-state-active {
+        border: 1px solid #d75739;
+        background: #d75739;
+        color: #FFFFFF;
+    }

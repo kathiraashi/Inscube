@@ -42,7 +42,6 @@ export class ProfileCompletionComponent implements OnInit {
   LoginUser;
   Form: FormGroup;
   FormData: FormData = new FormData;
-  filesToUpload: Array<File> = [];
   Show_Img_Preview: Boolean = false;
   Preview_Img: any ;
 

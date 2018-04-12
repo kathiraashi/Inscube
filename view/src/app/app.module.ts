@@ -19,12 +19,13 @@
   import { AuthGuard } from './guard/auth.guard';
   import { NotAuthGuard } from './guard/not-auth.guard';
 
-// Feture Module
+// Feature Module
   import { FlexLayoutModule } from '@angular/flex-layout';
   import { BsDatepickerModule, TypeaheadModule, ModalModule  } from 'ngx-bootstrap';
   import { ScrollbarModule } from 'ngx-scrollbar';
+  import { MomentModule } from 'angular2-moment';
 
-// Searvice Module
+// Service Module
   import { DataSharedVarServiceService } from './service/data-shared-var-service/data-shared-var-service.service';
   import { SigninSignupService } from './service/signin-signup/signin-signup.service';
 
@@ -40,6 +41,10 @@ import { FeedsRightComponent } from './feeds/feeds-right/feeds-right.component';
 import { FeedsCenterComponent } from './feeds/feeds-center/feeds-center.component';
 import { CreatePostComponent } from './Modal_Components/create-post/create-post.component';
 import { CubeService } from './service/cube/cube.service';
+import { PostService } from './service/post/post.service';
+import { JoinConfirmationComponent } from './Modal_Components/join-confirmation/join-confirmation.component';
+import { PostSubmitService } from './component-connecting/post-submit/post-submit.service';
+import { EmoteAddComponent } from './Modal_Components/emote-add/emote-add.component';
 
 
 
@@ -56,7 +61,9 @@ import { CubeService } from './service/cube/cube.service';
     FeedsLeftComponent,
     FeedsRightComponent,
     FeedsCenterComponent,
-    CreatePostComponent
+    CreatePostComponent,
+    JoinConfirmationComponent,
+    EmoteAddComponent
   ],
   imports: [
       // Default Modules
@@ -72,12 +79,13 @@ import { CubeService } from './service/cube/cube.service';
         AppRoutingModule,
         MaterialModule,
         PrimengModule,
-      // Feture Module
+      // Feature Module
         FlexLayoutModule,
         BsDatepickerModule.forRoot(),
         TypeaheadModule.forRoot(),
         ModalModule.forRoot(),
-        ScrollbarModule
+        ScrollbarModule,
+        MomentModule
   ],
   providers: [
               AuthGuard,
@@ -85,11 +93,15 @@ import { CubeService } from './service/cube/cube.service';
               DataSharedVarServiceService,
               SigninSignupService,
               CubeService,
+              PostService,
+              PostSubmitService,
             ],
   bootstrap: [AppComponent],
   entryComponents: [
                     CreateCubeComponent,
-                    CreatePostComponent
+                    CreatePostComponent,
+                    JoinConfirmationComponent,
+                    EmoteAddComponent
                   ]
 })
 export class AppModule { }

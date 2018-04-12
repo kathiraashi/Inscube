@@ -95,3 +95,34 @@
     height: 36px;
     border-radius: 40px;
 }
+
+
+.userdropd{
+    width: 200px;
+    padding: 3px 10px;
+}
+
+.userdropd .userdropd_text{
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #666666a3;
+    line-height: 40px;
+    margin: 0px;
+}
+
+.userdropd .userdropd_icon i{
+    color: #666666a3;
+    font-size: 26px;
+    margin-top: 8px;
+}
+.userdropdarrow{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #ffffff;
+    top: -3px;
+    right: 20px;
+    transform: rotate(45DEG);
+    z-index: -1;
+}

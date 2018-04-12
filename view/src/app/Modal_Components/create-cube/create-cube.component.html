@@ -1,76 +1,86 @@
 <div class="modal-header">
-    <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> Create Your Own Social Media </h4>
+    <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> Create Your Owen Social Media </h4>
     <button type="button" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
-<div class="modal-body Create_Cube">
-    <div style="margin-bottom:2px;" fxLayout="row" fxLayoutAlign="space-around start">
-        <div fxFlex="110px" class="CubeImage">
-            <img src="{{UsersBaseUrl}}UserImage.png" alt="" style="width: 110px;height:110px;">
-            <span> <i class="material-icons">add_a_photo</i> </span>
+
+<form [formGroup]="Form" (ngSubmit)="onSubmit()">
+    <div class="modal-body Create_Cube">
+        <div style="margin-bottom:2px;" fxLayout="row" fxLayoutAlign="space-around start">
+            <div fxFlex="110px" class="CubeImage">
+                <ng-container *ngIf="!Show_Img_Preview">
+                    <img src="{{CategoryBaseUrl}}/{{Default_Image}}" alt="" style="width: 110px;height:110px;border-radius: 0px;">
+                </ng-container>
+                <ng-container *ngIf="Show_Img_Preview">
+                    <img [src]="Preview_Img" alt="" style="width: 110px;height:110px;border-radius: 0px;">
+                </ng-container>
+                <span (click)="fileInput.click()"> <i class="material-icons">add_a_photo</i> </span>
+            </div>
+        </div>
+        <input type="file" (change)="onFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #fileInput style="display:none;">
+
+        <div class="input_style_1" > 
+            <input type="text" formControlName="Name" placeholder="Cube Name">
+            <p class="error alertStyle-1 m-0" *ngIf="Form.controls.Name.dirty &&  Form.value.Name ==='' "> Name Is Required </p>
+        </div>
+
+
+        <div fxLayout="row" fxLayoutAlign="space-around start">
+            <div fxFlex="50%" style=" display: flex">
+                <p style=" margin-top: -3px; font-weight: 600;"> Security : </p>
+                <mat-radio-group [(ngModel)]="SecurityType" formControlName="Security" >
+                    <mat-radio-button style="margin-left:10px; margin-right:10px;" (change)="radioChange($event)" [value]="'Open'">  Open </mat-radio-button>
+                    <mat-radio-button [value]="'Close'" (change)="radioChange($event)"> Close </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div fxFlex="50%" class="input_style_1">
+                <ng-container>
+                        <input type="text" formControlName="Security_Code" *ngIf="SecurityCode" style="margin-top: -5px;height: 35px;"  placeholder="Security Code">
+                </ng-container>
+            </div>
+        </div>
+
+
+
+        <div class="textarea_style_1"> 
+            <textarea type="text" formControlName="Description" placeholder="Cube Description"></textarea>
+        </div>
+
+        <div *ngIf="Locatin_Input" class="input_style_1" > 
+            <input type="text" formControlName="Location" placeholder=" Location">
+        </div>
+
+        <div *ngIf="Website_Input" class="input_style_1" > 
+            <input type="text" formControlName="Web" placeholder="Website Address">
+        </div>
+
+        <div *ngIf="Email_Input" class="input_style_1" > 
+            <input type="text" formControlName="Mail" placeholder="E-mail Address">
+        </div>
+
+        <div *ngIf="Contact_Input" class="input_style_1" > 
+            <input type="text" formControlName="Contact" placeholder=" Cantact Number">
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top: 20px"> 
+            <div fxFlex="25%" class="Addons">
+                <i class="material-icons" [ngClass]="{'active': Locatin_Input}"  (click)="View_Location_Input()" >location_on</i>
+            </div>
+            <div fxFlex="25%" class="Addons">
+                <i class="material-icons" [ngClass]="{'active': Website_Input}"  (click)="View_Website_Input()" >language</i>
+            </div>
+            <div fxFlex="25%" class="Addons">
+                <i class="material-icons" [ngClass]="{'active': Email_Input}"  (click)="View_Email_Input()" >mail_outline</i>
+            </div>
+            <div fxFlex="25%" class="Addons">
+                <i class="material-icons" [ngClass]="{'active': Contact_Input}"  (click)="View_Contact_Input()" >call</i>
+            </div>
         </div>
     </div>
 
-    <div class="input_style_1" > 
-        <input type="text" placeholder="Cube Name">
+    <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-primary" (click)="onConfirm()"> Submit & Add Topic </button> -->
+        <button type="submit" [ngClass]="{'disabled': Form.value.Name ==='' && !Form.valid}" [disabled]="Form.value.Name =='' && !Form.valid" style="float: right;" class="btn btn-primary" > Submit </button>    
     </div>
-
-
-    <div fxLayout="row" fxLayoutAlign="space-around start">
-        <div fxFlex="50%" style=" display: flex">
-            <p style=" margin-top: -3px; font-weight: 600;"> Security : </p>
-            <mat-radio-group [(ngModel)]="SecurityType" ng-change="">
-                <mat-radio-button style="margin-left:10px; margin-right:10px;" (change)="radioChange($event)" [value]="'Open'">  Open </mat-radio-button>
-                <mat-radio-button [value]="'Close'" (change)="radioChange($event)"> Close </mat-radio-button>
-            </mat-radio-group>
-        </div>
-        <div fxFlex="50%" class="input_style_1">
-            <ng-container>
-                    <input type="text" *ngIf="SecurityCode" style="margin-top: -5px;height: 35px;"  placeholder="Security Code">
-            </ng-container>
-        </div>
-    </div>
-
-
-
-    <div class="textarea_style_1"> 
-        <textarea type="text" placeholder="Cube Description"></textarea>
-    </div>
-
-    <div *ngIf="Locatin_Input" class="input_style_1" > 
-        <input type="text" placeholder=" Location">
-    </div>
-
-    <div *ngIf="Website_Input" class="input_style_1" > 
-        <input type="text" placeholder="Website Address">
-    </div>
-
-    <div *ngIf="Email_Input" class="input_style_1" > 
-        <input type="text" placeholder="E-mail Address">
-    </div>
-
-    <div *ngIf="Contact_Input" class="input_style_1" > 
-        <input type="text" placeholder=" Cantact Number">
-    </div>
-
-    <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top: 20px"> 
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Locatin_Input}"  (click)="View_Location_Input()" >location_on</i>
-        </div>
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Website_Input}"  (click)="View_Website_Input()" >language</i>
-        </div>
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Email_Input}"  (click)="View_Email_Input()" >mail_outline</i>
-        </div>
-        <div fxFlex="25%" class="Addons">
-            <i class="material-icons" [ngClass]="{'active': Contact_Input}"  (click)="View_Contact_Input()" >call</i>
-        </div>
-    </div>
-</div>
-
-<div class="modal-footer">
-    <!-- <button type="button" class="btn btn-primary" (click)="onConfirm()"> Submit & Add Topic </button> -->
-    <button type="button" style="float: right;" class="btn btn-primary" (click)="onConfirm()"> Submit </button>    
-</div>
+</form>

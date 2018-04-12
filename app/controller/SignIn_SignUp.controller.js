@@ -344,3 +344,63 @@ exports.UserValidate = function(req, res) {
         });
     }
 };
+
+
+
+exports.AndroidVersionSubmit = function(req, res) {
+    if(!req.params.Version) {
+        res.status(400).send({status:"False", message: " Version can not be Empty! "});
+    }
+    else{
+        LoginInfoModel.AndroidVersion.remove({}, function(err, data) {
+            if(err) {
+                res.status(500).send({status:"False", message: "Some error occurred while Android Version Submit."});
+            } else {
+                var varAndroidVersion = new LoginInfoModel.AndroidVersion({
+                    DateTime: new Date(),
+                    Version: req.params.Version,
+                });
+
+                varAndroidVersion.save(function(err, result) {
+                    if(err) {
+                        res.status(500).send({status:"False", Error:err, message: "Some error occurred while Submit the Android Version."});            
+                    } else {
+                        res.send({status:"True", data: result });
+                    }
+                });
+            }
+        });
+    }
+};
+
+exports.AndroidVersionUpdate = function(req, res) {
+    if(!req.params.Version) {
+        res.status(400).send({status:"False", message: " Version can not be Empty! "});
+    }
+    else{
+        LoginInfoModel.AndroidVersion.find({}, {}, function(err, data) {
+            if(err) {
+                res.status(500).send({status:"False", message: "Some error occurred while Android Version Update."});
+            } else {
+                data[0].Version = req.params.Version;
+                data[0].save(function (newerr, newresult) {
+                    if (newerr){
+                        res.status(500).send({status:"False", Error: newerr,  message: "Some error occurred while Update Android Version ."});
+                    }else{
+                        res.send({ status:"True", data: newresult });
+                    }
+                });
+            }
+        });
+    }
+};
+
+exports.AndroidVersionGet = function(req, res) {
+    LoginInfoModel.AndroidVersion.find({}, {}, function(err, data) {
+        if(err) {
+            res.status(500).send({status:"False", message: "Some error occurred while Android Version Find."});
+        } else {
+            res.send({status:"True", data: data[0] });
+        }
+    });
+};

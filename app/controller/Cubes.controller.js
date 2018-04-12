@@ -1,7 +1,5 @@
 var ErrorManagement = require('./../../app/config/ErrorHandling.js');
 var CubeModel = require('../models/Cubes.model.js');
-var parser = require('ua-parser-js');
-var get_ip = require('ipware')().get_ip;
 var multer = require('multer');
 
 
@@ -80,17 +78,30 @@ exports.CategoryList = function(req, res) {
 };
 
 
+// ---------------------------------------------------------------------- Category Info ----------------------------------------------------------
+exports.CategoryInfo = function(req, res) {
+    CubeModel.Cube_CategorySchema.findOne({'_id': req.params.Category_Id}, function(err, result) {
+        if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Category Info Find Query Error', 'Cubes.controller.js - 87', err);
+            res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Category Info."});
+        } else { 
+            res.status(200).send({ Status:"True", Output: "True", Response: result });
+        }
+    });
+};
+
+
 // ---------------------------------------------------------------------- Cube Creation ----------------------------------------------------------
 exports.CreateCube = function(req, res) {
     Cube_Image_Upload(req, res, function(upload_err) {
 
-        if(!req.body.User_Id && req.body.User_Id === '') {
+        if(!req.body.User_Id || req.body.User_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         }else if(!req.body.Category_Id && req.body.Category_Id === ''){
             res.status(200).send({Status:"True", Output:"False", Message: "Category Id can not be empty" });
-        }else if(!req.body.Name && req.body.Name === '' ){
+        }else if(!req.body.Name || req.body.Name === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Name can not be empty" });
-        }else if(!req.body.Security && req.body.Security === '' ){
+        }else if(!req.body.Security || req.body.Security === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Security Status can not be empty" });
         }else{
 
@@ -151,11 +162,11 @@ exports.CreateCube = function(req, res) {
 exports.AddCubeTopic = function(req, res) {
     Cube_Topic_File_Upload(req, res, function(upload_err) {
 
-        if(!req.body.User_Id && req.body.User_Id === '') {
+        if(!req.body.User_Id || req.body.User_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Cube_Id && req.body.Cube_Id === ''){
+        }else if(!req.body.Cube_Id || req.body.Cube_Id === ''){
             res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
-        }else if(!req.body.Name && req.body.Name === '' ){
+        }else if(!req.body.Name || req.body.Name === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: "Name can not be empty" });
         }else{
 
@@ -263,13 +274,43 @@ exports.CubesList = function(req, res) {
 };
 
 
+// ---------------------------------------------------------------------- User Followed Cubes List ----------------------------------------------------------
+exports.User_Followed_Cubes = function(req, res) {
+    CubeModel.Cube_Followersschema.find({'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, function(err, result) {
+        if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+            res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+        } else {
+            const GetCubeInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
+                    result.map(info => CubeInfo(info)) 
+                ).then( result_1 => {  
+                    res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                }).catch( err_1 => { 
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
+                    res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
+                });
+
+            const CubeInfo = info => // Sub Promise For Cube Related Info Find --------------
+                Promise.all([ 
+                    CubeModel.CubesSchema.findOne({'_id': info.Cube_Id, 'Active_Status': 'Active' }, { Category_Id: 1, Name: 1, Image: 1  } ).exec(),
+                    ]).then( Data => {
+                        return Data[0];
+                    }).catch(error => { 
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
+                    });
+
+            GetCubeInfo(result); // Main Promise Call Function Cube --------------
+        }
+    });
+};
+
+
 // ---------------------------------------------------------------------- Follow Cube Creation ----------------------------------------------------------
 exports.Follow_Cube = function(req, res) {
-    console.log(req.body);
     
-    if(!req.body.User_Id && req.body.User_Id === '') {
+    if(!req.body.User_Id || req.body.User_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-    }else if(!req.body.Cube_Id && req.body.Cube_Id === ''){
+    }else if(!req.body.Cube_Id || req.body.Cube_Id === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
     }else{
         CubeModel.Cube_Followersschema.findOne({'User_Id': req.body.User_Id, 'Cube_Id': req.body.Cube_Id }, function(err, result) {
@@ -310,6 +351,65 @@ exports.Follow_Cube = function(req, res) {
                 } else { // Cube Follow Not Match any Conditions  -----------------------------
                     res.status(500).send({Status:"False", Error:'Not Identify', Message: "Some error occurred while Follow The Cube!"}); 
                 }
+            }
+        });
+    }
+};
+
+
+
+// ---------------------------------------------------------------------- User Created Cubes List ----------------------------------------------------------
+exports.User_Created_Cubes = function(req, res) {
+    CubeModel.CubesSchema.find({'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, function(err, result) {
+        if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+            res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+        } else {
+            res.status(200).send({ Status:"True", Output: "True", Response: result });
+        }
+    });
+};
+
+
+
+// ---------------------------------------------------------------------- User Un Followed Cubes List ----------------------------------------------------------
+exports.User_UnFollowed_Cubes = function(req, res) {
+    if(!req.params.User_Id || req.params.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else{
+        CubeModel.CubesSchema.find({'Active_Status':'Active'}, {User_Id: 1, Category_Id: 1, Name: 1, Image:1, Security:1, Security_Code: 1 },  {sort: { updatedAt: -1 }}, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                var Return_Cubes = [];
+                const GetCubeInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
+                        result.map(info => CubeFilter(info)) 
+                    ).then( result_1 => {  
+                        res.status(200).send({ Status:"True", Output: "True", Response: Return_Cubes });
+                    }).catch( err_1 => { 
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
+                        res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
+                    });
+
+                const CubeFilter = info => // Sub Promise For Cube Related Info Find --------------
+                    Promise.all([ 
+                        CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id}).exec(),
+                        CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
+                        CubeModel.Cube_Followersschema.findOne({'Cube_Id': info._id, 'User_Id' : req.params.User_Id, 'Active_Status': 'Active' } ).exec(),
+                        ]).then( Data => {
+                            info = JSON.parse(JSON.stringify(info));
+                            if (Data[2] === null) {
+                                info.Category_Name = Data[0].Name;
+                                info.Members_Count = Data[1];
+                                Return_Cubes.push(info);
+                            }
+                            return Data[2];
+                        }).catch(error => {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
+                        });
+
+                GetCubeInfo(result); // Main Promise Call Function Cube --------------
             }
         });
     }

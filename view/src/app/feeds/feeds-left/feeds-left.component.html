@@ -2,10 +2,10 @@
         <!-- UserDetails -->
         <div class="userdiv" fxLayout="column" fxLayoutAlign="start center">
             <div fxFlex="120px" class="text-center">
-                <img class="userimg" src="assets/images/UserImage.png" alt="">
+                <img class="userimg" src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="">
             </div>
             <div fxFlex="35px">
-                <p class="username"> User Name </p>
+                <p class="username"> {{LoginUser.Inscube_Name}} </p>
 
             </div>
         </div>
@@ -24,44 +24,14 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 listFlexDiv">
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
+            <div class="col-sm-12 listFlexDiv">
+                <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
+                    <img class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                    <p class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
                 </div>
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
-                </div>
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
-                </div>
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
-                </div>
-          </div>
-          <div class="col-sm-12 listFlexDiv">
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-          </div>
+            </div>
         </div>
-        <div class="row">
+        <div *ngIf="Cubes_List?.length > 8" class="row">
           <div class="col-sm-12 text-right">
               <p class="viewAll"> <span> View All... </span>  </p>
           </div>
@@ -77,48 +47,18 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-12 listFlexDiv">
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
+            <div class="col-sm-12 listFlexDiv">
+                <div  *ngFor="let item of User_Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
+                    <img class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                    <p class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
                 </div>
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
-                </div>
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
-                </div>
-                <div class="col-xs-3 followPart ">
-                    <img class="followimg" src="assets/images/UserImage.png" alt="">
-                    <p class="followname"> Cube N... </p>
-                </div>
+            </div>
+        </div>
+        <div *ngIf="User_Cubes_List?.length > 8" class="row">
+            <div class="col-sm-12 text-right">
+                <p class="viewAll"> <span> View All... </span>  </p>
+            </div>
           </div>
-          <div class="col-sm-12 listFlexDiv">
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-              <div class="col-xs-3 followPart ">
-                  <img class="followimg" src="assets/images/UserImage.png" alt="">
-                  <p class="followname"> Cube N... </p>
-              </div>
-        </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-12 text-right">
-              <p class="viewAll"> <span> View All... </span>  </p>
-          </div>
-        </div>
         
         <!-- Followers End  -->
     

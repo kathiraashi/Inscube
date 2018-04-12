@@ -8,3 +8,32 @@
     padding-left: 3px  !important;
     font-size: 13px;
 }
+.cdk-overlay-container{
+    z-index: 1100;
+}
+
+
+.MatMenuReportView{
+    max-width: 320px !important;
+    overflow: initial !important;
+    margin-left: -20px;
+    margin-top: 5px;
+}
+
+.MatMenuReportView .mat-menu-content{
+    padding: 0px !important;
+}
+
+
+.MatMenuUserView{
+    max-width: 320px !important;
+    overflow: initial !important;
+}
+.MatMenuUserView .mat-menu-content{
+    padding: 0px !important;
+}
+@media screen and (max-width: 1202px) {
+    .MatMenuUserView{
+        margin-right: 22px;
+    }
+}

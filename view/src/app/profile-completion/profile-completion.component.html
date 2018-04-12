@@ -25,7 +25,7 @@
                   <span (click)="fileInput.click()"> <i class="material-icons">add_a_photo</i> </span>
               </div>
             </div>
-              <input type="file" (change)="onFileChange($event)" accept='images' #fileInput style="display:none;">
+              <input type="file" (change)="onFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #fileInput style="display:none;">
 
             <label> Tell About Yourself</label>
             <div  fxLayout="row" fxLayoutAlign="space-around start"> 

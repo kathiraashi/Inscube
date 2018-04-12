@@ -117,3 +117,20 @@
     background: #149AC9;
     transition: all 1s;
 }
+
+
+.btn.disabled, .btn:disabled{
+    cursor: not-allowed
+}
+.error{
+    color: red;
+}
+.textgreen{
+    color: green;
+}
+.alertStyle-1{
+    text-align: left;
+    font-size: 13px;
+    margin-top: -20px !important;
+    margin-bottom: 15px !important;
+}

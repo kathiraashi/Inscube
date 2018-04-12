@@ -19,13 +19,24 @@ var mongoose = require('mongoose');
         }, 
         { timestamps: true }
     );
+
     
+    var AndroidVersionSchema = mongoose.Schema({
+        DateTime: { type : String , },
+        Version: { type : Number , },
+        }, 
+        { timestamps: true }
+    );
+        
     
     var varLoginInfo = mongoose.model('LoginInfo', LoginInfoSchema, 'LoginInfo');
 
     var varAndroidAppInfo = mongoose.model('AndroidAppInfo', AndroidAppInfoSchema, 'AndroidAppInfo');
 
+    var varAndroidVersion = mongoose.model('AndroidVersion', AndroidVersionSchema, 'AndroidVersion');
+    
     module.exports = {
         LoginInfoSchema : varLoginInfo,
-        AndroidAppInfoSchema: varAndroidAppInfo
+        AndroidAppInfoSchema: varAndroidAppInfo,
+        AndroidVersion : varAndroidVersion
     };
