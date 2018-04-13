@@ -45,6 +45,13 @@ import { PostService } from './service/post/post.service';
 import { JoinConfirmationComponent } from './Modal_Components/join-confirmation/join-confirmation.component';
 import { PostSubmitService } from './component-connecting/post-submit/post-submit.service';
 import { EmoteAddComponent } from './Modal_Components/emote-add/emote-add.component';
+import { EditPostComponent } from './Modal_Components/edit-post/edit-post.component';
+import { DeleteConfirmationComponent } from './Modal_Components/delete-confirmation/delete-confirmation.component';
+import { ReportPostComponent } from './Modal_Components/report-post/report-post.component';
+import { ReportUserComponent } from './Modal_Components/report-user/report-user.component';
+import { ReportCommentComponent } from './Modal_Components/report-comment/report-comment.component';
+import { EditCommentComponent } from './Modal_Components/edit-comment/edit-comment.component';
+import { SelectMoreCubesComponent } from './Modal_Components/select-more-cubes/select-more-cubes.component';
 
 
 
@@ -63,7 +70,14 @@ import { EmoteAddComponent } from './Modal_Components/emote-add/emote-add.compon
     FeedsCenterComponent,
     CreatePostComponent,
     JoinConfirmationComponent,
-    EmoteAddComponent
+    EmoteAddComponent,
+    EditPostComponent,
+    DeleteConfirmationComponent,
+    ReportPostComponent,
+    ReportUserComponent,
+    ReportCommentComponent,
+    EditCommentComponent,
+    SelectMoreCubesComponent
   ],
   imports: [
       // Default Modules
@@ -101,7 +115,14 @@ import { EmoteAddComponent } from './Modal_Components/emote-add/emote-add.compon
                     CreateCubeComponent,
                     CreatePostComponent,
                     JoinConfirmationComponent,
-                    EmoteAddComponent
+                    EmoteAddComponent,
+                    EditPostComponent,
+                    DeleteConfirmationComponent,
+                    ReportPostComponent,
+                    ReportUserComponent,
+                    ReportCommentComponent,
+                    EditCommentComponent,
+                    SelectMoreCubesComponent
                   ]
 })
 export class AppModule { }

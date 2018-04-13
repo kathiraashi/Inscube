@@ -24,7 +24,7 @@
     background-color:#ffffff;
     box-shadow: 0px 0px 5px 1px #607d8b63;
     margin: 3px;
-    padding-bottom: 5px;
+    padding-bottom: 0px;
 }
 
 
@@ -109,7 +109,6 @@
 .Highlights .HighlightsPost .postLikes .like img{
     width: 35px;
     height: 35px;
-    margin-right: 15px;
     cursor: pointer;
 }
 .Highlights .HighlightsPost .postLikes .share{
@@ -125,7 +124,6 @@
 
 .Highlights .HighlightsPost .postchat {
     padding: 0px;
-    padding-top: 5px;
 }
 
 .Highlights .HighlightsPost .postchat .chatUserImg img{
@@ -318,7 +316,7 @@
 
 
 .dropd{
-    width: 150px;
+    width: 155px;
     padding: 3px 5px;
     background-color: #f3f3f3;
 }
@@ -463,19 +461,24 @@
 
 .emote_grid{
     display: grid;
-    grid-template-columns: auto auto auto auto auto auto;
-    grid-gap: 10px;
-    padding: 10px;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+    padding: 0px;
+    margin-left: 1%;
 }
 .emote{
-    display: grid;
-    grid-template-columns: auto auto auto;
     border: 1px solid #d75739;
     border-radius: 30px;
-    padding: 4px 5px;
+    cursor: pointer;
+    margin: 4px 5px;
+    text-align: center;
+    cursor: pointer;
+}
+.emote_div{
+
+    padding: 4px 10px;
     font-size: 13px;
     color: #666;
-    cursor: pointer;
+    display: inline-flex;
 }
 
 .emote p{

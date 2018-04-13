@@ -12,7 +12,8 @@ var Cube_Post_File_Storage = multer.diskStorage({
     filename: (req, file, cb) => {
         let extArray = file.originalname.split(".");
         let extension = (extArray[extArray.length - 1]).toLowerCase();
-     cb(null, 'Post_' + Date.now() + '.' + extension); }
+     cb(null, 'Post_' + Date.now() + '.' + extension);
+    }
 });
 var Cube_Post_File_Upload = multer({
     storage: Cube_Post_File_Storage,
@@ -24,7 +25,7 @@ var Cube_Post_File_Upload = multer({
         }
         callback(null, true);
     }
-}).any('attachments', 20);
+}).array('attachments', 20);
 
 
 
@@ -285,17 +286,18 @@ exports.CubePost_View = function(req, res) {
 // ----------------------------------------------------------------------  Cube Post Update ----------------------------------------------------------
 exports.CubePost_Update = function(req, res) {
     Cube_Post_File_Upload(req, res, function(upload_err) {
-
+        
+        
         var Cubes_List =JSON.parse(req.body.Cubes_Id);
 
         if(!req.body.Post_Id || req.body.Post_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
         }else{
 
-            PostModel.Cube_Postschema.find({'_id': req.body.Post_Id }, function(post_err, Post_result) {
-                if(err) {
-                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
-                    res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(post_err, Post_result) {
+                if(post_err) {
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', post_err);
+                    res.status(500).send({status:"False", Error:post_err, message: "Some error occurred while Find The  User Followed Cube List."});
                 } else {
 
                     var Return_Json = [];
@@ -311,8 +313,13 @@ exports.CubePost_Update = function(req, res) {
                             }
                         });
                     }
-                    var NewReturn_Json = Return_Json.concat(req.body.Old_Attachments);
+                    var Old_Json = [];
 
+                    if (req.body.Old_Attachments && req.body.Old_Attachments !== undefined ) {
+                        Old_Json = JSON.parse(req.body.Old_Attachments);
+                    }
+
+                    var NewReturn_Json = Return_Json.concat(Old_Json);
                     Post_result.Cubes_Id = Cubes_List;
                     Post_result.Post_Category = req.body.Post_Category;
                     Post_result.Post_Text = req.body.Post_Text;
@@ -327,6 +334,7 @@ exports.CubePost_Update = function(req, res) {
                             result = JSON.parse(JSON.stringify(result));
                             delete result.__v;
                             var cubeIds = result.Cubes_Id;
+                            
 
                             const GetCategory_Info = (cubeIds) => Promise.all(  // Main Promise For Category info Get --------------
                                 cubeIds.map(info => Category_Info(info)) 
@@ -337,12 +345,12 @@ exports.CubePost_Update = function(req, res) {
                                     UserModel.UserSchema.findOne({'_id': result.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
                                         if(err_user) {
                                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', err_user);
-                                            res.status(500).send({status:"False", Error:err_user, message: "Some error occurred while Find The  User Info."});
+                                            res.status(500).send({status:"False", Error:err_user, message: "Some error occurred while Find The User Info."});
                                         } else {
-                                            PostModel.Post_Emoteschema.find({'_id': result.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_emote, emote_Info) {
-                                                if(emote_Info) {
-                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', emote_Info);
-                                                    res.status(500).send({status:"False", Error:emote_Info, message: "Some error occurred while Find The  User Info."});
+                                            PostModel.Post_Emoteschema.find({'Post_Id': result._id }, function(err_emote, emote_Info) {
+                                                if(err_emote) {
+                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', err_emote);
+                                                    res.status(500).send({status:"False", Error:err_emote, message: "Some error occurred while Find The Post Emote List."});
                                                 } else {
                                                     result.User_Name = User_Info.Inscube_Name;
                                                     result.User_Image = User_Info.Image;
@@ -467,7 +475,7 @@ exports.Emote_Submit = function(req, res) {
                         });
                     } else {
                         console.log('3');
-                        res.status(200).send({ Status:"True", Output: "False", Message: 'Already Emote Submitted !' });
+                        res.status(200).send({ Status:"True", Output: "False", Message: 'Already exists! vote for it' });
                     }
 
                 }
@@ -665,15 +673,13 @@ exports.Report_PostSubmit = function(req, res) {
         res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
     }else if(!req.body.Report_Type || req.body.Report_Type === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Report Type can not be empty" });
-    }else if(!req.body.Report_Text || req.body.Report_Text === '' ){
-        res.status(200).send({Status:"True", Output:"False", Message: "Report Text can not be empty" });
     }else{
 
         var varReport_Postschema = new PostModel.Report_Postschema({
             User_Id: req.body.User_Id,
             Post_Id: req.body.Post_Id,
             Report_Type: req.body.Report_Type,
-            Report_Text: req.body.Report_Text,
+            Report_Text: req.body.Report_Text || '',
             Active_Status: 'Active'
         });
         varReport_Postschema.save(function(err, result) {
@@ -724,8 +730,6 @@ exports.Report_CommentSubmit = function(req, res) {
         res.status(200).send({Status:"True", Output:"False", Message: "Comment Id can not be empty" });
     }else if(!req.body.Report_Type || req.body.Report_Type === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Report Type can not be empty" });
-    }else if(!req.body.Report_Text || req.body.Report_Text === '' ){
-        res.status(200).send({Status:"True", Output:"False", Message: "Report Text can not be empty" });
     }else{
 
         var varReport_Commentschema = new PostModel.Report_Commentschema({
@@ -783,15 +787,13 @@ exports.Report_UserSubmit = function(req, res) {
         res.status(200).send({Status:"True", Output:"False", Message: "Comment Id can not be empty" });
     }else if(!req.body.Report_Type || req.body.Report_Type === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Report Type can not be empty" });
-    }else if(!req.body.Report_Text || req.body.Report_Text === '' ){
-        res.status(200).send({Status:"True", Output:"False", Message: "Report Text can not be empty" });
     }else{
 
         var varReport_Commentschema = new PostModel.Report_Userschema({
             User_Id: req.body.User_Id,
             To_User_Id: req.body.To_User_Id,
             Report_Type: req.body.Report_Type,
-            Report_Text: req.body.Report_Text,
+            Report_Text: req.body.Report_Text || '',
             Active_Status: 'Active'
         });
         varReport_Commentschema.save(function(err, result) {

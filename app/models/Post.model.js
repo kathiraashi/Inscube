@@ -40,7 +40,7 @@ var Report_Postschema = mongoose.Schema({
     User_Id: { type : String , required : true },
     Post_Id: { type : String , required : true },
     Report_Type: { type : String, required : true },
-    Report_Text: { type : String, required : true },
+    Report_Text: { type : String },
     Active_Status: String
     }, 
     { timestamps: true }
@@ -50,7 +50,7 @@ var Report_Commentschema = mongoose.Schema({
     User_Id: { type : String , required : true },
     Comment_Id: { type : String , required : true },
     Report_Type: { type : String, required : true },
-    Report_Text: { type : String, required : true },
+    Report_Text: { type : String },
     Active_Status: String
     }, 
     { timestamps: true }
@@ -60,7 +60,7 @@ var Report_Userschema = mongoose.Schema({
     User_Id: { type : String , required : true },
     To_User_Id: { type : String , required : true },
     Report_Type: { type : String, required : true },
-    Report_Text: { type : String, required : true },
+    Report_Text: { type : String },
     Active_Status: String
     }, 
     { timestamps: true }

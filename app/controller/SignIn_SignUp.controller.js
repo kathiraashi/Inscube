@@ -346,6 +346,27 @@ exports.UserValidate = function(req, res) {
 };
 
 
+// ---------------------------------------------------------------------- User Info ---------------------------------------------------------------
+exports.User_Info = function(req, res) {
+        if(!req.params.User_Id && req.params.User_Id === '' ) {
+            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+        }else{
+            UserModel.UserSchema.findOne({'_id': req.params.User_Id}, { Password: 0, __v: 0 }, function(err, result) {
+                if(err) {
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                    res.status(500).send({ Status:"False", Error:err, Message: "User Info Find Error! " });
+                } else {
+                    if (result !== null) {
+                         res.status(200).send({ Status:"True", Output:"True", Response: result });
+                    }else {
+                        res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid User Info' });
+                    }
+                }
+            });
+        }
+};
+
+
 
 exports.AndroidVersionSubmit = function(req, res) {
     if(!req.params.Version) {

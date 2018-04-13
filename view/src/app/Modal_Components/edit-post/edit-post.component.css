@@ -1,0 +1,190 @@
+.CreatePost .postheader{
+    padding: 3px 0px
+ }
+ .CreatePost .userimg{
+     width: 45px;
+     height: 45px;
+     border-radius: 45px;
+ }
+ .CreatePost .posttype{
+     line-height: 45px;
+     font-size: 19px;
+     font-weight: 700;
+     color: #333333;
+     letter-spacing: 0.7px;
+     font-family: 'Ubuntu', sans-serif;
+ }
+ 
+ .CreatePost .postlink{
+     border: none; 
+     border-radius: 5px;
+     width: 100%;
+     height: 40px;
+     padding: 5px;
+     color: #333333;
+     font-weight: 600;
+     font-size: 14px;
+     letter-spacing: 0.7px;
+     font-family: 'Ubuntu', sans-serif;
+     border: 1px solid #dedede;
+     margin: 10px 0px;
+ }
+ 
+ .CreatePost .posttext{
+     border-radius: 5px;
+     width: 100%;
+     min-height: 100px;
+     padding: 5px;
+     border-color: #dedede;
+     color: #333333;
+     font-weight: 600;
+     font-size: 14px;
+     letter-spacing: 0.7px;
+     font-family: 'Ubuntu', sans-serif;
+ }
+ 
+ .CreatePost .postaddon_icon i{
+     font-size: 30px;
+     color: #333333;
+     cursor: pointer;
+ }
+ 
+ 
+ .grid_row{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+ }
+ 
+ .CreatePost .cat-img-item{
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: 50px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}
+
+ .CreatePost .cat-img-item img{
+     width: 40px;
+     height: 40px;
+     border-radius: 50px;
+     cursor: pointer;
+ }
+ 
+ .CreatePost .cat-img-item img.Selected{
+    border: 2px solid #d75739;
+}
+
+ .CreatePost .cat-img-item p{
+     font-size: 11px;
+     font-weight: 500;
+     font-family: 'Ubuntu', sans-serif;
+     letter-spacing: 0.4px;
+     margin: 0px
+ }
+ 
+ .CreatePost .cat-img-item.selected{
+     width: 55px;
+     height: 55px;
+ }
+ .CreatePost .cat-img-item.selected img{
+     width: 42px;
+     height: 42px;
+     border: 3px solid #333333;
+ }
+ .display_inline{
+     display: inline-flex;
+ }
+ 
+ .viewall{
+    font-size: 13px;
+    font-weight: 600;
+    color: #999999;
+    letter-spacing: 0.6px;
+    font-family: 'Ubuntu', sans-serif;
+    cursor: pointer;
+    margin-bottom: 0px;
+    line-height: 55px;
+ }
+ 
+ 
+ 
+ 
+
+ 
+ 
+ .ImgselectedList{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto;
+    padding: 0px;
+    list-style: none;
+ }
+ .ImgselectedList li{
+    position: relative;
+    margin: 0px 10px;
+    margin-bottom: 20px;
+ }
+ .ImgselectedList li .selectedImg{
+    text-align: center;
+    border: 1px solid #89898952;
+ }
+ .ImgselectedList li .selectedImg img{
+    height: 100px;
+    width: 100px;
+ }
+ .ImgselectedList li .selectedImg .clearbutton{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: #e7e5e5;
+    height: 22px;
+    width: 22px;
+    border-radius: 50px;
+    color: red;
+    cursor: pointer;
+ }
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ .vidselectedList{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    padding: 0px;
+    list-style: none;
+ }
+ .vidselectedList li{
+    position: relative;
+    margin: 0px 10px;
+    margin-bottom: 20px;
+ }
+ .vidselectedList li .selectedvid{
+    text-align: center;
+    border: 1px solid #89898952;
+ }
+ .vidselectedList li .selectedvid .clearbutton{
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    background-color: #e7e5e5;
+    height: 22px;
+    width: 22px;
+    border-radius: 50px;
+    color: red;
+    cursor: pointer;
+ }

@@ -23,10 +23,11 @@
         padding: 0px;
     }
     .Select_Box_Style_1 .ui-dropdown-panel .ui-dropdown-item{
-        height: 33px;
-        line-height: 33px;
+        height: 30px;
+        line-height: 30px;
         padding: 0px 10px;
         border-radius: 0px;
+        font-size: 14px;
     }
     .Select_Box_Style_1 .ui-state-highlight {
         border-color: #d75839;

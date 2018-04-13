@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> Create Your Owen Social Media </h4>
+    <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> Create your own social media </h4>
     <button type="button" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -21,8 +21,8 @@
         <input type="file" (change)="onFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #fileInput style="display:none;">
 
         <div class="input_style_1" > 
-            <input type="text" formControlName="Name" placeholder="Cube Name">
-            <p class="error alertStyle-1 m-0" *ngIf="Form.controls.Name.dirty &&  Form.value.Name ==='' "> Name Is Required </p>
+            <input type="text" formControlName="Name" placeholder="Cube name">
+            <p class="error alertStyle-1 m-0" *ngIf="Form.controls.Name.dirty &&  Form.value.Name ==='' "> Cube name Is Required </p>
         </div>
 
 
@@ -36,7 +36,7 @@
             </div>
             <div fxFlex="50%" class="input_style_1">
                 <ng-container>
-                        <input type="text" formControlName="Security_Code" *ngIf="SecurityCode" style="margin-top: -5px;height: 35px;"  placeholder="Security Code">
+                        <input type="text" maxlength="10" formControlName="Security_Code" *ngIf="SecurityCode" style="margin-top: -5px;height: 35px;"  placeholder="Cube code">
                 </ng-container>
             </div>
         </div>
@@ -44,23 +44,23 @@
 
 
         <div class="textarea_style_1"> 
-            <textarea type="text" formControlName="Description" placeholder="Cube Description"></textarea>
+            <textarea type="text" formControlName="Description" placeholder="Cube description"></textarea>
         </div>
 
         <div *ngIf="Locatin_Input" class="input_style_1" > 
-            <input type="text" formControlName="Location" placeholder=" Location">
+            <input type="text" formControlName="Location" placeholder=" location">
         </div>
 
         <div *ngIf="Website_Input" class="input_style_1" > 
-            <input type="text" formControlName="Web" placeholder="Website Address">
+            <input type="text" formControlName="Web" placeholder="Website">
         </div>
 
         <div *ngIf="Email_Input" class="input_style_1" > 
-            <input type="text" formControlName="Mail" placeholder="E-mail Address">
+            <input type="text" formControlName="Mail" placeholder="Email">
         </div>
 
         <div *ngIf="Contact_Input" class="input_style_1" > 
-            <input type="text" formControlName="Contact" placeholder=" Cantact Number">
+            <input type="text" formControlName="Contact" placeholder=" Cantact number">
         </div>
 
         <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top: 20px"> 

@@ -1,7 +1,7 @@
 <div class="Highlights" [ngStyle]="{'height': scrollHeight }">
   <ng-scrollbar>
 
-    <div *ngFor="let Post of Posts_List; let i=index" class="HighlightsPost " style="margin-bottom: 15px">
+    <div *ngFor="let Post of Posts_List; let i=index" class="HighlightsPost " style="margin-bottom: 25px">
         <!-- Highlights Post Info Header div -->
         <div class="PostHeader" fxLayout="row" fxLayoutAlign="space-between">
           <div fxFlex>
@@ -24,13 +24,14 @@
               <div class="" fxLayout="row" fxLayoutAlign="end center">
                 <div class="text-right" fxFill>
                   <p *ngIf="Post.User_Id === LoginUser._id" class="postaction"> 
-                    <i [matMenuTriggerFor]="ReportHighlightPostUser" class="material-icons">more_horiz</i>
+                    <i (click)="Trigger_Post(i)" [matMenuTriggerFor]="ReportHighlightPostUser" class="material-icons">more_horiz</i>
                   </p>
                   <p *ngIf="Post.User_Id !== LoginUser._id" class="postaction"> 
-                    <i [matMenuTriggerFor]="ReportHighlightPost" class="material-icons">more_horiz</i>
+                    <i (click)="Trigger_Post(i)" [matMenuTriggerFor]="ReportHighlightPost" class="material-icons">more_horiz</i>
                   </p>
                   <p class="Selected_Cubes" style="display: flex"> 
-                    <img *ngFor="let Cubes of Post.Cubes_Info; let j=index" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt="">
+                    <img *ngFor="let Cubes of Post.Cubes_Info | slice:0:10; let j=index" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt=""> 
+                    <span *ngIf="Post.Cubes_Info?.length > 10" style="font-size: 25px; margin: 0px 10px;line-height: 20px;color: #7f7f7f;"> .... </span>
                   </p>
                 </div>
               </div>
@@ -40,7 +41,7 @@
         <!-- Highlights Post Info Header div End -->
         <hr style="opacity:0.6; margin:0px 5px 5px 5px">
         <!-- Highlights Post -->
-        <div class="postmain" fxLayout="row">
+        <div class="postmain" fxLayout="row" style="padding: 5px 0px;">
           <div fxFlex class="text-center">
             <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Post.Post_Text}} </h5>
 
@@ -57,7 +58,7 @@
         <div class="postLikes" fxLayout="row" fxLayoutAlign="space-between center">
           <div fxFlex class="text-left" style="height:35px">
             <div class="like">
-              <img src="assets/images/icons/1.png" alt="">
+              <!-- <img src="assets/images/icons/1.png" alt=""> -->
               <img (click)="Emote_Add(i)" src="assets/images/icons/5.png" alt="">
               <img (click)="Active_CommentChange(i)" src="assets/images/icons/3.png" alt="">
             </div>
@@ -69,12 +70,14 @@
           </div>
         </div>
         <!-- HighlightsPost Share Like And More  END-->
-        <hr style="margin-bottom:2px !important; opacity:0.8;margin-top: 0px">
+        <hr style="margin-bottom:2px !important; opacity:0.8;margin-top: 5px">
         <!-- Highlights Post Share Like And More -->
-        <div class="postchat">
+        <div *ngIf="Post.Emotes?.length > 0" class="postchat">
           <div class="emote_grid">
             <div class="emote" *ngFor="let emote of Post.Emotes; let k=index"> 
-              <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
+              <div class="emote_div">
+                  <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
+              </div>
             </div>
           </div>
 
@@ -85,7 +88,7 @@
 
 
          <!-- Highlights Post Share Like And More -->
-          <div  *ngIf="ActiveComment === i" class="postchat" fxLayout="row" fxLayoutAlign="space-between center">
+          <div  *ngIf="ActiveComment === i" class="postchat" style="padding: 10px 0px;" fxLayout="row" fxLayoutAlign="space-between center">
             <div fxFlex="50px" class="text-left">
               <div class="chatUserImg text-center">
                 <img  src="{{UsersBaseUrl}}{{Post.User_Image}}" alt="">
@@ -93,7 +96,7 @@
             </div>
             <div fxFlex class="text-center">
               <div class="chatInput">
-                <input #input type="text" placeholder="Post Your Comment..."> </div>
+                <input #input type="text" placeholder="Post your comment..."> </div>
             </div>
             <div fxFlex="60px" class="text-right">
               <div class="chatsend text-center">
@@ -103,14 +106,6 @@
           </div>
           <!-- Highlights Post Share Like And More  END-->
 
-          
-          <div *ngIf="ActiveComment === i && Post.Comments?.length <= 0 ">
-            <div style="height:60px" fxLayout="row" fxLayoutAlign="space-evenly center">
-                <div fxFlex>
-                    <h5 style="line-height:60px; text-align:center"> No Comment Found!...</h5>
-                </div>
-            </div>
-        </div>
 
           <!-- Highlights Post Comments-->
           <div *ngIf="ActiveComment === i" class="Comments mt-20">
@@ -136,10 +131,10 @@
                       <div class="" fxLayout="row" fxLayoutAlign="end center">
                         <div class="text-right" fxFlex>
                           <p *ngIf="Comment.User_Id === LoginUser._id" class="postaction"> 
-                            <i [matMenuTriggerFor]="ReportHighlightCommentUser" class="material-icons">more_horiz</i>
+                            <i (click)="Trigger_Comment(l)" [matMenuTriggerFor]="ReportHighlightCommentUser" class="material-icons">more_horiz</i>
                           </p>
                           <p *ngIf="Comment.User_Id !== LoginUser._id" class="postaction"> 
-                            <i [matMenuTriggerFor]="ReportHighlightComment" class="material-icons">more_horiz</i>
+                            <i (click)="Trigger_Comment(l)" [matMenuTriggerFor]="ReportHighlightComment" class="material-icons">more_horiz</i>
                           </p>
                         </div>
                       </div>
@@ -159,6 +154,7 @@
               </div>
             </div> -->
 
+            <br>
 
           </div>
           <!-- Highlights Post Comments END-->
@@ -171,7 +167,7 @@
 
 
 <mat-menu #ReportHighlightPostUser="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-    <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+    <div (click)="EditPost_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="dropd_icon" fxFlex="30px">
             <i class="material-icons">border_color</i>
         </div>
@@ -181,7 +177,7 @@
     </div>
     <div class="dropdarrow"></div>
     <hr class="m-0">
-    <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+    <div (click)="Delete_Post()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
         <div class="dropd_icon" fxFlex="30px">
             <i class="material-icons">delete_forever</i>
         </div>
@@ -193,7 +189,7 @@
 
 
 <mat-menu #ReportHighlightPost="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-    <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+    <div (click)="Report_Post()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="dropd_icon" fxFlex="30px">
             <i class="material-icons">announcement</i>
         </div>
@@ -203,7 +199,7 @@
     </div>
     <div class="dropdarrow"></div>
     <hr class="m-0">
-    <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+    <div (click)="Report_User()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
         <div class="dropd_icon" fxFlex="30px">
             <i class="material-icons">report</i>
         </div>
@@ -216,17 +212,17 @@
 
 
 <mat-menu #ReportHighlightComment="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-  <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
-      <div class="dropd_icon" fxFlex="30px">
+  <div (click)="Report_Comment()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+      <div  class="dropd_icon" fxFlex="30px">
           <i class="material-icons">announcement</i>
       </div>
       <div fxFlex>
-          <p class="dropd_text">Report Comment </p>
+          <p class="dropd_text" style="width: 120px;">Report Comment </p>
       </div>
   </div>
   <div class="dropdarrow"></div>
   <hr class="m-0">
-  <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+  <div (click)="Report_User()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
       <div class="dropd_icon" fxFlex="30px">
           <i class="material-icons">report</i>
       </div>
@@ -238,7 +234,7 @@
 
 
 <mat-menu #ReportHighlightCommentUser="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-  <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+  <div (click)="EditComment_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
       <div class="dropd_icon" fxFlex="30px">
           <i class="material-icons">border_color</i>
       </div>
@@ -248,7 +244,7 @@
   </div>
   <div class="dropdarrow"></div>
   <hr class="m-0">
-  <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+  <div (click)="Delete_Comment()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
       <div class="dropd_icon" fxFlex="30px">
           <i class="material-icons">delete_forever</i>
       </div>
@@ -257,3 +253,4 @@
       </div>
   </div>
 </mat-menu>
+

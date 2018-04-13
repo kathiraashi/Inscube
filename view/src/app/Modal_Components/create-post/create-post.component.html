@@ -21,7 +21,7 @@
 
         <p-selectButton formControlName="Post_Type" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
 
-            <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="Enter Your {{Form.controls.Post_Type.value}}..."></textarea>
+            <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="Share your {{Form.controls.Post_Type.value}}..."></textarea>
     
             <input *ngIf="LinkInputActive" formControlName="Post_Link" class="postlink mb-20" placeholder="Enter Link...">
     
@@ -71,24 +71,24 @@
             </div>
     
     
-            <div fxLayout fxLayoutAlign="space-between">
+            <div fxLayout fxLayoutAlign="space-between end">
                 <div fxFlex="85%">
-                    <div class="mt-10" fxLayout fxLayoutAlign="start end">
+                    <div class="mt-10 grid_row">
     
-                    <div *ngFor="let item of Cubes_List | slice:0:6; let i=index" class="cat-img-item">
+                    <div *ngFor="let item of Cubes_List | slice:0:slice_Count; let i=index" class="cat-img-item">
                         <img [ngClass]="{'Selected': item.Selected }" id="1" src="{{CubeBaseUrl}}{{item.Image}}" alt="" (click)="Select_Cube(i)">
-                        <p (click)="Select_Cube(i)" > {{item.Name | slice:0:4 }}{{ item.Name?.length > 4 ? '...' : ' ' }}  </p>
+                        <p (click)="Select_Cube(i)" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }}  </p>
                     </div>
 
 
-                    <!-- <div *ngIf="Cubes_List?.length > 6">
-                        <p class="viewall"> View All...</p>
-                    </div> -->
+                    <div *ngIf="Cubes_List?.length > slice_Count">
+                        <p (click)="select_More_Model()" style="line-height: 70px;" class="viewall">  View More... </p>
+                    </div>
     
                     </div>
                 </div>
                 <div fxFlex="15%" style="line-height:75px;">
-                    <button type="submit" [ngClass]="{'disabled': Post_Submit }" [disabled]="Post_Submit" mat-raised-button color="primary" style="background-color: #d75739"> 
+                    <button type="submit" [ngClass]="{'disabled': Post_Submit }" [disabled]="Post_Submit" mat-raised-button color="primary" style="background-color: #d75739; margin-left:20px"> 
                         <span *ngIf="!Post_Submit"> Post </span>
                         <span *ngIf="Post_Submit" style="color:#fff"> Uploading... </span>
                      </button>

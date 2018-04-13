@@ -1,0 +1,19 @@
+<div class="modal-header">
+  <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> Select More Cubes </h4>
+  <button type="button" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+  <div class="modal-body Create_Cube">
+    <div class="grid_row">
+      <div *ngFor="let item of Cubes_List; let i=index" class="cat-img-item">
+          <img [ngClass]="{'Selected': item.Selected }" id="1" src="{{CubeBaseUrl}}{{item.Image}}" alt="" (click)="Select_Cube(i)">
+          <p (click)="Select_Cube(i)" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }}  </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-footer">
+      <button type="submit" (click)="Add()" style="float: right;" mat-raised-button color="primary" style="background-color: #d75739; color: #fff" > Add </button>    
+  </div>

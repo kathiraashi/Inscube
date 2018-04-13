@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { BsModalService } from 'ngx-bootstrap/modal';
 
 import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 
@@ -8,6 +9,8 @@ import { MatSnackBar } from '@angular/material';
 
 import { CubeService } from './../../service/cube/cube.service';
 import { PostService } from './../../service/post/post.service';
+
+import { SelectMoreCubesComponent } from './../../Modal_Components/select-more-cubes/select-more-cubes.component';
 
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 
@@ -18,23 +21,24 @@ import { PostSubmitService } from './../../component-connecting/post-submit/post
 })
 export class CreatePostComponent implements OnInit {
 
+    modalRef: BsModalRef;
 
     UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
     CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
 
     title: string;
     types = [
-        {label: 'Story', value: 'Story'},
-        {label: 'News', value: 'News'},
-        {label: 'Article/Blog', value: 'Article/Blog'},
-        {label: 'Idea', value: 'Idea'},
-        {label: 'Curiosity', value: 'Curiosity'},
-        {label: 'Talent', value: 'Talent'},
-        {label: 'Question', value: 'Question'},
-        {label: 'Moments', value: 'Moments'}
+        {label: 'Story', value: 'story'},
+        {label: 'News', value: 'news'},
+        {label: 'Article/Blog', value: 'article/blog'},
+        {label: 'Idea', value: 'idea'},
+        {label: 'Curiosity', value: 'curiosity'},
+        {label: 'Talent', value: 'talent'},
+        {label: 'Question', value: 'question'},
+        {label: 'Moments', value: 'moments'}
     ];
 
-    selectedType: String = 'Story';
+    selectedType: String = 'story';
 
     ImageInputActive: Boolean = false;
     VideoInputActive: Boolean = false;
@@ -53,6 +57,7 @@ export class CreatePostComponent implements OnInit {
     Cubes_List: any[] = [];
     Selected_Cube: any[] = [];
 
+    slice_Count: number = 7;
     Post_Submit: Boolean = false;
 
     LoginUser;
@@ -60,6 +65,7 @@ export class CreatePostComponent implements OnInit {
     FormData: FormData = new FormData;
 
     constructor(
+        private modalService: BsModalService,
         public _bsModalRef: BsModalRef,
         private formBuilder: FormBuilder,
         public snackBar: MatSnackBar,
@@ -147,6 +153,11 @@ export class CreatePostComponent implements OnInit {
         }
     }
 
+    select_More_Model() {
+        const Add_Count:number = 8;
+        this.slice_Count = this.slice_Count + Add_Count;
+    }
+
     onSubmit() {
         if (this.Form.valid && this.Selected_Cube.length > 0 && this.Form.controls['Post_Text'].value !== ''  ) {
             this.Post_Submit = true;
@@ -202,7 +213,8 @@ export class CreatePostComponent implements OnInit {
                     verticalPosition: 'top',
                     });
             }
-            if (this.Form.controls['Post_Text'].value === '' ) {
+            if (this.Form.controls['Post_Text'].value === '' && this.Form.controls['Post_Link'].value === '' &&
+                 this.List_Img_Files.length <= 0 && this.List_Video_Files.length <= 0 ) {
                 this.snackBar.open( 'Write Some Words !', ' ', {
                     horizontalPosition: 'center',
                     duration: 3000,

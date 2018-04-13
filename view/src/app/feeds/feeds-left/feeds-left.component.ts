@@ -45,11 +45,11 @@ export class FeedsLeftComponent implements OnInit {
   ngOnInit( ) {
   }
 
-  openConfirmDialog() {
+  PostCreate_Model() {
     const initialState = { title: 'Modal with component' };
       this.modalRef = this.modalService.show(CreatePostComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
       this.modalRef.content.onClose.subscribe(result => {
-          this.router.navigate(['Cube_Posts']);
+         this.router.navigate(['Cube_Posts']);
       });
   }
 

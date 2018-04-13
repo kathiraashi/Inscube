@@ -57,8 +57,7 @@
 
 .feedsRightBar .listFlexDiv{
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-gap: 10px;
+    grid-template-columns: 25% 25% 25% 25%;
 }
 
 .feedsRightBar .followPart{

@@ -1,0 +1,60 @@
+
+
+
+.box-2{
+    background-color: #ffffff;
+}
+.DiscoverLefBar .followheader{
+    text-align: center;
+    font-size: 16px;
+    padding: 4px 0px;
+    font-weight: 600;
+    padding-left: 10px;
+    color: #333333;
+    border-bottom: 3px solid #ffda00;
+    margin-bottom: 5px;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #ffda00;
+}
+
+.grid_row{
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    margin-right: -15px;
+    margin-left: -15px;
+}
+
+.cat-img-item img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.cat-img-item img.Selected{
+   border: 2px solid #d75739;
+}
+
+.cat-img-item p{
+    font-size: 11px;
+    font-weight: 500;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 0.4px;
+    margin: 0px
+}
+.cat-img-item{
+    text-align: center;
+    border-radius: 50px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+}
+
+.cat-img-item.selected{
+    width: 55px;
+    height: 55px;
+}
+.cat-img-item.selected img{
+    width: 42px;
+    height: 42px;
+    border: 3px solid #333333;
+}

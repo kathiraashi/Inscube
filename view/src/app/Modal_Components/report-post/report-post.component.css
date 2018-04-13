@@ -1,0 +1,95 @@
+
+
+
+.box-2{
+    background-color: #ffffff;
+}
+.DiscoverLefBar .followheader{
+    text-align: center;
+    font-size: 16px;
+    padding: 4px 0px;
+    font-weight: 600;
+    padding-left: 10px;
+    color: #333333;
+    border-bottom: 3px solid #ffda00;
+    margin-bottom: 5px;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #ffda00;
+}
+
+
+.tick{
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    font-family: 'Ubuntu', sans-serif;
+    display: inline-flex;
+    margin-left: 10%;
+    margin-top: 20px;
+}
+.tick img{
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    background: #bdbdbd61;
+    border-radius: 50%;
+}
+.tick p{
+    margin: 0px 10px;
+}
+.explain{
+    margin-left: 10%;
+    margin-top: 20px;
+}
+.explain label{
+    width: 10%;
+    margin-right: 3%;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    font-family: 'Ubuntu', sans-serif;
+}
+.explain input{
+    width: 72%;
+    border: 1px solid lightgray;
+    height: 35px;
+    border-radius: 35px;
+    padding: 0px 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    font-family: 'Ubuntu', sans-serif;
+    outline: none;
+}
+
+
+
+
+
+
+ .btn-cutom{
+    color: #ffffff;
+    background-color: #333333;
+    border-color: #333333;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    font-size: 15px;
+    outline: transparent;
+    padding: 5px 22px;
+}
+ .btn-cutom:hover{
+    color: #fff;
+    background-color: #5c5c5c;
+    border-color: #5c5c5c;
+}
+ .btn-cutom:focus{
+    box-shadow: none;
+}
+
+
+.max-width-300{
+    max-width: 300px;
+}
+.p-10 {
+    padding: 10px !important
+}

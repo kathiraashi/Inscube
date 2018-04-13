@@ -24,17 +24,17 @@ export class ProfileCompletionComponent implements OnInit {
 
   selectedCountry: string;
   countries: string[] = [
-    'Alabama',
-    'Alaska',
-    'Arizona',
-    'Arkansas',
+    // 'Alabama',
+    // 'Alaska',
+    // 'Arizona',
+    // 'Arkansas',
   ];
 
   selectedCities: string;
   cities: string[] = [
-    'California',
-    'Colorado',
-    'Connecticut',
+    // 'California',
+    // 'Colorado',
+    // 'Connecticut',
   ];
 
   @ViewChild('fileInput') fileInput: ElementRef;
@@ -50,7 +50,7 @@ export class ProfileCompletionComponent implements OnInit {
                 private Service: SigninSignupService,
                 public snackBar: MatSnackBar ) {
         this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, dateInputFormat: 'DD/MM/YYYY' });
-        this.Gender_List = [{name: 'Male'}, {name: 'Female'}, {name: 'Others'}, {name: 'Not Specify'}];
+        this.Gender_List = [{name: 'Male'}, {name: 'Female'}, {name: 'Others'}, {name: 'Not specify'}];
         this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
   }
 
@@ -111,7 +111,7 @@ export class ProfileCompletionComponent implements OnInit {
       this.Service.Register_Completion(this.FormData).subscribe( datas => {
         if (datas['Status'] === 'True') {
           if (datas['Output'] === 'True') {
-            this.snackBar.open( 'Profile Successfully Updated' , ' ', {
+            this.snackBar.open( 'Profile successfully updated' , ' ', {
               horizontalPosition: 'center',
               duration: 3000,
               verticalPosition: 'top',
@@ -125,7 +125,7 @@ export class ProfileCompletionComponent implements OnInit {
             });
           }
       } else {
-        this.snackBar.open( 'Profile Update Failed Please Try Again !!', ' ', {
+        this.snackBar.open( 'Profile update failed please try again !!', ' ', {
           horizontalPosition: 'center',
           duration: 3000,
           verticalPosition: 'top',

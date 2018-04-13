@@ -38,7 +38,7 @@ export class EmoteAddComponent implements OnInit {
   valuechange(value) {
     if ( value  !== '') {
       if (value.length > 10) {
-        this.Alert_Message = 'Maximum Corrector Limit 10 !';
+        this.Alert_Message = 'Maximum characters limit 10';
         this.Show_Alert = true;
         this.Show_Submit = false;
         this.Text = '';

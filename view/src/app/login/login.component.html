@@ -6,7 +6,7 @@
     <div fxFlex="35%" style="border-radius: 5px;">
 
       <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:10px; text-align:center; background-color:#fff">
-        <img src="assets/images/logo.png"> 
+        <img style="width: 167px; margin: 5px 0px;" src="assets/images/logo.png"> 
         <hr style="margin: 3px;border-radius: 0px;">
         <div class="LoginPage_Tabs" fxLayout="row" fxLayoutAlign="start start">
             <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Register' }" (click)="ActiveTabchange('Register')" fxFlex="50%"> Register </div>
@@ -20,8 +20,8 @@
 
                 <input type="text" formControlName="Inscube_Name" (blur)="Check_Inscube_Name_Availabel()" placeholder="@ Inscube Name">
                 <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.controls.Inscube_Name.dirty &&  RegisterForm.value.Inscube_Name ==='' "> Inscube Name Is Required </p>
-                <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name !== '' && Inscube_NameNotAvailabel"> '@{{Available_Ins_Name}}' is Not Available </p>
-                <p class="textgreen alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name != '' && Inscube_NameAvailabel"> '@{{Available_Ins_Name}}' is Available </p>
+                <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name !== '' && Inscube_NameNotAvailabel">  Username Unavailable </p>
+                <!-- <p class="textgreen alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name != '' && Inscube_NameAvailabel"> '@{{Available_Ins_Name}}' is Available </p> -->
 
                 <input type="email" formControlName="Email" (blur)="Check_Email_Availabel()" placeholder="Your Email">
                 <p class="error alertStyle-1" *ngIf="RegisterForm.value.Email !== '' && EmailFormat_Error "> Invalid E-mail Format! </p>
