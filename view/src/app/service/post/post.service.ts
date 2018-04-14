@@ -52,6 +52,11 @@ export class PostService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+    public Emote_Update(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Emote_Update', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
     public Comment_Submit(data: any): Observable<any[]>  {
         return this.http .post(API_URL + 'Comment_Submit', data)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);

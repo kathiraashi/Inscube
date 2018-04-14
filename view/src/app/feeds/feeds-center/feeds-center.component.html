@@ -65,7 +65,7 @@
           </div>
           <div fxFlex class="text-right" style="height:35px">
             <div class="share">
-              <img src="assets/images/icons/7.png" alt="">
+              <!-- <img src="assets/images/icons/7.png" alt=""> -->
             </div>
           </div>
         </div>
@@ -74,13 +74,31 @@
         <!-- Highlights Post Share Like And More -->
         <div *ngIf="Post.Emotes?.length > 0" class="postchat">
           <div class="emote_grid">
-            <div class="emote" *ngFor="let emote of Post.Emotes; let k=index"> 
-              <div class="emote_div">
-                  <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
-              </div>
-            </div>
+            <ng-container *ngFor="let emote of Post.Emotes | slice:0:Post.Splice_Count; let k=index">
+                <div *ngIf="!emote.Already" class="emote" (click)="Emote_Submit(i, k)" [ngClass]="{'Selected': emote.Already}"> 
+                    <div class="emote_div">
+                        <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
+                    </div>
+                </div>
+                <div *ngIf="emote.Already" class="emote Selected"> 
+                    <div class="emote_div">
+                        <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
+                    </div>
+                </div>
+            </ng-container>
           </div>
+        </div>
 
+        <div *ngIf="Post.Emote_Count > Post.Splice_Count" class="row">
+          <div class="col-sm-12">
+            <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_More_Emote(i)">  View more... </span></p>
+          </div>
+        </div>
+
+        <div *ngIf="Post.Emote_Count <= Post.Splice_Count && Post.Emote_Count > 5" class="row">
+          <div class="col-sm-12">
+            <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_Less_Emote(i)">  View less... </span></p>
+          </div>
         </div>
         <!-- Highlights Post Share Like And More  END-->
 
@@ -148,11 +166,17 @@
               </div>
             </div>
 
-            <!-- <div *ngIf="Post.Comments?.length > 2 " class="row">
+            <div *ngIf="view_all_comment" class="row">
               <div class="col-sm-12">
-                <p class="viewAll text-right"> <span style="cursor:pointer">  View All... </span></p>
+                <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_All_Comments()">  View All... </span></p>
               </div>
-            </div> -->
+            </div>
+
+            <div *ngIf="view_less_comment" class="row">
+              <div class="col-sm-12">
+                <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_Less_Comments()">  View Less... </span></p>
+              </div>
+            </div>
 
             <br>
 

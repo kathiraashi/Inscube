@@ -27,7 +27,7 @@
                 <p class="error alertStyle-1" *ngIf="RegisterForm.value.Email !== '' && EmailFormat_Error "> Invalid E-mail Format! </p>
                 <p class="error alertStyle-1" *ngIf="RegisterForm.controls.Email.dirty &&  RegisterForm.value.Email === '' "> E-mail Is Required </p>
                 <p class="error alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailNotAvailabel">  Not Available </p>
-                <p class="textgreen alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailAvailabel">  Available </p>
+                <!-- <p class="textgreen alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailAvailabel">  Available </p> -->
 
                 <input type="password"  formControlName="Password" (blur)="checkFormValidation()" (keypress)="checkFormValidation()" placeholder="Password">
                 <p class="error alertStyle-1" *ngIf="RegisterForm.controls.Password.dirty &&  RegisterForm.value.Password === '' "> Password Is Required </p>

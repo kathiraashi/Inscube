@@ -40,6 +40,9 @@ export class FeedsCenterComponent implements OnInit {
   Posts_List: any[] = [];
   message;
 
+  view_all_comment: Boolean = false;
+  view_less_comment: Boolean = false;
+
   Trigger_PostInfo;
   Trigger_CommentInfo;
   Trigger_UserId;
@@ -55,12 +58,21 @@ export class FeedsCenterComponent implements OnInit {
               this.Post_Service.Cube_Post_List(this.LoginUser._id).subscribe( datas => {
                   if (datas['Status'] === 'True') {
                       this.Posts_List = datas['Response'];
+                      this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+                      this.Posts_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+                          if (this.LoginUser._id === y ) {
+                            x.Already = true;
+                          } else {
+                            x.Already = false;
+                          }
+                       }); }); } );
                   }
               });
 
               this._componentConnectService.currentMessage.subscribe(message => { // New Post Submit Response
                 if (message !== '' ) {
                   this.Posts_List.splice(0 , 0, message);
+                  this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
                 }
               });
      }
@@ -75,15 +87,45 @@ export class FeedsCenterComponent implements OnInit {
       this.modalRef = this.modalService.show(EmoteAddComponent, {initialState});
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success_New') {
+          result.Responce.Already = true;
           this.Posts_List[Post_Index].Emotes.splice(0, 0, result.Responce);
+          this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = v.Splice_Count; } );
         } else if (result.Status === 'Success_Update') {
           const _index =  this.Posts_List[Post_Index].Emotes.findIndex(x => x._id === result.Responce._id);
+          result.Responce.Already = true;
           this.Posts_List[Post_Index].Emotes[_index] = result.Responce;
         } else {
           console.log(result);
         }
       });
   }
+  View_More_Emote(_index) {
+    this.Posts_List[_index].Splice_Count = this.Posts_List[_index].Splice_Count + 5;
+  }
+  View_Less_Emote(_index) {
+    this.Posts_List[_index].Splice_Count = 5;
+  }
+  Emote_Submit(Post_Index, Emote_Index) {
+    const data = {
+                    User_Id: this.LoginUser._id,
+                    Post_Id: this.Posts_List[Post_Index]._id,
+                    Emote_Id: this.Posts_List[Post_Index].Emotes[Emote_Index]._id
+                  };
+    this.Post_Service.Emote_Update(data).subscribe( datas => {
+      if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+          this.Posts_List[Post_Index].Emotes[Emote_Index].Already = true;
+          this.Posts_List[Post_Index].Emotes[Emote_Index].Count += 1;
+      } else {
+        this.snackBar.open( datas['Message'] , ' ', {
+          horizontalPosition: 'center',
+          duration: 3000,
+          verticalPosition: 'top',
+          });
+      }
+    });
+  }
+
+
 
   Active_CommentChange(Post_Index) {
     if (this.ActiveComment !== Post_Index) {
@@ -91,12 +133,39 @@ export class FeedsCenterComponent implements OnInit {
       this.Post_Service.Comment_List(this.Posts_List[Post_Index]._id).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
             this.Posts_List[Post_Index].Comments = datas['Response'];
+            if (datas['Response'].length > 2) {
+              this.view_all_comment = true;
+            } else {
+              this.view_all_comment = false;
+              this.view_less_comment = false;
+            }
+            this.Posts_List[Post_Index].Comments = this.Posts_List[Post_Index].Comments.slice(0, 2);
           }
       });
     } else {
       this.ActiveComment = -1;
     }
+  }
 
+  View_All_Comments() {
+    this.Post_Service.Comment_List(this.Posts_List[this.ActiveComment]._id).subscribe( datas => {
+        if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+          this.Posts_List[this.ActiveComment].Comments = datas['Response'];
+          this.view_less_comment = true;
+          this.view_all_comment = false;
+        }
+    });
+  }
+
+  View_Less_Comments() {
+    this.Post_Service.Comment_List(this.Posts_List[this.ActiveComment]._id).subscribe( datas => {
+        if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+          this.Posts_List[this.ActiveComment].Comments = datas['Response'];
+          this.Posts_List[this.ActiveComment].Comments = this.Posts_List[this.ActiveComment].Comments.slice(0, 2);
+          this.view_less_comment = false;
+          this.view_all_comment = true;
+        }
+    });
   }
 
   SubmitComment(Comment_Text, Post_Index) {

@@ -58,7 +58,9 @@ export class EditPostComponent implements OnInit {
   Cubes_List: any[] = [];
   Selected_Cube: any[] = [];
 
-  slice_Count: number = 0;
+  slice_Count = 0;
+
+   placeholder = 'Share your story';
 
   Post_Submit: Boolean = false;
 
@@ -96,11 +98,31 @@ export class EditPostComponent implements OnInit {
           User_Id: new FormControl(this.LoginUser._id, Validators.required),
           Post_Id: new FormControl(this.data.Post_Info._id, Validators.required),
           Post_Type: new FormControl(this.data.Post_Info.Post_Category,  Validators.required),
-          Post_Text: new FormControl(this.data.Post_Info.Post_Text, Validators.required),
+          Post_Text: new FormControl(this.data.Post_Info.Post_Text),
           Post_Link: new FormControl(this.data.Post_Info.Post_Link)
         });
 
   }
+
+  Category_Change(event: any) {
+    if (event.value === 'Story') {
+        this.placeholder = 'Share your story';
+    } else if (event.value === 'News') {
+        this.placeholder = 'Share an announcement';
+    } else if (event.value === 'Article/Blog') {
+        this.placeholder = 'Write an article';
+    } else if (event.value === 'Idea') {
+        this.placeholder = 'Share an idea';
+    } else if (event.value === 'Curiosity') {
+        this.placeholder = 'What if..?';
+    } else if (event.value === 'Talent') {
+        this.placeholder = 'Express your talent';
+    } else if (event.value === 'Question') {
+        this.placeholder = 'Ask a question';
+    } else {
+        this.placeholder = 'Share what`s happening';
+    }
+}
 
   Selected_Cubes_Fix() {
     const Old_Cube_Ids = this.data.Post_Info.Cubes_Id;
@@ -131,7 +153,7 @@ export class EditPostComponent implements OnInit {
   }
 
   select_More_Model() {
-    const Add_Count:number = 8;
+    const Add_Count = 8;
     this.slice_Count = this.slice_Count + Add_Count;
     }
 
@@ -202,7 +224,7 @@ export class EditPostComponent implements OnInit {
   }
 
   onSubmit() {
-      if (this.Form.valid && this.Selected_Cube.length > 0 && this.Form.controls['Post_Text'].value !== ''  ) {
+      if (this.Form.valid && this.Selected_Cube.length > 0 ) {
           this.Post_Submit = true;
           this.FormData.set('attachments', '');
           const Cubes_List = JSON.stringify(this.Selected_Cube);

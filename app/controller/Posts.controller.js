@@ -484,6 +484,42 @@ exports.Emote_Submit = function(req, res) {
 };
 
 
+// ----------------------------------------------------------------------  Post Emote Update ----------------------------------------------------------
+exports.Emote_Update = function(req, res) {
+    console.log(req.body);
+        if(!req.body.User_Id || req.body.User_Id === '') {
+            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+        }else if(!req.body.Post_Id || req.body.Post_Id === ''){
+            res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
+        }else if(!req.body.Emote_Id || req.body.Emote_Id === ''){
+            res.status(200).send({Status:"True", Output:"False", Message: "Emote Id can not be empty" });
+        }else{
+
+            PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, '_id': req.body.Emote_Id, 'Active_Status': 'Active' }, function(err, result) {
+                if(err) {
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                    res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+                } else {
+                    if ( result !== null) {
+                        result.User_Ids.push(req.body.User_Id);
+                        result.Count = result.Count + 1;
+                        result.save(function(err_1, result_1) {
+                            if(err_1) {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_1);
+                                res.status(500).send({Status:"False", Error: err_1, Message: "Some error occurred while Cube Post Submit"});           
+                            } else {
+                                res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                            }
+                        });
+                    } else {
+                        res.status(200).send({ Status:"True", Output: "False", Message: 'Some Error Occurred!' });
+                    }
+
+                }
+            });
+        }
+};
+
 
 // ----------------------------------------------------------------------  Post Comment Submit ----------------------------------------------------------
 exports.Comment_Submit = function(req, res) {

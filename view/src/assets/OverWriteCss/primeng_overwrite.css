@@ -58,7 +58,7 @@
         padding: 0px;
     }
     .ui-button-text-only .ui-button-text{
-        padding: 8px 0px;
+        padding: 4px 0px;
         font-size: 14px;
     }
     .ui-togglebutton.ui-button.ui-state-focus,
@@ -68,10 +68,18 @@
     }
     .ui-togglebutton.ui-button.ui-state-default, .ui-selectbutton .ui-button.ui-state-default{
         border: none !important;
-        background: #8989891a;
+        background: #ffffff;
+        margin-left: 3px;
+    }
+    .ui-selectbutton .ui-button:not(.ui-state-disabled):not(.ui-state-active):hover{
+        border-color: #d75739;
+        background: #d75739;
+        color: #ffffff;
+        border-radius: 5px;
     }
     .ui-togglebutton.ui-button.ui-state-active, .ui-selectbutton .ui-button.ui-state-active {
         border: 1px solid #d75739;
         background: #d75739;
         color: #FFFFFF;
+        border-radius: 5px;
     }

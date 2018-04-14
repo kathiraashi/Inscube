@@ -104,7 +104,7 @@
     margin-top: 0px;
 }
 .Highlights .HighlightsPost .postLikes {
-    padding: 3px 15px;
+    padding: 0px;
 }
 .Highlights .HighlightsPost .postLikes .like img{
     width: 35px;
@@ -136,7 +136,8 @@
     width: 100%;
     height: 32px;
     outline: transparent;
-    border: 1px solid #333f4f3b;
+    border: 1px solid lightgray;
+    border-color: lightgray;
     padding: 0px 10px;
     font-size: 12px;
     font-family: 'Ubuntu', sans-serif;
@@ -468,17 +469,24 @@
 .emote{
     border: 1px solid #d75739;
     border-radius: 30px;
-    cursor: pointer;
     margin: 4px 5px;
     text-align: center;
     cursor: pointer;
 }
-.emote_div{
+.emote.Selected{
+    border: 1px solid #d75739;
+    background-color: #d75739;
+    cursor: default;
+}
 
+.emote_div{
     padding: 4px 10px;
     font-size: 13px;
     color: #666;
     display: inline-flex;
+}
+.emote.Selected .emote_div{
+    color: #fff;
 }
 
 .emote p{

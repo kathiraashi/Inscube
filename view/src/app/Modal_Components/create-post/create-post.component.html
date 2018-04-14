@@ -19,9 +19,9 @@
 
       <form [formGroup]="Form" (ngSubmit)="onSubmit()" enctype="multipart/form-data" style="padding:0px 15px">
 
-        <p-selectButton formControlName="Post_Type" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+        <p-selectButton formControlName="Post_Type" (onChange)="Category_Change($event)" [options]="types"  [(ngModel)]="selectedType"></p-selectButton>
 
-            <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="Share your {{Form.controls.Post_Type.value}}..."></textarea>
+            <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="{{placeholder}}"></textarea>
     
             <input *ngIf="LinkInputActive" formControlName="Post_Link" class="postlink mb-20" placeholder="Enter Link...">
     

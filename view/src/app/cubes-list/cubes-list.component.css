@@ -31,6 +31,7 @@
 }
 .Cat_list_item{
     margin-bottom: 25px;
+    padding: 0px 7px;
 }
 .Cat_list_item_parts{
     background-color: #efefef;

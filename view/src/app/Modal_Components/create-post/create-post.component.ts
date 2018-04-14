@@ -28,14 +28,14 @@ export class CreatePostComponent implements OnInit {
 
     title: string;
     types = [
-        {label: 'Story', value: 'story'},
-        {label: 'News', value: 'news'},
-        {label: 'Article/Blog', value: 'article/blog'},
-        {label: 'Idea', value: 'idea'},
-        {label: 'Curiosity', value: 'curiosity'},
-        {label: 'Talent', value: 'talent'},
-        {label: 'Question', value: 'question'},
-        {label: 'Moments', value: 'moments'}
+        {label: 'Story', value: 'Story'},
+        {label: 'News', value: 'News'},
+        {label: 'Article/Blog', value: 'Article/Blog'},
+        {label: 'Idea', value: 'Idea'},
+        {label: 'Curiosity', value: 'Curiosity'},
+        {label: 'Talent', value: 'Talent'},
+        {label: 'Question', value: 'Question'},
+        {label: 'Moments', value: 'Moments'}
     ];
 
     selectedType: String = 'story';
@@ -57,8 +57,10 @@ export class CreatePostComponent implements OnInit {
     Cubes_List: any[] = [];
     Selected_Cube: any[] = [];
 
-    slice_Count: number = 7;
+    slice_Count = 7;
     Post_Submit: Boolean = false;
+
+    placeholder = 'Share your story';
 
     LoginUser;
     Form: FormGroup;
@@ -88,7 +90,7 @@ export class CreatePostComponent implements OnInit {
         this.Form = this.formBuilder.group({
             User_Id: new FormControl(this.LoginUser._id, Validators.required),
             Post_Type: new FormControl('Story',  Validators.required),
-            Post_Text: new FormControl('', Validators.required),
+            Post_Text: new FormControl(''),
             Post_Link: new FormControl('')
           });
 
@@ -96,6 +98,26 @@ export class CreatePostComponent implements OnInit {
 
     LinkInputActiveToggle() {
         this.LinkInputActive = !this.LinkInputActive;
+    }
+
+    Category_Change(event: any) {
+        if (event.value === 'Story') {
+            this.placeholder = 'Share your story';
+        } else if (event.value === 'News') {
+            this.placeholder = 'Share an announcement';
+        } else if (event.value === 'Article/Blog') {
+            this.placeholder = 'Write an article';
+        } else if (event.value === 'Idea') {
+            this.placeholder = 'Share an idea';
+        } else if (event.value === 'Curiosity') {
+            this.placeholder = 'What if..?';
+        } else if (event.value === 'Talent') {
+            this.placeholder = 'Express your talent';
+        } else if (event.value === 'Question') {
+            this.placeholder = 'Ask a question';
+        } else {
+            this.placeholder = 'Share what`s happening';
+        }
     }
 
     onImageFileChange(event) {
@@ -154,12 +176,12 @@ export class CreatePostComponent implements OnInit {
     }
 
     select_More_Model() {
-        const Add_Count:number = 8;
+        const Add_Count = 8;
         this.slice_Count = this.slice_Count + Add_Count;
     }
 
     onSubmit() {
-        if (this.Form.valid && this.Selected_Cube.length > 0 && this.Form.controls['Post_Text'].value !== ''  ) {
+        if (this.Form.valid && this.Selected_Cube.length > 0 ) {
             this.Post_Submit = true;
             this.FormData.set('attachments', '');
             const Cubes_List = JSON.stringify(this.Selected_Cube);

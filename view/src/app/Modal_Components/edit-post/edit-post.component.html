@@ -21,7 +21,7 @@
 
       <p-selectButton formControlName="Post_Type" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
 
-          <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="Enter Your {{Form.controls.Post_Type.value}}..."></textarea>
+          <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="{{placeholder}}"></textarea>
   
           <input *ngIf="LinkInputActive" formControlName="Post_Link" class="postlink mb-20" placeholder="Enter Link...">
   

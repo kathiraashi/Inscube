@@ -18,6 +18,8 @@ module.exports = function(app) {
 
         app.post('/API/Posts/Emote_Submit', Controller.Emote_Submit);
 
+        app.post('/API/Posts/Emote_Update', Controller.Emote_Update);
+
         app.post('/API/Posts/Comment_Submit', Controller.Comment_Submit);
 
         app.get('/API/Posts/Comment_List/:Post_Id', Controller.Comment_List);
