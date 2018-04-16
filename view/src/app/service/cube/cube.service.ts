@@ -32,6 +32,11 @@ export class CubeService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+    public View_Cube(Cube_Id: any, User_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'View_Cube/' + Cube_Id + '/' + User_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
     public Create_Cube(data: any): Observable<any[]>  {
         return this.http .post(API_URL + 'Cube_Creation', data)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);

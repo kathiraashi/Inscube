@@ -97,6 +97,7 @@ exports.UserRegister = function(req, res) {
             Hash_Tag_1: req.body.Hash_Tag_1 || '',
             Hash_Tag_2: req.body.Hash_Tag_2 || '',
             Hash_Tag_3: req.body.Hash_Tag_3 || '',
+            Show_Profile_To : 'Everyone',
             Active_Status: 'Active'
         });
         varUserSchema.save(function(err, result) { // User Creation -----------------------------
@@ -357,6 +358,9 @@ exports.User_Info = function(req, res) {
                     res.status(500).send({ Status:"False", Error:err, Message: "User Info Find Error! " });
                 } else {
                     if (result !== null) {
+                        if(result.Show_Profile_To === undefined || result.Show_Profile_To === '' ) {
+                            result.Show_Profile_To = 'Everyone';
+                        }
                          res.status(200).send({ Status:"True", Output:"True", Response: result });
                     }else {
                         res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid User Info' });
@@ -366,6 +370,77 @@ exports.User_Info = function(req, res) {
         }
 };
 
+
+// ---------------------------------------------------------------------- User Privacy Update ---------------------------------------------------------------
+exports.Privacy_Update = function(req, res) {
+
+        if(!req.body.User_Id && req.body.User_Id === '' ) {
+            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+        }else if(!req.body.Show_Profile_To && req.body.Show_Profile_To === '' ){
+            res.status(200).send({Status:"True", Output:"False", Message: " Show Profile To can not be empty" });
+        }else{
+            UserModel.UserSchema.findOne({'_id': req.body.User_Id}, function(err, result) {
+                if(err) {
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                    res.status(500).send({ Status:"False", Error:err, Message: "User Info Find Error! " });
+                } else {
+                    if (result !== null) {
+                        result.Show_Profile_To = req.body.Show_Profile_To;
+
+                        result.save(function(err_1, result_1) { // User Creation -----------------------------
+                            if(err) {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Update Query Error', 'SignIn_SignUp.controller.js - 51', err);
+                                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while User Info Update"});           
+                            } else {
+                                result_1 = JSON.parse(JSON.stringify(result_1));
+                                delete result_1.Password;
+
+                                res.status(200).send({ Status:"True", Output:"True", Response: result_1, Message: 'Successfully Updated' });
+                            }
+                        });
+                    }else {
+                        res.status(200).send({ Status:"True", Output:"False", Response: result_1, Message: 'Invalid User Info' });
+                    }
+                }
+            });
+        }
+};
+
+// ---------------------------------------------------------------------- User Password Update ---------------------------------------------------------------
+exports.Password_Change = function(req, res) {
+
+    if(!req.body.User_Id && req.body.User_Id === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Old_Password && req.body.Old_Password === '' ){
+        res.status(200).send({Status:"True", Output:"False", Message: " Old Password can not be empty" });
+    }else if(!req.body.New_Password && req.body.New_Password === '' ){
+        res.status(200).send({Status:"True", Output:"False", Message: " New Password can not be empty" });
+    }else{
+        UserModel.UserSchema.findOne({'_id': req.body.User_Id, 'Password' :req.body.Old_Password }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                res.status(500).send({ Status:"False", Error:err, Message: "User Info Find Error! " });
+            } else {
+                if (result !== null) {
+                    result.Password = req.body.New_Password;
+                    result.save(function(err_1, result_1) { // User Creation -----------------------------
+                        if(err) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Update Query Error', 'SignIn_SignUp.controller.js - 51', err);
+                            res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while User Info Update"});           
+                        } else {
+                            result_1 = JSON.parse(JSON.stringify(result_1));
+                            delete result_1.Password;
+
+                            res.status(200).send({ Status:"True", Output:"True", Response: result_1, Message: 'Successfully Updated' });
+                        }
+                    });
+                }else {
+                    res.status(200).send({ Status:"True", Output:"False", Response: result_1, Message: 'Invalid User Info' });
+                }
+            }
+        });
+    }
+};
 
 
 exports.AndroidVersionSubmit = function(req, res) {

@@ -493,3 +493,57 @@
     margin: 0px;
     text-align: center;
 }
+
+.close_Mode{
+    position: absolute;
+    margin: 0px;
+    right: -16px;
+    top: -16px;
+    background-color: #fff;
+    width: 25px;
+    height: 25px;
+    text-align: center;
+    font-weight: 700;
+    border-radius: 20px;
+    z-index: 2;
+    cursor: pointer;
+}
+.Video_button{
+    right: 0px;
+    position: absolute;
+    margin: auto;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    line-height: 400px;
+}
+.Video_button i{
+    color: #ffffff;
+    font-size: 80px;
+    background-color: #75737399;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.gallery_info_button{
+    position: absolute;
+    right: 0px;
+    font-family: fantasy;
+    color: #d75739;
+    background-color: #e6e5e5;
+    padding: 0px 10px;
+    letter-spacing: 0.5px;
+}
+.Image_button{
+    position: absolute;
+    right: 0px;
+    bottom: -6px;
+    margin-bottom:0px;
+}
+
+.Image_button i{
+    color: #ffffff;
+    font-size: 35px;
+    background-color: #75737399;
+    border-radius: 0px;
+    cursor: pointer;
+}

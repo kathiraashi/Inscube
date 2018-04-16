@@ -10,6 +10,7 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { CategoriesComponent } from './categories/categories.component';
     import { CubesListComponent } from './cubes-list/cubes-list.component';
     import { FeedsMainComponent } from './feeds/feeds-main/feeds-main.component';
+    import { CubesViewMainComponent } from './cubes/cubes-view-main/cubes-view-main.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -35,6 +36,11 @@ const appRoutes: Routes = [
     { path: 'Cube_Posts',
         component: FeedsMainComponent,
         data: { animation: { value: 'Cube_Posts', } },
+        canActivate: [AuthGuard]
+    },
+    { path: 'Cube_View/:Cube_Id',
+        component: CubesViewMainComponent,
+        data: { animation: { value: 'Cube_View', } },
         canActivate: [AuthGuard]
     }
 ];

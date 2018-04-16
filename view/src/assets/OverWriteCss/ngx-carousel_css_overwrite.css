@@ -1,0 +1,100 @@
+
+
+.ImageGallery{
+    margin: 10px;
+}
+.ImageGallery .bannerStyle {
+    background-color: #55555526;
+    background-size: cover !important;
+    height: 100%;
+}
+
+/* .ImageGallery .bannerStyle img {
+    width: 100%;
+    height: 100%;
+} */
+
+.ImageGallery .bannerStyle .bannerStyle_Inner{
+    position: relative;
+}
+.ImageGallery .bannerStyle .bannerStyle_Inner .img_Part{
+    background-size: cover !important;
+    height: 400px;
+    width: 100%;
+}
+.ImageGallery .bannerStyle h1 {
+    text-align: center;
+    line-height: 400px;
+    background: rgba(0, 0, 0, 0.32);
+    color: white;
+    margin: 0;
+}
+
+
+.ImageGallery .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ImageGallery .leftRs {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 35px;
+    height: 35px;
+    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);
+    border-radius: 999px;
+    left: 15px;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+}
+
+.ImageGallery .rightRs {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 35px;
+    height: 35px;
+    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, .3);
+    border-radius: 999px;
+    right: 15px;
+    border: none;
+    background-color: rgb(255, 255, 255);
+    font-weight: 600;
+    font-size: 20px;
+    outline: none;
+    cursor: pointer;
+}
+
+
+.ImageGallery .ngxcarouselPoint {
+    list-style-type: none;
+    text-align: center;
+    padding: 12px;
+    margin: 0;
+    white-space: nowrap;
+    overflow: auto;
+    position: absolute;
+    width: 100%;
+    bottom: 20px;
+    left: 0;
+    box-sizing: border-box;
+  }
+.ImageGallery .ngxcarouselPoint li {
+    display: inline-block;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.55);
+    padding: 5px;
+    margin: 0 3px;
+    transition: .4s ease all;
+  }
+  .ImageGallery .ngxcarouselPoint li.active {
+      background: white;
+      width: 10px;
+  }

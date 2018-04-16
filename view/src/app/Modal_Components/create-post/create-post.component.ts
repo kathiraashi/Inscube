@@ -38,7 +38,7 @@ export class CreatePostComponent implements OnInit {
         {label: 'Moments', value: 'Moments'}
     ];
 
-    selectedType: String = 'story';
+    selectedType: String = 'Story';
 
     ImageInputActive: Boolean = false;
     VideoInputActive: Boolean = false;

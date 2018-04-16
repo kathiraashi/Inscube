@@ -215,12 +215,18 @@ exports.CubeView = function(req, res) {
                 Promise.all([ 
                     CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id }).exec(),
                     CubeModel.Cube_Topicschema.find({'Cube_Id': info._id, 'Active_Status': 'Active'}, {__v: 0}).exec(),
-                    CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id }).exec()
+                    CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id }).exec(),
+                    CubeModel.Cube_Followersschema.findOne({ 'Cube_Id': info._id, 'User_Id': req.params.User_Id }).exec(),
                     ]).then( Data => {
                         info = JSON.parse(JSON.stringify(info)); 
                         info.Members = Data[0];
                         info.Topics =  Data[1];
                         info.Category_Name =  Data[2].Name;
+                        if (Data[3] === null) {
+                            info.User_Follow = false;
+                        } else {
+                            info.User_Follow = true;
+                        }
                         res.status(200).send({ Status:"True", Output: "True", Response: info });
                     }).catch(error => {
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes View Find Main Promise Error', 'Cubes.controller.js - 226', error);

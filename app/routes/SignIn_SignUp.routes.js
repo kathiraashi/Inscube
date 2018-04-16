@@ -9,6 +9,8 @@ module.exports = function(app) {
         app.post('/API/Signin_Signup/User_Validate', Controller.UserValidate);
 
         app.get('/API/Signin_Signup/User_Info/:User_Id', Controller.User_Info);
+        app.post('/API/Signin_Signup/Privacy_Update', Controller.Privacy_Update);
+        app.post('/API/Signin_Signup/Password_Change', Controller.Password_Change);
 
         app.get('/API/Signin_Signup/AndroidVersionSubmit/:Version', Controller.AndroidVersionSubmit);
         app.get('/API/Signin_Signup/AndroidVersionUpdate/:Version', Controller.AndroidVersionUpdate);

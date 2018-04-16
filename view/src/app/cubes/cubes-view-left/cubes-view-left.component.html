@@ -1,0 +1,80 @@
+<div class="CubesLeftBar" *ngIf="Cube_Info !== undefined ">
+  <!-- UserDetails -->
+  <div class="cubediv" fxLayout="row" fxLayoutAlign="start center">
+      <div fxFlex="100px" class="text-center">
+          <img class="Cubeimg" src="{{CubeBaseUrl}}{{Cube_Info.Image}}" alt="">
+      </div>
+      <div fxFlex class="text-left">
+          <p class="Cubename"> {{Cube_Info.Name}} </p>
+          <p class="CubeCategory"> {{Cube_Info.Category_Name}}</p>
+          <p class="CubeFollowCount"> {{Cube_Info.Members}} Members</p>
+          <p class="CubeScurityType">
+            <ng-container *ngIf="Cube_Info.Security === 'Close'">
+              <i class="material-icons">lock</i>
+            </ng-container>
+            <ng-container *ngIf="Cube_Info.Security === 'Open'">
+              <i class="material-icons">public</i>
+            </ng-container>
+          </p>
+      </div>
+  </div>
+  <!-- UserDetails End -->
+  
+  <div class="discription_div">
+    <p class="dis_title"> Discription: </p>
+    <p class="discription"> &emsp; &emsp; {{Cube_Info.Description}} regtrntiy w4tb47ye 345tb6ye R3VE6YNY 4B3W46 </p>
+  </div>
+
+  <div class="cube_info_icon">
+    <i class="material-icons" >location_on</i>
+    <p class="discription"> {{Cube_Info.Location}} fddfhgjjj </p>
+  </div>
+
+  <div class="cube_info_icon">
+    <i class="material-icons" >language</i>
+    <p class="discription"> {{Cube_Info.Web}} rtnwe7erymrt</p>
+  </div>
+
+  <div class="cube_info_icon">
+    <i class="material-icons" >mail_outline</i>
+    <p class="discription"> {{Cube_Info.Mail}} erewterneruy </p>
+  </div>
+
+  <div class="cube_info_icon">
+    <i class="material-icons" >call</i>
+    <p class="discription"> {{Cube_Info.Contact}} ergewbrum </p>
+  </div>
+  
+
+  <!-- Followers -->
+  <div class="row">
+    <div class="col-sm-12">
+        <p class="headerstyle"> Members </p>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-sm-12 listFlexDiv">
+          <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
+              <img class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+              <p class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
+          </div>
+      </div>
+  </div>
+  
+  <div *ngIf="Cubes_List?.length > 8" class="row">
+    <div class="col-sm-12 text-right">
+        <p class="viewAll"> <span> View All... </span>  </p>
+    </div>
+  </div>
+
+  <!-- Followers End  -->
+
+
+  <div class="Left_bar_Button"> 
+    <button (click)="PostCreate_Model()"> Add Topic </button>
+    <button [routerLink]="['/Categories']" > View Posts </button>
+  </div>
+
+
+
+</div>

@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { NgxCarousel } from 'ngx-carousel';
+import { Lightbox } from 'angular2-lightbox';
 
 import { EmoteAddComponent } from './../../Modal_Components/emote-add/emote-add.component';
 import { EditPostComponent } from './../../Modal_Components/edit-post/edit-post.component';
@@ -30,6 +32,8 @@ export class FeedsCenterComponent implements OnInit {
   PostsBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
 
   modalRef: BsModalRef;
+  carouselBanner: NgxCarousel;
+  carouselOne: NgxCarousel;
 
   scrollHeight;
   screenHeight: number;
@@ -39,6 +43,7 @@ export class FeedsCenterComponent implements OnInit {
   LoginUser;
   Posts_List: any[] = [];
   message;
+  video_Url;
 
   view_all_comment: Boolean = false;
   view_less_comment: Boolean = false;
@@ -52,7 +57,8 @@ export class FeedsCenterComponent implements OnInit {
               public Post_Service: PostService,
               private router: Router,
               public _componentConnectService: PostSubmitService,
-              private elementRef: ElementRef
+              private elementRef: ElementRef,
+              private _lightbox: Lightbox
             ) {
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
               this.Post_Service.Cube_Post_List(this.LoginUser._id).subscribe( datas => {
@@ -80,7 +86,37 @@ export class FeedsCenterComponent implements OnInit {
   ngOnInit() {
     this.screenHeight = window.innerHeight - 80;
     this.scrollHeight = this.screenHeight + 'px';
+
+    this.carouselBanner = {
+      grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
+      slide: 4,
+      speed: 500,
+      interval: 5000,
+      point: {
+        visible: false,
+        pointStyles: `.ngxcarouselPoint `
+      },
+      load: 2,
+      custom: 'banner',
+      touch: true,
+      loop: false,
+      easing: 'cubic-bezier(0, 0, 0.2, 1)'
+    };
   }
+
+  public myfunc(event: Event) {
+    console.log(event);
+ }
+
+ Show_Image(URL) {
+  const _album: Array<any> = [{ src: URL}];
+  this._lightbox.open(_album, 0);
+ }
+
+ Show_Video(template: TemplateRef<any>, URL) {
+  this.modalRef = this.modalService.show(template,  Object.assign({}, { class: 'modal-lg' }));
+  this.video_Url = URL;
+ }
 
   Emote_Add(Post_Index) {
     const initialState = { data: {Emotes: this.Posts_List[Post_Index].Emotes, Post_Info:  this.Posts_List[Post_Index] } };

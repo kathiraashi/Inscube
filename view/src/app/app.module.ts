@@ -24,6 +24,10 @@
   import { BsDatepickerModule, TypeaheadModule, ModalModule  } from 'ngx-bootstrap';
   import { ScrollbarModule } from 'ngx-scrollbar';
   import { MomentModule } from 'angular2-moment';
+  import { NgxCarouselModule } from 'ngx-carousel';
+  import { VgCoreModule } from 'videogular2/core';
+  import { VgControlsModule } from 'videogular2/controls';
+  import { LightboxModule } from 'angular2-lightbox';
 
 // Service Module
   import { DataSharedVarServiceService } from './service/data-shared-var-service/data-shared-var-service.service';
@@ -52,6 +56,11 @@ import { ReportUserComponent } from './Modal_Components/report-user/report-user.
 import { ReportCommentComponent } from './Modal_Components/report-comment/report-comment.component';
 import { EditCommentComponent } from './Modal_Components/edit-comment/edit-comment.component';
 import { SelectMoreCubesComponent } from './Modal_Components/select-more-cubes/select-more-cubes.component';
+import { CubesViewMainComponent } from './cubes/cubes-view-main/cubes-view-main.component';
+import { CubesViewCenterTopicsComponent } from './cubes/cubes-view-center-topics/cubes-view-center-topics.component';
+import { CubesViewCenterFeedsComponent } from './cubes/cubes-view-center-feeds/cubes-view-center-feeds.component';
+import { CubesViewRightComponent } from './cubes/cubes-view-right/cubes-view-right.component';
+import { CubesViewLeftComponent } from './cubes/cubes-view-left/cubes-view-left.component';
 
 
 
@@ -77,7 +86,12 @@ import { SelectMoreCubesComponent } from './Modal_Components/select-more-cubes/s
     ReportUserComponent,
     ReportCommentComponent,
     EditCommentComponent,
-    SelectMoreCubesComponent
+    SelectMoreCubesComponent,
+    CubesViewMainComponent,
+    CubesViewCenterTopicsComponent,
+    CubesViewCenterFeedsComponent,
+    CubesViewRightComponent,
+    CubesViewLeftComponent
   ],
   imports: [
       // Default Modules
@@ -99,7 +113,11 @@ import { SelectMoreCubesComponent } from './Modal_Components/select-more-cubes/s
         TypeaheadModule.forRoot(),
         ModalModule.forRoot(),
         ScrollbarModule,
-        MomentModule
+        MomentModule,
+        NgxCarouselModule,
+        VgCoreModule,
+        VgControlsModule,
+        LightboxModule
   ],
   providers: [
               AuthGuard,

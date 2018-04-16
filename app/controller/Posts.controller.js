@@ -486,7 +486,6 @@ exports.Emote_Submit = function(req, res) {
 
 // ----------------------------------------------------------------------  Post Emote Update ----------------------------------------------------------
 exports.Emote_Update = function(req, res) {
-    console.log(req.body);
         if(!req.body.User_Id || req.body.User_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         }else if(!req.body.Post_Id || req.body.Post_Id === ''){
