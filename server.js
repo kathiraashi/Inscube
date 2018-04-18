@@ -3,6 +3,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var cors = require('cors');
 var ErrorManagement = require('./app/config/ErrorHandling.js');
+var parser = require('ua-parser-js');
 
 var port = process.env.PORT || 3000;
 var app = express();
@@ -44,6 +45,14 @@ app.use('/API/Uploads', express.static('Uploads'));
 
     require('./app/routes/Posts.routes.js')(app);
 
+// app.get('*', function(req, res, next){
+//     var DeviceInfo = parser(req.headers['user-agent']);
+//     if(DeviceInfo.os.name === 'Android') {
+//         res.redirect(301, 'https://play.google.com/store/apps/details?id=com.test.aashi.inscubenewbuild' );
+//     } else {
+//         next();
+//     }
+// });
 
 
 app.get('*', function(req, res, next){

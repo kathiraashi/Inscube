@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
+import { CubeViewRelatedService } from './../../component-connecting/cube-view-related/cube-view-related.service';
+
 @Component({
   selector: 'app-cubes-view-main',
   templateUrl: './cubes-view-main.component.html',
@@ -8,11 +10,19 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class CubesViewMainComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe( params => console.log(params) );
+  View_Source = 'Topics';
+
+  constructor(private active_route: ActivatedRoute,
+              private Cube_View_Source: CubeViewRelatedService
+            ) {
   }
 
   ngOnInit() {
+    this.Cube_View_Source.currentMessage.subscribe(data => {
+      if (data !== '') {
+        this.View_Source = data;
+      }
+    });
   }
 
 }

@@ -1,5 +1,6 @@
 var ErrorManagement = require('./../../app/config/ErrorHandling.js');
 var CubeModel = require('../models/Cubes.model.js');
+var UserModel = require('../models/User.model.js');
 var multer = require('multer');
 
 
@@ -214,7 +215,7 @@ exports.CubeView = function(req, res) {
             const getCubeRelatedInfo = info => // Main Promise For Cube Related Info Find --------------
                 Promise.all([ 
                     CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id }).exec(),
-                    CubeModel.Cube_Topicschema.find({'Cube_Id': info._id, 'Active_Status': 'Active'}, {__v: 0}).exec(),
+                    CubeModel.Cube_Topicschema.find({'Cube_Id': info._id, 'Active_Status': 'Active'}, {__v: 0}, {sort: { updatedAt: -1 }} ).exec(),
                     CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id }).exec(),
                     CubeModel.Cube_Followersschema.findOne({ 'Cube_Id': info._id, 'User_Id': req.params.User_Id }).exec(),
                     ]).then( Data => {
@@ -363,6 +364,42 @@ exports.Follow_Cube = function(req, res) {
 };
 
 
+// ---------------------------------------------------------------------- UnFollow Cube ----------------------------------------------------------
+exports.UnFollow_Cube = function(req, res) {
+    
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Cube_Id || req.body.Cube_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+    }else{
+        CubeModel.Cube_Followersschema.findOne({'User_Id': req.body.User_Id, 'Cube_Id': req.body.Cube_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if (err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Follow Info Find Query Error', 'Cubes.controller.js - 216', err);
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Find the Cube Follow Info"});
+            }else {
+                if (result !== null) { // Cube Follow New Creation -----------------------------
+                    result.Active_Status = 'Inactive';
+                    result.save(function(err_2, result_2) {
+                        if (err_2) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Follow Update Query Error', 'Cubes.controller.js - 240', err_2);
+                            res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Follow Cube Update Error!"});           
+                        } else {
+                            result_2 = JSON.parse(JSON.stringify(result_2));
+                            delete result_2.__v;
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                        }
+                    });
+                } else if ( result.Active_Status === 'Inactive' ) {  // Cube Already UnFollow  -----------------------------
+                    res.status(200).send({ Status:"True", Output: "False", Message: " User Already UnFollow The Cube!" });
+                } else { // Cube Follow Not Match any Conditions  -----------------------------
+                    res.status(500).send({Status:"False", Error:'Not Identify', Message: "Some error occurred while Follow The Cube!"}); 
+                }
+            }
+        });
+    }
+};
+
+
 
 // ---------------------------------------------------------------------- User Created Cubes List ----------------------------------------------------------
 exports.User_Created_Cubes = function(req, res) {
@@ -416,6 +453,42 @@ exports.User_UnFollowed_Cubes = function(req, res) {
                         });
 
                 GetCubeInfo(result); // Main Promise Call Function Cube --------------
+            }
+        });
+    }
+};
+
+
+// ---------------------------------------------------------------------- User Un Followed Cubes List ----------------------------------------------------------
+exports.Cube_Members = function(req, res) {
+    if(!req.params.Cube_Id || req.params.Cube_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+    }else{
+        CubeModel.Cube_Followersschema.find({'Cube_Id': req.params.Cube_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+
+                const GetUserInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
+                        result.map(info => userInfo(info)) 
+                    ).then( result_1 => {  
+                        res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                    }).catch( err_1 => { 
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
+                        res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
+                    });
+
+                const userInfo = info => // Sub Promise For Cube Related Info Find --------------
+                    Promise.all([ 
+                        UserModel.UserSchema.findOne({'_id' : info.User_Id }, {Inscube_Name: 1, Image: 1 } ).exec(),
+                        ]).then( Data => {
+                            return Data[0];
+                        }).catch(error => {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
+                        });
+
+                GetUserInfo(result); // Main Promise Call Function Cube --------------
             }
         });
     }

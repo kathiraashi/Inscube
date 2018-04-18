@@ -97,5 +97,15 @@ export class PostService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+    public Cube_Based_Post_List(Cube_Id: any, User_Id: any ): Observable<any[]>  {
+        return this.http .get(API_URL + 'Cube_Based_Post_List/' + Cube_Id + '/' + User_Id )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+
+    public User_Posts(User_Id: any ): Observable<any[]>  {
+        return this.http .get(API_URL + 'User_Posts/' + User_Id )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
 
 }

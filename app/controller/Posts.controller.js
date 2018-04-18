@@ -841,3 +841,155 @@ exports.Report_UserSubmit = function(req, res) {
         });
      }
 };
+
+
+
+// ----------------------------------------------------------------------  Cube Based Post List ----------------------------------------------------------
+exports.Cube_Based_Post_List = function(req, res) {
+
+    if(!req.params.Cube_Id || req.params.Cube_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+    }else{
+        PostModel.Cube_Postschema.find({ 'Cubes_Id': req.params.Cube_Id, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                result =  JSON.parse(JSON.stringify(result));
+                
+                const Get_Post_Info = (result) => Promise.all( // Second Level Main Promise For Category info Get --------------
+                    result.map(info_1 => PostInfo(info_1)) 
+                    ).then( result_2 => {
+                            result_2.sort(function(a,b) {
+                                return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+                            });
+                            result_2 = result_2.map((Objects) => {
+                                    Objects.Time_Ago = moment(Objects.Time_Ago).fromNow();
+                                return Objects;
+                            });
+                            result_2.reverse();
+
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                    }).catch( err_2 => {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_2);
+                        res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Post Submit Info Find Promise Error "});
+                    });
+
+                    const PostInfo = info_1 => // Second Level Sub Promise For Category info Find --------------
+                        Promise.all([
+                            UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                            PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                            ]).then( Data => {
+
+                                info_1.User_Name = Data[0].Inscube_Name;
+                                info_1.User_Image = Data[0].Image;
+                                info_1.Time_Ago = info_1.updatedAt;
+                                info_1.Emotes = Data[1];
+                                info_1.Comments = [];
+                                var cubeIds = info_1.Cubes_Id;
+
+                                    const GetCategory_Info = (cubeIds) => Promise.all(  // Third Main Promise For Category info Get --------------
+                                            cubeIds.map(info => Category_Info(info)) 
+                                        ).then( result_3 => {
+                                            info_1.Cubes_Info = result_3;
+                                            return info_1;
+                                        }).catch( err_1 => {
+                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_1);
+                                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube Post Submit Category Info Find Promise Error "});
+                                        });
+                        
+                                        const Category_Info = info => // Third Sub Promise For Category info Find --------------
+                                            Promise.all([ 
+                                                CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                                ]).then( Data => {
+                                                    return Data[0];
+                                                }).catch(error => {
+                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error);
+                                                });     
+                                return GetCategory_Info(cubeIds); // Third Main Promise Call Function Category Info --------------
+
+                            }).catch(error_1 => {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error_1);
+                            });     
+                Get_Post_Info(result); // Second Level Main Promise Call Function Category Info -------------
+                            
+            }
+        });
+    }
+};
+
+
+
+// ----------------------------------------------------------------------  User Posts ----------------------------------------------------------
+exports.User_Posts = function(req, res) {
+
+    if(!req.params.User_Id || req.params.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+    }else{
+        PostModel.Cube_Postschema.find({ 'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                result =  JSON.parse(JSON.stringify(result));
+                
+                const Get_Post_Info = (result) => Promise.all( // Second Level Main Promise For Category info Get --------------
+                    result.map(info_1 => PostInfo(info_1)) 
+                    ).then( result_2 => {
+                            result_2.sort(function(a,b) {
+                                return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+                            });
+                            result_2 = result_2.map((Objects) => {
+                                    Objects.Time_Ago = moment(Objects.Time_Ago).fromNow();
+                                return Objects;
+                            });
+                            result_2.reverse();
+
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                    }).catch( err_2 => {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_2);
+                        res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Post Submit Info Find Promise Error "});
+                    });
+
+                    const PostInfo = info_1 => // Second Level Sub Promise For Category info Find --------------
+                        Promise.all([
+                            UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                            PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                            ]).then( Data => {
+
+                                info_1.User_Name = Data[0].Inscube_Name;
+                                info_1.User_Image = Data[0].Image;
+                                info_1.Time_Ago = info_1.updatedAt;
+                                info_1.Emotes = Data[1];
+                                info_1.Comments = [];
+                                var cubeIds = info_1.Cubes_Id;
+
+                                    const GetCategory_Info = (cubeIds) => Promise.all(  // Third Main Promise For Category info Get --------------
+                                            cubeIds.map(info => Category_Info(info)) 
+                                        ).then( result_3 => {
+                                            info_1.Cubes_Info = result_3;
+                                            return info_1;
+                                        }).catch( err_1 => {
+                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_1);
+                                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube Post Submit Category Info Find Promise Error "});
+                                        });
+                        
+                                        const Category_Info = info => // Third Sub Promise For Category info Find --------------
+                                            Promise.all([ 
+                                                CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                                ]).then( Data => {
+                                                    return Data[0];
+                                                }).catch(error => {
+                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error);
+                                                });     
+                                return GetCategory_Info(cubeIds); // Third Main Promise Call Function Category Info --------------
+
+                            }).catch(error_1 => {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error_1);
+                            });     
+                Get_Post_Info(result); // Second Level Main Promise Call Function Category Info -------------
+                            
+            }
+        });
+    }
+};

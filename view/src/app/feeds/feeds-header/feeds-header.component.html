@@ -46,6 +46,15 @@
 
 
 <mat-menu #userView="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuUserView" >   
+    <div [routerLink]="[ '/Profile_View', LoginUser._id ]" style="cursor:pointer" class="userdropd" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="userdropd_icon" fxFlex="40px">
+            <i class="material-icons">portrait</i>
+        </div>
+        <div fxFlex>
+            <p class="userdropd_text"> View Profile </p>
+        </div>
+    </div>
+    <hr class="m-0">
     <div class="userdropdarrow"></div>
     <div style="cursor:pointer" (click)="LogOut()" class="userdropd" fxLayout="row" fxLayoutAlign="space-between  center">
         <div class="userdropd_icon" fxFlex="40px">

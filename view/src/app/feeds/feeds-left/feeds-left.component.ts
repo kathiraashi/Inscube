@@ -5,6 +5,8 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { CreatePostComponent } from './../../Modal_Components/create-post/create-post.component';
+import { ViewAllCubesComponent } from './../../Modal_Components/view-all-cubes/view-all-cubes.component';
+import { DiscoverCubesComponent } from './../../Modal_Components/discover-cubes/discover-cubes.component';
 
 import { CubeService } from './../../service/cube/cube.service';
 
@@ -25,16 +27,22 @@ export class FeedsLeftComponent implements OnInit {
   Cubes_List: any[] = [];
   User_Cubes_List: any[] = [];
 
+  Loader_1: Boolean = true;
+  Loader_2: Boolean = true;
+
   constructor( private modalService: BsModalService,
                private router: Router,
                private Cube_Service: CubeService) {
                 this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
+
                 this.Cube_Service.User_Followed_Cubes(this.LoginUser._id).subscribe( datas => {
+                  this.Loader_1 = false;
                     if (datas['Status'] === 'True') {
                         this.Cubes_List = datas['Response'];
                     }
                 });
                 this.Cube_Service.User_Cubes(this.LoginUser._id).subscribe( datas => {
+                  this.Loader_2 = false;
                     if (datas['Status'] === 'True') {
                         this.User_Cubes_List = datas['Response'];
                     }
@@ -52,4 +60,26 @@ export class FeedsLeftComponent implements OnInit {
       });
   }
 
+  View_All_MyCubes() {
+    const initialState = {data : { Type: 1, Title : 'My cubes', User_Id : this.LoginUser._id } };
+      this.modalRef = this.modalService.show( ViewAllCubesComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+      this.modalRef.content.onClose.subscribe(result => {
+         console.log(result);
+      });
+  }
+  View_All_MemberOf() {
+    const initialState = {data : { Type: 2, Title : 'Member of', User_Id : this.LoginUser._id } };
+    this.modalRef = this.modalService.show( ViewAllCubesComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+       console.log(result);
+    });
+  }
+
+  Discover_Model() {
+    const initialState = {data : { Type: 2, Title : 'Member of', User_Id : this.LoginUser._id } };
+    this.modalRef = this.modalService.show( DiscoverCubesComponent, Object.assign({initialState}, { class: 'maxWidth850 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+       console.log(result);
+    });
+  }
 }

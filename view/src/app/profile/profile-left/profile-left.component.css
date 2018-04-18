@@ -1,0 +1,150 @@
+.feedsRightBar{
+    position: relative;
+}
+.feedsRightBar .userdiv{
+    padding: 0px 7px;
+}
+
+.feedsRightBar .userimg{
+    width: 120px;
+    height: 120px;
+    border-radius: 100px;
+}
+.feedsRightBar .username{
+    font-size: 16px;
+    font-weight: 700;
+    color: #333333;
+    margin: 0px;
+    letter-spacing: 0.5px;
+    text-align: center;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.user_info_icon {
+    display: flex;
+    padding-left: 10px;
+    margin-bottom: 2px;    
+}
+.user_info_icon i{
+    line-height: 30px;
+    color: #555555;
+}
+.user_info_icon p{
+    margin-bottom: 10px;
+    padding-left: 10px;
+    font-size: 14px;
+    color: #777;
+}
+
+.hash_tag_class{
+    margin: 0px;
+    font-size: 14px;
+    padding-left: 15px;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.hash_tag_class span{
+    margin-right: 10px;
+}
+
+.Left_bar_Button button{
+    width: 46%;
+    margin-left: 2%;
+    margin-bottom: 15px;
+    height: 33px;
+    background-color: #d75839;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #d75839;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 0px;
+    font-size: 12px;
+}
+
+.Left_bar_Button button:hover{
+    background-color: #fff;
+    color: #d75839;
+}
+
+
+.feedsRightBar .headerstyle{
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    margin: 0px 15px;
+    letter-spacing: 0.4px;
+    border-bottom: 1px solid #d9d9d9;
+    margin-bottom: 12px;
+}
+
+
+
+.feedsRightBar .listFlexDiv{
+    display: grid;
+    grid-template-columns: 25% 25% 25% 25%;
+}
+
+.feedsRightBar .followPart{
+    height: 60px;
+    text-align: center;
+    padding: 0px;
+}
+.feedsRightBar .followimg{
+    width: 40px;
+    height: 40px;
+    padding: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.feedsRightBar .followname{
+    font-size: 11px;
+    margin: 0px;
+    font-weight: 500;
+    color: #666666;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+}
+
+
+
+.feedsRightBar .viewAll{
+    margin: 0px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #999999;
+    letter-spacing: 0.6px;
+    margin-right: 5px;
+    padding-bottom: 3px;
+    font-family: 'Ubuntu', sans-serif;
+}
+.feedsRightBar .viewAll span{
+   cursor: pointer;
+}
+
+
+
+.ProfileEdit{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 0px;
+    color: #333333;
+}
+
+.ProfileEdit i{
+    background-color: #d75839;
+    box-shadow: rgba(102, 102, 102, 0.65) 1px 2px 8px 0px;
+    font-size: 22px;
+    cursor: pointer;
+    color: #fff;
+    padding: 5px;
+}

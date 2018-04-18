@@ -44,6 +44,8 @@ export class FeedsCenterComponent implements OnInit {
   Posts_List: any[] = [];
   message;
   video_Url;
+  Loader_1: Boolean = true;
+  Loader_2: Boolean = false;
 
   view_all_comment: Boolean = false;
   view_less_comment: Boolean = false;
@@ -62,6 +64,7 @@ export class FeedsCenterComponent implements OnInit {
             ) {
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
               this.Post_Service.Cube_Post_List(this.LoginUser._id).subscribe( datas => {
+                this.Loader_1 = false;
                   if (datas['Status'] === 'True') {
                       this.Posts_List = datas['Response'];
                       this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
@@ -165,8 +168,10 @@ export class FeedsCenterComponent implements OnInit {
 
   Active_CommentChange(Post_Index) {
     if (this.ActiveComment !== Post_Index) {
+      this.Loader_2 = true;
       this.ActiveComment = Post_Index;
       this.Post_Service.Comment_List(this.Posts_List[Post_Index]._id).subscribe( datas => {
+        this.Loader_2 = false;
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
             this.Posts_List[Post_Index].Comments = datas['Response'];
             if (datas['Response'].length > 2) {

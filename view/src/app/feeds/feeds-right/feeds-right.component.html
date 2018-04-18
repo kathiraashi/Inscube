@@ -7,35 +7,49 @@
             <p class="followheader"> Recently created cubes </p>
           </div>
         </div>
+
+        <ng-container *ngIf="Cubes_List?.length <= 0 && !Loader_1">
+            <div style="width: 100%; height: 200px;text-align: center;">
+              <h5 style="line-height: 200px"> Recently created cubes are empty ! </h5>
+            </div>
+          </ng-container>
+
+        <ng-container *ngIf="Loader_1">
+          <div style="width: 100%; height: 200px; text-align: center">
+            <img style="height: 100px; margin-top: 50px" src="assets/images/loader.gif" alt="">
+          </div>
+        </ng-container>
   
         <!-- follow peoples List  -->
-        <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" style="margin-bottom: 15px" fxLayout="row" fxLayoutAlign="space-between center">
-          <div fxFlex="58px" class="text-center">
-            <img class="userlistImg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
-          </div>
-          <div fxFlex>
-            <p class="userlistname">
-              <span> {{item.Name | slice:0:16 }}{{ item.Name?.length > 16 ? '...' : ' ' }} </span>
-            </p>
-            <p class="userlistcategory"> {{item.Category_Name | slice:0:15 }}{{ item.Category_Name?.length > 15 ? '...' : ' ' }} </p>
-            <p class="userlistfollowers"> {{item.Members_Count }} Members </p>
-          </div>
-          <div fxFlex="70px" class="text-center Join_Part">
-              <ng-container *ngIf="item.Security === 'Close'">
-                <p (click)="JoinCodeGet(i)" > Join </p>
-                <i class="material-icons">lock</i>
-              </ng-container>
-              <ng-container *ngIf="item.Security === 'Open'">
+        <ng-container *ngIf="Cubes_List?.length > 0 && !Loader_1">
+          <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" style="margin-bottom: 15px" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxFlex="58px" class="text-center">
+              <img class="userlistImg" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+            </div>
+            <div fxFlex>
+              <p class="userlistname">
+                <span [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:16 }}{{ item.Name?.length > 16 ? '...' : ' ' }} </span>
+              </p>
+              <p class="userlistcategory"> {{item.Category_Name | slice:0:15 }}{{ item.Category_Name?.length > 15 ? '...' : ' ' }} </p>
+              <p class="userlistfollowers"> {{item.Members_Count }} Members </p>
+            </div>
+            <div fxFlex="70px" class="text-center Join_Part">
+                <ng-container *ngIf="item.Security === 'Close'">
+                  <p (click)="JoinCodeGet(i)" > Join </p>
+                  <i class="material-icons">lock</i>
+                </ng-container>
+                <ng-container *ngIf="item.Security === 'Open'">
                   <p (click)="DirectJoin(i)"> Join </p>
                   <i class="material-icons">public</i>
                 </ng-container>
+            </div>
           </div>
-        </div>
+        </ng-container>
 
         <div *ngIf="Cubes_List?.length > 8" class="row m-0">
           <div class="col-sm-12 text-right p-0">
             <p class="viewall"> 
-              <span> View All... </span>
+              <span (click)="Discover_Model()"> View All... </span>
             </p>
           </div>
         </div>

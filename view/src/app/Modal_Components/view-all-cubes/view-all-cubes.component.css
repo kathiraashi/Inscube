@@ -1,0 +1,44 @@
+.box-2{
+    background-color: #ffffff;
+}
+.DiscoverLefBar .followheader{
+    text-align: center;
+    font-size: 16px;
+    padding: 4px 0px;
+    font-weight: 600;
+    padding-left: 10px;
+    color: #333333;
+    border-bottom: 3px solid #ffda00;
+    margin-bottom: 5px;
+    font-family: 'Ubuntu', sans-serif;
+    background-color: #ffda00;
+}
+
+
+.listFlexDiv{
+    display: grid;
+    grid-template-columns: 14.28% 14.28% 14.28% 14.28% 14.28% 14.28% 14.28%;
+}
+
+.followPart{
+    height: 90px;
+    text-align: center;
+    padding: 0px;
+}
+.followimg{
+    width: 60px;
+    height: 60px;
+    padding: 2px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+ .followname{
+    font-size: 11px;
+    margin: 0px;
+    font-weight: 500;
+    color: #666666;
+    font-family: 'Ubuntu', sans-serif;
+    letter-spacing: 0.3px;
+    cursor: pointer;
+}

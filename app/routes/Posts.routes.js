@@ -36,5 +36,8 @@ module.exports = function(app) {
 
         app.post('/API/Posts/Report_User', Controller.Report_UserSubmit);
 
+        app.get('/API/Posts/Cube_Based_Post_List/:Cube_Id/:User_Id', Controller.Cube_Based_Post_List);
+
+        app.get('/API/Posts/User_Posts/:User_Id', Controller.User_Posts);
 
 };

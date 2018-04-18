@@ -67,4 +67,9 @@ export class JoinConfirmationComponent implements OnInit {
     }
 
   }
+
+  close() {
+      this.onClose.next({ Staus: 'Closed'});
+      this._bsModalRef.hide();
+  }
 }

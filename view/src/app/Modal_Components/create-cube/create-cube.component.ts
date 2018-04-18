@@ -137,7 +137,7 @@ export class CreateCubeComponent implements OnInit {
                       duration: 3000,
                       verticalPosition: 'top',
                       });
-                      this.onClose.next({ Status: 'Success'});
+                      this.onClose.next({ Status: 'Success' , Response: datas['Response'] });
                       this._bsModalRef.hide();
                       // this.router.navigate(['Categories']);
                   } else {
@@ -161,6 +161,11 @@ export class CreateCubeComponent implements OnInit {
           });
         }
 
+    }
+
+    close() {
+        this.onClose.next({ Staus: 'Closed'});
+        this._bsModalRef.hide();
     }
 
 }

@@ -10,8 +10,6 @@ import { MatSnackBar } from '@angular/material';
 import { CubeService } from './../../service/cube/cube.service';
 import { PostService } from './../../service/post/post.service';
 
-import { SelectMoreCubesComponent } from './../../Modal_Components/select-more-cubes/select-more-cubes.component';
-
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 
 @Component({

@@ -55,12 +55,22 @@ import { ReportPostComponent } from './Modal_Components/report-post/report-post.
 import { ReportUserComponent } from './Modal_Components/report-user/report-user.component';
 import { ReportCommentComponent } from './Modal_Components/report-comment/report-comment.component';
 import { EditCommentComponent } from './Modal_Components/edit-comment/edit-comment.component';
-import { SelectMoreCubesComponent } from './Modal_Components/select-more-cubes/select-more-cubes.component';
 import { CubesViewMainComponent } from './cubes/cubes-view-main/cubes-view-main.component';
 import { CubesViewCenterTopicsComponent } from './cubes/cubes-view-center-topics/cubes-view-center-topics.component';
 import { CubesViewCenterFeedsComponent } from './cubes/cubes-view-center-feeds/cubes-view-center-feeds.component';
 import { CubesViewRightComponent } from './cubes/cubes-view-right/cubes-view-right.component';
 import { CubesViewLeftComponent } from './cubes/cubes-view-left/cubes-view-left.component';
+import { CubeViewRelatedService } from './component-connecting/cube-view-related/cube-view-related.service';
+import { AddTopicComponent } from './Modal_Components/add-topic/add-topic.component';
+import { ViewAllCubesComponent } from './Modal_Components/view-all-cubes/view-all-cubes.component';
+import { DiscoverCubesComponent } from './Modal_Components/discover-cubes/discover-cubes.component';
+import { ProfileMainComponent } from './profile/profile-main/profile-main.component';
+import { ProfileLeftComponent } from './profile/profile-left/profile-left.component';
+import { ProfileRightComponent } from './profile/profile-right/profile-right.component';
+import { ProfileCenterComponent } from './profile/profile-center/profile-center.component';
+import { EditProfileComponent } from './Modal_Components/edit-profile/edit-profile.component';
+import { PrivacySettingsComponent } from './Modal_Components/privacy-settings/privacy-settings.component';
+import { ChangePasswordComponent } from './Modal_Components/change-password/change-password.component';
 
 
 
@@ -86,12 +96,21 @@ import { CubesViewLeftComponent } from './cubes/cubes-view-left/cubes-view-left.
     ReportUserComponent,
     ReportCommentComponent,
     EditCommentComponent,
-    SelectMoreCubesComponent,
     CubesViewMainComponent,
     CubesViewCenterTopicsComponent,
     CubesViewCenterFeedsComponent,
     CubesViewRightComponent,
-    CubesViewLeftComponent
+    CubesViewLeftComponent,
+    AddTopicComponent,
+    ViewAllCubesComponent,
+    DiscoverCubesComponent,
+    ProfileMainComponent,
+    ProfileLeftComponent,
+    ProfileRightComponent,
+    ProfileCenterComponent,
+    EditProfileComponent,
+    PrivacySettingsComponent,
+    ChangePasswordComponent
   ],
   imports: [
       // Default Modules
@@ -127,6 +146,7 @@ import { CubesViewLeftComponent } from './cubes/cubes-view-left/cubes-view-left.
               CubeService,
               PostService,
               PostSubmitService,
+              CubeViewRelatedService,
             ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -140,7 +160,12 @@ import { CubesViewLeftComponent } from './cubes/cubes-view-left/cubes-view-left.
                     ReportUserComponent,
                     ReportCommentComponent,
                     EditCommentComponent,
-                    SelectMoreCubesComponent
+                    AddTopicComponent,
+                    ViewAllCubesComponent,
+                    DiscoverCubesComponent,
+                    EditProfileComponent,
+                    PrivacySettingsComponent,
+                    ChangePasswordComponent
                   ]
 })
 export class AppModule { }

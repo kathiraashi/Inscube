@@ -26,6 +26,8 @@ var User_Image_Upload = multer({
     }).single('image');
     
 
+    
+
 // ---------------------------------------------------------------------- Inscube Name Validate ----------------------------------------------------------
 exports.InscubeNameValidate = function(req, res) {
 
@@ -196,10 +198,11 @@ exports.UserRegisterCompletion = function(req, res) {
                 } else {
                     if (result !== null) {
                         var User_Image = 'UserImage.png';
-                        if(req.file !== undefined){
+                        if (req.file !== undefined) {
                             User_Image = req.file.filename;
+                        } else if(result.Image !== '' ) {
+                            User_Image = result.Image;
                         }
-
                         result.Color_Code = req.body.Color_Code;
                         result.Image = User_Image;
                         result.DOB = req.body.DOB;
@@ -406,14 +409,15 @@ exports.Privacy_Update = function(req, res) {
         }
 };
 
+
 // ---------------------------------------------------------------------- User Password Update ---------------------------------------------------------------
 exports.Password_Change = function(req, res) {
 
     if(!req.body.User_Id && req.body.User_Id === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-    }else if(!req.body.Old_Password && req.body.Old_Password === '' ){
+    }else if(!req.body.Old_Password && req.body.Old_Password === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: " Old Password can not be empty" });
-    }else if(!req.body.New_Password && req.body.New_Password === '' ){
+    }else if(!req.body.New_Password && req.body.New_Password === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: " New Password can not be empty" });
     }else{
         UserModel.UserSchema.findOne({'_id': req.body.User_Id, 'Password' :req.body.Old_Password }, function(err, result) {
@@ -435,7 +439,7 @@ exports.Password_Change = function(req, res) {
                         }
                     });
                 }else {
-                    res.status(200).send({ Status:"True", Output:"False", Response: result_1, Message: 'Invalid User Info' });
+                    res.status(200).send({ Status:"True", Output:"False", Message: 'Old password invalid!' });
                 }
             }
         });

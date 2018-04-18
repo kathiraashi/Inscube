@@ -15,34 +15,37 @@
             <ng-container *ngIf="Cube_Info.Security === 'Open'">
               <i class="material-icons">public</i>
             </ng-container>
+            <!-- <ng-container *ngIf="Cube_Info.Creator">
+              <p class="edit_button"> Edit </p>
+            </ng-container> -->
           </p>
       </div>
   </div>
   <!-- UserDetails End -->
   
   <div class="discription_div">
-    <p class="dis_title"> Discription: </p>
-    <p class="discription"> &emsp; &emsp; {{Cube_Info.Description}} regtrntiy w4tb47ye 345tb6ye R3VE6YNY 4B3W46 </p>
+    <p class="dis_title"> Description: </p>
+    <p class="discription"> &emsp; &emsp; {{Cube_Info.Description | slice:0:300 }}{{ Cube_Info.Description?.length > 300 ? '...' : ' ' }} </p>
   </div>
 
   <div class="cube_info_icon">
     <i class="material-icons" >location_on</i>
-    <p class="discription"> {{Cube_Info.Location}} fddfhgjjj </p>
+    <p class="discription"> {{Cube_Info.Location}} </p>
   </div>
 
   <div class="cube_info_icon">
     <i class="material-icons" >language</i>
-    <p class="discription"> {{Cube_Info.Web}} rtnwe7erymrt</p>
+    <p class="discription"> {{Cube_Info.Web}}</p>
   </div>
 
   <div class="cube_info_icon">
     <i class="material-icons" >mail_outline</i>
-    <p class="discription"> {{Cube_Info.Mail}} erewterneruy </p>
+    <p class="discription"> {{Cube_Info.Mail}} </p>
   </div>
 
   <div class="cube_info_icon">
     <i class="material-icons" >call</i>
-    <p class="discription"> {{Cube_Info.Contact}} ergewbrum </p>
+    <p class="discription"> {{Cube_Info.Contact}} </p>
   </div>
   
 
@@ -54,14 +57,14 @@
   </div>
   <div class="row">
       <div class="col-sm-12 listFlexDiv">
-          <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
-              <img class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
-              <p class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
+          <div  *ngFor="let item of Members_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
+              <img class="followimg" [routerLink]="[ '/Profile_View', item._id ]" src="{{UsersBaseUrl}}{{item.Image}}" alt="">
+              <p class="followname" [routerLink]="[ '/Profile_View', item._id ]" > {{item.Inscube_Name | slice:0:6 }}{{ item.Inscube_Name?.length > 6 ? '...' : ' ' }} </p>
           </div>
       </div>
   </div>
   
-  <div *ngIf="Cubes_List?.length > 8" class="row">
+  <div *ngIf="Members_List?.length > 8" class="row">
     <div class="col-sm-12 text-right">
         <p class="viewAll"> <span> View All... </span>  </p>
     </div>
@@ -70,10 +73,36 @@
   <!-- Followers End  -->
 
 
-  <div class="Left_bar_Button"> 
-    <button (click)="PostCreate_Model()"> Add Topic </button>
-    <button [routerLink]="['/Categories']" > View Posts </button>
-  </div>
+
+    <ng-container *ngIf="Cube_Info.Creater">
+        <div class="Left_bar_Button">  
+            <button (click)="Add_Topic_Model()"> Add Topic </button>
+            <button (click)="View_Source_change('Posts')" *ngIf="View_Source === 'Topics'" > View Posts </button>
+            <button (click)="View_Source_change('Topics')" *ngIf="View_Source === 'Posts'" > View Topics </button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="Cube_Info.Followed && !Cube_Info.Creater">
+        <div class="Left_bar_Button">  
+            <button (click)="Unfollow()" > Leave Cube </button>
+            <button (click)="View_Source_change('Posts')" *ngIf="View_Source === 'Topics'" > View Posts </button>
+            <button (click)="View_Source_change('Topics')" *ngIf="View_Source === 'Posts'" > View Topics </button>
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="!Cube_Info.Followed && !Cube_Info.Creater">
+
+        <div class="Left_bar_Button">  
+            <ng-container *ngIf="Cube_Info.Security === 'Close'">
+                <button (click)="JoinCodeGet()" style="width: 94%"> Join Cube </button>
+            </ng-container>
+            <ng-container *ngIf="Cube_Info.Security === 'Open'">
+                <button (click)="DirectJoin()" style="width: 94%"> Join Cube </button>
+            </ng-container>
+        </div>
+
+    </ng-container>
+
 
 
 

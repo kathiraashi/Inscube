@@ -53,6 +53,7 @@
     margin: 0px;
     font-size: 14px;
     color: #777;
+    text-align: justify;
 }
 .cube_info_icon {
     display: flex;
@@ -149,3 +150,18 @@
    cursor: pointer;
 }
 
+
+.edit_button{
+    font-size: 13px;
+    margin-bottom: 0px;
+    display: inline-flex;
+    position: absolute;
+    margin-left: 10px;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.7px;
+    cursor: pointer;
+    background-color: #d75739;
+    padding: 1px 12px;
+    border-radius: 5px;
+}

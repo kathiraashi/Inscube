@@ -7,6 +7,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { CubeService } from './../../service/cube/cube.service';
 
 import { JoinConfirmationComponent } from './../../Modal_Components/join-confirmation/join-confirmation.component';
+import { DiscoverCubesComponent } from './../../Modal_Components/discover-cubes/discover-cubes.component';
 
 @Component({
   selector: 'app-feeds-right',
@@ -23,12 +24,14 @@ export class FeedsRightComponent implements OnInit {
 
   LoginUser;
   Cubes_List: any[] = [];
+  Loader_1: Boolean = true;
 
   constructor(  private modalService: BsModalService,
                 private router: Router,
                 private Cube_Service: CubeService) {
                   this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
                   this.Cube_Service.User_UnFollowed_Cubes(this.LoginUser._id).subscribe( datas => {
+                    this.Loader_1 = false;
                       if (datas['Status'] === 'True') {
                           this.Cubes_List = datas['Response'];
                       }
@@ -56,6 +59,14 @@ export class FeedsRightComponent implements OnInit {
               this.Cubes_List.splice(Cube_Index, 1);
           }
       });
+  }
+
+  Discover_Model() {
+    const initialState = {data : { Type: 2, Title : 'Member of', User_Id : this.LoginUser._id } };
+    this.modalRef = this.modalService.show( DiscoverCubesComponent, Object.assign({initialState}, { class: 'maxWidth850 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+       console.log(result);
+    });
   }
 
 }

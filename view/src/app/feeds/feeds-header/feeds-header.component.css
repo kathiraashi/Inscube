@@ -69,6 +69,7 @@
     font-size: 28px;
     line-height: 45px;
     color: #444444;
+    cursor: pointer;
 }
 .header_notify_icon img{
     height: 24px;

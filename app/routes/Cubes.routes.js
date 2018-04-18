@@ -16,9 +16,13 @@ module.exports = function(app) {
 
         app.post('/API/Cubes/Follow_Cube', Controller.Follow_Cube);
 
+        app.post('/API/Cubes/UnFollow_Cube', Controller.UnFollow_Cube);
+
         app.get('/API/Cubes/User_Followed_Cubes/:User_Id', Controller.User_Followed_Cubes);
 
         app.get('/API/Cubes/User_Cubes/:User_Id', Controller.User_Created_Cubes);
 
         app.get('/API/Cubes/User_UnFollowed_Cubes/:User_Id', Controller.User_UnFollowed_Cubes);
+
+        app.get('/API/Cubes/Cube_Members/:Cube_Id', Controller.Cube_Members);
 };

@@ -1,0 +1,102 @@
+<div class="postheader" fxLayout="row" fxLayoutAlign="start" >
+  <div fxFlex="65px" class="text-center">
+      <img  src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userimg">
+  </div>
+  <div fxFlex class="text-left">
+    <h5 class="m-0 posttype"> Edit Your Profile </h5>
+  </div>
+  <div fxFlex class="text-left">
+        <button type="button" style="padding: 0px 15px; font-size: 35px;" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+
+
+<hr style="margin-top:3px;margin-bottom:0px">
+
+<div class="modal-body">
+
+        <!-- ----------------------- Register Tab ------------------------- -->
+        <div class="TabData">
+          <form [formGroup]="Form" (ngSubmit)="onSubmit()">
+
+            <div fxLayout="row" fxLayoutAlign="space-around start">
+              <div fxFlex="110px" class="UserImage">
+                <ng-container *ngIf="!Show_Img_Preview">
+                    <img src="{{UsersBaseUrl}}/{{LoginUser.Image}}" alt="">
+                </ng-container>
+                <ng-container *ngIf="Show_Img_Preview">
+                  <img [src]="Preview_Img" alt="">
+                </ng-container>
+                  <span (click)="fileInput.click()"> <i class="material-icons">add_a_photo</i> </span>
+              </div>
+            </div>
+              <input type="file" (change)="onFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #fileInput style="display:none;">
+
+            <label> Tell about yourself</label>
+            <div  fxLayout="row" fxLayoutAlign="space-around start"> 
+              <div fxFlex="33%"> 
+                <input type="text" formControlName="Hash_Tag_1" placeholder="#foodie">
+              </div>
+              <div fxFlex="33%"> 
+                  <input type="text" formControlName="Hash_Tag_2" placeholder="#"> 
+              </div>
+              <div fxFlex="33%"> 
+                  <input type="text" formControlName="Hash_Tag_3" placeholder="#">
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between start"> 
+              <div fxFlex="49%" style="text-align: left"> 
+                  <p-dropdown class="Select_Box_Style_1" 
+                              formControlName="Gender"
+                              [options]="Gender_List" 
+                              [(ngModel)]="selectedGender" 
+                              optionLabel="name" 
+                              [style]="{'width':'100%'}" 
+                              placeholder="Gender" 
+                              [showClear]="false">
+                  </p-dropdown>
+              </div>
+              <div fxFlex="49%" style="text-align: left"> 
+                  <input type="text" formControlName="DOB" placeholder="Date of birth" bsDatepicker [bsValue]="bsValue" [bsConfig]="bsConfig" > 
+              </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="space-between start"> 
+              <div fxFlex="49%" class="Search_templete_Style_1"> 
+                  <input formControlName="Country" placeholder="Country" 
+                        [(ngModel)]="selectedCountry" 
+                        [typeahead]="countries" 
+                        [typeaheadItemTemplate]="SearchItemTemplate"
+                        [typeaheadScrollable]="true"
+                        [typeaheadOptionsInScrollableView]="7">
+              </div>
+              <div fxFlex="49%" class="Search_templete_Style_1"> 
+                  <input formControlName="City" placeholder="City" 
+                        [(ngModel)]="selectedCities" 
+                        [typeahead]="cities" 
+                        [typeaheadItemTemplate]="SearchItemTemplate"
+                        [typeaheadScrollable]="true"
+                        [typeaheadOptionsInScrollableView]="7"> 
+              </div>
+            </div>
+
+            <ng-template #SearchItemTemplate let-model="item" let-index="index">
+                <small> {{model}}</small>
+            </ng-template>
+
+            <div class="row">
+              <div class="col-sm-6">
+
+              </div>
+              <div class="col-sm-6" style="display: inline;">
+                <button style="float: right" class="btn ptn-primary" type="submit" > Update </button> 
+              </div>
+            </div>
+            
+          </form>
+        </div>
+
+

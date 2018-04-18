@@ -52,6 +52,11 @@ export class CubeService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+    public UnFollow_Cube(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'UnFollow_Cube', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
     public User_Cubes(User_Id: any): Observable<any[]>  {
         return this.http .get(API_URL + 'User_Cubes/' + User_Id)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
@@ -61,4 +66,15 @@ export class CubeService {
         return this.http .get(API_URL + 'User_UnFollowed_Cubes/' + User_Id)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
+
+    public Cube_Members(Cube_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Cube_Members/' + Cube_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Add_Cube_Topic(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Add_Cube_Topic', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
 }

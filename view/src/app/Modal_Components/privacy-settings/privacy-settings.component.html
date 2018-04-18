@@ -1,0 +1,33 @@
+<div class="ProfilePrivacy">
+
+  <p class="headerInfo"> Privacy Settings <span style="position:absolute; right:15px; top:0px;font-size:20px;cursor:pointer; font-weight: 500; " (click)="_bsModalRef.hide()"  > X </span> </p>
+  
+
+        <div fxLayout fxLayoutAlign="center">
+            <div fxFlex="40%">
+              <h5 class="text-right" style="font-size: 16px; color:#333; margin-right:10px"> Show profile to : </h5>
+            </div>
+            <div fxFlex="60%">
+              <div class="gender-select">
+                <div class="tick" style="cursor:pointer">
+                  <img (click)="Change_Option('Everyone')" [ngClass]="{'p-8': SelectedObtion !== 'Everyone'}" src="assets/images/tick.png" alt=""> <p> Everyone </p> 
+                </div>
+                <div class="tick ml-30" style="cursor:pointer">
+                  <img (click)="Change_Option('Cube members')"  [ngClass]="{'p-8': SelectedObtion !== 'Cube members'}" src="assets/images/tick.png" alt=""> <p> Cube members </p>  
+                </div>
+                <div class="tick ml-30" style="cursor:pointer">
+                  <img (click)="Change_Option('Nobody')"  [ngClass]="{'p-8': SelectedObtion !== 'Nobody'}" src="assets/images/tick.png" alt=""> <p> Nobody </p>  
+                </div>
+              </div>
+            </div>
+        </div>
+
+        <hr style="margin: 5px">
+        <div>
+          <div class="col-sm-12 text-right" style="margin-bottom: 5px;">
+              <button class="btn ptn-primary" type="button" (click)="Submit()" > Update </button> 
+          </div> 
+      </div>
+
+
+</div>

@@ -11,6 +11,7 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { CubesListComponent } from './cubes-list/cubes-list.component';
     import { FeedsMainComponent } from './feeds/feeds-main/feeds-main.component';
     import { CubesViewMainComponent } from './cubes/cubes-view-main/cubes-view-main.component';
+    import { ProfileMainComponent } from './profile/profile-main/profile-main.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -41,6 +42,11 @@ const appRoutes: Routes = [
     { path: 'Cube_View/:Cube_Id',
         component: CubesViewMainComponent,
         data: { animation: { value: 'Cube_View', } },
+        canActivate: [AuthGuard]
+    },
+    { path: 'Profile_View/:User_Id',
+        component: ProfileMainComponent,
+        data: { animation: { value: 'Profile_View', } },
         canActivate: [AuthGuard]
     }
 ];

@@ -1,68 +1,100 @@
 <div class="feedsRightBar">
-        <!-- UserDetails -->
-        <div class="userdiv" fxLayout="column" fxLayoutAlign="start center">
-            <div fxFlex="120px" class="text-center">
-                <img class="userimg" src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="">
-            </div>
-            <div fxFlex="35px">
-                <p class="username"> {{LoginUser.Inscube_Name}} </p>
+    <!-- UserDetails -->
+    <div class="userdiv" fxLayout="column" fxLayoutAlign="start center">
+        <div fxFlex="120px" class="text-center">
+            <img class="userimg" src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="">
+        </div>
+        <div fxFlex="35px">
+            <p class="username"> {{LoginUser.Inscube_Name}} </p>
 
-            </div>
         </div>
-        <!-- UserDetails End -->
-        
-        <div class="Left_bar_Button"> 
-          <button  (click)="PostCreate_Model()"> Post </button>
-          <button  [routerLink]="['/Categories']" > Discover </button>
-        </div>
-        
+    </div>
+    <!-- UserDetails End -->
     
-        <!-- Followers -->
-        <div class="row">
-          <div class="col-sm-12">
-              <p class="headerstyle"> Member of </p>
-          </div>
+    <div class="Left_bar_Button"> 
+      <button  (click)="PostCreate_Model()"> Post </button>
+      <button  (click)="Discover_Model()" > Discover </button>
+    </div>
+    
+
+    <!-- Followers -->
+    <div class="row">
+      <div class="col-sm-12">
+          <p class="headerstyle"> Member of </p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="Cubes_List?.length <= 0 && !Loader_1">
+        <div style="width: 100%; height: 100px;text-align: center;">
+            <h5 style="line-height: 80px;font-size: 14px;color: #777777;"> Cubes are empty ! </h5>
         </div>
+    </ng-container>
+
+    <ng-container *ngIf="Loader_1">
+        <div style="width: 100%; height: 200px; text-align: center">
+            <img style="height: 100px; margin-top: 50px" src="assets/images/loader.gif" alt="">
+        </div>
+    </ng-container>
+
+    <ng-container *ngIf="Cubes_List?.length > 0 && !Loader_1">
         <div class="row">
             <div class="col-sm-12 listFlexDiv">
                 <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
-                    <img class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
-                    <p class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
+                    <img [routerLink]="[ '/Cube_View', item._id ]" class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                    <p [routerLink]="[ '/Cube_View', item._id ]" class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
                 </div>
             </div>
         </div>
-        <div *ngIf="Cubes_List?.length > 8" class="row">
-          <div class="col-sm-12 text-right">
-              <p class="viewAll"> <span> View All... </span>  </p>
-          </div>
+    </ng-container>
+
+    <div *ngIf="Cubes_List?.length > 8" class="row">
+      <div class="col-sm-12 text-right">
+          <p class="viewAll"> <span (click)="View_All_MemberOf()"> View All... </span>  </p>
+      </div>
+    </div>
+
+    <!-- Followers End  -->
+
+
+    <!-- Followers -->
+    <div class="row">
+      <div class="col-sm-12">
+          <p class="headerstyle"> My Cubes </p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="User_Cubes_List?.length <= 0 && !Loader_2">
+        <div style="width: 100%; height: 100px;text-align: center;">
+            <h5 style="line-height: 80px;font-size: 14px;color: #777777;"> Cubes are empty ! </h5>
         </div>
-    
-        <!-- Followers End  -->
-    
-    
-        <!-- Followers -->
-        <div class="row">
-          <div class="col-sm-12">
-              <p class="headerstyle"> My Cubes </p>
-          </div>
+    </ng-container>
+
+    <ng-container *ngIf="Loader_2">
+        <div style="width: 100%; height: 200px; text-align: center">
+            <img style="height: 100px; margin-top: 50px" src="assets/images/loader.gif" alt="">
         </div>
+    </ng-container>
+
+    <ng-container *ngIf="User_Cubes_List?.length > 0 && !Loader_2">
         <div class="row">
             <div class="col-sm-12 listFlexDiv">
                 <div  *ngFor="let item of User_Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
-                    <img class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
-                    <p class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
+                    <img class="followimg" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                    <p class="followname" [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
                 </div>
             </div>
         </div>
-        <div *ngIf="User_Cubes_List?.length > 8" class="row">
-            <div class="col-sm-12 text-right">
-                <p class="viewAll"> <span> View All... </span>  </p>
-            </div>
-          </div>
-        
-        <!-- Followers End  -->
-    
-  
+    </ng-container>
 
-    </div>
+
+    <div *ngIf="User_Cubes_List?.length > 8" class="row">
+        <div class="col-sm-12 text-right">
+            <p class="viewAll"> <span (click)="View_All_MyCubes()" > View All... </span>  </p>
+        </div>
+      </div>
     
+    <!-- Followers End  -->
+
+
+
+</div>
