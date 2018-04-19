@@ -42,9 +42,21 @@
                     <p *ngIf="Post.User_Id !== LoginUser._id" class="postaction"> 
                       <i (click)="Trigger_Post(i)" [matMenuTriggerFor]="ReportHighlightPost" class="material-icons">more_horiz</i>
                     </p>
-                    <p class="Selected_Cubes" style="display: flex"> 
-                      <img *ngFor="let Cubes of Post.Cubes_Info | slice:0:10; let j=index" [routerLink]="[ '/Cube_View', Cubes._id ]" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt=""> 
-                      <span *ngIf="Post.Cubes_Info?.length > 10" style="font-size: 25px; margin: 0px 10px;line-height: 20px;color: #7f7f7f;"> .... </span>
+                    <p class="Selected_Cubes" style="width: 300px"> 
+                        <ngx-carousel [inputs]="carouselTile" style="width: 300px">
+                            <ngx-tile style="padding: 0px" NgxCarouselItem *ngFor="let Cubes of Post.Cubes_Info; let postLikes = index;">
+                                <div class="tile">
+                                  <div class="cat_div">
+                                    <img [routerLink]="[ '/Cube_View', Cubes._id ]" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt="">
+                                  </div>
+                                </div>
+                            </ngx-tile>
+                            <button NgxCarouselPrev class="leftR">&lt;</button>
+                            <button NgxCarouselNext class="rightR">&gt;</button>
+                          </ngx-carousel>
+                           <!-- <img *ngFor="let Cubes of Post.Cubes_Info | slice:0:7; let j=index" [routerLink]="[ '/Cube_View', Cubes._id ]" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt="">  -->
+                      
+                      <!-- <span *ngIf="Post.Cubes_Info?.length > 7" style="font-size: 25px; margin: 0px 10px;line-height: 20px;color: #7f7f7f;"> .... </span> -->
                     </p>
                   </div>
                 </div>

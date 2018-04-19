@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://localhost:3000/API/Signin_Signup/';
+const API_URL = 'http://206.189.92.174:80/API/Signin_Signup/';
 
 @Injectable()
 export class SigninSignupService {

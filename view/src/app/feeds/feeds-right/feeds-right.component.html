@@ -28,7 +28,7 @@
             </div>
             <div fxFlex>
               <p class="userlistname">
-                <span [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:16 }}{{ item.Name?.length > 16 ? '...' : ' ' }} </span>
+                <span [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:12 }}{{ item.Name?.length > 12 ? '...' : ' ' }} </span>
               </p>
               <p class="userlistcategory"> {{item.Category_Name | slice:0:15 }}{{ item.Category_Name?.length > 15 ? '...' : ' ' }} </p>
               <p class="userlistfollowers"> {{item.Members_Count }} Members </p>

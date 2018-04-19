@@ -186,8 +186,8 @@ exports.UserRegisterCompletion = function(req, res) {
 
         if(!req.body.User_Id && req.body.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Color_Code && req.body.Color_Code === '' ){
-            res.status(200).send({Status:"True", Output:"False", Message: "Color Code can not be empty" });
+        // }else if(!req.body.Color_Code && req.body.Color_Code === '' ){
+        //     res.status(200).send({Status:"True", Output:"False", Message: "Color Code can not be empty" });
         }else if(upload_err && upload_err === '' && upload_err === undefined && upload_err === null){
             res.status(200).send({Status:"True", Output:"False", Message: "Only 'png, gif, jpg and jpeg' images are allowed" });
         }else{
@@ -203,7 +203,7 @@ exports.UserRegisterCompletion = function(req, res) {
                         } else if(result.Image !== '' ) {
                             User_Image = result.Image;
                         }
-                        result.Color_Code = req.body.Color_Code;
+                        result.Color_Code = req.body.Color_Code || 'Color1';
                         result.Image = User_Image;
                         result.DOB = req.body.DOB;
                         result.City = req.body.City;

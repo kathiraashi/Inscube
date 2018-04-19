@@ -32,6 +32,7 @@
     outline: transparent;
     border: none;
     border-bottom: 1px solid #999999b0;
+    border-color: #999999b0;
     font-size: 15px;
     font-weight: 500;
     color: #333333 !important;

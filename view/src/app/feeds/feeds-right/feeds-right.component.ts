@@ -18,9 +18,9 @@ export class FeedsRightComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
 
   LoginUser;
   Cubes_List: any[] = [];
@@ -44,7 +44,7 @@ export class FeedsRightComponent implements OnInit {
 
     JoinCodeGet(Cube_Index) {
     const initialState = { data: { Cube_Info:  this.Cubes_List[Cube_Index] } };
-      this.modalRef = this.modalService.show(JoinConfirmationComponent, {initialState});
+      this.modalRef = this.modalService.show(JoinConfirmationComponent, Object.assign({initialState}, { class: 'maxWidth400' }));
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success') {
           this.Cubes_List.splice(Cube_Index, 1);

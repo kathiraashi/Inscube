@@ -19,9 +19,9 @@ export class EditPostComponent implements OnInit {
 
 
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  PostBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  PostBaseUrl = 'http://206.189.92.174:80/API/Uploads/Post_Attachments/';
 
   data;
 
@@ -263,34 +263,34 @@ export class EditPostComponent implements OnInit {
 
           this.Post_Service.Cube_Post_Update(this.FormData).subscribe( datas => {
               if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-                      this.snackBar.open( 'Post Successfully Updated' , ' ', {
-                      horizontalPosition: 'center',
-                      duration: 3000,
-                      verticalPosition: 'top',
-                      });
+                    //   this.snackBar.open( 'Post Successfully Updated' , ' ', {
+                    //   horizontalPosition: 'center',
+                    //   duration: 3000,
+                    //   verticalPosition: 'top',
+                    //   });
                       this.onClose.next({Status: true, Response: datas['Response'] });
                       this._bsModalRef.hide();
               } else {
-                  this.Post_Submit = false;
-                  this.snackBar.open( 'Post Update Failed Please Try Again !!', ' ', {
-                  horizontalPosition: 'center',
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  });
+                //   this.Post_Submit = false;
+                //   this.snackBar.open( 'Post Update Failed Please Try Again !!', ' ', {
+                //   horizontalPosition: 'center',
+                //   duration: 3000,
+                //   verticalPosition: 'top',
+                //   });
                   this.onClose.next({Status: false });
                   this._bsModalRef.hide();
               }
           });
       } else {
           if ( this.Selected_Cube.length <= 0 ) {
-              this.snackBar.open( 'Select At least One Cube !', ' ', {
+              this.snackBar.open( 'Select at least one cube !', ' ', {
                   horizontalPosition: 'center',
                   duration: 3000,
                   verticalPosition: 'top',
                   });
           }
           if (this.Form.controls['Post_Text'].value === '' ) {
-              this.snackBar.open( 'Write Some Words !', ' ', {
+              this.snackBar.open( 'Write some words !', ' ', {
                   horizontalPosition: 'center',
                   duration: 3000,
                   verticalPosition: 'top',

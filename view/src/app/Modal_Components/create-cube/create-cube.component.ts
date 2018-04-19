@@ -16,7 +16,7 @@ import { CubeService } from './../../service/cube/cube.service';
 export class CreateCubeComponent implements OnInit {
 
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
+  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
 
   data: Object;
   Locatin_Input: Boolean = false;
@@ -132,29 +132,28 @@ export class CreateCubeComponent implements OnInit {
             this.Service.Create_Cube(this.FormData).subscribe( datas => {
               if (datas['Status'] === 'True') {
                   if (datas['Output'] === 'True') {
-                      this.snackBar.open( 'Cube Successfully Created' , ' ', {
-                      horizontalPosition: 'center',
-                      duration: 3000,
-                      verticalPosition: 'top',
-                      });
+                    //   this.snackBar.open( 'Cube Successfully Created' , ' ', {
+                    //   horizontalPosition: 'center',
+                    //   duration: 3000,
+                    //   verticalPosition: 'top',
+                    //   });
                       this.onClose.next({ Status: 'Success' , Response: datas['Response'] });
                       this._bsModalRef.hide();
-                      // this.router.navigate(['Categories']);
                   } else {
-                      this.snackBar.open( datas['Message'] , ' ', {
-                      horizontalPosition: 'center',
-                      duration: 3000,
-                      verticalPosition: 'top',
-                      });
+                    //   this.snackBar.open( datas['Message'] , ' ', {
+                    //   horizontalPosition: 'center',
+                    //   duration: 3000,
+                    //   verticalPosition: 'top',
+                    //   });
                       this.onClose.next({ Staus: 'Filed'});
                       this._bsModalRef.hide();
                   }
               } else {
-                  this.snackBar.open( 'Cube Creation Failed Please Try Again !!', ' ', {
-                  horizontalPosition: 'center',
-                  duration: 3000,
-                  verticalPosition: 'top',
-                  });
+                //   this.snackBar.open( 'Cube Creation Failed Please Try Again !!', ' ', {
+                //   horizontalPosition: 'center',
+                //   duration: 3000,
+                //   verticalPosition: 'top',
+                //   });
                   this.onClose.next({ Staus: 'Error'});
                   this._bsModalRef.hide();
               }

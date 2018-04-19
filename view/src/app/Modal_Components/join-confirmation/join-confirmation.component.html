@@ -12,14 +12,10 @@
   <div class="modal-body">
           <input (input)="valuechange($event.target.value)"  class="postlink mb-20" placeholder=" Cube Code...">
           <p *ngIf="Show_Alert" style="color:red; margin:0px; font-size: 14px;"> Incorrect cube code </p>
-          <div fxLayout fxLayoutAlign="space-between" style="padding: 0px 20px; height: 50px;">
-              <div fxFlex="85%">
-              </div>
-              <div fxFlex="15%" style="line-height:75px;">
-                  <button type="submit" [disabled]="!Show_Join" [ngClass]="{'disabled': !Show_Join }" (click)="Submit()" mat-raised-button color="primary" style="background-color: #d75739"> 
-                      <span style="color:#fff"> Join </span>
-                   </button>
-              </div>
+          <div fxLayout fxLayoutAlign="end" style="padding: 0px 20px; height: 35px;">
+                <button type="submit" [disabled]="!Show_Join" [ngClass]="{'disabled': !Show_Join }" (click)="Submit()" mat-raised-button color="primary" style="background-color: #d75739"> 
+                    <span style="color:#fff"> Join </span>
+                </button>
           </div>
   </div>
 </div>

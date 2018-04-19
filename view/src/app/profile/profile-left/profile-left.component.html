@@ -17,7 +17,7 @@
     </ng-container>
 
 
-  <ng-container  *ngIf="User_Info !== undefined">
+  <ng-container  *ngIf="User_Info !== undefined && (User_Info.Show_Profile_To !== 'Nobody' || User_Info._id === LoginUser._id)">
       <p class="hash_tag_class"> 
         <span *ngIf=" User_Info.Hash_Tag_1 !== ''" > #{{User_Info.Hash_Tag_1}}</span>
         <span *ngIf=" User_Info.Hash_Tag_2 !== ''" > #{{User_Info.Hash_Tag_2}}</span> 
@@ -85,7 +85,13 @@
   <!-- Followers -->
   <div class="row">
     <div class="col-sm-12">
-        <p class="headerstyle"> My Cubes </p>
+        <ng-container *ngIf=" User_Info !== undefined && User_Info._id === LoginUser._id">
+            <p class="headerstyle"> My Cubes </p>
+        </ng-container>
+        
+        <ng-container *ngIf=" User_Info !== undefined && User_Info._id !== LoginUser._id">
+            <p class="headerstyle"> {{User_Info.Inscube_Name}}'s Cubes </p>
+        </ng-container>
     </div>
   </div>
 

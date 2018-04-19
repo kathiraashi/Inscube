@@ -131,18 +131,18 @@ export class LoginComponent implements OnInit {
               if (datas['Output'] === 'True') {
               this.router.navigate(['Profile_Completion']);
               } else {
-              this.snackBar.open( datas['Message'] , ' ', {
-                horizontalPosition: 'center',
-                duration: 3000,
-                verticalPosition: 'top',
-              });
+              // this.snackBar.open( datas['Message'] , ' ', {
+              //   horizontalPosition: 'center',
+              //   duration: 3000,
+              //   verticalPosition: 'top',
+              // });
               }
           } else {
-            this.snackBar.open( 'Registration Failed Please Try Again !!', ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Registration Failed Please Try Again !!', ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           }
         });
       }
@@ -164,11 +164,11 @@ export class LoginComponent implements OnInit {
             });
            }
         } else {
-          this.snackBar.open( 'Login Failed Please Try Again !!', ' ', {
-            horizontalPosition: 'center',
-            duration: 3000,
-            verticalPosition: 'top',
-          });
+          // this.snackBar.open( 'Login Failed Please Try Again !!', ' ', {
+          //   horizontalPosition: 'center',
+          //   duration: 3000,
+          //   verticalPosition: 'top',
+          // });
         }
        });
     }

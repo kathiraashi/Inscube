@@ -13,8 +13,8 @@ import { PostService } from './../../service/post/post.service';
 })
 export class EditCommentComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
 
   onClose: Subject<Object>;
 
@@ -41,25 +41,25 @@ export class EditCommentComponent implements OnInit {
       };
       this.Post_Service.Comment_Update(Data).subscribe( datas => {
         if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-          this.snackBar.open( 'Comment Successfully Updated' , ' ', {
-            horizontalPosition: 'center',
-            duration: 3000,
-            verticalPosition: 'top',
-            });
+          // this.snackBar.open( 'Comment Successfully Updated' , ' ', {
+          //   horizontalPosition: 'center',
+          //   duration: 3000,
+          //   verticalPosition: 'top',
+          //   });
             this.onClose.next({Status: true, Response: datas['Response'] });
             this._bsModalRef.hide();
         } else {
-          this.snackBar.open( 'Comment Update Failed Please Try Again !!', ' ', {
-          horizontalPosition: 'center',
-          duration: 3000,
-          verticalPosition: 'top',
-          });
+          // this.snackBar.open( 'Comment Update Failed Please Try Again !!', ' ', {
+          // horizontalPosition: 'center',
+          // duration: 3000,
+          // verticalPosition: 'top',
+          // });
           this.onClose.next({Status: false });
           this._bsModalRef.hide();
         }
       });
     } else {
-      this.snackBar.open( 'Write Some Words!', ' ', {
+      this.snackBar.open( 'Write some words!', ' ', {
         horizontalPosition: 'center',
         duration: 3000,
         verticalPosition: 'top',

@@ -72,7 +72,7 @@ export class EmoteAddComponent implements OnInit {
           }
       });
     } else {
-      this.Alert_Message = 'Please Enter Some Text !';
+      this.Alert_Message = 'Please enter some text !';
       this.Show_Alert = true;
       this.Show_Submit = true;
     }

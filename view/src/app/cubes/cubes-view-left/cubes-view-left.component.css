@@ -69,12 +69,14 @@
     padding-left: 10px;
     font-size: 14px;
     color: #777;
+    word-wrap: break-word;
+    white-space: pre-wrap;
 }
 .Left_bar_Button button{
-    width: 44%;
-    margin: 10px 0 0 3%;
+    width: 46%;
+    margin: 10px 0 0 2%;
     margin-bottom: 15px;
-    height: 35px;
+    height: 32px;
     background-color: #d75839;
     color: #ffffff;
     font-weight: 600;
@@ -85,6 +87,8 @@
     border: 1px solid #d75839;
     border-radius: 5px;
     cursor: pointer;
+    padding: 0px;
+    font-size: 13px;
 }
 
 .Left_bar_Button button:hover{

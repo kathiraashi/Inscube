@@ -40,7 +40,7 @@
 
   <div class="cube_info_icon">
     <i class="material-icons" >mail_outline</i>
-    <p class="discription"> {{Cube_Info.Mail}} </p>
+    <p class="discription">{{Cube_Info.Mail | slice:0:25 }}{{ Cube_Info.Mail?.length > 25 ? '...' : ' ' }} </p>
   </div>
 
   <div class="cube_info_icon">

@@ -90,14 +90,47 @@
     margin: 2px 0px;
     display: flex;
     float: right;
+    margin-right: 20px;
 }
 .Highlights .Selected_Cubes img{
     width: 28px;
     height: 28px;
-    margin-left: 10px;
-    border-radius: 30px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.leftR {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 22px;
+    height: 30px;
+    left: -25px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-weight: 800;
+    line-height: 15px;
+    color: #d75739;
+    font-size: 18px;
 }
 
+.rightR {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    width: 22px;
+    height: 30px;
+    right: -25px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-weight: 800;
+    line-height: 15px;
+    color: #d75739;
+    font-size: 18px;
+}
 
 .Highlights .HighlightsPost .postLikes .like{
     display: inline-flex;
@@ -464,12 +497,11 @@
     display: grid;
     grid-template-columns: 20% 20% 20% 20% 20%;
     padding: 0px;
-    margin-left: 1%;
 }
 .emote{
     border: 1px solid #d75739;
     border-radius: 30px;
-    margin: 4px 5px;
+    margin: 4px 2px;
     text-align: center;
     cursor: pointer;
 }
@@ -480,8 +512,8 @@
 }
 
 .emote_div{
-    padding: 4px 10px;
-    font-size: 13px;
+    padding: 4px 0px;
+    font-size: 12px;
     color: #666;
     display: inline-flex;
 }

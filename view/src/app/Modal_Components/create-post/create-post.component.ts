@@ -21,8 +21,8 @@ export class CreatePostComponent implements OnInit {
 
     modalRef: BsModalRef;
 
-    UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-    CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+    UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+    CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
 
     title: string;
     types = [
@@ -205,29 +205,29 @@ export class CreatePostComponent implements OnInit {
 
             this.Post_Service.Cube_Post_Submit(this.FormData).subscribe( datas => {
                 if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-                        this.snackBar.open( 'Post Successfully Submitted' , ' ', {
-                        horizontalPosition: 'center',
-                        duration: 3000,
-                        verticalPosition: 'top',
-                        });
+                        // this.snackBar.open( 'Post Successfully Submitted' , ' ', {
+                        // horizontalPosition: 'center',
+                        // duration: 3000,
+                        // verticalPosition: 'top',
+                        // });
                         this.Post_Submit_change.Post_Submited(datas['Response']);
                         this.onClose.next({Status: true, Response: datas['Response'] });
                         this._bsModalRef.hide();
 
                 } else {
                     this.Post_Submit = false;
-                    this.snackBar.open( 'Post Submit Failed Please Try Again !!', ' ', {
-                    horizontalPosition: 'center',
-                    duration: 3000,
-                    verticalPosition: 'top',
-                    });
+                    // this.snackBar.open( 'Post Submit Failed Please Try Again !!', ' ', {
+                    // horizontalPosition: 'center',
+                    // duration: 3000,
+                    // verticalPosition: 'top',
+                    // });
                     this.onClose.next({Status: false });
                     this._bsModalRef.hide();
                 }
             });
         } else {
             if ( this.Selected_Cube.length <= 0 ) {
-                this.snackBar.open( 'Select At least One Cube !', ' ', {
+                this.snackBar.open( 'Select at least one cube !', ' ', {
                     horizontalPosition: 'center',
                     duration: 3000,
                     verticalPosition: 'top',
@@ -235,7 +235,7 @@ export class CreatePostComponent implements OnInit {
             }
             if (this.Form.controls['Post_Text'].value === '' && this.Form.controls['Post_Link'].value === '' &&
                  this.List_Img_Files.length <= 0 && this.List_Video_Files.length <= 0 ) {
-                this.snackBar.open( 'Write Some Words !', ' ', {
+                this.snackBar.open( 'Write some words !', ' ', {
                     horizontalPosition: 'center',
                     duration: 3000,
                     verticalPosition: 'top',

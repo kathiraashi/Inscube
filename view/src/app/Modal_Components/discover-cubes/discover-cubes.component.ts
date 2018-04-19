@@ -25,9 +25,9 @@ export class DiscoverCubesComponent implements OnInit {
   public Category_List: Array<any> = [];
   public carouselTile: NgxCarousel;
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
 
   LoginUser;
   Cubes_List;
@@ -92,7 +92,8 @@ export class DiscoverCubesComponent implements OnInit {
   JoinCodeGet(Cube_Index) {
     this.Create_form_open = true;
     const initialState = { data: { Cube_Info:  this.Cubes_List[Cube_Index] } };
-      this.modalRef = this.modalService.show(JoinConfirmationComponent, Object.assign({initialState}, {ignoreBackdropClick: true}));
+      this.modalRef = this.modalService.show(JoinConfirmationComponent,
+        Object.assign({initialState}, {ignoreBackdropClick: true, class: 'maxWidth400'}));
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success') {
           this.Create_form_open = false;
@@ -116,7 +117,8 @@ export class DiscoverCubesComponent implements OnInit {
   openConfirmDialog() {
     this.Create_form_open = true;
     const initialState = { data: { Category_Info :  this.ActiveCategory } };
-      this.modalRef = this.modalService.show(CreateCubeComponent, Object.assign({initialState}, {ignoreBackdropClick: true}) );
+      this.modalRef = this.modalService.show(CreateCubeComponent,
+        Object.assign({initialState}, {ignoreBackdropClick: true, class: 'maxWidth700'}) );
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success') {
           setTimeout(() => {

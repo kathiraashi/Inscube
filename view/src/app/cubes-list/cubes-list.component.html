@@ -1,9 +1,9 @@
-<div style="position: absolute; height: 100%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
+<div style="min-width: 1200px; position: absolute; height: 110%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
 
   <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start">
 
     <!-- ----------------------- Center Content ------------------------- -->
-    <div fxFlex="60%" style="border-radius: 5px; background-color:#fff">
+    <div fxFlex="65%" style="border-radius: 5px; background-color:#fff">
 
       <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
         <div fxLayout="row" fxLayoutAlign="space-between center">
@@ -21,7 +21,7 @@
         <div style="max-height:550px;overflow-y: auto">
           <div class="row Cat_list">
 
-            <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item">
+            <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item" style="max-width: 33.33%">
               <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
                 <div fxFlex="65px" class="Cat_list_item_part_1">
                   <img class="Cat_list_item_img" src="{{CubeBaseUrl}}{{item.Image}}" alt="">

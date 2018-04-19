@@ -417,7 +417,6 @@ exports.CubePost_Delete = function(req, res) {
 
 // ----------------------------------------------------------------------  Post Emote Submit ----------------------------------------------------------
 exports.Emote_Submit = function(req, res) {
-    console.log(req.body);
         if(!req.body.User_Id || req.body.User_Id === '') {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         }else if(!req.body.Post_Id || req.body.Post_Id === ''){
@@ -446,7 +445,6 @@ exports.Emote_Submit = function(req, res) {
                                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
                                             res.status(500).send({Status:"False", Error: err_2, Message: "Some error occurred while Cube Post Submit"});           
                                         } else {
-                                            console.log('1');
                                             res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                                         }
                                     });
@@ -466,7 +464,6 @@ exports.Emote_Submit = function(req, res) {
                                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_3);
                                             res.status(500).send({Status:"False", Error:err_3, Message: "Some error occurred while Cube Post Submit"});           
                                         } else {
-                                            console.log('2');
                                             res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
                                         }
                                     });
@@ -474,7 +471,6 @@ exports.Emote_Submit = function(req, res) {
                             }
                         });
                     } else {
-                        console.log('3');
                         res.status(200).send({ Status:"True", Output: "False", Message: 'Already exists! vote for it' });
                     }
 

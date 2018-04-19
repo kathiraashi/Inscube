@@ -1,4 +1,4 @@
-<div style="position: absolute; height: 100%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
+<div style="min-width: 1200px;  position: absolute; height: 110%;width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
 
   <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="space-around start">
 
@@ -16,7 +16,7 @@
         <div style="max-height:550px;overflow-y: auto">
           <div class="row Cat_list">
 
-            <div *ngFor="let item of Category_List; let i=index" class="col-sm-4 Cat_list_item" (click)="Cube_List_Now(item._id, item.Name)">
+            <div *ngFor="let item of Category_List; let i=index" class="col-sm-4 Cat_list_item" style="max-width: 33.33%;" (click)="Cube_List_Now(item._id, item.Name)">
               <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
                 <div fxFlex="100px" class="Cat_list_item_part_1">
                   <img class="Cat_list_item_img" src="{{CategoryBaseUrl}}{{item.Image}}" alt="">

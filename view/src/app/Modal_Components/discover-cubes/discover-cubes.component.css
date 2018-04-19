@@ -54,6 +54,7 @@
 }
 .cat_div .text_div{
     display: block;
+    text-align: left;
 }
 .cat_div .text_div .name{
     font-size: 11px;
@@ -184,4 +185,8 @@
     color: #d75839;
     font-size: 20px;
     font-weight: 600;
+}
+
+.tile{
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }

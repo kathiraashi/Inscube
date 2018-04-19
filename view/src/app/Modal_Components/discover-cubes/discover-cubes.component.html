@@ -1,97 +1,99 @@
-<div *ngIf="Create_form_open" style="position: absolute;width: 100%;height:100%; background-color: #333">
+<div class="modal-body Create_Cube" style="padding: 0px">
+    <div *ngIf="Create_form_open" style="position: absolute;width: 100%;height:100%; background-color: #333">
 
-</div>
-<div [ngClass]="{'opacity_05': Create_form_open}">
-  <div fxLayout="row" fxLayoutAlign="space-around start">
+      </div>
+  <div [ngClass]="{'opacity_05': Create_form_open}">
+    <div fxLayout="row" fxLayoutAlign="space-around start">
 
-    <!-- ----------------------- Center Content ------------------------- -->
-    <div fxFlex="100%" style="border-radius: 5px; background-color:#fff">
+      <!-- ----------------------- Center Content ------------------------- -->
+      <div fxFlex="100%" style="border-radius: 5px; background-color:#fff">
 
-      <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
-        <!-- <img style="width: 167px; margin: 5px 0px;" src="assets/images/logo.png"> 
-        <hr style="margin: 3px;border-radius: 0px;"> -->
+        <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
+          <!-- <img style="width: 167px; margin: 5px 0px;" src="assets/images/logo.png"> 
+          <hr style="margin: 3px;border-radius: 0px;"> -->
 
-        <div style="padding: 10px 20px 0px 20px;" fxLayout="row" fxLayoutAlign="space-between start">
-            <div class="header_left" fxFlex="48%" > <span> Discover </span> </div>
-            <div class="header_right" fxFlex="48%" > <span (click)="openConfirmDialog()"> Create your own social media </span> </div>
-        </div>
-        <hr style="margin:5px">
-
-        <ng-container *ngIf="Loader_1">
-          <div style="width: 100%; height: 200px;">
-            <img style="height: 100px; margin-top: 50px;" src="assets/images/loader.gif" alt="">
+          <div style="padding: 10px 20px 0px 20px;" fxLayout="row" fxLayoutAlign="space-between start">
+              <div class="header_left" fxFlex="48%" > <span> Discover </span> </div>
+              <div class="header_right" fxFlex="48%" > <span (click)="openConfirmDialog()"> Create your own social media </span> </div>
           </div>
-        </ng-container>
+          <hr style="margin:5px">
 
-        <ng-container *ngIf="Category_List?.length > 0 && !Loader_1">
+          <ng-container *ngIf="Loader_1">
+            <div style="width: 100%; height: 200px;">
+              <img style="height: 100px; margin-top: 50px;" src="assets/images/loader.gif" alt="">
+            </div>
+          </ng-container>
 
-          <ngx-carousel [inputs]="carouselTile">
-            <ngx-tile NgxCarouselItem *ngFor="let tile of Category_List; let i = index;">
-                <div class="tile">
-                  <div class="cat_div" [ngClass]="{'Selected': tile.selected}" (click)="Chanage_Category(i)">
-                    <img src="{{CategoryBaseUrl}}{{tile.Image}}" alt="">
-                    <div class="text_div">
-                      <p class="name"> {{tile.Name}} </p>
-                      <p class="Count"> {{tile.Cubes_Count}} Cubes </p>
+          <ng-container *ngIf="Category_List?.length > 0 && !Loader_1">
+
+            <ngx-carousel [inputs]="carouselTile">
+              <ngx-tile NgxCarouselItem *ngFor="let tile of Category_List; let i = index;">
+                  <div class="tile">
+                    <div class="cat_div" [ngClass]="{'Selected': tile.selected}" (click)="Chanage_Category(i)">
+                      <img src="{{CategoryBaseUrl}}{{tile.Image}}" alt="">
+                      <div class="text_div">
+                        <p class="name"> {{tile.Name}} </p>
+                        <p class="Count"> {{tile.Cubes_Count}} Cubes </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-            </ngx-tile>
-            <button NgxCarouselPrev class="leftRs">&lt;</button>
-            <button NgxCarouselNext class="rightRs">&gt;</button>
-          </ngx-carousel>
+              </ngx-tile>
+              <button NgxCarouselPrev class="leftRs">&lt;</button>
+              <button NgxCarouselNext class="rightRs">&gt;</button>
+            </ngx-carousel>
 
-          <hr style="margin: 3px;border-radius: 0px;">
+            <hr style="margin: 3px;border-radius: 0px;">
 
-          <ng-container *ngIf="Cubes_List?.length <= 0 && !Loader_2">
-            <div style="width: 100%; height: 200px;text-align: center;">
-              <h5 style="line-height: 200px"> No more Cubes in this category! </h5>
-            </div>
-          </ng-container>
+            <ng-container *ngIf="Cubes_List?.length <= 0 && !Loader_2">
+              <div style="width: 100%; height: 200px;text-align: center;">
+                <h5 style="line-height: 200px"> No more Cubes in this category! </h5>
+              </div>
+            </ng-container>
 
-          <ng-container *ngIf="Loader_2">
-            <div style="width: 100%; height: 200px;">
-              <img style="height: 100px; margin-top: 50px" src="assets/images/loader.gif" alt="">
-            </div>
-          </ng-container>
+            <ng-container *ngIf="Loader_2">
+              <div style="width: 100%; height: 200px;">
+                <img style="height: 100px; margin-top: 50px" src="assets/images/loader.gif" alt="">
+              </div>
+            </ng-container>
 
-          <ng-container *ngIf=" Cubes_List?.length > 0 && !Loader_2">
-            <div style="max-height:550px;overflow-y: auto">
-              <div class="row Cat_list">
+            <ng-container *ngIf=" Cubes_List?.length > 0 && !Loader_2">
+              <div style="max-height:550px;overflow-y: auto">
+                <div class="row Cat_list">
 
-                <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item">
-                  <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="65px" class="Cat_list_item_part_1">
-                      <img class="Cat_list_item_img" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
-                    </div>
-                    <div fxFlex class="Cat_list_item_part_2">
-                      <h5> {{item.Name | slice:0:10 }}{{ item.Name?.length > 10 ? '...' : ' ' }} </h5>
-                      <p> {{item.Members}} Members </p>
-                    </div>
-                    <div fxFlex="80px" class="Cat_list_item_part_3">
+                  <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item" style="max-width: 33.33%;">
+                    <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
+                      <div fxFlex="65px" class="Cat_list_item_part_1">
+                        <img class="Cat_list_item_img" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                      </div>
+                      <div fxFlex class="Cat_list_item_part_2">
+                        <h5> {{item.Name | slice:0:10 }}{{ item.Name?.length > 10 ? '...' : ' ' }} </h5>
+                        <p> {{item.Members}} Members </p>
+                      </div>
+                      <div fxFlex="80px" class="Cat_list_item_part_3">
+                          <ng-container *ngIf="item.Security === 'Close'">
+                              <p (click)="JoinCodeGet(i)" > Join </p>
+                          </ng-container>
+                          <ng-container *ngIf="item.Security === 'Open'">
+                              <p (click)="DirectJoin(i)" > Join </p>
+                          </ng-container>
+                        
                         <ng-container *ngIf="item.Security === 'Close'">
-                            <p (click)="JoinCodeGet(i)" > Join </p>
+                            <i class="material-icons">lock</i>
                         </ng-container>
                         <ng-container *ngIf="item.Security === 'Open'">
-                            <p (click)="DirectJoin(i)" > Join </p>
+                            <i class="material-icons">public</i>
                         </ng-container>
-                      
-                      <ng-container *ngIf="item.Security === 'Close'">
-                          <i class="material-icons">lock</i>
-                      </ng-container>
-                      <ng-container *ngIf="item.Security === 'Open'">
-                          <i class="material-icons">public</i>
-                      </ng-container>
+                      </div>
                     </div>
                   </div>
+
                 </div>
-
               </div>
-            </div>
+            </ng-container>
           </ng-container>
-        </ng-container>
 
-      </mat-card>
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>

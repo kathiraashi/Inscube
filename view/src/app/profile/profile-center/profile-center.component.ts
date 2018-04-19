@@ -26,13 +26,13 @@ import { PostService } from './../../service/post/post.service';
 })
 export class ProfileCenterComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  PostsBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  PostsBaseUrl = 'http://206.189.92.174:80/API/Uploads/Post_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;
-  carouselOne: NgxCarousel;
+  carouselTile: NgxCarousel;
 
   scrollHeight;
   screenHeight: number;
@@ -111,6 +111,17 @@ export class ProfileCenterComponent implements OnInit {
       loop: false,
       easing: 'cubic-bezier(0, 0, 0.2, 1)'
     };
+
+    this.carouselTile = {
+      grid: { xs: 6, sm: 6, md: 7, lg: 8, all: 0 },
+      speed: 600,
+      interval: 3000,
+      point: {
+        visible: false,
+      },
+      load: 2,
+      touch: true
+    };
   }
 
   public myfunc(event: Event) {
@@ -129,7 +140,7 @@ export class ProfileCenterComponent implements OnInit {
 
   Emote_Add(Post_Index) {
     const initialState = { data: {Emotes: this.Posts_List[Post_Index].Emotes, Post_Info:  this.Posts_List[Post_Index] } };
-      this.modalRef = this.modalService.show(EmoteAddComponent, {initialState});
+      this.modalRef = this.modalService.show(EmoteAddComponent,  Object.assign({initialState}, { class: 'maxWidth400' }));
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success_New') {
           result.Responce.Already = true;
@@ -161,11 +172,11 @@ export class ProfileCenterComponent implements OnInit {
           this.Posts_List[Post_Index].Emotes[Emote_Index].Already = true;
           this.Posts_List[Post_Index].Emotes[Emote_Index].Count += 1;
       } else {
-        this.snackBar.open( datas['Message'] , ' ', {
-          horizontalPosition: 'center',
-          duration: 3000,
-          verticalPosition: 'top',
-          });
+        // this.snackBar.open( datas['Message'] , ' ', {
+        //   horizontalPosition: 'center',
+        //   duration: 3000,
+        //   verticalPosition: 'top',
+        //   });
       }
     });
   }
@@ -258,33 +269,33 @@ export class ProfileCenterComponent implements OnInit {
   }
 
   Delete_Post() {
-    const initialState = { data: { Text : 'Are you Sure! ', Text_1 : 'You want to Delete this Post.'} };
-    this.modalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'modal-sm' }));
+    const initialState = { data: { Text : 'Are you sure! ', Text_1 : 'Deleting will permanently remove it from inscube'} };
+    this.modalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'maxWidth350' }));
     this.modalRef.content.onClose.subscribe(result => {
       if (result.Status === 'Yes') {
         this.Post_Service.Cube_Post_Delete(this.Trigger_PostInfo._id).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
             const _index =  this.Posts_List.findIndex(x => x._id === this.Trigger_PostInfo._id);
             this.Posts_List.splice(_index, 1);
-            this.snackBar.open( 'Post Successfully Deleted!' , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Post Successfully Deleted!' , ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           } else {
-            this.snackBar.open( 'Post Delete Failed Please Try Again!' , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Post Delete Failed Please Try Again!' , ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           }
         });
       } else {
-        this.snackBar.open( 'Post Delete Confirmation Declined!' , ' ', {
-          horizontalPosition: 'center',
-          duration: 3000,
-          verticalPosition: 'top',
-        });
+        // this.snackBar.open( 'Post Delete Confirmation Declined!' , ' ', {
+        //   horizontalPosition: 'center',
+        //   duration: 3000,
+        //   verticalPosition: 'top',
+        // });
       }
     });
   }
@@ -298,14 +309,14 @@ export class ProfileCenterComponent implements OnInit {
               data: { Title : 'Report The Post ', Values : { User_Id: this.LoginUser._id, Post_Id: this.Trigger_PostInfo._id } } };
           this.modalRef = this.modalService.show(ReportPostComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
           this.modalRef.content.onClose.subscribe(result => {
-            this.snackBar.open( 'You Report Accepted!!', ' ', {
+            this.snackBar.open( 'Your report accepted!!', ' ', {
               horizontalPosition: 'center',
               duration: 3000,
               verticalPosition: 'top',
             });
           });
       } else {
-        this.snackBar.open( 'You Already Report This Post!!', ' ', {
+        this.snackBar.open( 'Your already report this post!!', ' ', {
           horizontalPosition: 'center',
           duration: 3000,
           verticalPosition: 'top',
@@ -323,14 +334,14 @@ export class ProfileCenterComponent implements OnInit {
               data: { Title : 'Report The User ', Values : { User_Id: this.LoginUser._id, To_User_Id: this.Trigger_UserId } } };
           this.modalRef = this.modalService.show(ReportUserComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
           this.modalRef.content.onClose.subscribe(result => {
-            this.snackBar.open( 'You Report Accepted!!', ' ', {
+            this.snackBar.open( 'Your report accepted!', ' ', {
               horizontalPosition: 'center',
               duration: 3000,
               verticalPosition: 'top',
             });
           });
       } else {
-        this.snackBar.open( 'You Already Report This User!!', ' ', {
+        this.snackBar.open( 'Your already report this user!!', ' ', {
           horizontalPosition: 'center',
           duration: 3000,
           verticalPosition: 'top',
@@ -352,33 +363,33 @@ export class ProfileCenterComponent implements OnInit {
   }
 
   Delete_Comment() {
-    const initialState = { data: { Text : 'Are you Sure! ', Text_1 : 'You want to Delete this Comment.'} };
-    this.modalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'modal-sm' }));
+    const initialState = { data: { Text : 'Are you sure! ', Text_1 : 'Deleting will permanently remove it from inscube'} };
+    this.modalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'maxWidth350' }));
     this.modalRef.content.onClose.subscribe(result => {
       if (result.Status === 'Yes') {
         this.Post_Service.Comment_Delete(this.Trigger_CommentInfo._id).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
             const _index =  this.Posts_List[this.ActiveComment].Comments.findIndex(x => x._id === this.Trigger_CommentInfo._id);
             this.Posts_List[this.ActiveComment].Comments.splice(_index, 1);
-            this.snackBar.open( 'Comment Successfully Deleted!' , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Comment Successfully Deleted!' , ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           } else {
-            this.snackBar.open( 'Comment Delete Failed Please Try Again!' , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Comment Delete Failed Please Try Again!' , ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           }
         });
       } else {
-        this.snackBar.open( 'Comment Delete Confirmation Declined!' , ' ', {
-          horizontalPosition: 'center',
-          duration: 3000,
-          verticalPosition: 'top',
-        });
+        // this.snackBar.open( 'Comment Delete Confirmation Declined!' , ' ', {
+        //   horizontalPosition: 'center',
+        //   duration: 3000,
+        //   verticalPosition: 'top',
+        // });
       }
     });
   }
@@ -391,14 +402,14 @@ export class ProfileCenterComponent implements OnInit {
               data: { Title : 'Report The Comment ', Values : { User_Id: this.LoginUser._id, Comment_Id: this.Trigger_CommentInfo._id } } };
           this.modalRef = this.modalService.show(ReportCommentComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
           this.modalRef.content.onClose.subscribe(result => {
-            this.snackBar.open( 'You Report Accepted!!', ' ', {
+            this.snackBar.open( 'Your report accepted!', ' ', {
               horizontalPosition: 'center',
               duration: 3000,
               verticalPosition: 'top',
             });
           });
       } else {
-        this.snackBar.open( 'You Already Report This Comment!!', ' ', {
+        this.snackBar.open( 'You already report this comment!', ' ', {
           horizontalPosition: 'center',
           duration: 3000,
           verticalPosition: 'top',

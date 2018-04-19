@@ -21,11 +21,29 @@
 
 .maxWidth700{
     max-width: 700px;
+    margin:1.75rem auto;
 }
 .maxWidth850{
     max-width: 850px;
     min-width: 850px;
+    margin:1.75rem auto;
 }
 *:focus{
     outline: none;
+}
+.modal{
+    min-width: 1200px !important;
+    position: absolute !important;
+}
+.maxWidth450{
+    max-width: 450px;
+    margin:1.75rem auto;
+}
+.maxWidth400{
+    max-width: 400px;
+    margin:1.75rem auto ;
+}
+.maxWidth350{
+    max-width: 350px;
+    margin: 1.75rem auto;
 }

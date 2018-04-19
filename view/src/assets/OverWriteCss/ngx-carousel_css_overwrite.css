@@ -98,3 +98,7 @@
       background: white;
       width: 10px;
   }
+
+  .ngxcarousel-items .item > .tile{
+    box-shadow: none !important;
+}

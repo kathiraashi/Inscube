@@ -20,7 +20,7 @@ export class CubesListComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
 
   Cubes_List;
   LoginUser;
@@ -58,17 +58,17 @@ export class CubesListComponent implements OnInit {
 
   openConfirmDialog() {
     const initialState = { data: { Category_Info : this.Category_Info } };
-      this.modalRef = this.modalService.show(CreateCubeComponent, {initialState});
+      this.modalRef = this.modalService.show(CreateCubeComponent, Object.assign({initialState}, { class: 'maxWidth700' }));
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success') {
-          this.router.navigate(['Cube_Posts']);
+          this.router.navigate(['Cube_View', result.Response._id]);
         }
       });
   }
 
   JoinCodeGet(Cube_Index) {
     const initialState = { data: { Cube_Info:  this.Cubes_List[Cube_Index] } };
-      this.modalRef = this.modalService.show(JoinConfirmationComponent, {initialState});
+      this.modalRef = this.modalService.show(JoinConfirmationComponent, Object.assign({initialState}, { class: 'maxWidth350' }));
       this.modalRef.content.onClose.subscribe(result => {
         if (result.Status === 'Success') {
           this.Cubes_List.splice(Cube_Index, 1);

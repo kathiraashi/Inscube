@@ -15,7 +15,7 @@ import { SigninSignupService } from './../service/signin-signup/signin-signup.se
 })
 export class ProfileCompletionComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
 
   colorTheme = 'theme-red';
   bsConfig: Partial<BsDatepickerConfig>;
@@ -111,25 +111,25 @@ export class ProfileCompletionComponent implements OnInit {
       this.Service.Register_Completion(this.FormData).subscribe( datas => {
         if (datas['Status'] === 'True') {
           if (datas['Output'] === 'True') {
-            this.snackBar.open( 'Profile successfully updated' , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Profile successfully updated' , ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
             this.router.navigate(['Categories']);
           } else {
-            this.snackBar.open( datas['Message'] , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( datas['Message'] , ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           }
       } else {
-        this.snackBar.open( 'Profile update failed please try again !!', ' ', {
-          horizontalPosition: 'center',
-          duration: 3000,
-          verticalPosition: 'top',
-        });
+        // this.snackBar.open( 'Profile update failed please try again !!', ' ', {
+        //   horizontalPosition: 'center',
+        //   duration: 3000,
+        //   verticalPosition: 'top',
+        // });
       }
        });
     }

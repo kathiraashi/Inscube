@@ -22,9 +22,9 @@ export class ProfileLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
 
   LoginUser;
   Cubes_List: any[] = [];
@@ -101,7 +101,7 @@ export class ProfileLeftComponent implements OnInit {
 
   privacy_model() {
     const initialState = {data : { User_Info : this.User_Info } };
-    this.modalRef = this.modalService.show( PrivacySettingsComponent, Object.assign({initialState}, { class: 'modal-md' }));
+    this.modalRef = this.modalService.show( PrivacySettingsComponent, Object.assign({initialState}, { class: 'maxWidth450' }));
     this.modalRef.content.onClose.subscribe(result => {
       if (result.Status) {
           this.User_Service.User_Info(this.User_Id).subscribe( datas => {
@@ -116,7 +116,7 @@ export class ProfileLeftComponent implements OnInit {
 
   password_change() {
     const initialState = {data : { User_Info : this.User_Info } };
-    this.modalRef = this.modalService.show( ChangePasswordComponent, Object.assign({initialState}, { class: 'modal-md' }));
+    this.modalRef = this.modalService.show( ChangePasswordComponent, Object.assign({initialState}, { class: 'maxWidth400' }));
     this.modalRef.content.onClose.subscribe(result => {
       if (result.Status) {
 

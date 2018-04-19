@@ -49,7 +49,7 @@ export class ChangePasswordComponent implements OnInit {
       this.Service.Password_Change(data).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True' ) {
             this.alert = false;
-            this.snackBar.open( 'New Password successfully updated' , ' ', {
+            this.snackBar.open( 'New password successfully updated' , ' ', {
               horizontalPosition: 'center',
               duration: 3000,
               verticalPosition: 'top',

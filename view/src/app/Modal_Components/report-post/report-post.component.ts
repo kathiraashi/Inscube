@@ -50,17 +50,17 @@ export class ReportPostComponent implements OnInit {
                 this.onClose.next({Status: 'True'});
                 this._bsModalRef.hide();
           } else if ( datas['Status'] === 'True' && datas['Output'] === 'False') {
-            this.snackBar.open( datas['Message'], ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( datas['Message'], ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
           } else {
-            this.snackBar.open( 'Post Report Failed Please try Again!!', ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
+            // this.snackBar.open( 'Post Report Failed Please try Again!!', ' ', {
+            //   horizontalPosition: 'center',
+            //   duration: 3000,
+            //   verticalPosition: 'top',
+            // });
             this._bsModalRef.hide();
           }
       });
