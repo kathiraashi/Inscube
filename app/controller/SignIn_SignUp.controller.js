@@ -183,7 +183,7 @@ exports.UserRegister = function(req, res) {
 // ---------------------------------------------------------------------- User Register Completion ---------------------------------------------------------------
 exports.UserRegisterCompletion = function(req, res) {
     User_Image_Upload(req, res, function(upload_err) {
-
+        
         if(!req.body.User_Id && req.body.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         // }else if(!req.body.Color_Code && req.body.Color_Code === '' ){
@@ -253,9 +253,9 @@ exports.UserValidate = function(req, res) {
                             res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while User Email Validate"});           
                         } else {
                             if (result_check === null) { 
-                                res.status(200).send({ Status:"True", Output:"False", Message: "Invalid Account Details!" });
+                                res.status(200).send({ Status:"True", Output:"False", Message: "Invalid account details!" });
                             }else{
-                                res.status(200).send({ Status:"True", Output:"False",  Message: "Email and Password Not Match!" });
+                                res.status(200).send({ Status:"True", Output:"False",  Message: "Email and password do not match!" });
                             }
                         }
                     });

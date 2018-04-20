@@ -26,9 +26,9 @@ import { PostService } from './../../service/post/post.service';
 })
 export class ProfileCenterComponent implements OnInit {
 
-  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
-  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
-  PostsBaseUrl = 'http://206.189.92.174:80/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  PostsBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;

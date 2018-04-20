@@ -47,3 +47,7 @@
     max-width: 350px;
     margin: 1.75rem auto;
 }
+
+vg-player video{
+    height: 400px;
+}

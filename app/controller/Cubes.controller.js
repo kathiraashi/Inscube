@@ -408,7 +408,34 @@ exports.User_Created_Cubes = function(req, res) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
         } else {
-            res.status(200).send({ Status:"True", Output: "True", Response: result });
+            var Return_Cubes = [];
+            const GetCubeInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
+                    result.map(info => CubeFilter(info)) 
+                ).then( result_1 => {  
+                    res.status(200).send({ Status:"True", Output: "True", Response: Return_Cubes });
+                }).catch( err_1 => { 
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
+                    res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
+                });
+
+            const CubeFilter = info => // Sub Promise For Cube Related Info Find --------------
+                Promise.all([ 
+                    CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id}).exec(),
+                    CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
+                    CubeModel.Cube_Followersschema.findOne({'Cube_Id': info._id, 'User_Id' : req.params.User_Id, 'Active_Status': 'Active' } ).exec(),
+                    ]).then( Data => {
+                        info = JSON.parse(JSON.stringify(info));
+                        if (Data[2] === null) {
+                            info.Category_Name = Data[0].Name;
+                            info.Members_Count = Data[1];
+                            Return_Cubes.push(info);
+                        }
+                        return Data[2];
+                    }).catch(error => {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
+                    });
+
+            GetCubeInfo(result); // Main Promise Call Function Cube --------------
         }
     });
 };

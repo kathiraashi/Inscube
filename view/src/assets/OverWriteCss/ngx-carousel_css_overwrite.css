@@ -18,9 +18,11 @@
     position: relative;
 }
 .ImageGallery .bannerStyle .bannerStyle_Inner .img_Part{
-    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    background-size: contain !important;
     height: 400px;
     width: 100%;
+    background-position: center !important;
 }
 .ImageGallery .bannerStyle h1 {
     text-align: center;
