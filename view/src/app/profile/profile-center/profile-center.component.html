@@ -69,6 +69,24 @@
             <div fxFlex class="text-center">
               <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Post.Post_Text}} </h5>
 
+              <ng-container *ngIf="Post.Post_Link !== '' && Post.Post_Link.indexOf('http://www.youtube') === -1 && Post.Post_Link.indexOf('https://youtu') === -1 && Post.Post_Link.indexOf('https://www.youtube') === -1">
+                <a href="{{Post.Post_Link_Info.url}}" target="blanck"> 
+                <div *ngIf="Post.Post_Link_Info !== ''" class="row thumpnailbox">
+                  <div class="col-sm-4 thumpnailbox-left">
+                      <img *ngIf="Post.Post_Link_Info.image !== ''" class="thumpnailbox-img" src="{{Post.Post_Link_Info.image}}" alt="">
+                      <img *ngIf="Post.Post_Link_Info.image === ''" class="thumpnailbox-img" src="assets/images/empty.jpg" alt="">
+                  </div>
+                  <div class="col-sm-8 thumpnailbox-right">
+                    <div class="thumpnailbox-textField">
+                        <p class="thumpnailbox-header"> {{Post.Post_Link_Info.title}} </p>
+                        <p class="thumpnailbox-decription"> {{Post.Post_Link_Info.description | slice:0:170}} {{Post.Post_Link_Info.description?.length > 170 ? '...' : ' ' }} </p>
+                    </div>
+                    <p class="thumpnailbox-link"> <a href="{{Post.Post_Link_Info.url}}" style="word-wrap: break-word" target="blanck"> {{Post.Post_Link_Info.url}}  </a> </p>
+                  </div>
+                </div>
+                </a>
+              </ng-container>
+              
               <ng-container *ngIf="Post.Attachments?.length > 0">
                 <ngx-carousel class="ImageGallery"
                   [inputs]="carouselBanner"

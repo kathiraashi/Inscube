@@ -71,6 +71,8 @@ import { ProfileCenterComponent } from './profile/profile-center/profile-center.
 import { EditProfileComponent } from './Modal_Components/edit-profile/edit-profile.component';
 import { PrivacySettingsComponent } from './Modal_Components/privacy-settings/privacy-settings.component';
 import { ChangePasswordComponent } from './Modal_Components/change-password/change-password.component';
+import { PrivacyComponent } from './privacy/privacy.component';
+import { TermsComponent } from './terms/terms.component';
 
 
 
@@ -110,7 +112,9 @@ import { ChangePasswordComponent } from './Modal_Components/change-password/chan
     ProfileCenterComponent,
     EditProfileComponent,
     PrivacySettingsComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    PrivacyComponent,
+    TermsComponent
   ],
   imports: [
       // Default Modules

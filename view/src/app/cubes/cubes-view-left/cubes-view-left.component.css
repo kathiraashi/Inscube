@@ -18,6 +18,8 @@
     margin: 0px;
     letter-spacing: 0.5px;
     line-height: 20px;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 .CubesLeftBar .CubeCategory{
     margin: 0px;

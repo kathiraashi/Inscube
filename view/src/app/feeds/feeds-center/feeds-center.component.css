@@ -406,6 +406,7 @@
 }
 .thumpnailbox-img{
     height: 130px;
+    width: 100%;
 }
 .thumpnailbox-right{
     padding: 0px;
@@ -418,11 +419,12 @@
 }
 .thumpnailbox-header{
     text-align: left;
-    font-size: 15px;
+    font-size: 14px;
     margin: 0px;
     font-weight: 600;
     font-family: 'Ubuntu', sans-serif;
     letter-spacing: 0.4px;
+    color: #373f46;
 }
 .thumpnailbox-decription{
     text-align: left;
@@ -434,7 +436,7 @@
 }
 .thumpnailbox-link{
     text-align: left;
-    font-size: 13px;
+    font-size: 12px;
     margin: 0px;
     font-family: 'Ubuntu', sans-serif;
     color: #114d72;

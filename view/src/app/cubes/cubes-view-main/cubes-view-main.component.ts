@@ -10,7 +10,7 @@ import { CubeViewRelatedService } from './../../component-connecting/cube-view-r
 })
 export class CubesViewMainComponent implements OnInit {
 
-  View_Source = 'Topics';
+  View_Source = 'Posts';
 
   constructor(private active_route: ActivatedRoute,
               private Cube_View_Source: CubeViewRelatedService

@@ -31,7 +31,7 @@ export class CubesViewLeftComponent implements OnInit {
   Members_List: any[] = [];
   Cube_Id;
   Cube_Info;
-  View_Source = 'Topics';
+  View_Source = 'Posts';
 
   constructor(private active_route: ActivatedRoute,
               private modalService: BsModalService,
@@ -72,8 +72,8 @@ export class CubesViewLeftComponent implements OnInit {
 
             });
 
-            this.Cube_View_Source.Cube_View_Source('Topics');
-            this.View_Source = 'Topics';
+            this.Cube_View_Source.Cube_View_Source('Posts');
+            this.View_Source = 'Posts';
           });
   }
 
@@ -101,8 +101,8 @@ export class CubesViewLeftComponent implements OnInit {
     this.Cube_Service.UnFollow_Cube(data).subscribe( datas => {
         if (datas['Status'] === 'True' ) {
             this.Cube_Info.Followed = false;
-            this.View_Source = 'Topics';
-            this.Cube_View_Source.Cube_View_Source('Topics');
+            this.View_Source = 'Posts';
+            this.Cube_View_Source.Cube_View_Source('Posts');
             const _index =  this.Members_List.findIndex(x => x._id === this.LoginUser._id);
             this.Members_List.splice(_index, 1);
         }

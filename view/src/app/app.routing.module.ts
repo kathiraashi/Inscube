@@ -12,6 +12,8 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { FeedsMainComponent } from './feeds/feeds-main/feeds-main.component';
     import { CubesViewMainComponent } from './cubes/cubes-view-main/cubes-view-main.component';
     import { ProfileMainComponent } from './profile/profile-main/profile-main.component';
+    import { PrivacyComponent } from './privacy/privacy.component';
+    import { TermsComponent } from './terms/terms.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -48,7 +50,17 @@ const appRoutes: Routes = [
         component: ProfileMainComponent,
         data: { animation: { value: 'Profile_View', } },
         canActivate: [AuthGuard]
-    }
+    },
+    { path: 'Privacy',
+        component: PrivacyComponent,
+        data: { animation: { value: 'Privacy', } },
+        canActivate: [NotAuthGuard]
+    },
+    { path: 'Terms',
+        component: TermsComponent,
+        data: { animation: { value: 'Terms', } },
+        canActivate: [NotAuthGuard]
+    },
 ];
 
 
