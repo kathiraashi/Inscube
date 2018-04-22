@@ -12,33 +12,35 @@
     border-radius: 10px;
 }
 .CubesLeftBar .Cubename{
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 700;
     color: #333333;
     margin: 0px;
-    letter-spacing: 0.5px;
-    line-height: 20px;
     word-wrap: break-word;
     word-break: break-all;
 }
 .CubesLeftBar .CubeCategory{
     margin: 0px;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     color: #666666;
-    line-height: 20px;
 }
 .CubesLeftBar .CubeFollowCount{
-    font-size: 13px;
+    font-size: 11px;
     color: #666666;
     margin: 0px;
-    letter-spacing: 0.5px;
-    line-height: 20px;
 }
 .CubesLeftBar  .CubeScurityType{
     margin: 0px;
     color: #2b546b;
-    line-height: 20px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 35px;
+    background-color: #0000001f;
 }
 .CubesLeftBar  i{
     font-size: 20px;

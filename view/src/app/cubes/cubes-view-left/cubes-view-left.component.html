@@ -13,7 +13,7 @@
               <i class="material-icons">lock</i>
             </ng-container>
             <ng-container *ngIf="Cube_Info.Security === 'Open'">
-              <i class="material-icons">public</i>
+              <i style="font-size: 21px" class="material-icons">public</i>
             </ng-container>
             <!-- <ng-container *ngIf="Cube_Info.Creator">
               <p class="edit_button"> Edit </p>
@@ -74,7 +74,7 @@
 
 
 
-    <ng-container *ngIf="Cube_Info.Creater">
+    <ng-container *ngIf="Cube_Info.Creator">
         <div class="Left_bar_Button">  
             <button (click)="Add_Topic_Model()"> Add Topic </button>
             <button (click)="View_Source_change('Posts')" *ngIf="View_Source === 'Topics'" > View Posts </button>
@@ -82,7 +82,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="Cube_Info.Followed && !Cube_Info.Creater">
+    <ng-container *ngIf="Cube_Info.Followed && !Cube_Info.Creator">
         <div class="Left_bar_Button">  
             <button (click)="Unfollow()" > Leave Cube </button>
             <button (click)="View_Source_change('Posts')" *ngIf="View_Source === 'Topics'" > View Posts </button>
@@ -90,7 +90,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="!Cube_Info.Followed && !Cube_Info.Creater">
+    <ng-container *ngIf="!Cube_Info.Followed && !Cube_Info.Creator">
 
         <div class="Left_bar_Button">  
             <ng-container *ngIf="Cube_Info.Security === 'Close'">

@@ -7,7 +7,7 @@
 
     <ng-container *ngIf="Posts_List?.length <= 0 && !Loader_1">
         <div style="width: 100%; height: 200px;text-align: center;">
-            <h5 style="line-height: 200px"> Posts are empty ! </h5>
+            <h5 style="line-height: 200px"> No posts available </h5>
         </div>
     </ng-container>
 
@@ -58,8 +58,6 @@
                             <button NgxCarouselPrev class="leftR">&lt;</button>
                             <button NgxCarouselNext class="rightR">&gt;</button>
                           </ngx-carousel>
-                      <!-- <img *ngFor="let Cubes of Post.Cubes_Info | slice:0:7; let j=index" [routerLink]="[ '/Cube_View', Cubes._id ]" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt="">  -->
-                      <!-- <span *ngIf="Post.Cubes_Info?.length > 7" style="font-size: 25px; margin: 0px 10px;line-height: 20px;color: #7f7f7f;"> .... </span> -->
                     </p>
                   </div>
                 </div>
@@ -73,7 +71,7 @@
             <div fxFlex class="text-center">
               <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Post.Post_Text}} </h5>
 
-              <ng-container *ngIf="Post.Post_Link !== '' && Post.Post_Link.indexOf('http://www.youtube') === -1 && Post.Post_Link.indexOf('https://youtu') === -1 && Post.Post_Link.indexOf('https://www.youtube') === -1">
+              <ng-container *ngIf="Post.Post_Link !== ''  && Post.Post_Link_Info && Post.Post_Link_Info !== '' && Post.Post_Link.indexOf('http://www.youtube') === -1 && Post.Post_Link.indexOf('https://youtu') === -1 && Post.Post_Link.indexOf('https://www.youtube') === -1">
                 <a href="{{Post.Post_Link_Info.url}}" target="blanck"> 
                 <div *ngIf="Post.Post_Link_Info !== ''" class="row thumpnailbox">
                   <div class="col-sm-4 thumpnailbox-left">
@@ -91,60 +89,62 @@
                 </a>
               </ng-container>
               
-              <ng-container *ngIf="Post.Attachments?.length > 0">
+              <ng-container *ngIf="Post.Attachments?.length > 0 || (Post.Post_Link !== '' && Post.Post_Link.indexOf('http://www.youtube') !== -1 || Post.Post_Link.indexOf('https://youtu') !== -1 || Post.Post_Link.indexOf('https://www.youtube') !== -1)">
                 <ngx-carousel class="ImageGallery"
                   [inputs]="carouselBanner"
                   (carouselLoad)="myfunc($event)">
-                    <ngx-item NgxCarouselItem *ngFor="let Attachment of Post.Attachments; let n =index">
-                      <div class="bannerStyle">
-                          <div *ngIf="Attachment.File_Type === 'Video'" class="bannerStyle_Inner">
-                            <p class="gallery_info_button"> <span> {{n + 1}} / {{Post.Attachments?.length}} </span> </p>
-                            <vg-player>
-                              <vg-controls>
-                                  <vg-play-pause></vg-play-pause>
-                                  <vg-playback-button></vg-playback-button>
-                            
-                                  <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                            
-                                  <vg-scrub-bar>
-                                      <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                                      <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-                                  </vg-scrub-bar>
-                            
-                                  <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-                            
-                                  <vg-mute></vg-mute>
-                                  <vg-volume></vg-volume>
-                            
-                                  <vg-fullscreen></vg-fullscreen>
-                              </vg-controls>
-                            
-                              <video #media [vgMedia]="media" height="400px" id="singleVideo" preload="auto" crossorigin>
-                                  <source src="{{PostsBaseUrl}}{{Attachment.File_Name}}" type="video/{{Attachment.File_Name | slice:-3}}">
-                              </video>
-                           </vg-player>
-                            <!-- <video src="{{PostsBaseUrl}}{{Attachment.File_Name}}" width="100%" height="400px" ></video>
-                            <p class="Video_button"> <i (click)="Show_Video(VideoModal, PostsBaseUrl + Attachment.File_Name)" class="material-icons">play_circle_outline</i> </p> -->
-                          </div>
-
-                          <div *ngIf="Attachment.File_Type === 'Image'" class="bannerStyle_Inner">
-                              <p class="gallery_info_button"> <span> {{n + 1}} / {{Post.Attachments?.length}} </span> </p>
-                              <div class="img_Part" [style.background]="'url(' + PostsBaseUrl + Attachment.File_Name + ')'"></div>
-                              <p class="Image_button"> <i (click)="Show_Image( PostsBaseUrl + Attachment.File_Name)"  class="material-icons">fullscreen</i> </p>
-                          </div>
+                  <ngx-item NgxCarouselItem *ngIf="Post.Post_Link !== '' && Post.Post_Link.indexOf('http://www.youtube') !== -1 || Post.Post_Link.indexOf('https://youtu') !== -1 || Post.Post_Link.indexOf('https://www.youtube') !== -1">
+                    <div class="bannerStyle" >
+                        <div class="bannerStyle_Inner">
+                          <p class="gallery_info_button"> 
+                            <ng-container *ngIf="Post.Attachments?.length > 0">
+                                <span> 1 / {{Post.Attachments?.length + 1}} </span> 
+                            </ng-container>
+                            <ng-container *ngIf="Post.Attachments?.length <= 0">
+                                <span> 1 / 1 </span> 
+                            </ng-container>
+                          </p>
+                          <youtube-player [height]="400" [videoId]="Post.Post_Link | slice:-11"></youtube-player>
+                        </div>
                       </div>
-                    </ngx-item>
+                  </ngx-item>
+                  <ngx-item NgxCarouselItem *ngFor="let Attachment of Post.Attachments; let n =index">
+                    <div class="bannerStyle">
 
-                    <button NgxCarouselPrev class='leftRs'>&lt;</button>
-                    <button NgxCarouselNext class='rightRs'>&gt;</button>
+                        <div *ngIf="Attachment.File_Type === 'Video'" class="bannerStyle_Inner">
+                          <p class="gallery_info_button">
+                              <ng-container *ngIf="Post.Post_Link !== '' && Post.Post_Link.indexOf('http://www.youtube') !== -1 || Post.Post_Link.indexOf('https://youtu') !== -1 || Post.Post_Link.indexOf('https://www.youtube') !== -1">
+                                <span> {{n + 2}} / {{Post.Attachments?.length + 1}} </span>
+                              </ng-container>
+                              <ng-container *ngIf="Post.Post_Link === '' || Post.Post_Link.indexOf('http://www.youtube') === -1 && Post.Post_Link.indexOf('https://youtu') === -1 && Post.Post_Link.indexOf('https://www.youtube') === -1">
+                                <span> {{n + 1}} / {{Post.Attachments?.length}} </span>
+                              </ng-container>
+                          </p>
+                          <video controls height="400px" width="100%">
+                              <source src="{{PostsBaseUrl}}{{Attachment.File_Name}}" type="video/{{Attachment.File_Name | slice:-3}}">
+                          </video>
+                        </div>
+
+                        <div *ngIf="Attachment.File_Type === 'Image'" class="bannerStyle_Inner">
+                            <p class="gallery_info_button"> 
+                              <ng-container *ngIf="Post.Post_Link !== '' && Post.Post_Link.indexOf('http://www.youtube') !== -1 || Post.Post_Link.indexOf('https://youtu') !== -1 || Post.Post_Link.indexOf('https://www.youtube') !== -1">
+                                <span> {{n + 2}} / {{Post.Attachments?.length + 1}} </span>
+                              </ng-container>
+                              <ng-container *ngIf="Post.Post_Link === '' || Post.Post_Link.indexOf('http://www.youtube') === -1 && Post.Post_Link.indexOf('https://youtu') === -1 && Post.Post_Link.indexOf('https://www.youtube') === -1">
+                                <span> {{n + 1}} / {{Post.Attachments?.length}} </span>
+                              </ng-container>
+                            </p>
+                            <div class="img_Part" [style.background]="'url(' + PostsBaseUrl + Attachment.File_Name + ')'"></div>
+                            <p class="Image_button"> <i (click)="Show_Image( PostsBaseUrl + Attachment.File_Name)"  class="material-icons">fullscreen</i> </p>
+                        </div>
+                    </div>
+                  </ngx-item>
+
+                  <button NgxCarouselPrev class='leftRs'>&lt;</button>
+                  <button NgxCarouselNext class='rightRs'>&gt;</button>
                 </ngx-carousel>
               </ng-container>
 
-              <!-- <div>
-                  <div style="text-align:center;padding:10px;">
-                      <img style="width: 100%; height: 350px;" src="assets/images/bg.jpg" alt="">
-                  </div>
-              </div> -->
             </div>
           </div>
           <!-- Highlights Post END -->

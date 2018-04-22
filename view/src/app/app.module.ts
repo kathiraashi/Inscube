@@ -28,6 +28,7 @@
   import { VgCoreModule } from 'videogular2/core';
   import { VgControlsModule } from 'videogular2/controls';
   import { LightboxModule } from 'angular2-lightbox';
+  import { YoutubePlayerModule } from 'ngx-youtube-player';
 
 // Service Module
   import { DataSharedVarServiceService } from './service/data-shared-var-service/data-shared-var-service.service';
@@ -73,6 +74,8 @@ import { PrivacySettingsComponent } from './Modal_Components/privacy-settings/pr
 import { ChangePasswordComponent } from './Modal_Components/change-password/change-password.component';
 import { PrivacyComponent } from './privacy/privacy.component';
 import { TermsComponent } from './terms/terms.component';
+import { AboutComponent } from './about/about.component';
+import { ContactComponent } from './contact/contact.component';
 
 
 
@@ -114,7 +117,9 @@ import { TermsComponent } from './terms/terms.component';
     PrivacySettingsComponent,
     ChangePasswordComponent,
     PrivacyComponent,
-    TermsComponent
+    TermsComponent,
+    AboutComponent,
+    ContactComponent
   ],
   imports: [
       // Default Modules
@@ -140,7 +145,8 @@ import { TermsComponent } from './terms/terms.component';
         NgxCarouselModule,
         VgCoreModule,
         VgControlsModule,
-        LightboxModule
+        LightboxModule,
+        YoutubePlayerModule
   ],
   providers: [
               AuthGuard,

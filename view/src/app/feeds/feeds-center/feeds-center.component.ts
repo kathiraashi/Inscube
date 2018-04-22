@@ -27,9 +27,9 @@ import { PostService } from './../../service/post/post.service';
 })
 export class FeedsCenterComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  PostsBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  PostsBaseUrl = 'http://206.189.92.174:80/API/Uploads/Post_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;
@@ -256,6 +256,7 @@ export class FeedsCenterComponent implements OnInit {
           this.Posts_List[_index].Post_Text = result.Response.Post_Text;
           this.Posts_List[_index].Cubes_Id = result.Response.Cubes_Id;
           this.Posts_List[_index].Cubes_Info = result.Response.Cubes_Info;
+          this.Posts_List[_index].Post_Link = result.Response.Post_Link;
           this.Posts_List[_index].Attachments = result.Response.Attachments;
           this.Posts_List[_index].updatedAt = result.Response.updatedAt;
          }

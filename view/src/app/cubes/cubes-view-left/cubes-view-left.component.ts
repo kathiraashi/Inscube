@@ -23,9 +23,9 @@ export class CubesViewLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
 
   LoginUser;
   Members_List: any[] = [];
@@ -46,11 +46,13 @@ export class CubesViewLeftComponent implements OnInit {
             this.Cube_Service.View_Cube(this.Cube_Id, this.LoginUser._id).subscribe( datas => {
                 if (datas['Status'] === 'True') {
                     this.Cube_Info = datas['Response'];
+                    console.log(this.Cube_Info);
                     if (this.Cube_Info.User_Id ===  this.LoginUser._id) {
                         this.Cube_Info.Creator = true;
                     } else {
                         this.Cube_Info.Creator = false;
                     }
+                    console.log(this.Cube_Info);
                 }
 
                 this.Cube_Service.Cube_Members(this.Cube_Id).subscribe( result => {

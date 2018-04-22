@@ -25,9 +25,9 @@ export class DiscoverCubesComponent implements OnInit {
   public Category_List: Array<any> = [];
   public carouselTile: NgxCarousel;
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
+  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
 
   LoginUser;
   Cubes_List;

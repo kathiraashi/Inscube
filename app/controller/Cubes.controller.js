@@ -408,6 +408,7 @@ exports.User_Created_Cubes = function(req, res) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
         } else {
+            
             var Return_Cubes = [];
             const GetCubeInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
                     result.map(info => CubeFilter(info)) 
@@ -422,15 +423,12 @@ exports.User_Created_Cubes = function(req, res) {
                 Promise.all([ 
                     CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id}).exec(),
                     CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
-                    CubeModel.Cube_Followersschema.findOne({'Cube_Id': info._id, 'User_Id' : req.params.User_Id, 'Active_Status': 'Active' } ).exec(),
                     ]).then( Data => {
                         info = JSON.parse(JSON.stringify(info));
-                        if (Data[2] === null) {
                             info.Category_Name = Data[0].Name;
                             info.Members_Count = Data[1];
                             Return_Cubes.push(info);
-                        }
-                        return Data[2];
+                        return Data[1];
                     }).catch(error => {
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
                     });

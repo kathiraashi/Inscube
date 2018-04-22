@@ -23,7 +23,7 @@ var app = express();
 
 // DB Connection
 // mongodb://kathiravan:kathir143@ds241699.mlab.com:41699/inscube
-    mongoose.connect('mongodb://kathiravan:kathir143@ds241699.mlab.com:41699/inscube');
+    mongoose.connect('mongodb://localhost/Inscube');
     mongoose.connection.on('error', function(err) {
         ErrorManagement.ErrorHandling.ErrorLogCreation('', 'Mongodb Connection Error', 'Server.js - 31', err);
     });

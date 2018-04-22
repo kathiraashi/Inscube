@@ -14,6 +14,8 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { ProfileMainComponent } from './profile/profile-main/profile-main.component';
     import { PrivacyComponent } from './privacy/privacy.component';
     import { TermsComponent } from './terms/terms.component';
+    import { AboutComponent } from './about/about.component';
+    import { ContactComponent } from './contact/contact.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -59,6 +61,16 @@ const appRoutes: Routes = [
     { path: 'Terms',
         component: TermsComponent,
         data: { animation: { value: 'Terms', } },
+        canActivate: [NotAuthGuard]
+    },
+    { path: 'About',
+        component: AboutComponent,
+        data: { animation: { value: 'About', } },
+        canActivate: [NotAuthGuard]
+    },
+    { path: 'Contact',
+        component: ContactComponent,
+        data: { animation: { value: 'Contact', } },
         canActivate: [NotAuthGuard]
     },
 ];

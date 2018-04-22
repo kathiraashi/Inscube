@@ -18,7 +18,9 @@
 @import './assets/OverWriteCss/material_overwrite.css';
 @import './assets/OverWriteCss/ngx-carousel_css_overwrite.css';
 
-
+a:hover{
+ text-decoration: none;
+}
 .maxWidth700{
     max-width: 700px;
     margin:1.75rem auto;
@@ -48,6 +50,22 @@
     margin: 1.75rem auto;
 }
 
-vg-player video{
-    height: 400px;
+.ImageGallery .bannerStyle .bannerStyle_Inner{
+    max-height: 400px
+}
+
+video::-internal-media-controls-download-button {
+    display:none;
+}
+
+video::-webkit-media-controls-enclosure {
+    overflow:hidden;
+}
+
+video::-webkit-media-controls-panel {
+    width: calc(100% + 30px); /* Adjust as needed */
+}
+
+youtube-player iframe{
+    width: 100% !important;
 }
