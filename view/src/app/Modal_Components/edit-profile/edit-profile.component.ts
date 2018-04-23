@@ -18,7 +18,7 @@ import { SigninSignupService } from './../../service/signin-signup/signin-signup
 })
 export class EditProfileComponent implements OnInit {
 
-  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
 
   colorTheme = 'theme-red';
   bsConfig: Partial<BsDatepickerConfig>;

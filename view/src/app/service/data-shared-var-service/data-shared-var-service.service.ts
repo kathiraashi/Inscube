@@ -8,13 +8,7 @@ export interface SingUpType { Type: String; Values: any; }
 
 export interface CategoryId { Category_Id: String; Category_Name: any; }
 
-export interface ProfilePage { UserId: String; Other: String; }
-
-export interface TopicQuestions { TopicId: String; Other: String; }
-
-export interface SocialLoginRouting { Provider: String; Other: String; }
-
-export interface SharePostRouting { PostId: String; PostType: String; }
+export interface InviteRouting { CubeId: String; Other: String; }
 
 @Injectable()
 export class DataSharedVarServiceService {
@@ -23,11 +17,8 @@ export class DataSharedVarServiceService {
   StoreSingUpType: SingUpType = { Type: '', Values : '' };
   StoreReturnUrl: ReturnUrl = { Url : '', Id : '' };
   StoreActiveSinInsignUpTab: ActiveSinInsignUpTab = { ActiveTab : '', Email : '' };
-  StoreProfilePage: ProfilePage = { UserId : '', Other : '' };
   StoreCategory_Id: CategoryId = { Category_Id : '', Category_Name : '' };
-  StoreTopicQuestions: TopicQuestions = { TopicId : '', Other : '' };
-  StoreSocialLoginRouting: SocialLoginRouting = { Provider : '', Other : '' };
-  StoreSharePost: SharePostRouting = { PostId : '', PostType : '' };
+  StoreInviteRoute: InviteRouting = { CubeId : '', Other : '' };
 
   constructor() { }
 
@@ -43,34 +34,13 @@ export class DataSharedVarServiceService {
   GetActiveSinInsignUpTab() { return this.StoreActiveSinInsignUpTab; }
 
 
-  SetProfilePage(UserId, Other= null) {this.StoreProfilePage.UserId = UserId; this.StoreProfilePage.Other = Other; }
-  GetProfilePage() { return this.StoreProfilePage; }
-
-
-
   SetCategory_Id(Category_Id, Category_Name) {
     this.StoreCategory_Id.Category_Id = Category_Id; this.StoreCategory_Id.Category_Name = Category_Name; }
   GetCategory_Id() { return this.StoreCategory_Id; }
 
 
-
-  SetTopicQuestions(TopicId, Other= null) {this.StoreTopicQuestions.TopicId = TopicId; this.StoreTopicQuestions.Other = Other; }
-  GetTopicQuestions() { return this.StoreTopicQuestions; }
-
-
-
-  SetSocialLoginRouting(Provider, Other= null) {
-    this.StoreSocialLoginRouting.Provider = Provider; this.StoreSocialLoginRouting.Other = Other;
-  }
-  GetSocialLoginRouting() { return this.StoreSocialLoginRouting; }
-
-
-
-
-  SetSharePost(PostId, PostType) {
-    this.StoreSharePost.PostId = PostId; this.StoreSharePost.PostType = PostType;
-  }
-  GetSharePost() { return this.StoreSharePost; }
+  SetInviteRoute(CubeId, Other= null) { this.StoreInviteRoute.CubeId = CubeId; this.StoreInviteRoute.Other = Other; }
+  GetInviteRoute() { return this.StoreInviteRoute; }
 
 
 

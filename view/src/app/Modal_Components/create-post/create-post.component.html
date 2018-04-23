@@ -70,6 +70,9 @@
                 </div>
             </div>
     
+            <p style="margin: 0px;color: #888;font-size: 14px;">
+                Select cubes
+            </p>
     
             <div fxLayout fxLayoutAlign="space-between end">
                 <div fxFlex="85%">
@@ -82,7 +85,7 @@
 
 
                     <div *ngIf="Cubes_List?.length > slice_Count">
-                        <p (click)="select_More_Model()" style="line-height: 70px;" class="viewall">  View More... </p>
+                        <p (click)="select_More_Model()" class="viewall"> ... </p>
                     </div>
     
                     </div>

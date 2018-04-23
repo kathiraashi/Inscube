@@ -2,22 +2,24 @@
     position: relative;
 }
 .CubesLeftBar .cubediv{
-    padding: 7px;
+    padding: 10px 7px 7px 7px;
     text-align: left
 }
 
 .CubesLeftBar .Cubeimg{
-    width: 90px;
-    height: 90px;
+    width: 75px;
+    height: 75px;
+    margin-right: 5px;
     border-radius: 10px;
 }
 .CubesLeftBar .Cubename{
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #333333;
     margin: 0px;
     word-wrap: break-word;
     word-break: break-all;
+    line-height: 15px;
 }
 .CubesLeftBar .CubeCategory{
     margin: 0px;
@@ -62,7 +64,7 @@
 .cube_info_icon {
     display: flex;
     padding-left: 10PX;
-    margin-bottom: 10PX;    
+    margin-bottom: 5PX;    
 }
 .cube_info_icon i{
     line-height: 30px;
@@ -160,8 +162,10 @@
 
 
 .edit_button{
-    font-size: 13px;
+    font-size: 12px;
     margin-bottom: 0px;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
     display: inline-flex;
     position: absolute;
     margin-left: 10px;
@@ -170,6 +174,38 @@
     letter-spacing: 0.7px;
     cursor: pointer;
     background-color: #d75739;
-    padding: 1px 12px;
-    border-radius: 5px;
+    padding: 0px 10px;
+    border-radius: 15px;
+    line-height: 20px;
+}
+
+.dropd{
+    width: 125px;
+    padding: 0px 5px;
+    background-color: #f3f3f3;
+}
+
+.dropd .dropd_text{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #666666a3;
+    line-height: 33px;
+    margin: 0px;
+}
+
+.dropd .dropd_icon i{
+    color: #666666a3;
+    font-size: 23px;
+    margin-top: 6px;
+}
+.dropdarrow{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #f3f3f3;
+    top: -3px;
+    left: 15px;
+    transform: rotate(45DEG);
+    z-index: -1;
 }

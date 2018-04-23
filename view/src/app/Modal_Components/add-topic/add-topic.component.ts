@@ -20,8 +20,8 @@ export class AddTopicComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
-  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
 
   data;
 

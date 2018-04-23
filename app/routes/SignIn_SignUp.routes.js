@@ -16,4 +16,6 @@ module.exports = function(app) {
         app.get('/API/Signin_Signup/AndroidVersionUpdate/:Version', Controller.AndroidVersionUpdate);
         app.get('/API/Signin_Signup/AndroidVersionGet/', Controller.AndroidVersionGet);
 
+        app.get('/API/Signin_Signup/Send_Verify_Email/:Email', Controller.SendVerifyEmail);
+
 };

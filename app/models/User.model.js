@@ -14,7 +14,8 @@ var UserSchema = mongoose.Schema({
     Hash_Tag_2: String,
     Hash_Tag_3: String,
     Show_Profile_To: String,
-    Active_Status: String
+    Active_Status: String,
+    Email_Verify_Token: String
     }, 
     { timestamps: true }
 );

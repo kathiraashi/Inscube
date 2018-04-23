@@ -25,4 +25,6 @@ module.exports = function(app) {
         app.get('/API/Cubes/User_UnFollowed_Cubes/:User_Id', Controller.User_UnFollowed_Cubes);
 
         app.get('/API/Cubes/Cube_Members/:Cube_Id', Controller.Cube_Members);
+
+        app.get('/API/Cubes/Check_Invite_CubeId/:Cube_Id', Controller.Check_Invite_CubeId);
 };

@@ -518,3 +518,24 @@ exports.Cube_Members = function(req, res) {
         });
     }
 };
+
+
+// ---------------------------------------------------------------------- Cube Invite Check if cube is active ----------------------------------------------------------
+exports.Check_Invite_CubeId = function(req, res) {
+    CubeModel.CubesSchema.findOne({'_id': req.params.Cube_Id}, { __v:0}, function(err, result) {
+        if(err) {
+            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube View Find Query Error', 'Cubes.controller.js - 101', err);
+            res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cube Info."});
+        } else {
+            if (result !== null) {
+                if (result.Active_Status === 'Active'){
+                    res.status(200).send({ Status:"True", Output: "True" });
+                } else {
+                    res.status(200).send({ Status:"True", Output: "False" });
+                }
+            } else {
+                res.status(200).send({ Status:"False", Output: "False" });
+            }
+        }
+    });
+};

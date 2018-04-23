@@ -1,32 +1,38 @@
 <div class="CubesLeftBar" *ngIf="Cube_Info !== undefined ">
   <!-- UserDetails -->
+
+    <p *ngIf="Cube_Info.Creator" style="margin:0px;height:20px;position:absolute;right:5px;cursor:pointer;"> 
+        <i style="height:20px;font-size:22px;" [matMenuTriggerFor]="ReportHighlightPost" class="material-icons">more_horiz</i>
+    </p>
+
   <div class="cubediv" fxLayout="row" fxLayoutAlign="start center">
-      <div fxFlex="100px" class="text-center">
+      <div fxFlex="80px" class="text-center">
           <img class="Cubeimg" src="{{CubeBaseUrl}}{{Cube_Info.Image}}" alt="">
       </div>
       <div fxFlex class="text-left">
-          <p class="Cubename"> {{Cube_Info.Name}} </p>
+          <p class="Cubename"> {{Cube_Info.Name | slice:0:40 }}{{ Cube_Info.Name?.length > 40 ? '...' : ' ' }} </p>
           <p class="CubeCategory"> {{Cube_Info.Category_Name}}</p>
-          <p class="CubeFollowCount"> {{Cube_Info.Members}} Members</p>
-          <p class="CubeScurityType">
-            <ng-container *ngIf="Cube_Info.Security === 'Close'">
-              <i class="material-icons">lock</i>
-            </ng-container>
-            <ng-container *ngIf="Cube_Info.Security === 'Open'">
-              <i style="font-size: 21px" class="material-icons">public</i>
-            </ng-container>
-            <!-- <ng-container *ngIf="Cube_Info.Creator">
-              <p class="edit_button"> Edit </p>
-            </ng-container> -->
-          </p>
+          <p class="CubeFollowCount"> {{Cube_Info.Members}} Members </p>
       </div>
   </div>
   <!-- UserDetails End -->
-  
+    <div style="position: relative;margin-left: 10px;">
+        <span style="font-size: 15px;font-weight: 600;margin-right: 10px;"> Security: </span>
+        <ng-container *ngIf="Cube_Info.Security === 'Close'">
+            <span style="font-size: 14px;font-weight: 500;margin-right: 5px;color: #999"> Close </span> 
+            <i style="font-size: 16px; position: absolute; top: 5px;color:#999" class="material-icons">lock</i>
+            </ng-container>
+            <ng-container *ngIf="Cube_Info.Security === 'Open'">
+            <span style="font-size: 14px;font-weight: 500;margin-right: 5px;color: #999"> Open </span>
+            <i style="font-size: 16px; position: absolute; top: 5px;color:#999" class="material-icons">public</i>
+        </ng-container>
+    </div>
   <div class="discription_div">
     <p class="dis_title"> Description: </p>
     <p class="discription"> &emsp; &emsp; {{Cube_Info.Description | slice:0:300 }}{{ Cube_Info.Description?.length > 300 ? '...' : ' ' }} </p>
   </div>
+
+
 
   <div class="cube_info_icon">
     <i class="material-icons" >location_on</i>
@@ -103,7 +109,35 @@
 
     </ng-container>
 
+    <!-- <ng-container *ngIf="Cube_Info.Creator">
+        <div class="Left_bar_Button">  
+            <button > Delete Cube </button>
+            <button > Edit Cube </button>
+        </div>
+    </ng-container> -->
+
 
 
 
 </div>
+
+    <mat-menu #ReportHighlightPost="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+        <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="dropd_icon" fxFlex="30px">
+                <i class="material-icons">border_color</i>
+            </div>
+            <div fxFlex>
+                <p class="dropd_text">Edit </p>
+            </div>
+        </div>
+        <div class="dropdarrow"></div>
+        <hr class="m-0">
+        <div *ngIf="Cube_Info !== undefined " ngxClipboard  [cbContent]="'http://localhost:4200/Invite_Cube/' + Cube_Info._id" (cbOnSuccess)="link_Copy()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+            <div class="dropd_icon" fxFlex="30px">
+                <i style="font-size: 20px" class="material-icons">content_copy</i>
+            </div>
+            <div fxFlex>
+                <p class="dropd_text"> Invite Link </p>
+            </div>
+        </div>
+    </mat-menu>

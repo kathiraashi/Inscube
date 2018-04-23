@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 
 import { SigninSignupService } from './../service/signin-signup/signin-signup.service';
+import { DataSharedVarServiceService } from './../service/data-shared-var-service/data-shared-var-service.service';
 
 @Component({
   selector: 'app-profile-completion',
@@ -15,7 +16,7 @@ import { SigninSignupService } from './../service/signin-signup/signin-signup.se
 })
 export class ProfileCompletionComponent implements OnInit {
 
-  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
 
   colorTheme = 'theme-red';
   bsConfig: Partial<BsDatepickerConfig>;
@@ -45,13 +46,17 @@ export class ProfileCompletionComponent implements OnInit {
   Show_Img_Preview: Boolean = false;
   Preview_Img: any ;
 
+  If_Invite;
+
   constructor(  private router: Router,
                 private formBuilder: FormBuilder,
                 private Service: SigninSignupService,
-                public snackBar: MatSnackBar ) {
+                public snackBar: MatSnackBar,
+                private ShareingService: DataSharedVarServiceService) {
         this.bsConfig = Object.assign({}, { containerClass: this.colorTheme, dateInputFormat: 'DD/MM/YYYY' });
         this.Gender_List = [{name: 'Male'}, {name: 'Female'}, {name: 'Others'}, {name: 'Not specify'}];
         this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
+        this.If_Invite = this.ShareingService.GetInviteRoute();
   }
 
   ngOnInit() {
@@ -111,31 +116,22 @@ export class ProfileCompletionComponent implements OnInit {
       this.Service.Register_Completion(this.FormData).subscribe( datas => {
         if (datas['Status'] === 'True') {
           if (datas['Output'] === 'True') {
-            // this.snackBar.open( 'Profile successfully updated' , ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
-            this.router.navigate(['Categories']);
-          } else {
-            // this.snackBar.open( datas['Message'] , ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
+            if (this.If_Invite.CubeId !== '' ) {
+              this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
+            } else {
+              this.router.navigate(['Categories']);
+            }
           }
-      } else {
-        // this.snackBar.open( 'Profile update failed please try again !!', ' ', {
-        //   horizontalPosition: 'center',
-        //   duration: 3000,
-        //   verticalPosition: 'top',
-        // });
-      }
-       });
+        }
+      });
     }
 
   Skip() {
-    this.router.navigate(['Categories']);
+    if (this.If_Invite.CubeId !== '' ) {
+      this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
+    } else {
+      this.router.navigate(['Categories']);
+    }
  }
 
 }

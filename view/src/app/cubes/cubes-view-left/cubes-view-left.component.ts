@@ -3,10 +3,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { MatSnackBar } from '@angular/material';
 
 
 import { JoinConfirmationComponent } from './../../Modal_Components/join-confirmation/join-confirmation.component';
 
+import { DataSharedVarServiceService } from './../../service/data-shared-var-service/data-shared-var-service.service';
 
 import { AddTopicComponent } from './../../Modal_Components/add-topic/add-topic.component';
 import { CubeViewRelatedService } from './../../component-connecting/cube-view-related/cube-view-related.service';
@@ -23,9 +25,9 @@ export class CubesViewLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://206.189.92.174:80/API/Uploads/Category/';
-  UsersBaseUrl = 'http://206.189.92.174:80/API/Uploads/Users/';
-  CubeBaseUrl = 'http://206.189.92.174:80/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
 
   LoginUser;
   Members_List: any[] = [];
@@ -33,27 +35,41 @@ export class CubesViewLeftComponent implements OnInit {
   Cube_Info;
   View_Source = 'Posts';
 
+  If_Invite;
+
   constructor(private active_route: ActivatedRoute,
               private modalService: BsModalService,
+              public snackBar: MatSnackBar,
               private router: Router,
               private Cube_Service: CubeService,
-              private Cube_View_Source: CubeViewRelatedService
+              private Cube_View_Source: CubeViewRelatedService,
+              private ShareingService: DataSharedVarServiceService,
             ) {
         this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
+
+        this.If_Invite = this.ShareingService.GetInviteRoute();
 
         this.active_route.url.subscribe((u) => {
             this.Cube_Id = this.active_route.snapshot.params['Cube_Id'];
             this.Cube_Service.View_Cube(this.Cube_Id, this.LoginUser._id).subscribe( datas => {
                 if (datas['Status'] === 'True') {
                     this.Cube_Info = datas['Response'];
-                    console.log(this.Cube_Info);
                     if (this.Cube_Info.User_Id ===  this.LoginUser._id) {
                         this.Cube_Info.Creator = true;
                     } else {
                         this.Cube_Info.Creator = false;
                     }
-                    console.log(this.Cube_Info);
+
+                    if (this.If_Invite.CubeId !== '' && this.Cube_Info.Security === 'Close') {
+                        this.JoinCodeGet();
+                        this.If_Invite = this.ShareingService.SetInviteRoute('');
+                      }
+                    if (this.If_Invite.CubeId !== '' && this.Cube_Info.Security === 'Open') {
+                        this.DirectJoin();
+                        this.If_Invite = this.ShareingService.SetInviteRoute('');
+                      }
                 }
+                this.ShareingService.SetInviteRoute('');
 
                 this.Cube_Service.Cube_Members(this.Cube_Id).subscribe( result => {
                     if (result['Status'] === 'True') {
@@ -71,12 +87,10 @@ export class CubesViewLeftComponent implements OnInit {
                         }
                     }
                 });
-
             });
-
             this.Cube_View_Source.Cube_View_Source('Posts');
             this.View_Source = 'Posts';
-          });
+        });
   }
 
 
@@ -139,6 +153,14 @@ export class CubesViewLeftComponent implements OnInit {
             });
           }
       });
+  }
+
+  link_Copy() {
+    this.snackBar.open( 'Invite link copy to clipboard' , ' ', {
+        horizontalPosition: 'center',
+        duration: 3000,
+        verticalPosition: 'top',
+    });
   }
 
 }

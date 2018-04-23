@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material';
 
 import { DataSharedVarServiceService } from './../service/data-shared-var-service/data-shared-var-service.service';
 import { SigninSignupService } from './../service/signin-signup/signin-signup.service';
-
+import { CubeService } from './../service/cube/cube.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -28,12 +28,16 @@ export class LoginComponent implements OnInit {
   RegisterForm: FormGroup;
   SignInForm: FormGroup;
 
+  If_Invite;
+
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private Service: SigninSignupService,
               private ShareingService: DataSharedVarServiceService,
-              public snackBar: MatSnackBar) {
+              public snackBar: MatSnackBar,
+              private Cube_Service: CubeService) {
                 this.ActiveTab_New = this.ShareingService.GetActiveSinInsignUpTab();
+                this.If_Invite = this.ShareingService.GetInviteRoute();
                }
 
   ngOnInit() {
@@ -59,6 +63,37 @@ export class LoginComponent implements OnInit {
         this.RegisterForm.controls['Email'].setValue(this.ActiveTab_New['Email']);
       }
     }
+
+    if (this.If_Invite.CubeId !== '' ) {
+      if ( (this.If_Invite.CubeId).length === 25 ) {
+        this.Cube_Service.Check_Invite_CubeId(this.If_Invite.CubeId).subscribe( datas => {
+          if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+            this.snackBar.open( 'Please login or register after join the cube', ' ', {
+              horizontalPosition: 'center',
+              duration: 5000,
+              verticalPosition: 'top',
+            });
+          } else if (datas['Status'] === 'True' && datas['Output'] === 'False') {
+            this.snackBar.open( 'Your invite cube is deleted!', ' ', {
+              horizontalPosition: 'center',
+              duration: 5000,
+              verticalPosition: 'top',
+            });
+            this.If_Invite = this.ShareingService.SetInviteRoute('');
+          }
+        });
+      } else {
+        this.snackBar.open( 'Your invite url is invalid!', ' ', {
+          horizontalPosition: 'center',
+          duration: 5000,
+          verticalPosition: 'top',
+        });
+        this.If_Invite = this.ShareingService.SetInviteRoute('');
+      }
+
+
+    }
+
   }
 
   ActiveTabchange(name) {
@@ -129,7 +164,7 @@ export class LoginComponent implements OnInit {
         this.Service.Register(this.RegisterForm.value).subscribe( datas => {
           if (datas['Status'] === 'True') {
               if (datas['Output'] === 'True') {
-              this.router.navigate(['Profile_Completion']);
+                this.router.navigate(['Profile_Completion']);
               } else {
               // this.snackBar.open( datas['Message'] , ' ', {
               //   horizontalPosition: 'center',
@@ -155,7 +190,11 @@ export class LoginComponent implements OnInit {
       .subscribe( datas => {
         if (datas['Status'] === 'True') {
            if (datas['Output'] === 'True') {
-            this.router.navigate(['Cube_Posts']);
+            if (this.If_Invite.CubeId !== '' ) {
+              this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
+            } else {
+              this.router.navigate(['Cube_Posts']);
+            }
            } else {
             this.snackBar.open( datas['Message'] , ' ', {
               horizontalPosition: 'center',

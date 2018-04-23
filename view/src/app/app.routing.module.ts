@@ -16,9 +16,15 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { TermsComponent } from './terms/terms.component';
     import { AboutComponent } from './about/about.component';
     import { ContactComponent } from './contact/contact.component';
+    import { InviteCubeRedirectionComponent } from './invite-cube-redirection/invite-cube-redirection.component';
 
 const appRoutes: Routes = [
     { path: '',
+        component: LoginComponent,
+        data: { animation: { value: 'Login', } },
+        canActivate: [NotAuthGuard]
+    },
+    { path: 'Login',
         component: LoginComponent,
         data: { animation: { value: 'Login', } },
         canActivate: [NotAuthGuard]
@@ -72,6 +78,10 @@ const appRoutes: Routes = [
         component: ContactComponent,
         data: { animation: { value: 'Contact', } },
         canActivate: [NotAuthGuard]
+    },
+    { path: 'Invite_Cube/:Cube_Id',
+        component: InviteCubeRedirectionComponent,
+        data: { animation: { value: 'Invite_Cube', } }
     },
 ];
 

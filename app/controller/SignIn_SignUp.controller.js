@@ -8,6 +8,11 @@ var multer = require('multer');
 var CubeModel = require('../models/Cubes.model.js');
 
 
+var api_key = 'key-1018902c1f72fc21e3dc109706b593e3';
+var domain = 'www.inscube.com';
+var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
+
+
 // User Image Upload Disk Storage and Validate Functions ----------------------------------------------------------------------------------------
 var User_Image_Storage = multer.diskStorage({
         destination: (req, file, cb) => { cb(null, './Uploads/Users'); },
@@ -443,6 +448,52 @@ exports.Password_Change = function(req, res) {
                 }
             }
         });
+    }
+};
+
+
+exports.SendVerifyEmail = function(req, res) {
+    
+    if(!req.params.Email &&  req.params.Email === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
+    }else{
+        UserModel.UserSchema.findOne({'Email': req.params.Email.toLowerCase()}, function(err, data) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                res.status(500).send({ Status:"False", Error:err, Message: "Some error occurred while Validate The E-mail " });
+            } else {
+                if(data === null){
+                    res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid Acoount!' });
+                }else{
+                    
+                var rand=Math.floor((Math.random() * 100) + 54);
+                    var link = "http://www.inscube.com/SetNewpassword/" + data._id + "/" + rand;
+                    var SendData = {
+                        from: 'Inscube <insocialcube@gmail.com>',
+                        to: req.params.Email,
+                        subject: 'E-mail Verification',
+                        html: '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"><table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"><tbody><tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:500px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"><div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:500px;padding:10px;text-align:left" align="left"><table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"><tbody><tr><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"><tbody><tr style="font-family: sans-serif; line-height:20px" ><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"><img src="http://www.inscube.com/assets/images/logo.png" style="width:40%; margin-left:30%" alt="Inscube Logo"><p style="font-size:14px;">Hi there,</p><p style="font-size:14px;"> To complete the email verification process, Please click the link below then Reset Your Password .</p><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;margin-bottom:15px;width:auto" width="auto"><tbody><tr><td style="background-color:#e9472c;box-shadow: 0 1px 8px 0 hsla(0,0%,40%,.47);" valign="top" bgcolor="#ffda00" align="center"><a href="'+ link +'"  data-saferedirecturl="'+ link +'" style="background-color:#e9472c ;box-sizing:border-box;color:#ffffff;display:inline-block;font-size:14px;margin:0;padding:12px 25px;text-decoration:none;text-transform:capitalize;cursor:pointer;letter-spacing: 0.5px" bgcolor="#ffda00" target="_blank"> Verify Your E-mail</a></td></tr></tbody></table><p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">Thanks, Inscube Team</p></td></tr></tbody></table></td></tr></tbody></table></div></td></tr></tbody></table></div>'
+                    };
+                    
+                    mailgun.messages().send(SendData, function (error, body) {
+                        if (error) {
+                            console.log(err);
+                            res.status(500).send({ Status:"False", Error:error, Message: "Some error occurred while send The E-mail " });
+                        } else {
+                            data.Email_Verify_Token = rand;
+                            data.save(function (newerr, newresult) {
+                                if (newerr){
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', newerr);
+                                    res.status(500).send({ Status:"False", Error:newerr, Message: "Some error occurred" });
+                                }else{
+                                    res.status(200).send({ Status:"True", Output:"True", Response: body, Message: 'Email send successfully!' });
+                                }
+                            });
+                        }
+                    });
+                } 
+            }
+        }); 
     }
 };
 

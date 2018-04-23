@@ -21,7 +21,7 @@
 
 // Feature Module
   import { FlexLayoutModule } from '@angular/flex-layout';
-  import { BsDatepickerModule, TypeaheadModule, ModalModule  } from 'ngx-bootstrap';
+  import { BsDatepickerModule, TypeaheadModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
   import { ScrollbarModule } from 'ngx-scrollbar';
   import { MomentModule } from 'angular2-moment';
   import { NgxCarouselModule } from 'ngx-carousel';
@@ -29,6 +29,7 @@
   import { VgControlsModule } from 'videogular2/controls';
   import { LightboxModule } from 'angular2-lightbox';
   import { YoutubePlayerModule } from 'ngx-youtube-player';
+  import { ClipboardModule } from 'ngx-clipboard';
 
 // Service Module
   import { DataSharedVarServiceService } from './service/data-shared-var-service/data-shared-var-service.service';
@@ -76,6 +77,8 @@ import { PrivacyComponent } from './privacy/privacy.component';
 import { TermsComponent } from './terms/terms.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
+import { InviteCubeRedirectionComponent } from './invite-cube-redirection/invite-cube-redirection.component';
+import { EditCubeComponent } from './Modal_Components/edit-cube/edit-cube.component';
 
 
 
@@ -119,7 +122,9 @@ import { ContactComponent } from './contact/contact.component';
     PrivacyComponent,
     TermsComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    InviteCubeRedirectionComponent,
+    EditCubeComponent
   ],
   imports: [
       // Default Modules
@@ -146,7 +151,9 @@ import { ContactComponent } from './contact/contact.component';
         VgCoreModule,
         VgControlsModule,
         LightboxModule,
-        YoutubePlayerModule
+        YoutubePlayerModule,
+        ClipboardModule,
+        TooltipModule.forRoot(),
   ],
   providers: [
               AuthGuard,

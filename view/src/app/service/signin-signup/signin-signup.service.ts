@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://206.189.92.174:80/API/Signin_Signup/';
+const API_URL = 'http://localhost:3000/API/Signin_Signup/';
 
 @Injectable()
 export class SigninSignupService {
@@ -82,6 +82,11 @@ export class SigninSignupService {
 
     public Password_Change(data: any): Observable<any[]>  {
         return this.http .post(API_URL + 'Password_Change', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Send_Verify_Email(email: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Send_Verify_Email/' + email)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
