@@ -10,6 +10,8 @@ export interface CategoryId { Category_Id: String; Category_Name: any; }
 
 export interface InviteRouting { CubeId: String; Other: String; }
 
+export interface PasswordResetRouting { UserId: String; Token: String; }
+
 @Injectable()
 export class DataSharedVarServiceService {
 
@@ -19,6 +21,7 @@ export class DataSharedVarServiceService {
   StoreActiveSinInsignUpTab: ActiveSinInsignUpTab = { ActiveTab : '', Email : '' };
   StoreCategory_Id: CategoryId = { Category_Id : '', Category_Name : '' };
   StoreInviteRoute: InviteRouting = { CubeId : '', Other : '' };
+  StorePasswordResetRouting: PasswordResetRouting = { UserId : '', Token : '' };
 
   constructor() { }
 
@@ -41,6 +44,12 @@ export class DataSharedVarServiceService {
 
   SetInviteRoute(CubeId, Other= null) { this.StoreInviteRoute.CubeId = CubeId; this.StoreInviteRoute.Other = Other; }
   GetInviteRoute() { return this.StoreInviteRoute; }
+
+
+  SetPasswordResetRoute(UserId, Token) {
+    this.StorePasswordResetRouting.UserId = UserId; this.StorePasswordResetRouting.Token = Token;
+  }
+  GetPasswordResetRoute() { return this.StorePasswordResetRouting; }
 
 
 

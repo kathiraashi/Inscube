@@ -32,7 +32,13 @@
                 <input type="password"  formControlName="Password" (blur)="checkFormValidation()" (keypress)="checkFormValidation()" placeholder="Password">
                 <p class="error alertStyle-1" *ngIf="RegisterForm.controls.Password.dirty &&  RegisterForm.value.Password === '' "> Password is required </p>
 
-                <p class="style_2"> By signing up, you agree to the <span> terms of service </span> and <span> privacy policy </span> </p>
+                <p class="style_2" style="margin-left: 30px;"> 
+                    <input type="checkbox" formControlName="checkbox" (change)="checkFormValidation()" style="width: 17px !important; height: 17px; position: absolute; left: 25px;">
+                     By signing up, you agree to the 
+                     <span [routerLink]="[ '/Terms']" > terms of service </span> 
+                     and 
+                     <span [routerLink]="[ '/Privacy']"> privacy policy </span> 
+                </p>
                 <button type="submit" [disabled]="!Register_Form_Valid" [ngClass]="{'disabled': !Register_Form_Valid}" class="btn ptn-primary"> Register now </button>
                 <p class="style_3"> <span (click)="ActiveTabchange('Login')"> Already have an account?  </span>  </p>
                 <div fxLayout="row" fxLayoutAlign="center start">
@@ -54,7 +60,7 @@
                 <input type="password" formControlName="Password" placeholder="Password">
                 <p class="error alertStyle-1" *ngIf="SignInForm.controls.Password.dirty &&  SignInForm.value.Password === '' "> Password is required </p>
 
-                <p class="style_2"> <span> Forgot password? </span>   </p>
+                <p class="style_2"> <span (click)="ForgotPassword()"> Forgot password? </span>   </p>
                 <button class="btn ptn-primary" type="submit" [ngClass]="{'disabled': SignInForm.value.Email =='' || SignInForm.value.Password =='' }" [disabled]="SignInForm.value.Email =='' || SignInForm.value.Password ==''"> Login now </button>
                 <p class="style_3"> <span (click)="ActiveTabchange('Register')"> Create new account !!  </span> </p>
                 <div fxLayout="row" fxLayoutAlign="center start">

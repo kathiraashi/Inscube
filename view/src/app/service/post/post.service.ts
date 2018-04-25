@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://localhost:3000/API/Posts/';
+const API_URL = 'http://www.inscube.com/API/Posts/';
 
 @Injectable()
 export class PostService {

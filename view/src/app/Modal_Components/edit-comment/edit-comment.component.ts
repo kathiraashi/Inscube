@@ -13,8 +13,8 @@ import { PostService } from './../../service/post/post.service';
 })
 export class EditCommentComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
+  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
 
   onClose: Subject<Object>;
 

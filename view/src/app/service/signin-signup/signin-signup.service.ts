@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://localhost:3000/API/Signin_Signup/';
+const API_URL = 'http://www.inscube.com/API/Signin_Signup/';
 
 @Injectable()
 export class SigninSignupService {
@@ -85,10 +85,20 @@ export class SigninSignupService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
-    public Send_Verify_Email(email: any): Observable<any[]>  {
-        return this.http .get(API_URL + 'Send_Verify_Email/' + email)
+    public Send_Email_Password_Reset_Request(email: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Send_Email_Password_Reset_Request/' + email)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
+
+    public password_reset_url_check(User_Id: any, Token: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'password_reset_url_check/' + User_Id + '/' + Token)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public password_reset_submit(Password: any, User_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'password_reset_submit/' + Password + '/' + User_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
 
 
 }

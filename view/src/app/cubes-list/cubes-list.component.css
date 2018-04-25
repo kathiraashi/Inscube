@@ -51,6 +51,7 @@
 .Cat_list_item_part_2 p{
     font-size: 14px;
     margin: 0px;
+    display: none;
 }
 .Cat_list_item_part_3 p{
     background-color: #d75839;

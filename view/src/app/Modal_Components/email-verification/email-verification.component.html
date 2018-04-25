@@ -1,0 +1,19 @@
+<div class="ProfilePrivacy">
+
+  <p class="headerInfo">   Password reset request <span style="position:absolute; right:15px; top:0px;font-size:20px;cursor:pointer; font-weight: 500; " (click)="_bsModalRef.hide()"  > X </span> </p>
+  
+  <input type="email" [(ngModel)]="Email"  placeholder="Enter Your Email">
+
+
+  <p *ngIf="alert" class="alert"> {{alertMessage}} </p>
+  <p *ngIf="Success" class="success"> {{SuccessMessage}} </p>
+  <br>
+  <hr style="margin: 5px">
+  <div *ngIf="!Success">
+    <div class="col-sm-12 text-right" style="margin-bottom: 5px;">
+          <button class="btn ptn-primary" type="button" (click)="submit()"> Send </button> 
+    </div> 
+  </div>
+
+
+</div>

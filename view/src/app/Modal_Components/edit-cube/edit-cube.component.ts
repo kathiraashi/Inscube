@@ -17,8 +17,8 @@ import { CubeService } from './../../service/cube/cube.service';
 export class EditCubeComponent implements OnInit {
 
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://www.inscube.com/API/Uploads/Category/';
+  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
 
   data: Object;
   Locatin_Input: Boolean = false;
@@ -51,24 +51,33 @@ export class EditCubeComponent implements OnInit {
 
   ngOnInit(): void {
         this.onClose = new Subject();
-        this.Default_Image = this.data['Category_Info'].Image;
+        this.Default_Image = this.data['Cube_Info'].Image;
         this.Form = this.formBuilder.group({
+            Cube_Id: new FormControl(this.data['Cube_Info']._id, Validators.required),
             User_Id: new FormControl(this.LoginUser._id, Validators.required),
-            Category_Id: new FormControl(this.data['Category_Info']._id, Validators.required),
-            Name: new FormControl('', Validators.required),
-            Security: new FormControl('', Validators.required),
-            Security_Code: new FormControl(''),
-            Description: new FormControl(''),
-            Location: new FormControl(''),
-            Web: new FormControl(''),
-            Mail: new FormControl(''),
-            Contact: new FormControl('')
+            Category_Id: new FormControl(this.data['Cube_Info'].Category_Id, Validators.required),
+            Name: new FormControl(this.data['Cube_Info'].Name, Validators.required),
+            Security: new FormControl(this.data['Cube_Info'].Security, Validators.required),
+            Security_Code: new FormControl(this.data['Cube_Info'].Security_Code),
+            Description: new FormControl(this.data['Cube_Info'].Description),
+            Location: new FormControl(this.data['Cube_Info'].Location),
+            Web: new FormControl(this.data['Cube_Info'].Web),
+            Mail: new FormControl(this.data['Cube_Info'].Mail),
+            Contact: new FormControl(this.data['Cube_Info'].Contact)
         });
+
+        this.SecurityType = this.data['Cube_Info'].Security;
+        if ( this.data['Cube_Info'].Security === 'Close') { this.SecurityCode = true; }
+        if (this.data['Cube_Info'].Location !== '') { this.Locatin_Input = true; }
+        if (this.data['Cube_Info'].Web !== '') { this.Website_Input = true; }
+        if (this.data['Cube_Info'].Mail !== '') { this.Email_Input = true; }
+        if (this.data['Cube_Info'].Contact !== '') { this.Contact_Input = true; }
   }
 
     View_Location_Input( ) {
         if (this.Locatin_Input) {
             this.Locatin_Input = false;
+            this.Form.controls['Location'].setValue('');
         } else {
             this.Locatin_Input = true;
         }
@@ -76,12 +85,14 @@ export class EditCubeComponent implements OnInit {
     View_Website_Input( ) {
         if (this.Website_Input) {
             this.Website_Input = false;
+            this.Form.controls['Web'].setValue('');
         } else {
             this.Website_Input = true;
         }
     }
     View_Email_Input( ) {
         if (this.Email_Input) {
+            this.Form.controls['Mail'].setValue('');
             this.Email_Input = false;
         } else {
             this.Email_Input = true;
@@ -90,6 +101,7 @@ export class EditCubeComponent implements OnInit {
     View_Contact_Input() {
         if (this.Contact_Input) {
             this.Contact_Input = false;
+            this.Form.controls['Contact'].setValue('');
         } else {
             this.Contact_Input = true;
         }
@@ -98,6 +110,7 @@ export class EditCubeComponent implements OnInit {
         if ( event.value === 'Close') {
             this.SecurityCode = true;
         } else {
+            this.Form.controls['Security_Code'].setValue('');
             this.SecurityCode = false;
         }
     }
@@ -120,6 +133,7 @@ export class EditCubeComponent implements OnInit {
     onSubmit() {
 
         if ( this.Form.valid ) {
+            this.FormData.set('Cube_Id', this.Form.controls['Cube_Id'].value);
             this.FormData.set('User_Id', this.Form.controls['User_Id'].value);
             this.FormData.set('Category_Id', this.Form.controls['Category_Id'].value);
             this.FormData.set('Name', this.Form.controls['Name'].value);
@@ -131,7 +145,7 @@ export class EditCubeComponent implements OnInit {
             this.FormData.set('Mail', this.Form.controls['Mail'].value);
             this.FormData.set('Contact', this.Form.controls['Contact'].value);
 
-            this.Service.Create_Cube(this.FormData).subscribe( datas => {
+            this.Service.Update_Cube(this.FormData).subscribe( datas => {
               if (datas['Status'] === 'True') {
                   if (datas['Output'] === 'True') {
                       this.onClose.next({ Status: 'Success' , Response: datas['Response'] });
@@ -144,9 +158,8 @@ export class EditCubeComponent implements OnInit {
                   this.onClose.next({ Staus: 'Error'});
                   this._bsModalRef.hide();
               }
-          });
+            });
         }
-
     }
 
     close() {

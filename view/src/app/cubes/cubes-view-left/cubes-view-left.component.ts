@@ -7,7 +7,8 @@ import { MatSnackBar } from '@angular/material';
 
 
 import { JoinConfirmationComponent } from './../../Modal_Components/join-confirmation/join-confirmation.component';
-
+import { EditCubeComponent } from './../../Modal_Components/edit-cube/edit-cube.component';
+import { AddEmailInviteComponent } from './../../Modal_Components/add-email-invite/add-email-invite.component';
 import { DataSharedVarServiceService } from './../../service/data-shared-var-service/data-shared-var-service.service';
 
 import { AddTopicComponent } from './../../Modal_Components/add-topic/add-topic.component';
@@ -25,9 +26,9 @@ export class CubesViewLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://www.inscube.com/API/Uploads/Category/';
+  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
+  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
 
   LoginUser;
   Members_List: any[] = [];
@@ -160,6 +161,28 @@ export class CubesViewLeftComponent implements OnInit {
         horizontalPosition: 'center',
         duration: 3000,
         verticalPosition: 'top',
+    });
+  }
+
+  Edit_Cube() {
+    const initialState = { data: { Cube_Info:  this.Cube_Info } };
+    this.modalRef = this.modalService.show(EditCubeComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+      if (result.Status === 'Success') {
+          this.Cube_Info = result.Response;
+          this.Cube_Info.Creator = true;
+      }
+    });
+  }
+
+  Invite_Email() {
+    const initialState = { data: { Cube_Info:  this.Cube_Info } };
+    this.modalRef = this.modalService.show(AddEmailInviteComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+      if (result.Status === 'Success') {
+          this.Cube_Info = result.Response;
+          this.Cube_Info.Creator = true;
+      }
     });
   }
 

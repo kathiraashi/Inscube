@@ -122,7 +122,7 @@
 </div>
 
     <mat-menu #ReportHighlightPost="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-        <div style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+        <div (click)="Edit_Cube()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
             <div class="dropd_icon" fxFlex="30px">
                 <i class="material-icons">border_color</i>
             </div>
@@ -132,12 +132,21 @@
         </div>
         <div class="dropdarrow"></div>
         <hr class="m-0">
-        <div *ngIf="Cube_Info !== undefined " ngxClipboard  [cbContent]="'http://localhost:4200/Invite_Cube/' + Cube_Info._id" (cbOnSuccess)="link_Copy()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+        <div *ngIf="Cube_Info !== undefined " ngxClipboard  [cbContent]="'http://www.inscube.com/Invite_Cube/' + Cube_Info._id" (cbOnSuccess)="link_Copy()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
             <div class="dropd_icon" fxFlex="30px">
                 <i style="font-size: 20px" class="material-icons">content_copy</i>
             </div>
             <div fxFlex>
-                <p class="dropd_text"> Invite Link </p>
+                <p class="dropd_text"> Invite link </p>
+            </div>
+        </div>
+        <hr class="m-0">
+        <div (click)="Invite_Email()" *ngIf="Cube_Info !== undefined" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+            <div class="dropd_icon" fxFlex="30px">
+                <i style="font-size: 21px" class="material-icons">contact_mail</i>
+            </div>
+            <div fxFlex>
+                <p class="dropd_text"> Invite mail </p>
             </div>
         </div>
     </mat-menu>

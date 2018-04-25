@@ -79,6 +79,11 @@ import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { InviteCubeRedirectionComponent } from './invite-cube-redirection/invite-cube-redirection.component';
 import { EditCubeComponent } from './Modal_Components/edit-cube/edit-cube.component';
+import { EmailVerificationComponent } from './Modal_Components/email-verification/email-verification.component';
+import { PasswordResetComponent } from './Modal_Components/password-reset/password-reset.component';
+import { PasswordResetRedirectionComponent } from './password-reset-redirection/password-reset-redirection.component';
+import { EmailCubeInviteComponent } from './Modal_Components/email-cube-invite/email-cube-invite.component';
+import { AddEmailInviteComponent } from './Modal_Components/add-email-invite/add-email-invite.component';
 
 
 
@@ -124,7 +129,12 @@ import { EditCubeComponent } from './Modal_Components/edit-cube/edit-cube.compon
     AboutComponent,
     ContactComponent,
     InviteCubeRedirectionComponent,
-    EditCubeComponent
+    EditCubeComponent,
+    EmailVerificationComponent,
+    PasswordResetComponent,
+    PasswordResetRedirectionComponent,
+    EmailCubeInviteComponent,
+    AddEmailInviteComponent
   ],
   imports: [
       // Default Modules
@@ -182,7 +192,11 @@ import { EditCubeComponent } from './Modal_Components/edit-cube/edit-cube.compon
                     DiscoverCubesComponent,
                     EditProfileComponent,
                     PrivacySettingsComponent,
-                    ChangePasswordComponent
+                    ChangePasswordComponent,
+                    EmailVerificationComponent,
+                    PasswordResetComponent,
+                    EditCubeComponent,
+                    AddEmailInviteComponent
                   ]
 })
 export class AppModule { }

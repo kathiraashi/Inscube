@@ -20,7 +20,7 @@ export class FeedsHeaderComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
 
   lists;
   LoginUser;

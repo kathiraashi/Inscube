@@ -21,8 +21,8 @@ export class CreatePostComponent implements OnInit {
 
     modalRef: BsModalRef;
 
-    UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-    CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+    UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
+    CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
 
     title: string;
     types = [

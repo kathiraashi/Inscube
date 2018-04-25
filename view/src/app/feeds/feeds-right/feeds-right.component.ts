@@ -18,9 +18,9 @@ export class FeedsRightComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://www.inscube.com/API/Uploads/Category/';
+  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
+  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
 
   LoginUser;
   Cubes_List: any[] = [];

@@ -17,6 +17,7 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { AboutComponent } from './about/about.component';
     import { ContactComponent } from './contact/contact.component';
     import { InviteCubeRedirectionComponent } from './invite-cube-redirection/invite-cube-redirection.component';
+    import { PasswordResetRedirectionComponent } from './password-reset-redirection/password-reset-redirection.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -82,6 +83,10 @@ const appRoutes: Routes = [
     { path: 'Invite_Cube/:Cube_Id',
         component: InviteCubeRedirectionComponent,
         data: { animation: { value: 'Invite_Cube', } }
+    },
+    { path: 'Reset_Password/:User_Id/:Token',
+        component: PasswordResetRedirectionComponent,
+        data: { animation: { value: 'Reset_Password', } }
     },
 ];
 

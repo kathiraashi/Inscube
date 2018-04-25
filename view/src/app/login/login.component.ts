@@ -2,17 +2,26 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
 import { MatSnackBar } from '@angular/material';
 
 import { DataSharedVarServiceService } from './../service/data-shared-var-service/data-shared-var-service.service';
 import { SigninSignupService } from './../service/signin-signup/signin-signup.service';
 import { CubeService } from './../service/cube/cube.service';
+
+import { EmailVerificationComponent } from './../Modal_Components/email-verification/email-verification.component';
+import { PasswordResetComponent } from './../Modal_Components/password-reset/password-reset.component';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
+
+  modalRef: BsModalRef;
 
   ActiveTab = 'Register';
   ActiveTab_New: any;
@@ -24,27 +33,32 @@ export class LoginComponent implements OnInit {
   EmailFormat_Error: Boolean = false;
   Inscube_NameNotAvailabel: Boolean = false;
   EmailNotAvailabel: Boolean = false;
+  checkbox_Value: Boolean = false;
 
   RegisterForm: FormGroup;
   SignInForm: FormGroup;
 
   If_Invite;
+  If_Password_Reset;
 
   constructor(private router: Router,
               private formBuilder: FormBuilder,
               private Service: SigninSignupService,
               private ShareingService: DataSharedVarServiceService,
               public snackBar: MatSnackBar,
-              private Cube_Service: CubeService) {
+              private Cube_Service: CubeService,
+              private modalService: BsModalService) {
                 this.ActiveTab_New = this.ShareingService.GetActiveSinInsignUpTab();
                 this.If_Invite = this.ShareingService.GetInviteRoute();
+                this.If_Password_Reset = this.ShareingService.GetPasswordResetRoute();
                }
 
   ngOnInit() {
     this.RegisterForm = new FormGroup({
       Inscube_Name: new FormControl('', Validators.required),
       Email: new FormControl('', Validators.required),
-      Password: new FormControl('',  Validators.required)
+      Password: new FormControl('',  Validators.required),
+      checkbox: new FormControl('',  Validators.required),
     });
 
     this.SignInForm = new FormGroup({
@@ -65,7 +79,7 @@ export class LoginComponent implements OnInit {
     }
 
     if (this.If_Invite.CubeId !== '' ) {
-      if ( (this.If_Invite.CubeId).length === 25 ) {
+      if ( (this.If_Invite.CubeId).length >= 24 ) {
         this.Cube_Service.Check_Invite_CubeId(this.If_Invite.CubeId).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
             this.snackBar.open( 'Please login or register after join the cube', ' ', {
@@ -90,8 +104,36 @@ export class LoginComponent implements OnInit {
         });
         this.If_Invite = this.ShareingService.SetInviteRoute('');
       }
+    }
 
-
+    if (this.If_Password_Reset.UserId !== '' && this.If_Password_Reset.Token !== '' ) {
+      if ( (this.If_Password_Reset.UserId).length >= 24 && (this.If_Password_Reset.Token).length > 0 ) {
+        this.Service.password_reset_url_check(this.If_Password_Reset.UserId, this.If_Password_Reset.Token).subscribe( datas => {
+          if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+            const initialState = { data: { User_Info:  datas['Response'] } };
+            this.modalRef = this.modalService.show(PasswordResetComponent, Object.assign(
+              {initialState}, {ignoreBackdropClick: true, class: 'maxWidth450' }
+            ));
+            this.modalRef.content.onClose.subscribe(result => {
+              console.log(result);
+            });
+          } else if (datas['Status'] === 'True' && datas['Output'] === 'False') {
+            this.snackBar.open( 'Your password reset token is expired!', ' ', {
+              horizontalPosition: 'center',
+              duration: 5000,
+              verticalPosition: 'top',
+            });
+            this.If_Invite = this.ShareingService.SetPasswordResetRoute('', '');
+          }
+        });
+      } else {
+        this.snackBar.open( 'Your password reset url is invalid!', ' ', {
+          horizontalPosition: 'center',
+          duration: 5000,
+          verticalPosition: 'top',
+        });
+        this.If_Invite = this.ShareingService.SetPasswordResetRoute('', '');
+      }
     }
 
   }
@@ -151,8 +193,9 @@ export class LoginComponent implements OnInit {
     if ( this.RegisterForm.value.Inscube_Name !== '' &&
         this.RegisterForm.value.Email !== '' &&
         this.RegisterForm.value.Password !== '' &&
+        this.RegisterForm.value.checkbox !== false &&
         this.Inscube_NameAvailabel && this.EmailAvailabel && this.RegisterForm.valid ) {
-          this.Register_Form_Valid = true;
+        this.Register_Form_Valid = true;
     } else {
         this.Register_Form_Valid = false;
     }
@@ -165,19 +208,7 @@ export class LoginComponent implements OnInit {
           if (datas['Status'] === 'True') {
               if (datas['Output'] === 'True') {
                 this.router.navigate(['Profile_Completion']);
-              } else {
-              // this.snackBar.open( datas['Message'] , ' ', {
-              //   horizontalPosition: 'center',
-              //   duration: 3000,
-              //   verticalPosition: 'top',
-              // });
               }
-          } else {
-            // this.snackBar.open( 'Registration Failed Please Try Again !!', ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
           }
         });
       }
@@ -202,17 +233,19 @@ export class LoginComponent implements OnInit {
               verticalPosition: 'top',
             });
            }
-        } else {
-          // this.snackBar.open( 'Login Failed Please Try Again !!', ' ', {
-          //   horizontalPosition: 'center',
-          //   duration: 3000,
-          //   verticalPosition: 'top',
-          // });
         }
        });
     }
 
   }
 
+
+  ForgotPassword() {
+    const initialState = { data: { Email:  this.RegisterForm.value.Email } };
+      this.modalRef = this.modalService.show(EmailVerificationComponent, Object.assign({initialState}, { class: 'maxWidth450' }));
+      this.modalRef.content.onClose.subscribe(result => {
+        console.log(result);
+      });
+  }
 
 }

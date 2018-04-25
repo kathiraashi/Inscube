@@ -82,11 +82,11 @@ exports.UserEmailValidate = function(req, res) {
 
 // ---------------------------------------------------------------------- User Register ---------------------------------------------------------------
 exports.UserRegister = function(req, res) {
-    if(!req.body.Inscube_Name && req.body.Inscube_Name === '') {
+    if(!req.body.Inscube_Name || req.body.Inscube_Name === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "Inscube Name can not be empty" });
-    }else if(!req.body.Email && req.body.Email === ''){
+    }else if(!req.body.Email || req.body.Email === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
-    }else if(!req.body.Password && req.body.Password === '' ){
+    }else if(!req.body.Password || req.body.Password === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Password can not be empty" });
     }else{
         var Ins_name = req.body.Inscube_Name;
@@ -189,11 +189,11 @@ exports.UserRegister = function(req, res) {
 exports.UserRegisterCompletion = function(req, res) {
     User_Image_Upload(req, res, function(upload_err) {
         
-        if(!req.body.User_Id && req.body.User_Id === '' ) {
+        if(!req.body.User_Id || req.body.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         // }else if(!req.body.Color_Code && req.body.Color_Code === '' ){
         //     res.status(200).send({Status:"True", Output:"False", Message: "Color Code can not be empty" });
-        }else if(upload_err && upload_err === '' && upload_err === undefined && upload_err === null){
+        }else if(upload_err){
             res.status(200).send({Status:"True", Output:"False", Message: "Only 'png, gif, jpg and jpeg' images are allowed" });
         }else{
             UserModel.UserSchema.findOne({'_id': req.body.User_Id}, function(err, result) {
@@ -241,9 +241,9 @@ exports.UserRegisterCompletion = function(req, res) {
 
 // ---------------------------------------------------------------------- User Sign in Validate ---------------------------------------------------------------
 exports.UserValidate = function(req, res) {
-    if(!req.body.Email && req.body.Email === ''){
+    if(!req.body.Email || req.body.Email === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
-    }else if(!req.body.Password && req.body.Password === '' ){
+    }else if(!req.body.Password || req.body.Password === '' ){
         res.status(200).send({Status:"True", Output:"False", Message: "Password can not be empty" });
     }else{
         UserModel.UserSchema.findOne({'Email': req.body.Email.toLowerCase(), 'Password': req.body.Password, 'Active_Status': 'Active' }, { Password: 0 }, {}, function(err, result) { // User Validate -----------------------------
@@ -357,7 +357,7 @@ exports.UserValidate = function(req, res) {
 
 // ---------------------------------------------------------------------- User Info ---------------------------------------------------------------
 exports.User_Info = function(req, res) {
-        if(!req.params.User_Id && req.params.User_Id === '' ) {
+        if(!req.params.User_Id || req.params.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
         }else{
             UserModel.UserSchema.findOne({'_id': req.params.User_Id}, { Password: 0, __v: 0 }, function(err, result) {
@@ -382,9 +382,9 @@ exports.User_Info = function(req, res) {
 // ---------------------------------------------------------------------- User Privacy Update ---------------------------------------------------------------
 exports.Privacy_Update = function(req, res) {
 
-        if(!req.body.User_Id && req.body.User_Id === '' ) {
+        if(!req.body.User_Id || req.body.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Show_Profile_To && req.body.Show_Profile_To === '' ){
+        }else if(!req.body.Show_Profile_To || req.body.Show_Profile_To === '' ){
             res.status(200).send({Status:"True", Output:"False", Message: " Show Profile To can not be empty" });
         }else{
             UserModel.UserSchema.findOne({'_id': req.body.User_Id}, function(err, result) {
@@ -418,11 +418,11 @@ exports.Privacy_Update = function(req, res) {
 // ---------------------------------------------------------------------- User Password Update ---------------------------------------------------------------
 exports.Password_Change = function(req, res) {
 
-    if(!req.body.User_Id && req.body.User_Id === '' ) {
+    if(!req.body.User_Id || req.body.User_Id === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-    }else if(!req.body.Old_Password && req.body.Old_Password === '' ) {
+    }else if(!req.body.Old_Password || req.body.Old_Password === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: " Old Password can not be empty" });
-    }else if(!req.body.New_Password && req.body.New_Password === '' ) {
+    }else if(!req.body.New_Password || req.body.New_Password === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: " New Password can not be empty" });
     }else{
         UserModel.UserSchema.findOne({'_id': req.body.User_Id, 'Password' :req.body.Old_Password }, function(err, result) {
@@ -452,9 +452,8 @@ exports.Password_Change = function(req, res) {
 };
 
 
-exports.SendVerifyEmail = function(req, res) {
-    
-    if(!req.params.Email &&  req.params.Email === '' ) {
+exports.Send_Email_Password_Reset_Request = function(req, res) {
+    if(!req.params.Email || req.params.Email === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
     }else{
         UserModel.UserSchema.findOne({'Email': req.params.Email.toLowerCase()}, function(err, data) {
@@ -463,11 +462,10 @@ exports.SendVerifyEmail = function(req, res) {
                 res.status(500).send({ Status:"False", Error:err, Message: "Some error occurred while Validate The E-mail " });
             } else {
                 if(data === null){
-                    res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid Acoount!' });
+                    res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid acoount!' });
                 }else{
-                    
                 var rand=Math.floor((Math.random() * 100) + 54);
-                    var link = "http://www.inscube.com/SetNewpassword/" + data._id + "/" + rand;
+                    var link = "http://www.inscube.com/Reset_Password/" + data._id + "/" + rand;
                     var SendData = {
                         from: 'Inscube <insocialcube@gmail.com>',
                         to: req.params.Email,
@@ -494,6 +492,62 @@ exports.SendVerifyEmail = function(req, res) {
                 } 
             }
         }); 
+    }
+};
+
+
+exports.password_reset_url_check = function(req, res) {
+    if(!req.params.User_Id || req.params.User_Id === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "User id can not be empty" });
+    } else if(!req.params.Token || req.params.Token === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "Token can not be empty" });
+    }else{
+        UserModel.UserSchema.findOne({'_id': req.params.User_Id, 'Email_Verify_Token': req.params.Token}, { Email: 1, Email_Verify_Token: 1, Inscube_Name: 1 }, function(err, data) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                res.status(500).send({ Status:"False", Error:err, Message: "Some error occurred while Validate The E-mail " });
+            } else {
+                if(data === null){
+                    res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid acoount!' });
+                }else{
+                    res.status(200).send({ Status:"True", Output:"True", Response: data});
+                } 
+            }
+        }); 
+    }
+};
+
+
+exports.password_reset_submit = function(req, res) {
+    if(!req.params.User_Id || req.params.User_Id === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.params.New_Password || req.params.New_Password === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: " New Password can not be empty" });
+    }else{
+        UserModel.UserSchema.findOne({'_id': req.params.User_Id}, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                res.status(500).send({ Status:"False", Error:err, Message: "User info find error! " });
+            } else {
+                if (result !== null) {
+                    result.Password = req.params.New_Password;
+                    result.Email_Verify_Token = '';
+                    result.save(function(err_1, result_1) { // User Creation -----------------------------
+                        if(err) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Update Query Error', 'SignIn_SignUp.controller.js - 51', err);
+                            res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while User Info Update"});           
+                        } else {
+                            result_1 = JSON.parse(JSON.stringify(result_1));
+                            delete result_1.Password;
+
+                            res.status(200).send({ Status:"True", Output:"True", Message: 'Successfully Updated' });
+                        }
+                    });
+                }else {
+                    res.status(200).send({ Status:"True", Output:"False", Message: 'Password reset failed please try again!' });
+                }
+            }
+        });
     }
 };
 

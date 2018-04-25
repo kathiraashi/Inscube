@@ -53,6 +53,7 @@
     font-family: 'Ubuntu', sans-serif;
     letter-spacing: 0.3px;
     margin-left: 5px;
+    display: none;
 }
 .feedsLefBar .Join_Part p {
     background-color: #d75839;
