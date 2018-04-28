@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://www.inscube.com/API/Cubes/';
+const API_URL = 'http://localhost:3000/API/Cubes/';
 
 @Injectable()
 export class CubeService {
@@ -90,6 +90,11 @@ export class CubeService {
 
     public Email_Invite_Cube(data: any): Observable<any[]>  {
         return this.http .post(API_URL + 'Email_Invite_Cube', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Delete_Cube(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Delete_Cube', data)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 

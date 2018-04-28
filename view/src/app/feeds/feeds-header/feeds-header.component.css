@@ -128,3 +128,85 @@
     transform: rotate(45DEG);
     z-index: -1;
 }
+
+
+
+
+.notifylist{
+    padding: 0px;
+    width: 320px;
+}
+.notify_div{
+    padding: 5px;
+    position:relative;
+    height: 45px;
+    cursor: pointer;
+}
+.notify_div.highlight_bg{
+    background-color: #e9eef3;
+}
+.notify_div:hover{
+    background-color: #113a6030;
+}
+.notifyheader .notifyheadertext {
+    margin: -8px 0px 0px 0px;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    line-height: 40px;
+    padding: 0px 10px;
+    background-color: #d75739;
+    color: #ffffff;
+}
+.notifyheader .arrow{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #d75739;
+    top: -1px;
+    right: 25px;
+    transform: rotate(45DEG);
+    z-index: -1;
+}
+.notifyfooter .notifyfootertext {
+    margin: 0px 0px -9px 0px;
+    font-size: 16px;
+    font-weight: 700;
+    word-spacing: 2.5px;
+    line-height: 40px;
+    background-color: #e9eef3;
+    color: #0c5ac1;
+}
+.notifylist .userImg{
+    height: 35px;
+    width: 35px;
+    border-radius: 35px;
+    margin-bottom: 2px;
+}
+.notifylist .username{
+    margin: 0px;
+    line-height: 17px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #d75739;
+    letter-spacing: 0.5px;
+}
+.notifylist .notifycategory{
+    margin: 0px;
+    line-height: 17px;
+    font-size: 12px;
+    color: #9c9a9a;
+    margin-top: 2px;
+}
+.notifylist .notifydate{
+    margin: 0px;
+    color: #c7c6c6;
+    font-size: 11px;
+    position: absolute;
+    right: 2px;
+    top: 30px;
+}
+.notifylist .notifycategory span span {
+    color: #999999;
+    font-weight: 600;
+}

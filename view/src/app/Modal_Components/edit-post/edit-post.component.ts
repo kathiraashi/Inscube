@@ -19,9 +19,9 @@ export class EditPostComponent implements OnInit {
 
 
 
-  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
-  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
-  PostBaseUrl = 'http://www.inscube.com/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  PostBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
 
   data;
 

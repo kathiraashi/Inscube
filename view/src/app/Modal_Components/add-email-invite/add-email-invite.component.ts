@@ -22,8 +22,8 @@ export class AddEmailInviteComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
-  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
 
   data;
 
@@ -86,7 +86,7 @@ export class AddEmailInviteComponent implements OnInit {
       const data = { User_Id: this.LoginUser._id, Email_Ids: emails_list, Cube_Id : this.data.Cube_Info._id };
         this.Cube_Service.Email_Invite_Cube(data).subscribe( datas => {
             if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-                    this.snackBar.open( 'Successfully send' , ' ', {
+                    this.snackBar.open( 'Successfully sent' , ' ', {
                       horizontalPosition: 'center',
                       duration: 3000,
                       verticalPosition: 'top',

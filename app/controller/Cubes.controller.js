@@ -1,6 +1,7 @@
 var ErrorManagement = require('./../../app/config/ErrorHandling.js');
 var CubeModel = require('../models/Cubes.model.js');
 var UserModel = require('../models/User.model.js');
+var PostModel = require('../models/Post.model.js');
 var multer = require('multer');
 
 var api_key = 'key-1018902c1f72fc21e3dc109706b593e3';
@@ -211,7 +212,7 @@ exports.AddCubeTopic = function(req, res) {
 // ---------------------------------------------------------------------- Cube View ----------------------------------------------------------
 exports.CubeView = function(req, res) {
     CubeModel.CubesSchema.findOne({'_id': req.params.Cube_Id, 'Active_Status': 'Active'}, { __v:0}, function(err, result) {
-        if(err) {
+        if(err || result === null) {
             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube View Find Query Error', 'Cubes.controller.js - 101', err);
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cube Info."});
         } else {
@@ -402,8 +403,6 @@ exports.UnFollow_Cube = function(req, res) {
     }
 };
 
-
-
 // ---------------------------------------------------------------------- User Created Cubes List ----------------------------------------------------------
 exports.User_Created_Cubes = function(req, res) {
     CubeModel.CubesSchema.find({'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, function(err, result) {
@@ -440,7 +439,6 @@ exports.User_Created_Cubes = function(req, res) {
         }
     });
 };
-
 
 
 // ---------------------------------------------------------------------- User Un Followed Cubes List ----------------------------------------------------------
@@ -620,6 +618,89 @@ exports.Update_Cube = function(req, res) {
     });
 };
 
+// ---------------------------------------------------------------------- Cube Update ----------------------------------------------------------
+exports.Delete_Cube = function(req, res) {
+
+        if(!req.body.User_Id || req.body.User_Id === '') {
+            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+        }else if(!req.body.Cube_Id || req.body.Cube_Id === ''){
+            res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+        }else{
+            CubeModel.CubesSchema.findOne({'_id': req.body.Cube_Id, 'User_Id': req.body.User_Id }, function(err, result) {
+                if(err) {
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube View Find Query Error', 'Cubes.controller.js - 101', err);
+                    res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cube Info."});
+                } else {
+
+                    result.Active_Status = 'Inactive';
+
+                    result.save(function(err_1, result_1) {
+                        if(err_1) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Creation Query Error', 'Cubes.controller.js - 81', err_1);
+                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Cube Creation"});           
+                        } else {
+
+                            var CubeIdArray = [];
+                            CubeIdArray.push(result_1._id);
+                            CubeIdArray = JSON.parse(JSON.stringify(CubeIdArray)); 
+
+                            const getCubeRelatedInfo = result_1 => 
+                            Promise.all([
+                                CubeModel.Cube_Followersschema.where({ Cube_Id: result_1._id }).updateMany({ $set: { Active_Status: 'Inactive' }}).exec(),
+                                PostModel.Post_NotificationSchema.where({ Cube_Id: result_1._id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec(),
+                                PostModel.Cube_Postschema.find({'Cubes_Id': { $in: CubeIdArray }, 'Active_Status': 'Active' }, {Cubes_Id: 1}).exec(),
+                                ]).then( Data => {
+
+                                    Post_List = JSON.parse(JSON.stringify(Data[2])); 
+                                    
+                                    if (Post_List.length > 0 ) {
+                                        const GetPost_Info = (Post_List) => Promise.all(
+                                                Post_List.map(info => post_Info(info)) 
+                                            ).then( result_2 => {
+                                                    res.status(200).send({ Status:"True", Output: "True", Message: 'Success' });
+                                            }).catch( err_2 => { 
+                                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_2);
+                                                res.status(200).send({ Status:"True", Output: "True", Message: 'Success but post remove error' });
+                                            });
+
+                                        const post_Info = info =>
+                                            Promise.all([
+                                                PostModel.Cube_Postschema.findOne({'_id': info._id, 'Active_Status': 'Active' }, {Cubes_Id: 1, Active_Status:1 }).exec(),
+                                                ]).then( Data_new => {
+                                                    var Cube_Ids = JSON.parse(JSON.stringify(Data_new[0].Cubes_Id));
+                                                    if(Cube_Ids.length > 1) {
+                                                        var index = Data_new[0].Cubes_Id.indexOf(result_1._id);
+                                                        if (index > -1) {
+                                                            Data_new[0].Cubes_Id.splice(index, 1);
+                                                        }
+                                                        Data_new[0].save();
+                                                    } else{
+                                                        Data_new[0].Active_Status = 'Inactive';
+                                                        Data_new[0].save();
+                                                    }
+                                                    return Data_new[0];
+                                                }).catch(error_12 => {
+                                                    console.log(error_12);
+                                                });
+    
+                                        GetPost_Info(Post_List);
+                                    } else {
+                                        res.status(200).send({ Status:"True", Output: "True", Message: 'Success' });
+                                    }
+
+                                }).catch(error => {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes View Find Main Promise Error', 'Cubes.controller.js - 226', error);
+                                    res.status(500).send({Status:"False", Error:error, Message: "Some error occurred while Find the Cube View Promise Error "});
+                                });
+            
+                        getCubeRelatedInfo(result_1); // Main Promise Call Function Cube --------------
+                        }
+                    });
+                }
+            });
+
+         }
+};
 
 
 

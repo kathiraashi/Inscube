@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, TemplateRef  } from '@angular/core';
+import { Component, OnInit, ElementRef, TemplateRef, ViewChild  } from '@angular/core';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 
@@ -27,9 +27,9 @@ import { PostService } from './../../service/post/post.service';
 })
 export class FeedsCenterComponent implements OnInit {
 
-  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
-  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
-  PostsBaseUrl = 'http://www.inscube.com/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  PostsBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;
@@ -46,6 +46,8 @@ export class FeedsCenterComponent implements OnInit {
   video_Url;
   Loader_1: Boolean = true;
   Loader_2: Boolean = false;
+  Loader_3: Boolean = false;
+  Show_Load_More: Boolean = true;
 
   view_all_comment: Boolean = false;
   view_less_comment: Boolean = false;
@@ -53,6 +55,7 @@ export class FeedsCenterComponent implements OnInit {
   Trigger_PostInfo;
   Trigger_CommentInfo;
   Trigger_UserId;
+  Skip_Count = 0;
 
   constructor(public snackBar: MatSnackBar,
               private modalService: BsModalService,
@@ -63,8 +66,9 @@ export class FeedsCenterComponent implements OnInit {
               private _lightbox: Lightbox
             ) {
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
-              this.Post_Service.Cube_Post_List(this.LoginUser._id).subscribe( datas => {
+              this.Post_Service.Cube_Post_List(this.LoginUser._id, 0).subscribe( datas => {
                 this.Loader_1 = false;
+                this.Skip_Count =  15;
                   if (datas['Status'] === 'True') {
                       this.Posts_List = datas['Response'];
                       this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
@@ -75,14 +79,42 @@ export class FeedsCenterComponent implements OnInit {
                             x.Already = false;
                           }
                        }); }); } );
+                       if ( this.Posts_List.length < 15) {
+                        this.Show_Load_More = false;
+                      }
                   }
               });
 
               this._componentConnectService.currentMessage.subscribe(message => { // New Post Submit Response
                 if (message !== '' ) {
+                  this.Skip_Count = this.Skip_Count + 1;
                   this.Posts_List.splice(0 , 0, message);
                   this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
                 }
+              });
+
+              this._componentConnectService.Reload_Feeds.subscribe(message => {
+                this.Posts_List = [];
+                this.Loader_1 = true;
+                this.Show_Load_More = true;
+                this.Post_Service.Cube_Post_List(this.LoginUser._id, 0).subscribe( datas => {
+                  this.Loader_1 = false;
+                  this.Skip_Count = 15;
+                    if (datas['Status'] === 'True') {
+                        this.Posts_List = datas['Response'];
+                        this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+                        this.Posts_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+                            if (this.LoginUser._id === y ) {
+                              x.Already = true;
+                            } else {
+                              x.Already = false;
+                            }
+                         }); }); } );
+                        if ( this.Posts_List.length < 15) {
+                          this.Show_Load_More = false;
+                        }
+                    }
+                });
               });
      }
 
@@ -270,27 +302,11 @@ export class FeedsCenterComponent implements OnInit {
       if (result.Status === 'Yes') {
         this.Post_Service.Cube_Post_Delete(this.Trigger_PostInfo._id).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+            this.Skip_Count = this.Skip_Count - 1;
             const _index =  this.Posts_List.findIndex(x => x._id === this.Trigger_PostInfo._id);
             this.Posts_List.splice(_index, 1);
-            // this.snackBar.open( 'Post Successfully Deleted!' , ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
-          } else {
-            // this.snackBar.open( 'Post Delete Failed Please Try Again!' , ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
           }
         });
-      } else {
-        // this.snackBar.open( 'Post Delete Confirmation Declined!' , ' ', {
-        //   horizontalPosition: 'center',
-        //   duration: 3000,
-        //   verticalPosition: 'top',
-        // });
       }
     });
   }
@@ -413,4 +429,27 @@ export class FeedsCenterComponent implements OnInit {
     });
   }
 
+
+  Load_More_Posts() {
+    this.Loader_3 = true;
+    this.Post_Service.Cube_Post_List(this.LoginUser._id, this.Skip_Count).subscribe( datas => {
+      this.Loader_3 = false;
+      this.Skip_Count = this.Skip_Count + 15;
+        if (datas['Status'] === 'True') {
+          const new_Posts = datas['Response'];
+          new_Posts.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+          new_Posts.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+            if (this.LoginUser._id === y ) {
+              x.Already = true;
+            } else {
+              x.Already = false;
+            }
+          }); }); } );
+          if ( new_Posts.length < 15) {
+            this.Show_Load_More = false;
+          }
+          this.Posts_List = this.Posts_List.concat(new_Posts);
+        }
+    });
+  }
 }

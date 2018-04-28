@@ -4,7 +4,9 @@ module.exports = function(app) {
 
         app.post('/API/Posts/Cube_Post_Submit', Controller.CubePost_Submit);
 
-        app.get('/API/Posts/Cube_Post_List/:User_Id', Controller.CubePost_List);
+        app.get('/API/Posts/Cube_Post_List/:User_Id/:Skip_Count', Controller.CubePost_List);
+
+        app.get('/API/Posts/Cube_Post_AllList/:User_Id', Controller.CubePost_All_List);
 
         app.get('/API/Posts/Cube_Post_View/:User_Id/:Post_Id', Controller.CubePost_View);
 
@@ -39,5 +41,13 @@ module.exports = function(app) {
         app.get('/API/Posts/Cube_Based_Post_List/:Cube_Id/:User_Id', Controller.Cube_Based_Post_List);
 
         app.get('/API/Posts/User_Posts/:User_Id', Controller.User_Posts);
+
+        app.get('/API/Posts/Get_Notifications/:User_Id', Controller.Get_Notifications);
+
+        app.post('/API/Posts/Notifications_recived', Controller.Notifications_recived);
+
+        app.get('/API/Posts/Notifications_Viewed/:Notify_Id', Controller.Notifications_Viewed);
+
+        
 
 };

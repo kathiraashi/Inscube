@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
       if ( (this.If_Invite.CubeId).length >= 24 ) {
         this.Cube_Service.Check_Invite_CubeId(this.If_Invite.CubeId).subscribe( datas => {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-            this.snackBar.open( 'Please login or register after join the cube', ' ', {
+            this.snackBar.open( 'Please login or register to join the cube', ' ', {
               horizontalPosition: 'center',
               duration: 5000,
               verticalPosition: 'top',

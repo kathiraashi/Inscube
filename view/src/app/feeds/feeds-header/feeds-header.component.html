@@ -3,7 +3,7 @@
         <div fxFlex="19%">
             <div fxLayout="row" fxLayoutAlign="space-around center">
                 <div class="headerLogo">
-                    <img [routerLink]="[ '/Cube_Posts' ]" style="cursor: pointer;" src="assets/images/logo.png" alt="">
+                    <img (click)="Activity_Check()" style="cursor: pointer;" src="assets/images/logo.png" alt="">
                 </div>
             </div>  
         </div><!-- header left -->
@@ -29,11 +29,11 @@
         <div fxFlex="19%">
             <div fxLayout="row" fxLayoutAlign="space-between center">
                 <div fxFlex="33%" class="header_home_icon text-center">
-                    <i [routerLink]="[ '/Cube_Posts' ]" class="material-icons">home</i>
+                    <i (click)="Activity_Check()" class="material-icons">home</i>
                 </div>
-                <div fxFlex="33%" class="header_notify_icon text-center">
-                    <img  class="icon" src="./assets/images/notification.png" alt="">
-                    <span class="notifyCount"> 0 </span>
+                <div fxFlex [matMenuTriggerFor]="notifictionList" (click)="notification_showing()" style="line-height: 45px;" class="header_notify_icon text-center" >
+                    <img  class="icon" src="assets/images/notification.png" alt="">
+                    <span class="notifyCount"> {{Notification_Count}} </span>
                 </div>
                 <div fxFlex="33%" [matMenuTriggerFor]="userView" class="header_user_image text-center" style="line-height:50px">
                     <img src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" >
@@ -64,4 +64,196 @@
             <p class="userdropd_text"> Log Out </p>
         </div>
     </div>
+</mat-menu>
+
+
+
+<mat-menu #notifictionList="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuNotification" >
+        
+    <div class="notifyheader" style="min-width:320px">
+        <div class="" fxLayout="row" fxLayoutAlign="start center">
+            <div fxFlex>
+                <p class="notifyheadertext"> Notifications <span> ( {{Notifications_List?.length}} ) </span> </p>
+                <div class="arrow"></div>
+            </div>
+        </div>
+    </div>
+    <hr class="m-0">
+    <div style="width:320px; height:368px">
+    <ng-scrollbar>
+
+
+        <div style="width: 320px" >
+            <div class="notifylist" *ngFor="let Notify of Notifications_List; let i=index">
+                <ng-container *ngIf="Notify.Notify_Type === 'New_Post'">
+                    <div (click)="View_Post(Notify.Post_Id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="40px">
+                            <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                        </div>
+                        <div class="mt-10" fxFlex style="height: 40px;">
+                            <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
+                                <span> Post {{Notify.TextAddon}} 
+                                    <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                    <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                </span>
+                            </p>
+                            <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                </ng-container>
+                <ng-container *ngIf="Notify.Notify_Type === 'Opinion'">
+                    <div (click)="View_Post(Notify.Post_Id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="40px">
+                            <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                        </div>
+                        <div class="mt-10" fxFlex style="height: 40px;">
+                            <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
+                                <span> shared an opinion on your
+                                    <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                    <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                </span>
+                            </p>
+                            <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                </ng-container>
+                
+                <ng-container *ngIf="Notify.Notify_Type === 'Emote'">
+                    <div (click)="View_Post(Notify.Post_Id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                        <div fxFlex="40px">
+                            <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                        </div>
+                        <div class="mt-10" fxFlex style="height: 40px;">
+                            <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
+                                <span> commented "{{Notify.Emote_Text}}" to your
+                                    <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                    <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                </span>
+                            </p>
+                            <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                        </div>
+                    </div>
+                    <hr class="m-0">
+                </ng-container>
+                <!-- <div class="notify_div" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40px">
+                        <img src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userImg" >
+                    </div>
+                    <div class="mt-10" fxFlex style="height: 40px;">
+                        <p class="notifycategory"> <span class="username"> UserName </span>
+                            <span> Shared an <span>"announcement"</span> in <span>"cube came"</span> </span>
+                        </p>
+                        <p class="notifydate"> 2 mim ago  </p>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="notify_div" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40px">
+                        <img src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userImg" >
+                    </div>
+                    <div class="mt-10" fxFlex style="height: 40px;">
+                        <p class="notifycategory"> <span class="username"> UserName </span>
+                            <span> liked your <span>"talent"</span> in <span>"cube came"</span> </span>
+                        </p>
+                        <p class="notifydate"> 2 mim ago  </p>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="notify_div" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40px">
+                        <img src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userImg" >
+                    </div>
+                    <div class="mt-10" fxFlex style="height: 40px;">
+                        <p class="notifycategory"> <span class="username"> UserName </span>
+                            <span> shared an opinion on your <span>"announcement"</span> in <span>"cube came"</span> </span>
+                        </p>
+                        <p class="notifydate"> 2 mim ago  </p>
+                    </div>
+                </div>
+                <hr class="m-0">
+                <div class="notify_div" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="40px">
+                        <img src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userImg" >
+                    </div>
+                    <div class="mt-10" fxFlex style="height: 40px;">
+                        <p class="notifycategory"> <span class="username"> UserName </span>
+                            <span> commented  "very good" to your <span>"article"</span> in <span>"cube came"</span> </span>
+                        </p>
+                        <p class="notifydate"> 2 mim ago  </p>
+                    </div>
+                </div>
+                <hr class="m-0"> -->
+            </div>
+
+
+
+            <!-- <div class="notifylist" *ngFor="let Notify of NotificationList; let i=index">
+                <div style="position:relative" fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex="45px">
+                        <img *ngIf="Notify.UserImage.toLowerCase().indexOf('http://') !== -1 || Notify.UserImage.toLowerCase().indexOf('https://') !== -1"  src="{{Notify.UserImage}}" alt="" (click)="GotoProfile(Notify.UserId); RemoveNotify(Notify._id, i)" class="userImg" >
+                        <img *ngIf="Notify.UserImage.toLowerCase().indexOf('http://') === -1 || Notify.UserImage.toLowerCase().indexOf('https://') === -1" src="{{UserImageBaseUrl}}/{{Notify.UserImage}}" alt="" (click)="GotoProfile(Notify.UserId); RemoveNotify(Notify._id, i)" class="userImg">
+                    </div>
+                    <div class="mt-10" fxFlex>
+                        <p class="notifycategory"> <span class="username"> {{Notify.UserName}}  </span>
+                                <span *ngIf="Notify.NotificationType == 0"> Followed you 
+                                        <span (click)="RemoveNotifyAfterProfile(Notify._id, i, Notify.UserId)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View User... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 5" > posted a {{Notify.HighlightPostType}} 
+                                    <span (click)="OpenModelHighlightsPost(Notify.HighlightPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 8" > Shared your {{Notify.HighlightPostType}} 
+                                    <span (click)="OpenModelHighlightsPost(Notify.HighlightPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 17" > Share the {{Notify.SharedUserName}}  {{Notify.HighlightPostType}} 
+                                        <span (click)="OpenModelHighlightsPost(Notify.HighlightPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                    </span>
+                                <span *ngIf="Notify.NotificationType == 6">  Gave a <img src="./../../../assets/images/icons/liked.png" style="width:17px; height:17px;" alt=""> to your {{Notify.HighlightPostType}} 
+                                        <span (click)="OpenModelHighlightsPost(Notify.HighlightPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span>
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 15">  Gave a <img src="./../../../assets/images/icons/liked.png" style="width:17px; height:17px;" alt=""> to your Comment “{{Notify.CommentText | slice:0:12 }}...” 
+                                        <span (click)="OpenModelHighlightsPost(Notify.HighlightPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span>
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 7"> Commented on your {{Notify.HighlightPostType}} 
+                                        <span (click)="OpenModelHighlightsPost(Notify.HighlightPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span>
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 9"> Asked “{{QuestionText | slice:0:12 }}...” in {{Notify.QuestionTopic}} 
+                                    <span (click)="OpenModelQuestionsPost(Notify.QuestionPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 12" > Shared your Question in {{Notify.QuestionTopic}}
+                                    <span (click)="OpenModelQuestionsPost(Notify.QuestionPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 18" > Shared a Question in {{Notify.QuestionTopic}}
+                                    <span (click)="OpenModelQuestionsPost(Notify.QuestionPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 11"> Answered your Question in {{Notify.QuestionTopic}}
+                                        <span (click)="OpenModelQuestionsPost(Notify.QuestionPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 10"> gave {{Notify.QuestionRating}} <img src="./../../../assets/images/icons/liked.png" style="width:17px; height:17px;" alt=""> for your Question in  {{Notify.QuestionTopic}}
+                                        <span (click)="OpenModelQuestionsPost(Notify.QuestionPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                                <span *ngIf="Notify.NotificationType == 16"> gave {{Notify.AnswerRating}} <img src="./../../../assets/images/icons/liked.png" style="width:17px; height:17px;" alt=""> for your Answer in  “{{Notify.AnswerText | slice:0:12}}..” 
+                                        <span (click)="OpenModelQuestionsPost(Notify.QuestionPostId); RemoveNotify(Notify._id, i)" style="position:absolute; right:3px; bottom:0px; cursor:pointer"  > View More... </span> 
+                                </span>
+                        </p>
+                        <p class="notifydate"> {{Notify.NotificationDate | timeAgo }}  </p>
+                    </div>
+                </div>
+                <hr class="m-0">
+            </div> -->
+            <br>
+        </div>
+        
+    </ng-scrollbar>
+    </div>
+    <!-- <div class="notifyfooter">
+        <hr class="m-0">
+        <div class="" fxLayout="row" fxLayoutAlign="space-evenly center">
+            <div fxFlex="100%" class="text-center">
+                <p class="notifyfootertext"> See All... </p>
+            </div>
+        </div>
+        <hr class="m-0">
+    </div> -->
 </mat-menu>

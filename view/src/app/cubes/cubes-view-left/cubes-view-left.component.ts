@@ -10,6 +10,7 @@ import { JoinConfirmationComponent } from './../../Modal_Components/join-confirm
 import { EditCubeComponent } from './../../Modal_Components/edit-cube/edit-cube.component';
 import { AddEmailInviteComponent } from './../../Modal_Components/add-email-invite/add-email-invite.component';
 import { DataSharedVarServiceService } from './../../service/data-shared-var-service/data-shared-var-service.service';
+import { DeleteConfirmationComponent } from './../../Modal_Components/delete-confirmation/delete-confirmation.component';
 
 import { AddTopicComponent } from './../../Modal_Components/add-topic/add-topic.component';
 import { CubeViewRelatedService } from './../../component-connecting/cube-view-related/cube-view-related.service';
@@ -26,9 +27,9 @@ export class CubesViewLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://www.inscube.com/API/Uploads/Category/';
-  UsersBaseUrl = 'http://www.inscube.com/API/Uploads/Users/';
-  CubeBaseUrl = 'http://www.inscube.com/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
+  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
 
   LoginUser;
   Members_List: any[] = [];
@@ -182,6 +183,21 @@ export class CubesViewLeftComponent implements OnInit {
       if (result.Status === 'Success') {
           this.Cube_Info = result.Response;
           this.Cube_Info.Creator = true;
+      }
+    });
+  }
+
+  Dlete_Cube() {
+    const initialState = { data: { Text : 'Are you sure! ', Text_1 : 'Deleting will permanently remove it from inscube'} };
+    this.modalRef = this.modalService.show(DeleteConfirmationComponent, Object.assign({initialState}, { class: 'maxWidth350' }));
+    this.modalRef.content.onClose.subscribe(result => {
+      if (result.Status === 'Yes') {
+        const data = { User_Id : this.LoginUser._id,  Cube_Id: this.Cube_Id };
+        this.Cube_Service.Delete_Cube(data).subscribe( datas => {
+          if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+            this.router.navigate(['/Cube_Posts']);
+          }
+        });
       }
     });
   }

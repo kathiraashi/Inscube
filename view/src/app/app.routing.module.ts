@@ -18,6 +18,7 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { ContactComponent } from './contact/contact.component';
     import { InviteCubeRedirectionComponent } from './invite-cube-redirection/invite-cube-redirection.component';
     import { PasswordResetRedirectionComponent } from './password-reset-redirection/password-reset-redirection.component';
+    import { FeedsViewComponent } from './feeds-view/feeds-view.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -87,6 +88,11 @@ const appRoutes: Routes = [
     { path: 'Reset_Password/:User_Id/:Token',
         component: PasswordResetRedirectionComponent,
         data: { animation: { value: 'Reset_Password', } }
+    },
+    { path: 'Post_View/:Post_Id',
+        component: FeedsViewComponent,
+        data: { animation: { value: 'Post_View', } },
+        canActivate: [AuthGuard]
     },
 ];
 

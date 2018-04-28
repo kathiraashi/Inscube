@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://www.inscube.com/API/Posts/';
+const API_URL = 'http://localhost:3000/API/Posts/';
 
 @Injectable()
 export class PostService {
@@ -42,8 +42,13 @@ export class PostService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
-    public Cube_Post_List(User_Id: any): Observable<any[]>  {
-        return this.http .get(API_URL + 'Cube_Post_List/' + User_Id )
+    public Cube_Post_List(User_Id: any, Skip_Count: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Cube_Post_List/' + User_Id + '/' + Skip_Count )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Cube_Post_View(User_Id: any, Post_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Cube_Post_View/' + User_Id + '/' + Post_Id )
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
@@ -105,6 +110,20 @@ export class PostService {
 
     public User_Posts(User_Id: any ): Observable<any[]>  {
         return this.http .get(API_URL + 'User_Posts/' + User_Id )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Get_Notification(User_Id: any ): Observable<any[]>  {
+        return this.http .get(API_URL + 'Get_Notifications/' + User_Id )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Notifications_recived(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Notifications_recived', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public Notifications_viewed(Notify_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Notifications_Viewed/' + Notify_Id)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 

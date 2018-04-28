@@ -16,7 +16,7 @@ import { CubeService } from './../../service/cube/cube.service';
 export class CreateCubeComponent implements OnInit {
 
 
-  CategoryBaseUrl = 'http://www.inscube.com/API/Uploads/Category/';
+  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
 
   data: Object;
   Locatin_Input: Boolean = false;

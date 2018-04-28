@@ -84,6 +84,7 @@ import { PasswordResetComponent } from './Modal_Components/password-reset/passwo
 import { PasswordResetRedirectionComponent } from './password-reset-redirection/password-reset-redirection.component';
 import { EmailCubeInviteComponent } from './Modal_Components/email-cube-invite/email-cube-invite.component';
 import { AddEmailInviteComponent } from './Modal_Components/add-email-invite/add-email-invite.component';
+import { FeedsViewComponent } from './feeds-view/feeds-view.component';
 
 
 
@@ -134,7 +135,8 @@ import { AddEmailInviteComponent } from './Modal_Components/add-email-invite/add
     PasswordResetComponent,
     PasswordResetRedirectionComponent,
     EmailCubeInviteComponent,
-    AddEmailInviteComponent
+    AddEmailInviteComponent,
+    FeedsViewComponent
   ],
   imports: [
       // Default Modules

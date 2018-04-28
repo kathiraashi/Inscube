@@ -203,7 +203,7 @@
             <div  *ngIf="ActiveComment === i" class="postchat" style="padding: 10px 0px;" fxLayout="row" fxLayoutAlign="space-between center">
               <div fxFlex="50px" class="text-left">
                 <div class="chatUserImg text-center">
-                  <img  src="{{UsersBaseUrl}}{{Post.User_Image}}" alt="">
+                  <img  src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="">
                 </div>
               </div>
               <div fxFlex class="text-center">
@@ -287,6 +287,25 @@
 
       </div>
     </ng-container>
+
+
+    <ng-container *ngIf="Loader_3">
+      <div style="width: 100%; height: 70px; margin-top:-10px; text-align: center">
+        <img style="height: 50px; margin-top: 0px" src="assets/images/loader.gif" alt="">
+      </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="Show_Load_More && !Loader_1 && !Loader_3">
+      <p class="Load_more"> <span (click)="Load_More_Posts()"> More posts </span> </p>
+    </ng-container>
+
+    <ng-container *ngIf="!Show_Load_More && Posts_List?.length > 0">
+      <div style="width: 100%; height: 30px;text-align: center;">
+        <h5 style="line-height: 20px; font-size:17px;"> No more posts </h5>
+      </div>
+    </ng-container>
+
 
   </ng-scrollbar>
 </div>

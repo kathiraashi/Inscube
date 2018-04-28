@@ -475,7 +475,6 @@ exports.Send_Email_Password_Reset_Request = function(req, res) {
                     
                     mailgun.messages().send(SendData, function (error, body) {
                         if (error) {
-                            console.log(err);
                             res.status(500).send({ Status:"False", Error:error, Message: "Some error occurred while send The E-mail " });
                         } else {
                             data.Email_Verify_Token = rand;

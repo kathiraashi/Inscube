@@ -46,7 +46,7 @@ export class EmailVerificationComponent implements OnInit {
           if (datas['Status'] === 'True' && datas['Output'] === 'True' ) {
             this.alert = false;
             this.Success = true;
-            this.SuccessMessage = 'Password reset link send to the Email address.';
+            this.SuccessMessage = 'Password reset link sent to the Email address.';
           } else if (datas['Status'] === 'True' && datas['Output'] === 'False' ) {
             this.Success = false;
             this.alert = true;

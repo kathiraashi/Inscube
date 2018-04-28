@@ -19,7 +19,7 @@
     <div style="position: relative;margin-left: 10px;">
         <span style="font-size: 15px;font-weight: 600;margin-right: 10px;"> Security: </span>
         <ng-container *ngIf="Cube_Info.Security === 'Close'">
-            <span style="font-size: 14px;font-weight: 500;margin-right: 5px;color: #999"> Close </span> 
+            <span style="font-size: 14px;font-weight: 500;margin-right: 5px;color: #999"> Closed </span> 
             <i style="font-size: 16px; position: absolute; top: 5px;color:#999" class="material-icons">lock</i>
             </ng-container>
             <ng-container *ngIf="Cube_Info.Security === 'Open'">
@@ -122,16 +122,6 @@
 </div>
 
     <mat-menu #ReportHighlightPost="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-        <div (click)="Edit_Cube()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
-            <div class="dropd_icon" fxFlex="30px">
-                <i class="material-icons">border_color</i>
-            </div>
-            <div fxFlex>
-                <p class="dropd_text">Edit </p>
-            </div>
-        </div>
-        <div class="dropdarrow"></div>
-        <hr class="m-0">
         <div *ngIf="Cube_Info !== undefined " ngxClipboard  [cbContent]="'http://www.inscube.com/Invite_Cube/' + Cube_Info._id" (cbOnSuccess)="link_Copy()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
             <div class="dropd_icon" fxFlex="30px">
                 <i style="font-size: 20px" class="material-icons">content_copy</i>
@@ -140,6 +130,7 @@
                 <p class="dropd_text"> Invite link </p>
             </div>
         </div>
+        <div class="dropdarrow"></div>
         <hr class="m-0">
         <div (click)="Invite_Email()" *ngIf="Cube_Info !== undefined" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
             <div class="dropd_icon" fxFlex="30px">
@@ -147,6 +138,24 @@
             </div>
             <div fxFlex>
                 <p class="dropd_text"> Invite mail </p>
+            </div>
+        </div>
+        <hr class="m-0">
+        <div (click)="Edit_Cube()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+            <div class="dropd_icon" fxFlex="30px">
+                <i class="material-icons">border_color</i>
+            </div>
+            <div fxFlex>
+                <p class="dropd_text">Edit </p>
+            </div>
+        </div>
+        <hr class="m-0">
+        <div (click)="Dlete_Cube()" *ngIf="Cube_Info !== undefined" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+            <div class="dropd_icon" fxFlex="30px">
+                <i style="font-size: 21px" class="material-icons">delete_forever</i>
+            </div>
+            <div fxFlex>
+                <p class="dropd_text"> Delete </p>
             </div>
         </div>
     </mat-menu>

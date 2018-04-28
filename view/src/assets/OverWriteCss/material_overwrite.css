@@ -37,3 +37,9 @@
         margin-right: 22px;
     }
 }
+
+
+.mat-menu-panel.MatMenuNotification {
+    max-width: 320px !important;
+    overflow: initial !important;
+}

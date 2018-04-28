@@ -13,7 +13,7 @@ import { DataSharedVarServiceService } from './../service/data-shared-var-servic
 })
 export class CategoriesComponent implements OnInit {
 
-  CategoryBaseUrl = 'http://www.inscube.com/API/Uploads/Category/';
+  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
 
   Category_List;
 
