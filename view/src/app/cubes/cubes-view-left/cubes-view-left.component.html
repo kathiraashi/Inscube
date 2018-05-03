@@ -70,9 +70,9 @@
       </div>
   </div>
   
-  <div *ngIf="Members_List?.length > 8" class="row">
+  <div *ngIf="Members_List?.length > 2" class="row">
     <div class="col-sm-12 text-right">
-        <p class="viewAll"> <span> View All... </span>  </p>
+        <p class="viewAll"> <span (click)="View_All_Members()"> View All... </span>  </p>
     </div>
   </div>
 

@@ -25,12 +25,18 @@
     text-align: center;
     padding: 0px;
 }
+
 .followimg{
     width: 60px;
     height: 60px;
     padding: 2px;
     border-radius: 10px;
     cursor: pointer;
+}
+.listFlexDiv.User .followimg{
+    width: 50px;
+    height: 50px;
+    border-radius: 60px;;
 }
 
  .followname{

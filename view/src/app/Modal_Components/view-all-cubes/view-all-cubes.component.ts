@@ -18,6 +18,7 @@ export class ViewAllCubesComponent implements OnInit {
 
   LoginUser;
   Cubes_List;
+  Users_List;
   Loader_1: Boolean = true;
   data;
 
@@ -42,6 +43,13 @@ export class ViewAllCubesComponent implements OnInit {
       this.Cube_Service.User_Followed_Cubes(this.data.User_Id).subscribe( datas => {
           if (datas['Status'] === 'True') {
               this.Cubes_List = datas['Response'];
+          }
+      });
+    } else if (this.data.Type === 3) {
+      this.Loader_1 = false;
+      this.Cube_Service.Cube_Members(this.data.Cube_Id).subscribe( datas => {
+          if (datas['Status'] === 'True') {
+              this.Users_List = datas['Response'];
           }
       });
     }

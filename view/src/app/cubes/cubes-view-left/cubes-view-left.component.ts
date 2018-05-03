@@ -17,6 +17,8 @@ import { CubeViewRelatedService } from './../../component-connecting/cube-view-r
 import { CubeService } from './../../service/cube/cube.service';
 import { NgModuleCompileResult } from '@angular/compiler/src/ng_module_compiler';
 
+import { ViewAllCubesComponent } from './../../Modal_Components/view-all-cubes/view-all-cubes.component';
+
 @Component({
   selector: 'app-cubes-view-left',
   templateUrl: './cubes-view-left.component.html',
@@ -124,6 +126,14 @@ export class CubesViewLeftComponent implements OnInit {
             const _index =  this.Members_List.findIndex(x => x._id === this.LoginUser._id);
             this.Members_List.splice(_index, 1);
         }
+    });
+  }
+
+  View_All_Members() {
+    const initialState = {data : { Type: 3, Title : 'Members', Cube_Id : this.Cube_Info._id } };
+    this.modalRef = this.modalService.show( ViewAllCubesComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+       console.log(result);
     });
   }
 

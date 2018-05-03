@@ -73,9 +73,10 @@ export class FeedsHeaderComponent implements OnInit {
       }
   }
 
-  View_Post(_id) {
+  View_Post(_id, _Notyify_Id) {
+console.log(_Notyify_Id);
 
-    const _index =  this.Notifications_List.findIndex(x => x.Post_Id === _id);
+    const _index =  this.Notifications_List.findIndex(x => x._id === _Notyify_Id);
     this.Post_Service.Notifications_viewed(this.Notifications_List[_index]._id).subscribe(data => {
       console.log(data);
     });

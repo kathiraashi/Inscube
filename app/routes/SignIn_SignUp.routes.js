@@ -20,4 +20,7 @@ module.exports = function(app) {
         app.get('/API/Signin_Signup/password_reset_url_check/:User_Id/:Token', Controller.password_reset_url_check);
         app.get('/API/Signin_Signup/password_reset_submit/:New_Password/:User_Id', Controller.password_reset_submit);
 
+        app.get('/API/Signin_Signup/Send_Email_Password_Reset_OTP/:Email', Controller.Send_Email_Password_Reset_OTP);
+        app.get('/API/Signin_Signup/password_reset_OTP_check/:User_Id/:OTP', Controller.password_reset_OTP_check);
+
 };
