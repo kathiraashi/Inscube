@@ -495,6 +495,28 @@ exports.Send_Email_Password_Reset_Request = function(req, res) {
 };
 
 
+
+// ---------------------------------------------------------------------- User Email Validate ----------------------------------------------------------
+exports.Password_reset_Email_Validate = function(req, res) {
+    if(!req.params.Email || req.params.Email === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
+    }else{
+        UserModel.UserSchema.findOne({'Email': req.params.Email.toLowerCase()}, function(err, data) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Email Validate Query Error', 'SignIn_SignUp.controller.js - 11', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Validate The User E-mail."});
+            } else {
+                if(data === null){
+                    res.status(200).send({ Status:"True", Output: "False" });
+                }else{
+                    res.status(200).send({ Status:"True", Output: "True", User_Id: data._id });
+                } 
+            }
+        });
+    }
+};
+
+
 exports.Send_Email_Password_Reset_OTP = function(req, res) {
     if(!req.params.Email || req.params.Email === '' ) {
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });

@@ -83,3 +83,26 @@
         color: #FFFFFF;
         border-radius: 5px;
     }
+    .ui-progress-spinner {
+        position: absolute;
+        width: 22px;
+        height: 22px;
+        top: 7px;
+        right: 0px;
+    }
+    @keyframes ui-progress-spinner-color {
+        100%,
+        0% {
+            stroke: #d75839;
+        }
+        40% {
+            stroke: #d75839;
+        }
+        66% {
+            stroke: #d75839;
+        }
+        80%,
+        90% {
+            stroke: #d75839;
+        }
+    }

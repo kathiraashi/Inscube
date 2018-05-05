@@ -48,6 +48,12 @@ module.exports = function(app) {
 
         app.get('/API/Posts/Notifications_Viewed/:Notify_Id', Controller.Notifications_Viewed);
 
+        app.get('/API/Posts/Search_Users/:Search_text', Controller.Search_Users);
+
+        app.get('/API/Posts/Search_Cubes/:User_Id/:Search_text', Controller.Search_Cubes);
+
+        app.get('/API/Posts/Search_Posts/:User_Id/:Search_text', Controller.Search_Posts);
+
         
 
 };

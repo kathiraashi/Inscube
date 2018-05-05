@@ -1304,3 +1304,130 @@ exports.Notifications_Viewed = function(req, res) {
         });
     }
 };
+
+
+// ----------------------------------------------------------------------  Users Search----------------------------------------------------------
+exports.Search_Users = function(req, res) {
+    if(!req.params.Search_text || req.params.Search_text === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Search text can not be empty" });
+    }else{
+        UserModel.UserSchema.find({Inscube_Name: { $regex: new RegExp(req.params.Search_text, "i") }, Active_Status: 'Active' }, { Inscube_Name: 1, Image: 1, Hash_Tag_1: 1, Hash_Tag_2: 1, Hash_Tag_3: 1, createdAt: 1 }, {}, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err);
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Cube Post Submit"});           
+            } else {
+                res.status(200).send({ Status:"True", Output: "True", Response: result });
+            }
+        });
+    }
+};
+
+// ----------------------------------------------------------------------  Cubes Search----------------------------------------------------------
+exports.Search_Cubes = function(req, res) {
+    if(!req.params.Search_text || req.params.Search_text === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Search text can not be empty" });
+    } else if(!req.params.User_Id || req.params.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else{
+        CubeModel.CubesSchema.find({Name: { $regex: new RegExp(req.params.Search_text, "i") }, Active_Status: 'Active'}, {User_Id: 1, Category_Id: 1, Name: 1, Image:1, Security:1 }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                const GetCubeInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
+                        result.map(info => CubeFilter(info)) 
+                    ).then( result_1 => {  
+                        res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                    }).catch( err_1 => { 
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
+                        res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
+                    });
+
+                const CubeFilter = info => // Sub Promise For Cube Related Info Find --------------
+                    Promise.all([ 
+                        CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id}).exec(),
+                        CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
+                        CubeModel.Cube_Followersschema.findOne({'Cube_Id': info._id, 'User_Id' : req.params.User_Id, 'Active_Status': 'Active' } ).exec(),
+                        ]).then( Data => {
+                            info = JSON.parse(JSON.stringify(info));
+                            info.Category_Name = Data[0].Name;
+                            info.Members_Count = Data[1];
+                            if (Data[2] ===  null) {
+                                info.Joined = false;
+                            }else{
+                                info.Joined = true;
+                            }
+                            return info;
+                        }).catch(error => {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
+                        });
+
+                GetCubeInfo(result); // Main Promise Call Function Cube --------------
+            }
+        });
+    }
+};
+
+// ----------------------------------------------------------------------  Posts Search----------------------------------------------------------
+exports.Search_Posts = function(req, res) {
+    if(!req.params.Search_text || req.params.Search_text === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Search text can not be empty" });
+    } else if(!req.params.User_Id || req.params.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else{
+        CubeModel.Cube_Followersschema.find({'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                var CubesArray = [];
+                var Return_Json = result.map((Objects) => {
+                    CubesArray.push(Objects.Cube_Id);
+                });
+                PostModel.Cube_Postschema.find({'Cubes_Id': { $in: CubesArray }, Post_Text: { $regex: new RegExp(req.params.Search_text, "i") }, 'Active_Status': 'Active' }, {Attachments: 0, Post_Link: 0}, {sort: { updatedAt: -1 } }, function(err_1, result_1) {
+                    if(err_1) {
+                        res.status(500).send({status:"False", Error:err_1});
+                    } else {
+                        result_1 = JSON.parse(JSON.stringify(result_1));
+                        const Get_Post_Info = (result_1) => Promise.all(
+                            result_1.map(info_1 => PostInfo(info_1)) 
+                        ).then( result_2 => {
+                                res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                        }).catch( err_2 => {
+                            
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_2);
+                            res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Post Submit Info Find Promise Error "});
+                        });
+                        const PostInfo = info_1 =>
+                            Promise.all([
+                                UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                                CubeModel.CubesSchema.findOne({ '_id': info_1.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                ]).then( Data => {
+                                    info_1.User_Name = Data[0].Inscube_Name;
+                                    info_1.User_Image = Data[0].Image;
+                                    info_1.Cube_Name = Data[1].Name;
+                                    info_1.Cubes_Count = (info_1.Cubes_Id).length;
+                                    if (info_1.Post_Category === 'Article/Blog') {
+                                        info_1.Post_Category = 'Article';
+                                    }
+                                    if (info_1.Post_Category === 'Moments') {
+                                        info_1.Post_Category = 'Moment';
+                                    }
+                                    if (info_1.Post_Category === 'News' || info_1.Post_Category === 'Idea') {
+                                        info_1.TextAddon = 'an';
+                                    }else{
+                                        info_1.TextAddon = 'a';
+                                    }
+                                    info_1.Post_Category = info_1.Post_Category.toLowerCase();
+                                    return info_1;
+                                }).catch(error_1 => {
+                                    console.log(error_1);
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error_1);
+                                });     
+                        Get_Post_Info(result_1);
+                    }
+                });
+            }
+        });
+    }
+};

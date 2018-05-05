@@ -127,4 +127,19 @@ export class PostService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+
+
+    public Search_Users(text: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Search_Users/' + text)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public Search_Cubes(User_Id: any, text: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Search_Cubes/' + User_Id + '/' + text)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public Search_Posts(User_Id: any, text: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Search_Posts/' + User_Id + '/' + text)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
 }

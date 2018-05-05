@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs/Subject';
 
 import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+
+import { ScrollbarComponent } from 'ngx-scrollbar';
 
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 import { CreatePostComponent } from './../../Modal_Components/create-post/create-post.component';
@@ -18,12 +20,19 @@ import { PostService } from './../../service/post/post.service';
 })
 export class FeedsHeaderComponent implements OnInit {
 
-  SearchList: any[] = [];
-  selected: String;
-
+  @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
   modalRef: BsModalRef;
 
   UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+
+  status: { isopen: boolean } = { isopen: false };
+  search_text: String;
+  activeTab = 'Cubes';
+  Search_Users: any[] = [];
+  Search_Cudes: any[] = [];
+  Search_Posts: any[] = [];
+  Spinner: Boolean = false;
 
   lists;
   LoginUser;
@@ -43,6 +52,99 @@ export class FeedsHeaderComponent implements OnInit {
    }
 
   ngOnInit() {
+  }
+
+  change_activeTab(text) {
+    this.scrollRef.scrollYTo(0);
+    if (this.activeTab !== text) {
+      this.activeTab = text;
+      this.Spinner = true;
+      if (text === 'Users') {
+        this.Spinner = true;
+        this.Post_Service.Search_Users(this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Users = datas['Response'];
+          } else {
+            this.Search_Users = [];
+          }
+        });
+      }
+      if (text === 'Cubes') {
+        this.Spinner = true;
+        this.Post_Service.Search_Cubes(this.LoginUser._id, this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Cudes = datas['Response'];
+          } else {
+            this.Search_Cudes = [];
+          }
+        });
+      }
+      if (text === 'Posts') {
+        this.Spinner = true;
+        this.Post_Service.Search_Posts(this.LoginUser._id, this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Posts = datas['Response'];
+          } else {
+            this.Search_Posts = [];
+          }
+          console.log(this.Search_Posts);
+        });
+      }
+    }
+  }
+
+  Search_Text_change(value) {
+    if ( this.search_text !== '') {
+      this.Spinner = true;
+      this.status.isopen = true;
+      if (this.activeTab === 'Cubes') {
+        this.Post_Service.Search_Cubes(this.LoginUser._id, value).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Cudes = datas['Response'];
+          } else {
+            this.Search_Cudes = [];
+          }
+        });
+      }
+      if (this.activeTab === 'Users') {
+        this.Post_Service.Search_Users(value).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Users = datas['Response'];
+          } else {
+            this.Search_Users = [];
+          }
+        });
+      }
+      if (this.activeTab === 'Posts') {
+        this.Post_Service.Search_Posts(this.LoginUser._id, this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Posts = datas['Response'];
+          } else {
+            this.Search_Posts = [];
+          }
+          console.log(this.Search_Posts);
+        });
+      }
+    } else {
+      this.Search_Users = [];
+      this.Search_Cudes = [];
+      this.Search_Posts = [];
+      this.status.isopen = false;
+    }
+  }
+
+  clear() {
+    this.Search_Users = [];
+    this.Search_Cudes = [];
+    this.Search_Posts = [];
+    this.search_text = '';
+    this.status.isopen = false;
   }
 
   find_notification() {
@@ -74,17 +176,12 @@ export class FeedsHeaderComponent implements OnInit {
   }
 
   View_Post(_id, _Notyify_Id) {
-console.log(_Notyify_Id);
-
     const _index =  this.Notifications_List.findIndex(x => x._id === _Notyify_Id);
     this.Post_Service.Notifications_viewed(this.Notifications_List[_index]._id).subscribe(data => {
       console.log(data);
     });
     this.Notifications_List.splice(_index, 1);
     this.router.navigate(['/Post_View', _id]);
-  }
-  typeaheadOnSelect(e: TypeaheadMatch): void {
-    console.log(e.item._id);
   }
 
   Activity_Check() {

@@ -21,7 +21,7 @@
 
 // Feature Module
   import { FlexLayoutModule } from '@angular/flex-layout';
-  import { BsDatepickerModule, TypeaheadModule, ModalModule, TooltipModule } from 'ngx-bootstrap';
+  import { BsDatepickerModule, TypeaheadModule, ModalModule, BsDropdownModule, TooltipModule } from 'ngx-bootstrap';
   import { ScrollbarModule } from 'ngx-scrollbar';
   import { MomentModule } from 'angular2-moment';
   import { NgxCarouselModule } from 'ngx-carousel';
@@ -30,6 +30,7 @@
   import { LightboxModule } from 'angular2-lightbox';
   import { YoutubePlayerModule } from 'ngx-youtube-player';
   import { ClipboardModule } from 'ngx-clipboard';
+  import {ProgressSpinnerModule} from 'primeng/progressspinner';
 
 // Service Module
   import { DataSharedVarServiceService } from './service/data-shared-var-service/data-shared-var-service.service';
@@ -157,6 +158,8 @@ import { FeedsViewComponent } from './feeds-view/feeds-view.component';
         BsDatepickerModule.forRoot(),
         TypeaheadModule.forRoot(),
         ModalModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
         ScrollbarModule,
         MomentModule,
         NgxCarouselModule,
@@ -165,7 +168,7 @@ import { FeedsViewComponent } from './feeds-view/feeds-view.component';
         LightboxModule,
         YoutubePlayerModule,
         ClipboardModule,
-        TooltipModule.forRoot(),
+        ProgressSpinnerModule
   ],
   providers: [
               AuthGuard,
