@@ -8,7 +8,7 @@ var Cube_Postschema = mongoose.Schema({
     Post_Link_Info: { type : Object },
     Post_Text: { type : String },
     Shared_Post: { type : String },
-    Shared_User_Id: { type : String },
+    Shared_Post_User_Id: { type : String },
     Shared_Post_Id: { type : String },
     Attachments: { type : Array },
     Active_Status: String

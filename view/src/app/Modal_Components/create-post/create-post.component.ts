@@ -205,22 +205,12 @@ export class CreatePostComponent implements OnInit {
 
             this.Post_Service.Cube_Post_Submit(this.FormData).subscribe( datas => {
                 if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-                        // this.snackBar.open( 'Post Successfully Submitted' , ' ', {
-                        // horizontalPosition: 'center',
-                        // duration: 3000,
-                        // verticalPosition: 'top',
-                        // });
                         this.Post_Submit_change.Post_Submited(datas['Response']);
                         this.onClose.next({Status: true, Response: datas['Response'] });
                         this._bsModalRef.hide();
 
                 } else {
                     this.Post_Submit = false;
-                    // this.snackBar.open( 'Post Submit Failed Please Try Again !!', ' ', {
-                    // horizontalPosition: 'center',
-                    // duration: 3000,
-                    // verticalPosition: 'top',
-                    // });
                     this.onClose.next({Status: false });
                     this._bsModalRef.hide();
                 }

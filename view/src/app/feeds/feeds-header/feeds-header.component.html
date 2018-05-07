@@ -149,60 +149,95 @@
 
 
         <div style="width: 320px" >
-            <div class="notifylist" *ngFor="let Notify of Notifications_List; let i=index">
-                <ng-container *ngIf="Notify.Notify_Type === 'New_Post'">
-                    <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
-                        <div fxFlex="40px">
-                            <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+            <ng-container *ngIf="Notifications_List && Notifications_List?.length > 0">
+                <div class="notifylist" *ngFor="let Notify of Notifications_List; let i=index">
+                    <ng-container *ngIf="Notify.Notify_Type === 'New_Post'">
+                        <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                            <div fxFlex="40px">
+                                <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                            </div>
+                            <div class="mt-10" fxFlex style="height: 40px;">
+                                <p class="notifycategory"> <span class="username"> {{Notify.User_Name | slice:0:20}} {{Notify.User_Name?.length > 20 ? '...' : ' ' }} </span>
+                                    <span> Posted {{Notify.TextAddon}} 
+                                        <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                        <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                    </span>
+                                </p>
+                                <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                            </div>
                         </div>
-                        <div class="mt-10" fxFlex style="height: 40px;">
-                            <p class="notifycategory"> <span class="username"> {{Notify.User_Name | slice:0:20}} {{Notify.User_Name?.length > 20 ? '...' : ' ' }} </span>
-                                <span> Posted {{Notify.TextAddon}} 
-                                    <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
-                                    <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
-                                </span>
-                            </p>
-                            <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                        <hr class="m-0">
+                    </ng-container>
+                    <ng-container *ngIf="Notify.Notify_Type === 'Shared_Post'">
+                        <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                            <div fxFlex="40px">
+                                <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                            </div>
+                            <div class="mt-10" fxFlex style="height: 40px;">
+                                <p class="notifycategory"> <span class="username"> {{Notify.User_Name | slice:0:20}} {{Notify.User_Name?.length > 20 ? '...' : ' ' }} </span>
+                                    <span> shared {{Notify.TextAddon}} 
+                                        <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                        <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                    </span>
+                                </p>
+                                <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                            </div>
                         </div>
-                    </div>
-                    <hr class="m-0">
-                </ng-container>
-                <ng-container *ngIf="Notify.Notify_Type === 'Opinion'">
-                    <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
-                        <div fxFlex="40px">
-                            <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                        <hr class="m-0">
+                    </ng-container>
+                    <ng-container *ngIf="Notify.Notify_Type === 'Shared'">
+                        <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                            <div fxFlex="40px">
+                                <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                            </div>
+                            <div class="mt-10" fxFlex style="height: 40px;">
+                                <p class="notifycategory"> <span class="username"> {{Notify.User_Name | slice:0:20}} {{Notify.User_Name?.length > 20 ? '...' : ' ' }} </span>
+                                    <span> shared your
+                                        <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span>
+                                    </span>
+                                </p>
+                                <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                            </div>
                         </div>
-                        <div class="mt-10" fxFlex style="height: 40px;">
-                            <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
-                                <span> shared an opinion on your
-                                    <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
-                                    <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
-                                </span>
-                            </p>
-                            <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                        <hr class="m-0">
+                    </ng-container>
+                    <ng-container *ngIf="Notify.Notify_Type === 'Opinion'">
+                        <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                            <div fxFlex="40px">
+                                <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                            </div>
+                            <div class="mt-10" fxFlex style="height: 40px;">
+                                <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
+                                    <span> shared an opinion on your
+                                        <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                        <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                    </span>
+                                </p>
+                                <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                            </div>
                         </div>
-                    </div>
-                    <hr class="m-0">
-                </ng-container>
-                
-                <ng-container *ngIf="Notify.Notify_Type === 'Emote'">
-                    <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
-                        <div fxFlex="40px">
-                            <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                        <hr class="m-0">
+                    </ng-container>
+                    
+                    <ng-container *ngIf="Notify.Notify_Type === 'Emote'">
+                        <div (click)="View_Post(Notify.Post_Id, Notify._id)" class="notify_div" [ngClass]="{'highlight_bg': Notify.View_Status === 0}" fxLayout="row" fxLayoutAlign="start center">
+                            <div fxFlex="40px">
+                                <img src="{{UsersBaseUrl}}{{Notify.User_Image}}" alt="" class="userImg" >
+                            </div>
+                            <div class="mt-10" fxFlex style="height: 40px;">
+                                <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
+                                    <span> commented "{{Notify.Emote_Text}}" to your
+                                        <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
+                                        <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
+                                    </span>
+                                </p>
+                                <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
+                            </div>
                         </div>
-                        <div class="mt-10" fxFlex style="height: 40px;">
-                            <p class="notifycategory"> <span class="username"> {{Notify.User_Name}} </span>
-                                <span> commented "{{Notify.Emote_Text}}" to your
-                                    <span style="text-transform: lowercase">"{{Notify.Post_Type}}"</span> in 
-                                    <span>"{{Notify.Cube_Name | slice:0:15}} {{Notify.Cube_Name?.length > 15 ? '...' : ' ' }}"</span>  
-                                </span>
-                            </p>
-                            <p class="notifydate"> {{Notify.createdAt | amTimeAgo}} </p>
-                        </div>
-                    </div>
-                    <hr class="m-0">
-                </ng-container>
-            </div>
+                        <hr class="m-0">
+                    </ng-container>
+                </div>
+            </ng-container>
 
             <br>
         </div>

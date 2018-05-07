@@ -16,6 +16,7 @@ import { EditCommentComponent } from './../../Modal_Components/edit-comment/edit
 import { ReportCommentComponent } from './../../Modal_Components/report-comment/report-comment.component';
 import { DeleteConfirmationComponent } from './../../Modal_Components/delete-confirmation/delete-confirmation.component';
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
+import { PostShareCubesListComponent } from './../../Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
 
 import { PostService } from './../../service/post/post.service';
 
@@ -150,7 +151,7 @@ export class FeedsCenterComponent implements OnInit {
     };
   }
 
-  public myfunc(event: Event) {
+ public myfunc(event: Event) {
     console.log(event);
  }
 
@@ -176,8 +177,6 @@ export class FeedsCenterComponent implements OnInit {
           const _index =  this.Posts_List[Post_Index].Emotes.findIndex(x => x._id === result.Responce._id);
           result.Responce.Already = true;
           this.Posts_List[Post_Index].Emotes[_index] = result.Responce;
-        } else {
-          console.log(result);
         }
       });
   }
@@ -197,12 +196,6 @@ export class FeedsCenterComponent implements OnInit {
       if (datas['Status'] === 'True' && datas['Output'] === 'True') {
           this.Posts_List[Post_Index].Emotes[Emote_Index].Already = true;
           this.Posts_List[Post_Index].Emotes[Emote_Index].Count += 1;
-      } else {
-        // this.snackBar.open( datas['Message'] , ' ', {
-        //   horizontalPosition: 'center',
-        //   duration: 3000,
-        //   verticalPosition: 'top',
-        //   });
       }
     });
   }
@@ -362,7 +355,6 @@ export class FeedsCenterComponent implements OnInit {
   }
 
   EditComment_Model() {
-    console.log(this.Trigger_CommentInfo);
     const initialState = { data: { Value : this.Trigger_CommentInfo} };
       this.modalRef = this.modalService.show(EditCommentComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
       this.modalRef.content.onClose.subscribe(result => {
@@ -382,25 +374,8 @@ export class FeedsCenterComponent implements OnInit {
           if (datas['Status'] === 'True' && datas['Output'] === 'True') {
             const _index =  this.Posts_List[this.ActiveComment].Comments.findIndex(x => x._id === this.Trigger_CommentInfo._id);
             this.Posts_List[this.ActiveComment].Comments.splice(_index, 1);
-            // this.snackBar.open( 'Comment Successfully Deleted!' , ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
-          } else {
-            // this.snackBar.open( 'Comment Delete Failed Please Try Again!' , ' ', {
-            //   horizontalPosition: 'center',
-            //   duration: 3000,
-            //   verticalPosition: 'top',
-            // });
           }
         });
-      } else {
-        // this.snackBar.open( 'Comment Delete Confirmation Declined!' , ' ', {
-        //   horizontalPosition: 'center',
-        //   duration: 3000,
-        //   verticalPosition: 'top',
-        // });
       }
     });
   }
@@ -429,6 +404,21 @@ export class FeedsCenterComponent implements OnInit {
     });
   }
 
+
+
+  Share_Post() {
+    const initialState = { data: { Post_Info : this.Trigger_PostInfo } };
+    this.modalRef = this.modalService.show(PostShareCubesListComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+      if (result.Status === 'Yes') {
+        this.snackBar.open( 'Post Successfully Shared' , ' ', {
+          horizontalPosition: 'center',
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+      }
+    });
+  }
 
   Load_More_Posts() {
     this.Loader_3 = true;

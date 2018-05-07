@@ -25,7 +25,10 @@
                   </div>
                   <div fxFlex>
                     <p class="postusername"> 
-                      <span style="cursor:pointer" [routerLink]="[ '/Profile_View', Post.User_Id ]"> {{Post.User_Name}} </span> 
+                      <span style="cursor:pointer; color: #333" [routerLink]="[ '/Profile_View', Post.User_Id ]"> {{Post.User_Name | slice:0:20}}{{Post.User_Name?.length > 20 ? '...' : ' ' }} </span> 
+                      <ng-container *ngIf="Post.Shared_Post === 'True'">
+                        shared <span style="cursor:pointer; color: #333" [routerLink]="[ '/Profile_View', Post.Shared_Post_User_Id ]"> {{Post.Post_Owner_Name | slice:0:20}}{{Post.Post_Owner_Name?.length > 20 ? '...' : '`s' }} </span> Post
+                      </ng-container>
                     </p>
                     <p class="postusercategory"> {{Post.Post_Category}}  &nbsp; | &nbsp; {{ Post.updatedAt | amTimeAgo}}</p>
                   </div>
@@ -158,7 +161,7 @@
             </div>
             <div fxFlex class="text-right" style="height:35px">
               <div class="share">
-                <!-- <img src="assets/images/icons/7.png" alt=""> -->
+                <img (click)="Trigger_Post(i); Share_Post()" src="assets/images/icons/7.png" alt="">
               </div>
             </div>
           </div>
@@ -292,7 +295,7 @@
 
 
 <mat-menu #ReportHighlightPostUser="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-    <div (click)="EditPost_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+    <div *ngIf="Trigger_PostInfo && Trigger_PostInfo.Shared_Post !== 'True'"  (click)="EditPost_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
         <div class="dropd_icon" fxFlex="30px">
             <i class="material-icons">border_color</i>
         </div>

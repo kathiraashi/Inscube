@@ -142,4 +142,9 @@ export class PostService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+    public Cube_Post_Share(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Cube_Post_Share', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
 }

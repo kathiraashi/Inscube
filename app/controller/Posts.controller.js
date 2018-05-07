@@ -195,9 +195,8 @@ exports.CubePost_List = function(req, res) {
                             result_1.map(info_1 => PostInfo(info_1)) 
                         ).then( result_2 => {
                                 result_2 = result_2.map((Objects) => { Objects.Time_Ago = moment(Objects.Time_Ago).fromNow();  return Objects; });
-                                res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                                res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                         }).catch( err_2 => {
-                            
                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_2);
                             res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Post Submit Info Find Promise Error "});
                         });
@@ -205,11 +204,13 @@ exports.CubePost_List = function(req, res) {
                             Promise.all([
                                 UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
                                 PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                                UserModel.UserSchema.findOne({ '_id': info_1.Shared_Post_User_Id }, { Inscube_Name: 1}).exec(),
                                 ]).then( Data => {
                                     info_1.User_Name = Data[0].Inscube_Name;
                                     info_1.User_Image = Data[0].Image;
                                     info_1.Time_Ago = info_1.updatedAt;
                                     info_1.Emotes = Data[1];
+                                    if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
                                     info_1.Comments = [];
                                     var cubeIds = info_1.Cubes_Id;
 
@@ -277,11 +278,13 @@ exports.CubePost_All_List = function(req, res) {
                             Promise.all([
                                 UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
                                 PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                                UserModel.UserSchema.findOne({ '_id': info_1.Shared_Post_User_Id }, { Inscube_Name: 1}).exec(),
                                 ]).then( Data => {
                                     info_1.User_Name = Data[0].Inscube_Name;
                                     info_1.User_Image = Data[0].Image;
                                     info_1.Time_Ago = info_1.updatedAt;
                                     info_1.Emotes = Data[1];
+                                    if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
                                     info_1.Comments = [];
                                     var cubeIds = info_1.Cubes_Id;
 
@@ -344,11 +347,13 @@ exports.CubePost_View = function(req, res) {
                         Promise.all([
                             UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
                             PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                            UserModel.UserSchema.findOne({ '_id': info_1.Shared_Post_User_Id }, { Inscube_Name: 1}).exec(),
                             ]).then( Data => {
                                 info_1.User_Name = Data[0].Inscube_Name;
                                 info_1.User_Image = Data[0].Image;
                                 info_1.Time_Ago = moment(info_1.updatedAt).fromNow();
                                 info_1.Emotes = Data[1];
+                                if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
                                 info_1.Comments = [];
                                 var cubeIds = info_1.Cubes_Id;
 
@@ -1076,12 +1081,14 @@ exports.Cube_Based_Post_List = function(req, res) {
                         Promise.all([
                             UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
                             PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                            UserModel.UserSchema.findOne({ '_id': info_1.Shared_Post_User_Id }, { Inscube_Name: 1}).exec(),
                             ]).then( Data => {
 
                                 info_1.User_Name = Data[0].Inscube_Name;
                                 info_1.User_Image = Data[0].Image;
                                 info_1.Time_Ago = info_1.updatedAt;
                                 info_1.Emotes = Data[1];
+                                if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
                                 info_1.Comments = [];
                                 var cubeIds = info_1.Cubes_Id;
 
@@ -1096,7 +1103,7 @@ exports.Cube_Based_Post_List = function(req, res) {
                                         });
                         
                                         const Category_Info = info => // Third Sub Promise For Category info Find --------------
-                                            Promise.all([ 
+                                            Promise.all([
                                                 CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
                                                 ]).then( Data => {
                                                     return Data[0];
@@ -1152,12 +1159,14 @@ exports.User_Posts = function(req, res) {
                         Promise.all([
                             UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
                             PostModel.Post_Emoteschema.find({ 'Post_Id': info_1._id }).exec(),
+                            UserModel.UserSchema.findOne({ '_id': info_1.Shared_Post_User_Id }, { Inscube_Name: 1}).exec(),
                             ]).then( Data => {
 
                                 info_1.User_Name = Data[0].Inscube_Name;
                                 info_1.User_Image = Data[0].Image;
                                 info_1.Time_Ago = info_1.updatedAt;
                                 info_1.Emotes = Data[1];
+                                if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
                                 info_1.Comments = [];
                                 var cubeIds = info_1.Cubes_Id;
 
@@ -1221,10 +1230,17 @@ exports.Get_Notifications = function(req, res) {
                             UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
                             CubeModel.CubesSchema.findOne({ '_id': info_1.Cube_Id }, { Name: 1}).exec(),
                         ]).then( Data => {
+                            
                                 info_1.User_Name = Data[0].Inscube_Name;
                                 info_1.User_Image = Data[0].Image;
                                 info_1.Cube_Name = Data[1].Name;
-                                if (info_1.Notify_Type === 'New_Post' && info_1.Post_Type === 'News') {
+                                
+                                if (info_1.Post_Type === 'News' || info_1.Post_Type === 'Idea' || info_1.Post_Type === 'Article/Blog') {
+                                    info_1.TextAddon = 'an';
+                                }else{
+                                    info_1.TextAddon = 'a';
+                                }
+                                if (info_1.Notify_Type === 'New_Post' || info_1.Notify_Type === 'Shared_Post' && info_1.Post_Type === 'News') {
                                     info_1.Post_Type = 'Announcement';
                                 }
                                 if (info_1.Post_Type === 'Article/Blog') {
@@ -1232,11 +1248,6 @@ exports.Get_Notifications = function(req, res) {
                                 }
                                 if (info_1.Post_Type === 'Moments') {
                                     info_1.Post_Type = 'Moment';
-                                }
-                                if (info_1.Post_Type === 'News' || info_1.Post_Type === 'Idea') {
-                                    info_1.TextAddon = 'an';
-                                }else{
-                                    info_1.TextAddon = 'a';
                                 }
                             return info_1;
                         }).catch(error_1 => { console.log(error_1); });
@@ -1430,4 +1441,139 @@ exports.Search_Posts = function(req, res) {
             }
         });
     }
+};
+
+
+
+// ----------------------------------------------------------------------  Cube Post Share ----------------------------------------------------------
+exports.Cube_Post_Share = function(req, res) {
+    
+    var Cubes_List =JSON.parse(req.body.Cubes_List);
+
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Post_Id || req.body.Post_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
+    }else if(!Cubes_List || Cubes_List.length <= 0 ){
+        res.status(200).send({Status:"True", Output:"False", Message: "Selected Cubes can not be empty" });
+    }else{
+        PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(post_err, Post_result) {
+            if(post_err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', post_err);
+                res.status(500).send({status:"False", Error:post_err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+
+                var varCube_Postschema = new PostModel.Cube_Postschema({
+                    User_Id: req.body.User_Id,
+                    Cubes_Id: Cubes_List,
+                    Post_Category: Post_result.Post_Category,
+                    Post_Text: Post_result.Post_Text || '',
+                    Post_Link: Post_result.Post_Link,
+                    Post_Link_Info: Post_result.LinkInfo,
+                    Shared_Post: 'True',
+                    Shared_Post_User_Id: Post_result.User_Id,
+                    Shared_Post_Id: Post_result._id,
+                    Attachments: Post_result.Attachments,
+                    Active_Status: 'Active'
+                });
+                varCube_Postschema.save(function(err, result) {
+                    if(err) {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err);
+                        res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Cube Post Submit"});           
+                    } else {
+                        result = JSON.parse(JSON.stringify(result));
+                        UserModel.UserSchema.findOne({'_id': result.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                            if(err_user) {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', err_user);
+                                res.status(500).send({status:"False", Error:err_user, message: "Some error occurred while Find The  User Info."});
+                            } else {
+                                UserModel.UserSchema.findOne({'_id': result.Shared_Post_User_Id }, { Inscube_Name: 1}, function(err_share_user, Share_User_Info) {
+                                    if(err_share_user) {
+                                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', err_share_user);
+                                        res.status(500).send({status:"False", Error:err_share_user, message: "Some error occurred while Find The  User Info."});
+                                    } else {
+                                        result.Time_Ago = moment(result.updatedAt).fromNow();
+                                        result.User_Name = User_Info.Inscube_Name;
+                                        result.Post_Owner_Name = Share_User_Info.Inscube_Name;
+                                        result.User_Image = User_Info.Image;
+                                        result.Emotes = [];
+                                        result.Comments = [];
+                                        
+                                        var cubeIds = result.Cubes_Id;
+        
+                                        const GetCategory_Info = (cubeIds) => Promise.all(  // Main Promise For Category info Get --------------
+                                            cubeIds.map(info => Category_Info(info)) 
+                                        ).then( result_1 => {
+                                            
+                                                var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                    User_Id: req.body.User_Id,
+                                                    To_User_Id: Post_result.User_Id,
+                                                    Notify_Type: 'Shared',
+                                                    Post_Id: result._id,
+                                                    Post_Type: result.Post_Category,
+                                                    Cube_Id: cubeIds[0],
+                                                    Emote_Id: '',
+                                                    Opinion_Id: '',
+                                                    Emote_Text: '',
+                                                    View_Status: 0,
+                                                    Active_Status: 'Active'
+                                                });
+                                                
+                                                varPost_NotificationSchema.save();
+
+                                                result.Cubes_Info = result_1;
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                        }).catch( err_1 => {
+                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_1);
+                                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube Post Submit Category Info Find Promise Error "});
+                                        });
+                            
+                                        const Category_Info = info => // Sub Promise For Category info Find --------------
+                                            Promise.all([
+                                                CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                                CubeModel.Cube_Followersschema.find({'Cube_Id': info, 'Active_Status': 'Active' }).exec(),
+                                                ]).then( Data => {
+                                                    var Users_List = JSON.parse(JSON.stringify(Data[1]));
+                                                    const Send_Notification = (Users_List) => Promise.all(
+                                                            Users_List.map(_info => To_Notify(_info)) 
+                                                        ).then( result_2 => { return Data[0];
+                                                        }).catch( err_2 => { console.log( err_2 ); });
+        
+                                                        const To_Notify = _info => {
+                                                            if (result.User_Id !== _info.User_Id) {
+                                                                var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                                    User_Id: result.User_Id,
+                                                                    To_User_Id: _info.User_Id,
+                                                                    Notify_Type: 'Shared_Post',
+                                                                    Post_Id: result._id,
+                                                                    Post_Type: result.Post_Category,
+                                                                    Cube_Id: info,
+                                                                    Emote_Id: '',
+                                                                    Opinion_Id: '',
+                                                                    Emote_Text: '',
+                                                                    View_Status: 0,
+                                                                    Active_Status: 'Active'
+                                                                });
+                                                                varPost_NotificationSchema.save();
+                                                            }
+                                                            return _info;
+                                                        };
+        
+                                                    return Send_Notification(Users_List);
+        
+                                                    // return Data[0];
+                                                }).catch(error => {
+                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error);
+                                                });     
+                                        GetCategory_Info(cubeIds); // Main Promise Call Function Category Info --------------
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
 };

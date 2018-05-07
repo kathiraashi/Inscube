@@ -16,6 +16,7 @@ import { EditCommentComponent } from './../Modal_Components/edit-comment/edit-co
 import { ReportCommentComponent } from './../Modal_Components/report-comment/report-comment.component';
 import { DeleteConfirmationComponent } from './../Modal_Components/delete-confirmation/delete-confirmation.component';
 import { PostSubmitService } from './../component-connecting/post-submit/post-submit.service';
+import { PostShareCubesListComponent } from './../Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
 
 import { PostService } from './../service/post/post.service';
 
@@ -377,6 +378,20 @@ export class FeedsViewComponent implements OnInit {
     });
   }
 
+
+  Share_Post() {
+    const initialState = { data: { Post_Info : this.Trigger_PostInfo } };
+    this.modalRef = this.modalService.show(PostShareCubesListComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+    this.modalRef.content.onClose.subscribe(result => {
+      if (result.Status === 'Yes') {
+        this.snackBar.open( 'Post Successfully Shared' , ' ', {
+          horizontalPosition: 'center',
+          duration: 3000,
+          verticalPosition: 'top',
+        });
+      }
+    });
+  }
 
 }
 

@@ -54,6 +54,7 @@ module.exports = function(app) {
 
         app.get('/API/Posts/Search_Posts/:User_Id/:Search_text', Controller.Search_Posts);
 
+        app.post('/API/Posts/Cube_Post_Share', Controller.Cube_Post_Share);
         
 
 };

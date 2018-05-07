@@ -43,7 +43,7 @@
     font-size: 12px;
     letter-spacing: 0.5px;
     margin: 0px;
-    color: #333333;
+    color: #a9a9a9;
     font-family: 'Ubuntu', sans-serif;
 }
 .Highlights .HighlightsPost .leftSide .postusercategory{
@@ -153,6 +153,7 @@
 .Highlights .HighlightsPost .postLikes .share img{
     width: 35px;
     height: 35px;
+    margin-right: 20px;
 }
 
 

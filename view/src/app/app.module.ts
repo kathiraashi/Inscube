@@ -86,6 +86,7 @@ import { PasswordResetRedirectionComponent } from './password-reset-redirection/
 import { EmailCubeInviteComponent } from './Modal_Components/email-cube-invite/email-cube-invite.component';
 import { AddEmailInviteComponent } from './Modal_Components/add-email-invite/add-email-invite.component';
 import { FeedsViewComponent } from './feeds-view/feeds-view.component';
+import { PostShareCubesListComponent } from './Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
 
 
 
@@ -137,7 +138,8 @@ import { FeedsViewComponent } from './feeds-view/feeds-view.component';
     PasswordResetRedirectionComponent,
     EmailCubeInviteComponent,
     AddEmailInviteComponent,
-    FeedsViewComponent
+    FeedsViewComponent,
+    PostShareCubesListComponent
   ],
   imports: [
       // Default Modules
@@ -201,7 +203,8 @@ import { FeedsViewComponent } from './feeds-view/feeds-view.component';
                     EmailVerificationComponent,
                     PasswordResetComponent,
                     EditCubeComponent,
-                    AddEmailInviteComponent
+                    AddEmailInviteComponent,
+                    PostShareCubesListComponent
                   ]
 })
 export class AppModule { }
