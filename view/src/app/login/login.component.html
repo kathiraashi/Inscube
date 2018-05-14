@@ -19,18 +19,18 @@
                 <h4> Are You In The Cube ? </h4>
 
                 <input type="text" formControlName="Inscube_Name" (blur)="Check_Inscube_Name_Availabel()" placeholder="@ Inscube Name">
-                <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.controls.Inscube_Name.dirty &&  RegisterForm.value.Inscube_Name ==='' "> Inscube name is required </p>
+                <p class="error alertStyle-1 m-0" *ngIf="RegisterForm['controls'].Inscube_Name.dirty &&  RegisterForm.value.Inscube_Name ==='' "> Inscube name is required </p>
                 <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name !== '' && Inscube_NameNotAvailabel">  Username unavailable </p>
                 <!-- <p class="textgreen alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name != '' && Inscube_NameAvailabel"> '@{{Available_Ins_Name}}' is Available </p> -->
 
                 <input type="email" formControlName="Email" (blur)="Check_Email_Availabel()" placeholder="Your Email">
                 <p class="error alertStyle-1" *ngIf="RegisterForm.value.Email !== '' && EmailFormat_Error "> Invalid email format! </p>
-                <p class="error alertStyle-1" *ngIf="RegisterForm.controls.Email.dirty &&  RegisterForm.value.Email === '' "> Email is required </p>
+                <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Email.dirty &&  RegisterForm.value.Email === '' "> Email is required </p>
                 <p class="error alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailNotAvailabel"> Email already exist  </p>
                 <!-- <p class="textgreen alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailAvailabel">  Available </p> -->
 
                 <input type="password"  formControlName="Password" (blur)="checkFormValidation()" (keypress)="checkFormValidation()" placeholder="Password">
-                <p class="error alertStyle-1" *ngIf="RegisterForm.controls.Password.dirty &&  RegisterForm.value.Password === '' "> Password is required </p>
+                <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Password.dirty &&  RegisterForm.value.Password === '' "> Password is required </p>
 
                 <p class="style_2" style="margin-left: 30px;"> 
                     <input type="checkbox" formControlName="checkbox" (change)="checkFormValidation()" style="width: 17px !important; height: 17px; position: absolute; left: 25px;">
@@ -55,10 +55,10 @@
                 <p class="textstyle_1"> Log into your account </p>
 
                 <input type="email" formControlName="Email" placeholder="Your Email">
-                <p class="error alertStyle-1" *ngIf="SignInForm.controls.Email.dirty &&  SignInForm.value.Email === '' "> Email is required </p>
+                <p class="error alertStyle-1" *ngIf="SignInForm['controls'].Email.dirty &&  SignInForm.value.Email === '' "> Email is required </p>
 
                 <input type="password" formControlName="Password" placeholder="Password">
-                <p class="error alertStyle-1" *ngIf="SignInForm.controls.Password.dirty &&  SignInForm.value.Password === '' "> Password is required </p>
+                <p class="error alertStyle-1" *ngIf="SignInForm['controls'].Password.dirty &&  SignInForm.value.Password === '' "> Password is required </p>
 
                 <p class="style_2"> <span (click)="ForgotPassword()"> Forgot password? </span>   </p>
                 <button class="btn ptn-primary" type="submit" [ngClass]="{'disabled': SignInForm.value.Email =='' || SignInForm.value.Password =='' }" [disabled]="SignInForm.value.Email =='' || SignInForm.value.Password ==''"> Login now </button>

@@ -4,6 +4,7 @@
     box-shadow: rgba(102, 102, 102, 0.47) 0px 1px 8px 0px;
     margin: 3px;
     margin-bottom: 25px;
+    position: relative;
 }
 
 .Topics_list .Topics .topic_header .Topic_Name{
@@ -78,4 +79,52 @@
     background-color: #75737399;
     border-radius: 0px;
     cursor: pointer;
+}
+.postaction{
+    line-height: 10px;
+    font-size: 24px;
+    margin: 0px;
+    color: gray;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+}
+.postaction i{
+    height: 11px;
+    line-height: 11px;
+    margin-bottom: 0px;
+    margin-top: 4px;
+    cursor: pointer;
+    font-size: 27px;
+}
+
+.dropd{
+    width: 155px;
+    padding: 3px 5px;
+    background-color: #f3f3f3;
+}
+
+.dropd .dropd_text{
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #666666a3;
+    line-height: 33px;
+    margin: 0px;
+}
+
+.dropd .dropd_icon i{
+    color: #666666a3;
+    font-size: 23px;
+    margin-top: 6px;
+}
+.dropdarrow{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    background-color: #f3f3f3;
+    top: -3px;
+    left: 15px;
+    transform: rotate(45DEG);
+    z-index: -1;
 }

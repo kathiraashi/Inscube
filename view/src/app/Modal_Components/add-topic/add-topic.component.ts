@@ -130,22 +130,12 @@ Remove_Video_file(index) {
 
         this.Cube_Service.Add_Cube_Topic(this.FormData).subscribe( datas => {
             if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-                    // this.snackBar.open( 'New Topic Successfully Submitted' , ' ', {
-                    // horizontalPosition: 'center',
-                    // duration: 3000,
-                    // verticalPosition: 'top',
-                    // });
                     this.Cube_View_Service.New_Topic_Add(datas['Response']);
                     this.onClose.next({Status: true, Response: datas['Response'] });
                     this._bsModalRef.hide();
 
             } else {
                 this.Post_Submit = false;
-                // this.snackBar.open( 'New Topic Creation Failed Please Try Again !!', ' ', {
-                // horizontalPosition: 'center',
-                // duration: 3000,
-                // verticalPosition: 'top',
-                // });
                 this.onClose.next({Status: false });
                 this._bsModalRef.hide();
             }

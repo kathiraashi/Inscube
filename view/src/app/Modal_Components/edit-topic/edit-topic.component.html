@@ -1,0 +1,96 @@
+<div class="CreatePost">
+  <div class="postheader" fxLayout="row" fxLayoutAlign="start" >
+    <div *ngIf="data.Cube_Info" fxFlex="65px" class="text-center">
+        <img  src="{{CubeBaseUrl}}{{data.Cube_Info.Image}}" alt="" class="userimg">
+    </div>
+    <div fxFlex class="text-left">
+      <h5 class="m-0 posttype"> Edit topic </h5>
+    </div>
+    <div fxFlex class="text-left">
+          <button type="button" style="padding: 0px 15px; font-size: 35px;" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+  </div>
+
+  <hr style="margin-top:3px;margin-bottom:0px">
+
+  <div class="modal-body">
+
+    <form [formGroup]="Form" (ngSubmit)="onSubmit()" enctype="multipart/form-data" style="padding:0px 15px">
+
+          <input formControlName="Title" class="postlink mb-20" placeholder="Topic Title...">
+
+          <textarea formControlName="Text" style="margin-top: 15px;" class="posttext" placeholder="Topic Description..."></textarea>
+  
+          <div class="imgUpload" *ngIf="List_Img_Preview.length > 0 || Old_Img_Preview.length > 0">
+              <div style="display:inline-flex;">
+                  <ul class="ImgselectedList">
+                      <li *ngFor="let Old_item of Old_Img_Preview; let i=index">
+                          <div class="selectedImg">
+                              <img src="{{TopicBaseUrl}}{{Old_item.File_Name}}" />
+                              <div class="clearbutton" (click)="Remove_Old_Img(i)"> <i class="material-icons">clear</i> </div>
+                          </div>
+                      </li>
+                      <li *ngFor="let item of List_Img_Preview; let i=index">
+                          <div class="selectedImg">
+                              <img src="{{item}}" />
+                              <div class="clearbutton" (click)="Remove_Img_file(i)"> <i class="material-icons">clear</i> </div>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+  
+  
+          <div class="vidUpload" *ngIf="List_Video_Preview.length > 0 || Old_Video_Preview.length > 0" >
+              <div style="display:inline-flex;">
+                  <ul class="vidselectedList">
+                      <li *ngFor="let Old_item of Old_Video_Preview; let i=index">
+                          <div class="selectedvid">
+                                  <video controls width="180px" height="90px" controlsList="nodownload">
+                                      <source src="{{TopicBaseUrl}}{{Old_item.File_Name}}" type="video/{{Old_item.File_Name | slice:-3}}">
+                                  </video>
+                              <div class="clearbutton" (click)="Remove_Old_Video(i)"> <i class="material-icons">clear</i> </div>
+                          </div>
+                      </li>
+                      <li *ngFor="let item of List_Video_Preview; let i=index">
+                          <div class="selectedvid">
+                                  <video controls width="180px" height="90px" controlsList="nodownload">
+                                      <source src="{{item}}" type="{{List_Video_Files[i].type}}">
+                                  </video>
+                              <div class="clearbutton" (click)="Remove_Video_file(i)"> <i class="material-icons">clear</i> </div>
+                          </div>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+        
+
+
+          <div class="postaddon" fxLayout="row" fxLayoutAlign="start" >
+              <div fxFlex="50px" class="text-center postaddon_icon">
+                  <input type="file" multiple (change)="onImageFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #imageInput style="display:none;">
+                  <i (click)="imageInput.click()" class="material-icons">burst_mode</i>
+              </div>
+              <div fxFlex="50px" class="text-center postaddon_icon">
+                      <input type="file" multiple (change)="onVideoFileChange($event)" accept=".3gp, .mp4, .vlc, .mkv, .MKV, .VLC, .MP4, .3GP" #videoInput style="display:none;">
+                  <i (click)="videoInput.click()" class="material-icons" style="transform:rotate(90deg)">local_movies</i>
+              </div>
+          </div>
+  
+  
+          <div fxLayout fxLayoutAlign="space-between end">
+              <div fxFlex="85%">
+              </div>
+              <div fxFlex="15%" style="line-height:75px;">
+                  <button type="submit" [ngClass]="{'disabled': Post_Submit }" [disabled]="Post_Submit" mat-raised-button color="primary" style="background-color: #d75739; margin-left:20px"> 
+                      <span *ngIf="!Post_Submit"> Update </span>
+                      <span *ngIf="Post_Submit" style="color:#fff"> Uploading... </span>
+                   </button>
+              </div>
+          </div>
+  
+      </form>
+  </div>
+</div>

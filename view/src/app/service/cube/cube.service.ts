@@ -83,6 +83,16 @@ export class CubeService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+    public Update_Cube_Topic(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Update_Cube_Topic', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public Delete_Topic(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'Delete_Topic', data)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
     public Check_Invite_CubeId(Cube_Id: any): Observable<any[]>  {
         return this.http .get(API_URL + 'Check_Invite_CubeId/' + Cube_Id)
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);

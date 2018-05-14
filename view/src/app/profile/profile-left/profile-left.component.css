@@ -49,6 +49,8 @@
 
 .hash_tag_class span{
     margin-right: 10px;
+    display: block;
+    color: #d75839;
 }
 
 .Left_bar_Button button{

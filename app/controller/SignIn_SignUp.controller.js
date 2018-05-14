@@ -462,7 +462,7 @@ exports.Send_Email_Password_Reset_Request = function(req, res) {
                 res.status(500).send({ Status:"False", Error:err, Message: "Some error occurred while Validate The E-mail " });
             } else {
                 if(data === null){
-                    res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid acoount!' });
+                    res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid account!' });
                 }else{
                 var rand=Math.floor((Math.random() * 100) + 54);
                     var link = "http://www.inscube.com/Reset_Password/" + data._id + "/" + rand;

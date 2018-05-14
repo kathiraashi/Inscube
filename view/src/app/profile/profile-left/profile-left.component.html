@@ -1,13 +1,13 @@
 <div class="feedsRightBar">
   <!-- UserDetails -->
-  <div *ngIf="User_Info !== undefined" class="userdiv" fxLayout="column" fxLayoutAlign="start center">
-      <div fxFlex="120px" class="text-center">
-          <img class="userimg" src="{{UsersBaseUrl}}{{User_Info.Image}}" alt="">
-      </div>
-      <div fxFlex="25px">
-          <p class="username"> {{User_Info.Inscube_Name}} </p>
-      </div>
-  </div>
+    <div *ngIf="User_Info !== undefined" class="userdiv" fxLayout="column" fxLayoutAlign="start center">
+        <div fxFlex="120px" class="text-center">
+            <img class="userimg" src="{{UsersBaseUrl}}{{User_Info.Image}}" alt="">
+        </div>
+    </div>
+    <div>
+        <p class="username"> {{User_Info.Inscube_Name}} </p>
+    </div>
   <!-- UserDetails End -->
 
     <ng-container *ngIf="User_Info !== undefined && User_Info._id === LoginUser._id">

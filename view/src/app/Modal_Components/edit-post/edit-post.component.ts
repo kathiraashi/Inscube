@@ -263,20 +263,9 @@ export class EditPostComponent implements OnInit {
 
           this.Post_Service.Cube_Post_Update(this.FormData).subscribe( datas => {
               if (datas['Status'] === 'True' && datas['Output'] === 'True') {
-                    //   this.snackBar.open( 'Post Successfully Updated' , ' ', {
-                    //   horizontalPosition: 'center',
-                    //   duration: 3000,
-                    //   verticalPosition: 'top',
-                    //   });
                       this.onClose.next({Status: true, Response: datas['Response'] });
                       this._bsModalRef.hide();
               } else {
-                //   this.Post_Submit = false;
-                //   this.snackBar.open( 'Post Update Failed Please Try Again !!', ' ', {
-                //   horizontalPosition: 'center',
-                //   duration: 3000,
-                //   verticalPosition: 'top',
-                //   });
                   this.onClose.next({Status: false });
                   this._bsModalRef.hide();
               }

@@ -14,6 +14,10 @@ module.exports = function(app) {
 
         app.post('/API/Cubes/Add_Cube_Topic', Controller.AddCubeTopic);
 
+        app.post('/API/Cubes/Update_Cube_Topic', Controller.UpdateCubeTopic);
+
+        app.post('/API/Cubes/Delete_Topic', Controller.Delete_Topic);
+
         app.get('/API/Cubes/Cube_List/:Category_Id/:User_Id', Controller.CubesList);
 
         app.get('/API/Cubes/View_Cube/:Cube_Id/:User_Id', Controller.CubeView);

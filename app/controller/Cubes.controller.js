@@ -209,6 +209,88 @@ exports.AddCubeTopic = function(req, res) {
 };
 
 
+// ---------------------------------------------------------------------- Update Cube Topic ----------------------------------------------------------
+exports.UpdateCubeTopic = function(req, res) {
+    Cube_Topic_File_Upload(req, res, function(upload_err) {
+
+        if(!req.body.Topic_Id || req.body.Topic_Id === '') {
+            res.status(200).send({Status:"True", Output:"False", Message: "Topic Id can not be empty" });
+        }else if(!req.body.User_Id || req.body.User_Id === ''){
+            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+        }else if(!req.body.Cube_Id || req.body.Cube_Id === ''){
+            res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+        }else if(!req.body.Name || req.body.Name === '' ){
+            res.status(200).send({Status:"True", Output:"False", Message: "Name can not be empty" });
+        }else{
+
+            CubeModel.Cube_Topicschema.findOne({'_id': req.body.Topic_Id, 'User_Id': req.body.User_Id }, function(err, result) {
+                if(err) {
+                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                    res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+                } else {
+                    var Json = JSON.parse(JSON.stringify(req.files));
+                    var Return_Json = Json.map((Objects) => {
+                        let extArray = Objects.filename.split(".");
+                        let extension = (extArray[extArray.length - 1]).toLowerCase();
+                        if (extension === 'png' || extension === 'jpg' || extension === 'gif' || extension === 'jpeg' ) {
+                            return { File_Name: Objects.filename, File_Type: 'Image', Size: Objects.size};
+                        }else {
+                            return { File_Name: Objects.filename, File_Type: 'Video', Size: Objects.size};
+                        }
+                    });
+        
+                    if (req.body.Old_Attachments && req.body.Old_Attachments !== undefined ) {
+                        Old_Json = JSON.parse(req.body.Old_Attachments);
+                    }
+
+                    result.Name = req.body.Name;
+                    result.Description = req.body.Description;
+                    result.Attachments = Return_Json.concat(Old_Json);
+                    result.save(function(err_1, result_1) {
+                        if(err_1) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Topic Add Query Error', 'Cubes.controller.js - 152', err_1);
+                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Add Cube Topic"});           
+                        } else {
+                            result_1 = JSON.parse(JSON.stringify(result_1));
+                            delete result_1.__v;
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                        }
+                    });
+                }
+            });
+
+
+         }
+    });
+};
+
+// ----------------------------------------------------------------------  Delete Topic ----------------------------------------------------------
+exports.Delete_Topic = function(req, res) {
+
+    if(!req.body.Topic_Id || req.body.Topic_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Topic Id can not be empty" });
+    } else if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    } else {
+        CubeModel.Cube_Topicschema.findOne({'_id': req.body.Topic_Id, 'User_Id': req.body.User_Id }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err);
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Cube Post Submit"});           
+            } else {
+                result.Active_Status = 'Inactive';
+                result.save(function(err_1, result_1) {
+                    if(err_1) {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Topic Add Query Error', 'Cubes.controller.js - 152', err_1);
+                        res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Add Cube Topic"});           
+                    } else {
+                        res.status(200).send({ Status:"True", Output: "True", Message: 'Successfully Deleted' });
+                    }
+                });
+            }
+        });
+     }
+};
+
 // ---------------------------------------------------------------------- Cube View ----------------------------------------------------------
 exports.CubeView = function(req, res) {
     CubeModel.CubesSchema.findOne({'_id': req.params.Cube_Id, 'Active_Status': 'Active'}, { __v:0}, function(err, result) {
@@ -742,9 +824,9 @@ exports.Email_Invite_Cube = function(req, res) {
                                     var link = "http://www.inscube.com/Invite_Cube/" + Cube_Info._id;
                                     var SendData = {
                                         from: 'Inscube <insocialcube@gmail.com>',
-                                        to: EmailArray,
-                                        subject: 'E-mail Verification',
-                                        html: '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"><table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"><tbody><tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:500px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"><div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:500px;padding:10px;text-align:left" align="left"><table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"><tbody><tr><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"><tbody><tr style="font-family: sans-serif; line-height:20px" ><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="http://www.inscube.com/assets/images/logo.png" style="width: 40%; margin-top: -15px; margin-left: -15px;" alt="Inscube Logo" class="CToWUd"> <br> <img src="' + User_Image + '" style="width: 30%; margin-left: 35%; border-radius: 50%; margin-top: 30px;" alt="User Image" > <p style="font-size:16px;font-weight:700;text-align:center;letter-spacing: 0.5px;color: #333;margin: 5px 0px;"> ' + User_Name +' </p> <p style="text-align: center;font-size: 15px;margin: 0px;color: #666;">invited you to join “ <b> ' + Cube_Name + ' </b> ” community in INSCUBE </p> <p style="text-align: center;margin-top: 25px;"> <a href="'+ link +'" style="background-color:#e9472c;box-sizing:border-box;color:#ffffff;display:inline-block;font-size:14px;margin:0;padding:12px 25px;text-decoration:none;letter-spacing:0.5px" bgcolor="#ffda00" target="_blank" data-saferedirecturl=" '+ link +'"> Join the cube </a> </p> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0"> INSCUBE is the world’s first alternate media in which you can create your own social media, exclusive for your communities. Join now to explore and engage with communities around you.</p> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">Thanks, Inscube Team</p></td></tr></tbody></table></td></tr></tbody></table></div></td></tr></tbody></table></div>'
+                                        to: EmailArray[0],
+                                        subject: 'Inscube invitaion - “' + Cube_Info.Name + '”',
+                                        html: '<div style="background-color:#f6f6f6;font-size:14px;height:100%;line-height:1.6;margin:0;padding:0;width:100%" bgcolor="#f6f6f6" height="100%" width="100%"><table style="background-color:#f6f6f6;border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%" bgcolor="#f6f6f6"><tbody><tr><td style="box-sizing:border-box;display:block;font-size:14px;font-weight:normal;margin:0 auto;max-width:500px;padding:10px;text-align:center;width:auto" valign="top" align="center" width="auto"><div style="background-color:#dedede; box-sizing:border-box;display:block;margin:0 auto;max-width:500px;padding:10px;text-align:left" align="left"><table style="background:#fff;border:1px solid #e9e9e9;border-collapse:separate;border-radius:3px;border-spacing:0;box-sizing:border-box;width:100%"><tbody><tr><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;padding:30px;vertical-align:top" valign="top"><table style="border-collapse:separate;border-spacing:0;box-sizing:border-box;width:100%" width="100%"><tbody><tr style="font-family: sans-serif; line-height:20px" ><td style="box-sizing:border-box;font-size:14px;font-weight:normal;margin:0;vertical-align:top" valign="top"> <img src="http://www.inscube.com/assets/images/logo.png" style="width: 40%; margin-left: 30%;" alt="Inscube Logo" class="CToWUd"> <br> <img src="' + User_Image + '" style="width: 30%; margin-left: 35%; border-radius: 50%; margin-top: 30px;" alt="User Image" > <p style="font-size:16px;font-weight:700;text-align:center;letter-spacing: 0.5px;color: #333;margin: 5px 0px;"> ' + User_Name +' </p> <p style="text-align: center;font-size: 15px;margin: 0px;color: #666;">invited you to join “ <b> ' + Cube_Name + ' </b> ” community in INSCUBE </p> <p style="text-align: center;margin-top: 25px;"> <a href="'+ link +'" style="background-color:#e9472c;box-sizing:border-box;color:#ffffff;display:inline-block;font-size:14px;margin:0;padding:12px 25px;text-decoration:none;letter-spacing:0.5px" bgcolor="#ffda00" target="_blank" data-saferedirecturl=" '+ link +'"> Join the cube </a> </p> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0"> INSCUBE is the world’s first alternate media in which you can create your own social media, exclusive for your communities. Join now to explore and engage with communities around you.</p> <p style="font-size:14px;font-weight:normal;margin:0;margin-bottom:15px;padding:0">Thanks, Inscube Team</p></td></tr></tbody></table></td></tr></tbody></table></div></td></tr></tbody></table></div>'
                                     };
                                     
                                     mailgun.messages().send(SendData, function (error, body) {

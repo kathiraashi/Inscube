@@ -7,10 +7,10 @@
 
 <form [formGroup]="Form" (ngSubmit)="onSubmit()">
     <div class="modal-body Create_Cube">
-        <div style="margin-bottom:2px;" fxLayout="row" fxLayoutAlign="space-around start">
+        <div *ngIf="ActiveCategory" style="margin-bottom:2px;" fxLayout="row" fxLayoutAlign="space-around start">
             <div fxFlex="110px" class="CubeImage">
                 <ng-container *ngIf="!Show_Img_Preview">
-                    <img src="{{CategoryBaseUrl}}/{{Default_Image}}" alt="" style="width: 110px;height:110px;border-radius: 0px;">
+                    <img src="{{CategoryBaseUrl}}/{{ActiveCategory.Image}}" alt="" style="width: 110px;height:110px;border-radius: 0px;">
                 </ng-container>
                 <ng-container *ngIf="Show_Img_Preview">
                     <img [src]="Preview_Img" alt="" style="width: 110px;height:110px;border-radius: 0px;">
@@ -20,9 +20,33 @@
         </div>
         <input type="file" (change)="onFileChange($event)" accept=".PNG, .png, JPEG, .jpeg, JPG, .jpg, .GIF, .gif" #fileInput style="display:none;">
 
-        <div class="input_style_1" > 
+
+
+        <p *ngIf="ActiveCategory" style="font-size: 14px;color: #777;margin: 0px 0px 0px 10px;"> Selected Category
+            <small> ( {{ActiveCategory.Name}} )</small>
+        </p>
+        <ng-container *ngIf="Category_List?.length > 0">
+            <ngx-carousel [inputs]="carouselTile">
+                <ngx-tile NgxCarouselItem *ngFor="let tile of Category_List; let i = index;">
+                    <div class="tile">
+                        <div class="cat_div" [ngClass]="{'Selected': tile.selected}" (click)="Chanage_Category(i)">
+                            <img src="{{CategoryBaseUrl}}{{tile.Image}}" alt="">
+                            <div class="text_div">
+                                <p class="name"> {{tile.Name}} </p>
+                                <p class="Count"> {{tile.Cubes_Count}} Cubes </p>
+                            </div>
+                        </div>
+                    </div>
+                </ngx-tile>
+                <button NgxCarouselPrev class="leftRs">&lt;</button>
+                <button NgxCarouselNext class="rightRs">&gt;</button>
+            </ngx-carousel>
+        </ng-container>
+
+
+        <div class="input_style_1" style="margin-top: 20px;"> 
             <input type="text" formControlName="Name" placeholder="Cube name">
-            <p class="error alertStyle-1 m-0" *ngIf="Form.controls.Name.dirty &&  Form.value.Name ==='' "> Cube name Is Required </p>
+            <p class="error alertStyle-1 m-0" *ngIf="Form['controls'].Name.dirty &&  Form.value.Name ==='' "> Cube name Is Required </p>
         </div>
 
 
@@ -80,6 +104,7 @@
             </div>
         </div>
     </div>
+
 
     <div class="modal-footer">
         <!-- <button type="button" class="btn btn-primary" (click)="onConfirm()"> Submit & Add Topic </button> -->

@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, Validators, FormControl} from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
+import { NgxCarousel } from 'ngx-carousel';
+
 import { CubeService } from './../../service/cube/cube.service';
 
 @Component({
@@ -29,6 +31,8 @@ export class CreateCubeComponent implements OnInit {
   SecurityType: String = 'Open';
   SecurityCode: Boolean = false;
 
+  public Category_List: Array<any> = [];
+  public carouselTile: NgxCarousel;
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -38,6 +42,8 @@ export class CreateCubeComponent implements OnInit {
   FormData: FormData = new FormData;
   Show_Img_Preview: Boolean = false;
   Preview_Img: any ;
+
+  ActiveCategory;
 
   constructor(  public _bsModalRef: BsModalRef,
                 private router: Router,
@@ -49,10 +55,9 @@ export class CreateCubeComponent implements OnInit {
 
   ngOnInit(): void {
         this.onClose = new Subject();
-        this.Default_Image = this.data['Category_Info'].Image;
         this.Form = this.formBuilder.group({
             User_Id: new FormControl(this.LoginUser._id, Validators.required),
-            Category_Id: new FormControl(this.data['Category_Info']._id, Validators.required),
+            Category_Id: new FormControl('', Validators.required),
             Name: new FormControl('', Validators.required),
             Security: new FormControl('', Validators.required),
             Security_Code: new FormControl(''),
@@ -62,6 +67,32 @@ export class CreateCubeComponent implements OnInit {
             Mail: new FormControl(''),
             Contact: new FormControl('')
         });
+
+        this.Service.Category_List().subscribe( datas => {
+            if (datas['Status'] === 'True') {
+              this.Category_List = datas['Response'];
+              this.Chanage_Category(0);
+            }
+          });
+
+        this.carouselTile = {
+            grid: { xs: 3, sm: 3, md: 4, lg: 4, all: 0 },
+            speed: 600,
+            interval: 3000,
+            point: {
+            visible: false,
+            },
+            load: 2,
+            touch: true
+        };
+
+  }
+
+  Chanage_Category(_index) {
+    this.Category_List.map(v => { v.selected = false; });
+    this.Category_List[_index].selected = true;
+    this.ActiveCategory = this.Category_List[_index];
+    this.Form.controls['Category_Id'].setValue(this.ActiveCategory._id);
   }
 
     View_Location_Input( ) {

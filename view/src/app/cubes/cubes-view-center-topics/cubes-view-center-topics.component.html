@@ -6,7 +6,7 @@
 
       <ng-container *ngIf="Topics_List?.length <= 0 && !Loader_1">
           <div style="width: 100%; height: 200px;text-align: center;">
-              <h5 style="line-height: 200px">Join the cube to view posts from members </h5>
+              <h5 style="line-height: 200px"> No topics</h5>
           </div>
       </ng-container>
   
@@ -18,9 +18,12 @@
 
 
       <ng-container *ngIf="Topics_List?.length > 0 && !Loader_1">
-        <div class="Topics" *ngFor="let Topic of Topics_List">
+        <div class="Topics" *ngFor="let Topic of Topics_List; let i = index">
           <div class="topic_header">
             <p class="Topic_Name"> {{Topic.Name}} </p>
+            <p *ngIf="Cube_Info && Cube_Info.User_Id === LoginUser._id" class="postaction"> 
+                <i (click)="Trigger_Topic(i)" [matMenuTriggerFor]="EditDeleteTopic" class="material-icons">more_horiz</i>
+              </p>
           </div>
           <div class="topic_body">
             <p class="topic_description"> {{Topic.Description}} </p>
@@ -30,43 +33,20 @@
                 <ngx-carousel class="ImageGallery"
                   [inputs]="carouselBanner">
                     <ngx-item NgxCarouselItem *ngFor="let Attachment of Topic.Attachments; let n =index">
-                      <div class="bannerStyle">
-                          <div *ngIf="Attachment.File_Type === 'Video'" class="bannerStyle_Inner">
-                            <p class="gallery_info_button"> <span> {{n + 1}} / {{Topic.Attachments?.length}} </span> </p>
-                            <vg-player>
-                                <vg-controls>
-                                    <vg-play-pause></vg-play-pause>
-                                    <vg-playback-button></vg-playback-button>
-                              
-                                    <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-                              
-                                    <vg-scrub-bar>
-                                        <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                                        <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-                                    </vg-scrub-bar>
-                              
-                                    <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-                              
-                                    <vg-mute></vg-mute>
-                                    <vg-volume></vg-volume>
-                              
-                                    <vg-fullscreen></vg-fullscreen>
-                                </vg-controls>
-                              
-                                <video #media [vgMedia]="media" height="400px" id="singleVideo" preload="auto" crossorigin>
+                        <div class="bannerStyle">
+                            <div *ngIf="Attachment.File_Type === 'Video'" class="bannerStyle_Inner">
+                                <p class="gallery_info_button"> <span> {{n + 1}} / {{Topic.Attachments?.length}} </span> </p>
+                                <video controls height="400px" width="100%">
                                     <source src="{{TopicBaseUrl}}{{Attachment.File_Name}}" type="video/{{Attachment.File_Name | slice:-3}}">
                                 </video>
-                            </vg-player>
-                            <!-- <video src="{{TopicBaseUrl}}{{Attachment.File_Name}}" width="100%" height="400px" ></video>
-                            <p class="Video_button"> <i (click)="Show_Video(VideoModal, TopicBaseUrl + Attachment.File_Name)" class="material-icons">play_circle_outline</i> </p> -->
-                          </div>
-  
-                          <div *ngIf="Attachment.File_Type === 'Image'" class="bannerStyle_Inner">
-                              <p class="gallery_info_button"> <span> {{n + 1}} / {{Topic.Attachments?.length}} </span> </p>
-                              <div class="img_Part" [style.background]="'url(' + TopicBaseUrl + Attachment.File_Name + ')'"></div>
-                              <p class="Image_button"> <i (click)="Show_Image( TopicBaseUrl + Attachment.File_Name)"  class="material-icons">fullscreen</i> </p>
-                          </div>
-                      </div>
+                            </div>
+    
+                            <div *ngIf="Attachment.File_Type === 'Image'" class="bannerStyle_Inner">
+                                <p class="gallery_info_button"> <span> {{n + 1}} / {{Topic.Attachments?.length}} </span> </p>
+                                <div class="img_Part" [style.background]="'url(' + TopicBaseUrl + Attachment.File_Name + ')'"></div>
+                                <p class="Image_button"> <i (click)="Show_Image( TopicBaseUrl + Attachment.File_Name)"  class="material-icons">fullscreen</i> </p>
+                            </div>
+                        </div>
                     </ngx-item>
   
                     <button NgxCarouselPrev class='leftRs'>&lt;</button>
@@ -82,30 +62,25 @@
 </div>
 
 
-<ng-template #VideoModal>
-  <p  class="close_Mode"  (click)="modalRef.hide()"> X </p>
-      <vg-player>
-          <vg-controls>
-              <vg-play-pause></vg-play-pause>
-              <vg-playback-button></vg-playback-button>
-        
-              <vg-time-display vgProperty="current" vgFormat="mm:ss"></vg-time-display>
-        
-              <vg-scrub-bar>
-                  <vg-scrub-bar-current-time></vg-scrub-bar-current-time>
-                  <vg-scrub-bar-buffering-time></vg-scrub-bar-buffering-time>
-              </vg-scrub-bar>
-        
-              <vg-time-display vgProperty="total" vgFormat="mm:ss"></vg-time-display>
-        
-              <vg-mute></vg-mute>
-              <vg-volume></vg-volume>
-        
-              <vg-fullscreen></vg-fullscreen>
-          </vg-controls>
-        
-          <video #media [vgMedia]="media" id="singleVideo" preload="auto" crossorigin>
-              <source src="{{video_Url}}" type="video/{{video_Url | slice:-3}}">
-          </video>
-       </vg-player>
-</ng-template>
+
+
+<mat-menu #EditDeleteTopic="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+    <div (click)="EditTopic_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="dropd_icon" fxFlex="30px">
+            <i class="material-icons">border_color</i>
+        </div>
+        <div fxFlex>
+            <p class="dropd_text">Edit </p>
+        </div>
+    </div>
+    <div class="dropdarrow"></div>
+    <hr class="m-0">
+    <div (click)="DeleteTopic_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+        <div class="dropd_icon" fxFlex="30px">
+            <i class="material-icons">delete_forever</i>
+        </div>
+        <div fxFlex>
+            <p class="dropd_text"> Delete </p>
+        </div>
+    </div>
+</mat-menu>
