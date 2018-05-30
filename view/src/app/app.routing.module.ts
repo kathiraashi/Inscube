@@ -63,8 +63,7 @@ const appRoutes: Routes = [
     },
     { path: 'Privacy',
         component: PrivacyComponent,
-        data: { animation: { value: 'Privacy', } },
-        canActivate: [NotAuthGuard]
+        data: { animation: { value: 'Privacy', } }
     },
     { path: 'Terms',
         component: TermsComponent,

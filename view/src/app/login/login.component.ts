@@ -13,6 +13,7 @@ import { CubeService } from './../service/cube/cube.service';
 
 import { EmailVerificationComponent } from './../Modal_Components/email-verification/email-verification.component';
 import { PasswordResetComponent } from './../Modal_Components/password-reset/password-reset.component';
+import { AlertPrivacyUpdateComponent } from './../Modal_Components/alert-privacy-update/alert-privacy-update.component';
 
 @Component({
   selector: 'app-login',
@@ -217,22 +218,41 @@ export class LoginComponent implements OnInit {
 
   LoginFormsubmit() {
     if ( this.SignInForm.valid ) {
+
       this.Service.UserValidate(this.SignInForm.value)
       .subscribe( datas => {
-        if (datas['Status'] === 'True') {
-           if (datas['Output'] === 'True') {
-            if (this.If_Invite.CubeId !== '' ) {
-              this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
+        if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+          this.Service.Privacy_Update_Check(datas['Response']._id).subscribe( Update_Info => {
+            if (Update_Info['Status'] === 'True' && Update_Info['Output'] === 'True' && Update_Info['Response'] === 'Success') {
+              if (this.If_Invite.CubeId !== '' ) {
+                this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
+              } else {
+                this.router.navigate(['Cube_Posts']);
+              }
             } else {
-              this.router.navigate(['Cube_Posts']);
+              this.modalRef = this.modalService.show(AlertPrivacyUpdateComponent, Object.assign({}, { class: 'maxWidth450' }));
+              this.modalRef.content.onClose.subscribe(result => {
+                if (result.Status === 'Yes') {
+                  this.Service.Privacy_Update_Agree(datas['Response']._id).subscribe(_Info => {console.log(_Info);
+                  });
+                  if (this.If_Invite.CubeId !== '' ) {
+                    this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
+                  } else {
+                    this.router.navigate(['Cube_Posts']);
+                  }
+                } else {
+                  localStorage.removeItem('CurrentUser');
+                  localStorage.removeItem('UserToken');
+                }
+              });
             }
-           } else {
-            this.snackBar.open( datas['Message'] , ' ', {
-              horizontalPosition: 'center',
-              duration: 3000,
-              verticalPosition: 'top',
-            });
-           }
+          });
+        } else {
+          this.snackBar.open( datas['Message'] , ' ', {
+            horizontalPosition: 'center',
+            duration: 3000,
+            verticalPosition: 'top',
+          });
         }
        });
     }

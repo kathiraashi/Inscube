@@ -88,6 +88,7 @@ import { AddEmailInviteComponent } from './Modal_Components/add-email-invite/add
 import { FeedsViewComponent } from './feeds-view/feeds-view.component';
 import { PostShareCubesListComponent } from './Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
 import { EditTopicComponent } from './Modal_Components/edit-topic/edit-topic.component';
+import { AlertPrivacyUpdateComponent } from './Modal_Components/alert-privacy-update/alert-privacy-update.component';
 
 
 
@@ -141,7 +142,8 @@ import { EditTopicComponent } from './Modal_Components/edit-topic/edit-topic.com
     AddEmailInviteComponent,
     FeedsViewComponent,
     PostShareCubesListComponent,
-    EditTopicComponent
+    EditTopicComponent,
+    AlertPrivacyUpdateComponent
   ],
   imports: [
       // Default Modules
@@ -207,7 +209,8 @@ import { EditTopicComponent } from './Modal_Components/edit-topic/edit-topic.com
                     EditCubeComponent,
                     AddEmailInviteComponent,
                     PostShareCubesListComponent,
-                    EditTopicComponent
+                    EditTopicComponent,
+                    AlertPrivacyUpdateComponent
                   ]
 })
 export class AppModule { }

@@ -8,6 +8,9 @@ module.exports = function(app) {
         app.post('/API/Signin_Signup/Register_Completion', Controller.UserRegisterCompletion);
         app.post('/API/Signin_Signup/User_Validate', Controller.UserValidate);
 
+        app.get('/API/Signin_Signup/Privacy_Update_Check/:User_Id', Controller.Privacy_Update_Check);
+        app.get('/API/Signin_Signup/Privacy_Update_Agree/:User_Id', Controller.Privacy_Update_Agree);
+
         app.get('/API/Signin_Signup/User_Info/:User_Id', Controller.User_Info);
         app.post('/API/Signin_Signup/Privacy_Update', Controller.Privacy_Update);
         app.post('/API/Signin_Signup/Password_Change', Controller.Password_Change);

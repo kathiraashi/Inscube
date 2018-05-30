@@ -42,6 +42,15 @@ export class SigninSignupService {
                         }).catch(this.handleError);
     }
 
+    public Privacy_Update_Check(User_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Privacy_Update_Check/' + User_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public Privacy_Update_Agree(User_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'Privacy_Update_Agree/' + User_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
     public Register_Completion(data: any) {
         return this.http .post(API_URL + 'Register_Completion' , data)
         .map(response => {
