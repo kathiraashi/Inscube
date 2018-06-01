@@ -21,8 +21,31 @@ var UserSchema = mongoose.Schema({
     { timestamps: true }
 );
 
+var Post_NotificationSchema = mongoose.Schema({
+    User_Id: { type : String , required : true },
+    To_User_Id: { type : String , required : true },
+    Notify_Type: { type : String, required : true },
+    Capture_Id: { type : String },
+    Capture_Text: { type : String },
+    Post_Id: { type : String },
+    Post_Type: { type : String },
+    Cube_Id: { type : String },
+    Cube_Ids: { type : Array },
+    Emote_Id: { type : String },
+    Opinion_Id: { type : String },
+    Emote_Text: { type : String },
+    View_Status: Number,
+    Active_Status: String
+    }, 
+    { timestamps: true }
+);
+
+
 var varUsers = mongoose.model('Users', UserSchema, 'Users');
 
+var varPost_Notification = mongoose.model('Post_Notification', Post_NotificationSchema, 'Post_Notification');
+
 module.exports = {
-    UserSchema : varUsers
+    UserSchema : varUsers,
+    Post_NotificationSchema: varPost_Notification
 };

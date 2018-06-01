@@ -66,25 +66,6 @@ var Report_Userschema = mongoose.Schema({
     { timestamps: true }
 );
 
-
-var Post_NotificationSchema = mongoose.Schema({
-    User_Id: { type : String , required : true },
-    To_User_Id: { type : String , required : true },
-    Notify_Type: { type : String, required : true },
-    Post_Id: { type : String },
-    Post_Type: { type : String },
-    Cube_Id: { type : String },
-    Cube_Ids: { type : Array },
-    Emote_Id: { type : String },
-    Opinion_Id: { type : String },
-    Emote_Text: { type : String },
-    View_Status: Number,
-    Active_Status: String
-    }, 
-    { timestamps: true }
-);
-
-
 var varCube_Posts = mongoose.model('Cube_Posts', Cube_Postschema, 'Cube_Posts');
 
 var varPost_Emote = mongoose.model('Post_Emote', Post_Emoteschema, 'Post_Emote');
@@ -97,8 +78,6 @@ var varReport_Comment = mongoose.model('Report_Comment', Report_Commentschema, '
 
 var varReport_User = mongoose.model('Report_User', Report_Userschema, 'Report_User');
 
-var varPost_Notification = mongoose.model('Post_Notification', Post_NotificationSchema, 'Post_Notification');
-
 module.exports = {
     Cube_Postschema : varCube_Posts,
     Post_Emoteschema : varPost_Emote,
@@ -106,5 +85,4 @@ module.exports = {
     Report_Postschema : varReport_Post,
     Report_Commentschema : varReport_Comment,
     Report_Userschema : varReport_User,
-    Post_NotificationSchema: varPost_Notification
 };

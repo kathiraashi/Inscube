@@ -137,7 +137,7 @@ exports.CubePost_Submit = function(req, res) {
 
                                                 const To_Notify = _info => {
                                                     if (result.User_Id !== _info.User_Id) {
-                                                        var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                             User_Id: result.User_Id,
                                                             To_User_Id: _info.User_Id,
                                                             Notify_Type: 'New_Post',
@@ -530,7 +530,7 @@ exports.CubePost_Delete = function(req, res) {
                 res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
             } else {
                 
-                PostModel.Post_NotificationSchema.where({ Post_Id: req.params.Post_Id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec();
+                UserModel.Post_NotificationSchema.where({ Post_Id: req.params.Post_Id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec();
                 Post_result.Active_Status = 'Inactive';
 
                 Post_result.save(function(err, result) {
@@ -583,7 +583,7 @@ exports.Emote_Submit = function(req, res) {
                                                     res.status(200).send({ Status:"True", Output: "True", Response: result_2 });           
                                                 } else {
                                                     if (result_4.User_Id !== req.body.User_Id) {
-                                                        var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                             User_Id: req.body.User_Id,
                                                             To_User_Id: result_4.User_Id,
                                                             Notify_Type: 'Emote',
@@ -626,7 +626,7 @@ exports.Emote_Submit = function(req, res) {
                                                     res.status(200).send({ Status:"True", Output: "True", Response: result_3 });           
                                                 } else {
                                                     if (result_4.User_Id !== req.body.User_Id) {
-                                                        var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                             User_Id: req.body.User_Id,
                                                             To_User_Id: result_4.User_Id,
                                                             Notify_Type: 'Emote',
@@ -735,7 +735,7 @@ exports.Comment_Submit = function(req, res) {
                                 } else {
                                     
                                     if (result_4.User_Id !== req.body.User_Id) {
-                                        var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                             User_Id: req.body.User_Id,
                                             To_User_Id: result_4.User_Id,
                                             Notify_Type: 'Opinion',
@@ -859,7 +859,7 @@ exports.Comment_Delete = function(req, res) {
                 res.status(500).send({Status:"False", Error:comment_err, Message: "Some error occurred while Cube Post Submit"});           
             } else {
 
-                PostModel.Post_NotificationSchema.where({ Opinion_Id: req.params.Comment_Id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec();
+                UserModel.Post_NotificationSchema.where({ Opinion_Id: req.params.Comment_Id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec();
                 Comment_result.Active_Status = 'Inactive';
 
                 Comment_result.save(function(err, result) {
@@ -1209,7 +1209,7 @@ exports.Get_Notifications = function(req, res) {
     if(!req.params.User_Id || req.params.User_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
     }else{
-        PostModel.Post_NotificationSchema.find({ 'To_User_Id': req.params.User_Id, 'View_Status':  { $ne: 2 }, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
+        UserModel.Post_NotificationSchema.find({ 'To_User_Id': req.params.User_Id, 'View_Status':  { $ne: 2 }, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
             if(err) {
                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
                 res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
@@ -1280,7 +1280,7 @@ exports.Notifications_recived = function(req, res) {
 
         const Notify_Info = info =>
             Promise.all([
-                PostModel.Post_NotificationSchema.where({ _id: info, To_User_Id: req.body.User_Id }).updateMany({ $set: { View_Status: 1 }}).exec(),
+                UserModel.Post_NotificationSchema.where({ _id: info, To_User_Id: req.body.User_Id }).updateMany({ $set: { View_Status: 1 }}).exec(),
                 ]).then( Data_new => {
                     return Data_new[0];
                 }).catch(error_12 => {
@@ -1297,7 +1297,7 @@ exports.Notifications_Viewed = function(req, res) {
     if(!req.params.Notify_Id || req.params.Notify_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "Notify Id can not be empty" });
     }else{
-        PostModel.Post_NotificationSchema.findOne({'_id': req.params.Notify_Id}, function(err, result) {
+        UserModel.Post_NotificationSchema.findOne({'_id': req.params.Notify_Id}, function(err, result) {
             if(err) {
                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err);
                 res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Cube Post Submit"});           
@@ -1505,7 +1505,7 @@ exports.Cube_Post_Share = function(req, res) {
                                             cubeIds.map(info => Category_Info(info)) 
                                         ).then( result_1 => {
                                             
-                                                var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                     User_Id: req.body.User_Id,
                                                     To_User_Id: Post_result.User_Id,
                                                     Notify_Type: 'Shared',
@@ -1541,7 +1541,7 @@ exports.Cube_Post_Share = function(req, res) {
         
                                                         const To_Notify = _info => {
                                                             if (result.User_Id !== _info.User_Id) {
-                                                                var varPost_NotificationSchema = new PostModel.Post_NotificationSchema({
+                                                                var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                                     User_Id: result.User_Id,
                                                                     To_User_Id: _info.User_Id,
                                                                     Notify_Type: 'Shared_Post',

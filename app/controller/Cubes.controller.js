@@ -729,7 +729,7 @@ exports.Delete_Cube = function(req, res) {
                             const getCubeRelatedInfo = result_1 => 
                             Promise.all([
                                 CubeModel.Cube_Followersschema.where({ Cube_Id: result_1._id }).updateMany({ $set: { Active_Status: 'Inactive' }}).exec(),
-                                PostModel.Post_NotificationSchema.where({ Cube_Id: result_1._id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec(),
+                                UserModel.Post_NotificationSchema.where({ Cube_Id: result_1._id}).updateMany({ $set: { Active_Status: 'Inactive' }}).exec(),
                                 PostModel.Cube_Postschema.find({'Cubes_Id': { $in: CubeIdArray }, 'Active_Status': 'Active' }, {Cubes_Id: 1}).exec(),
                                 ]).then( Data => {
 

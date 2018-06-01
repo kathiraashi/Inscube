@@ -1,0 +1,30 @@
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Inscube_Name_Validate/<<Inscube_Name>>
+    Method: Get
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Email_Validate/<<Email>>
+    Method: Get
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Register
+    Method: Post
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Register_Completion
+    Method: Post
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/User_Validate
+    Method: Post
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Privacy_Update_Check/<<User_Id>>
+    Method: Get
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Privacy_Update_Agree/<<User_Id>>
+    Method: Get
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/User_Info/<<User_Id>>
+    Method: Get
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Privacy_Update
+    Method: Post
+
+Service: http://206.189.92.174:4000/API/Signin_Signup/Password_Change
+    Method: Post
