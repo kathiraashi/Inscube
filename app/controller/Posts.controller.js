@@ -191,6 +191,7 @@ exports.CubePost_List = function(req, res) {
                         res.status(500).send({status:"False", Error:err_1});
                     } else {
                         result_1 = JSON.parse(JSON.stringify(result_1));
+                        
                         const Get_Post_Info = (result_1) => Promise.all(
                             result_1.map(info_1 => PostInfo(info_1)) 
                         ).then( result_2 => {
@@ -235,7 +236,6 @@ exports.CubePost_List = function(req, res) {
                                     return GetCategory_Info(cubeIds);
 
                                 }).catch(error_1 => {
-                                    console.log(error_1);
                                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error_1);
                                 });     
                         Get_Post_Info(result_1);

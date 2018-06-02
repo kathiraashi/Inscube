@@ -25,7 +25,7 @@ var Capture_Emoteschema = mongoose.Schema({
 
 var Capture_Commentschema = mongoose.Schema({
     User_Id: { type : String , required : true },
-    Post_Id: { type : String , required : true },
+    Capture_Id: { type : String , required : true },
     Comment_Text: { type : String, required : true },
     Active_Status: String
     }, 
