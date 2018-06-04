@@ -132,6 +132,16 @@
     font-size: 18px;
 }
 
+.File_View{
+    display: block;
+    margin-left: 5px;
+    margin-top: 15px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+ }
+ 
 .Highlights .HighlightsPost .postLikes .like{
     display: inline-flex;
     margin-top: 0px;

@@ -22,8 +22,11 @@
         <p-selectButton formControlName="Post_Type" (onChange)="Category_Change($event)" [options]="types"  [(ngModel)]="selectedType"></p-selectButton>
 
             <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="{{placeholder}}"></textarea>
+
+            <input *ngIf="FileInputActive" type="file" (change)="onFileChange($event)" class="postlink mb-20" accept=".pdf, .PDF" #FileInput>
     
             <input *ngIf="LinkInputActive" formControlName="Post_Link" class="postlink mb-20" placeholder="Enter Link...">
+
     
             <div class="imgUpload" *ngIf="List_Img_Preview.length > 0">
                 <div style="display:inline-flex;">
@@ -64,6 +67,9 @@
                 <div fxFlex="50px" class="text-center postaddon_icon">
                         <input type="file" multiple (change)="onVideoFileChange($event)" accept=".3gp, .mp4, .vlc, .mkv, .MKV, .VLC, .MP4, .3GP" #videoInput style="display:none;">
                     <i (click)="videoInput.click()" class="material-icons" style="transform:rotate(90deg)">local_movies</i>
+                </div>
+                <div fxFlex="50px" class="text-center postaddon_icon">
+                    <i (click)="FileInputActiveToggle()" class="material-icons">attachment</i>
                 </div>
                 <div fxFlex="50px" class="text-center postaddon_icon">
                     <i (click)="LinkInputActiveToggle()" class="material-icons">insert_link</i>

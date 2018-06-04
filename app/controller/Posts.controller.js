@@ -21,8 +21,8 @@ var Cube_Post_File_Upload = multer({
     fileFilter: function (req, file, callback) {
         let extArray = file.originalname.split(".");
         let extension = (extArray[extArray.length - 1]).toLowerCase();
-        if(extension !== 'png' && extension !== 'jpg' && extension !== 'gif' && extension !== 'jpeg' && extension !== 'mp4' && extension !== 'mkv' && extension !== '3gp' && extension !== 'flv') {
-            return callback("Only 'png, gif, jpg, jpeg,  mp4, mkv, flv and 3gp' images are allowed");
+        if(extension !== 'png' && extension !== 'jpg' && extension !== 'gif' && extension !== 'jpeg' && extension !== 'mp4' && extension !== 'mkv' && extension !== '3gp' && extension !== 'flv' && extension !== 'pdf') {
+            return callback("Only 'png, gif, jpg, jpeg,  mp4, mkv, flv, 3gp and pdf' are allowed");
         }
         callback(null, true);
     }
@@ -45,15 +45,18 @@ exports.CubePost_Submit = function(req, res) {
         }else{
 
             var Return_Json = [];
+            var Attach_File = [];
             if ( req.files.length > 0) {
                 var Json = JSON.parse(JSON.stringify(req.files));
-                Return_Json = Json.map((Objects) => {
+                Json.map((Objects) => {
                     let extArray = Objects.filename.split(".");
                     let extension = (extArray[extArray.length - 1]).toLowerCase();
                     if (extension === 'png' || extension === 'jpg' || extension === 'gif' || extension === 'jpeg' ) {
-                        return { File_Name: Objects.filename, File_Type: 'Image', Size: Objects.size};
+                        Return_Json.push({ File_Name: Objects.filename, File_Type: 'Image', Size: Objects.size});
+                    }else if ( extension === 'mp4' || extension === 'mkv' || extension === '3gp' || extension === 'flv') {
+                        Return_Json.push({ File_Name: Objects.filename, File_Type: 'Video', Size: Objects.size});
                     }else {
-                        return { File_Name: Objects.filename, File_Type: 'Video', Size: Objects.size};
+                        Attach_File.push({ File_Name: Objects.filename, File_Type: 'File', Size: Objects.size} );
                     }
                 });
             }
@@ -92,6 +95,7 @@ exports.CubePost_Submit = function(req, res) {
                     Post_Link_Info: LinkInfo,
                     Shared_Post: 'False',
                     Attachments: Return_Json,
+                    Attach_File: Attach_File,
                     Active_Status: 'Active'
                 });
                 varCube_Postschema.save(function(err, result) {
@@ -406,22 +410,29 @@ exports.CubePost_Update = function(req, res) {
                 } else {
 
                     var Return_Json = [];
+                    var Attach_File = [];
                     if ( req.files.length > 0) {
                         var Json = JSON.parse(JSON.stringify(req.files));
-                        Return_Json = Json.map((Objects) => {
+                        Json.map((Objects) => {
                             let extArray = Objects.filename.split(".");
                             let extension = (extArray[extArray.length - 1]).toLowerCase();
                             if (extension === 'png' || extension === 'jpg' || extension === 'gif' || extension === 'jpeg' ) {
-                                return { File_Name: Objects.filename, File_Type: 'Image', Size: Objects.size};
+                                Return_Json.push({ File_Name: Objects.filename, File_Type: 'Image', Size: Objects.size});
+                            }else if ( extension === 'mp4' || extension === 'mkv' || extension === '3gp' || extension === 'flv') {
+                                Return_Json.push({ File_Name: Objects.filename, File_Type: 'Video', Size: Objects.size});
                             }else {
-                                return { File_Name: Objects.filename, File_Type: 'Video', Size: Objects.size};
+                                Attach_File.push({ File_Name: Objects.filename, File_Type: 'File', Size: Objects.size} );
                             }
                         });
                     }
-                    var Old_Json = [];
 
+                    var Old_Json = [];
+                    var Old_Attach_File = [];
                     if (req.body.Old_Attachments && req.body.Old_Attachments !== undefined ) {
                         Old_Json = JSON.parse(req.body.Old_Attachments);
+                    }
+                    if (req.body.Old_Attach_File && req.body.Old_Attach_File !== undefined ) {
+                        Old_Attach_File = JSON.parse(req.body.Old_Attach_File);
                     }
 
                     var LinkInfo = Post_result.Post_Link_Info;
@@ -450,12 +461,14 @@ exports.CubePost_Update = function(req, res) {
                     
                     function gotonext() {
                         var NewReturn_Json = Return_Json.concat(Old_Json);
+                        var Attach_Json = Attach_File.concat(Old_Attach_File);
                         Post_result.Cubes_Id = Cubes_List;
                         Post_result.Post_Category = req.body.Post_Category;
                         Post_result.Post_Text = req.body.Post_Text;
                         Post_result.Post_Link_Info = LinkInfo;
                         Post_result.Post_Link = req.body.Post_Link;
                         Post_result.Attachments = NewReturn_Json;
+                        Post_result.Attach_File = Attach_Json;
 
                         Post_result.save(function(err, result) {
                             if(err) {

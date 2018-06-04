@@ -151,8 +151,26 @@
  
  
  
+
+ .Old_File_View{
+    display: block;
+    margin-bottom: -2px;
+    margin-top: 15px;
+    width: 100%;
+    font-size: 15px;
+    font-weight: 500;
+    position: relative;
+ }
  
- 
+ .Old_File_View span{
+    position: absolute;
+    right: 10px;
+    color: red;
+    font-size: 13px;
+    border: 1px solid red;
+    padding: 1px 10px;
+    cursor: pointer;
+ }
  
  
  

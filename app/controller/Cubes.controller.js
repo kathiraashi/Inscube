@@ -238,6 +238,7 @@ exports.UpdateCubeTopic = function(req, res) {
                             return { File_Name: Objects.filename, File_Type: 'Video', Size: Objects.size};
                         }
                     });
+                    var Old_Json = [];
         
                     if (req.body.Old_Attachments && req.body.Old_Attachments !== undefined ) {
                         Old_Json = JSON.parse(req.body.Old_Attachments);
@@ -362,6 +363,49 @@ exports.CubesList = function(req, res) {
                     });
 
             GetCubeList(result); // Main Promise Call Function Cube --------------
+        }
+    });
+};
+
+
+// ---------------------------------------------------------------------- Cubes List ----------------------------------------------------------
+exports.All_Cube_List = function(req, res) {
+    CubeModel.CubesSchema.find({'Active_Status': 'Active'}, {__v: 0}, function(err, result) {
+        if(err) {
+            res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cubes List."});
+        } else {
+            
+            const GetCubeList = (result) => Promise.all(
+                    result.map(info => getCubeRelatedInfo(info)) 
+                ).then( result_1 => {  
+                    res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                }).catch( err_1 => { 
+                    res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
+                });
+
+            const getCubeRelatedInfo = info =>
+                Promise.all([ 
+                    CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
+                    CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id }).exec(),
+                    ]).then( Data => {
+
+                        var Return_Data = {};
+                        var date = new Date(info.createdAt);
+                        year = date.getFullYear();
+                        month = date.getMonth()+1;
+                        dt = date.getDate();
+
+                        if (dt < 10) { dt = '0' + dt; }
+                        if (month < 10) { month = '0' + month; }
+
+                        Return_Data.Name = info.Name;
+                        Return_Data.Members = Data[0];
+                        Return_Data.Category = Data[1].Name;
+                        Return_Data.Created_Date = year+'-' + month + '-'+dt;
+
+                        return Return_Data;
+                    });
+            GetCubeList(result);
         }
     });
 };

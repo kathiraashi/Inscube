@@ -5,7 +5,7 @@ var cors = require('cors');
 var ErrorManagement = require('./app/config/ErrorHandling.js');
 var parser = require('ua-parser-js');
 
-var port = process.env.PORT || 4000;
+var port = process.env.PORT || 3000;
 var app = express();
 
 
@@ -23,8 +23,8 @@ var app = express();
 
 // DB Connection
 //
-    // mongoose.connect('mongodb://localhost/Inscube');
-    mongoose.connect('mongodb://kathiravan:kathir143@ds241699.mlab.com:41699/inscube');
+    mongoose.connect('mongodb://localhost/Inscube');
+    // mongoose.connect('mongodb://kathiravan:kathir143@ds241699.mlab.com:41699/inscube');
     mongoose.connection.on('error', function(err) {
         ErrorManagement.ErrorHandling.ErrorLogCreation('', 'Mongodb Connection Error', 'Server.js - 31', err);
     });

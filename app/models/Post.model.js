@@ -11,6 +11,7 @@ var Cube_Postschema = mongoose.Schema({
     Shared_Post_User_Id: { type : String },
     Shared_Post_Id: { type : String },
     Attachments: { type : Array },
+    Attach_File: { type : Array },
     Active_Status: String
     }, 
     { timestamps: true }

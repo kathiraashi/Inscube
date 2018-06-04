@@ -283,6 +283,7 @@ export class FeedsCenterComponent implements OnInit {
           this.Posts_List[_index].Cubes_Info = result.Response.Cubes_Info;
           this.Posts_List[_index].Post_Link = result.Response.Post_Link;
           this.Posts_List[_index].Attachments = result.Response.Attachments;
+          this.Posts_List[_index].Attach_File = result.Response.Attach_File;
           this.Posts_List[_index].updatedAt = result.Response.updatedAt;
          }
       });

@@ -22,6 +22,9 @@
       <p-selectButton formControlName="Post_Type" [options]="types" [(ngModel)]="selectedType"></p-selectButton>
 
           <textarea formControlName="Post_Text" style="margin-top: 15px;" class="posttext" placeholder="{{placeholder}}"></textarea>
+
+          <span class="Old_File_View" *ngIf="FileInputActive && Old_File.length > 0"> Attached File: <a href="{{PostBaseUrl}}{{Old_File[0].File_Name}}" target="blanck"> {{Old_File[0].File_Name}}</a> <span (click)="Remove_Old_File()" > Remove </span> </span>
+          <input *ngIf="FileInputActive" type="file" (change)="onFileChange($event)" class="postlink mb-20" accept=".pdf, .PDF" #FileInput>
   
           <input *ngIf="LinkInputActive" formControlName="Post_Link" class="postlink mb-20" placeholder="Enter Link...">
   
@@ -80,13 +83,16 @@
                   <i (click)="videoInput.click()" class="material-icons" style="transform:rotate(90deg)">local_movies</i>
               </div>
               <div fxFlex="50px" class="text-center postaddon_icon">
+                <i (click)="FileInputActiveToggle()" class="material-icons">attachment</i>
+            </div>
+              <div fxFlex="50px" class="text-center postaddon_icon">
                   <i (click)="LinkInputActiveToggle()" class="material-icons">insert_link</i>
               </div>
           </div>
   
           <p style="margin: 0px;color: #888;font-size: 14px;">
                 Select cubes
-            </p>
+          </p>
   
           <div fxLayout fxLayoutAlign="space-between end">
               <div fxFlex="85%">

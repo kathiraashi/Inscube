@@ -20,6 +20,8 @@ module.exports = function(app) {
 
         app.get('/API/Cubes/Cube_List/:Category_Id/:User_Id', Controller.CubesList);
 
+        app.get('/API/Cubes/All_Cube_List', Controller.All_Cube_List);
+
         app.get('/API/Cubes/View_Cube/:Cube_Id/:User_Id', Controller.CubeView);
 
         app.post('/API/Cubes/Follow_Cube', Controller.Follow_Cube);

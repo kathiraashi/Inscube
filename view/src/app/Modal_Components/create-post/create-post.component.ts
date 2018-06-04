@@ -41,16 +41,19 @@ export class CreatePostComponent implements OnInit {
     ImageInputActive: Boolean = false;
     VideoInputActive: Boolean = false;
     LinkInputActive: Boolean = false;
+    FileInputActive: Boolean = false;
 
     onClose: Subject<Object>;
 
     @ViewChild('imageInput') imageInput: ElementRef;
     @ViewChild('videoInput') videoInput: ElementRef;
+    @ViewChild('FileInput') FileInput: ElementRef;
 
     List_Img_Files: any[] = [];
     List_Img_Preview: any[] = [];
     List_Video_Files: any[] = [];
     List_Video_Preview: any[] = [];
+    Attachment_File: any[] = [];
 
     Cubes_List: any[] = [];
     Selected_Cube: any[] = [];
@@ -97,6 +100,12 @@ export class CreatePostComponent implements OnInit {
     LinkInputActiveToggle() {
         this.LinkInputActive = !this.LinkInputActive;
     }
+
+    FileInputActiveToggle() {
+        this.FileInputActive = !this.FileInputActive;
+        this.Attachment_File = [];
+    }
+
 
     Category_Change(event: any) {
         if (event.value === 'Story') {
@@ -162,6 +171,16 @@ export class CreatePostComponent implements OnInit {
         this.List_Video_Preview.splice(index, 1);
     }
 
+    onFileChange(event) {
+        if (event.target.files && event.target.files.length > 0) {
+            const files = event.target.files;
+            this.Attachment_File = files;
+        } else {
+            console.log('Close');
+        }
+    }
+
+
     Select_Cube(index) {
         if ( this.Cubes_List[index].Selected ) {
             this.Cubes_List[index].Selected = false;
@@ -188,6 +207,10 @@ export class CreatePostComponent implements OnInit {
             this.FormData.set('Cubes_Id', Cubes_List);
             this.FormData.set('Post_Text', this.Form.controls['Post_Text'].value);
             this.FormData.set('Post_Link', this.Form.controls['Post_Link'].value);
+
+            if (this.Attachment_File.length > 0 && this.FileInputActive) {
+                this.FormData.append('attachments', this.Attachment_File[0], this.Attachment_File[0].name);
+            }
 
             if (this.List_Img_Files.length > 0 || this.List_Video_Files.length > 0 ) {
                 let Files = [];
