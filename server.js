@@ -49,6 +49,8 @@ app.use('/API/Uploads', express.static('Uploads'));
 
     require('./app/routes/Capture.routes.js')(app);
 
+    require('./app/routes/Trends.routes.js')(app);
+
 // app.get('*', function(req, res, next){
 //     var DeviceInfo = parser(req.headers['user-agent']);
 //     if(DeviceInfo.os.name === 'Android') {
