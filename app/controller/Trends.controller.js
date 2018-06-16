@@ -8,7 +8,7 @@ var moment = require('moment');
 
 // -----------------------------------------------------------  Cube Trends Submit ------------------------------------------------
 exports.CubeTrends_Submit = function(req, res) {
-        
+
     var Cubes_List =JSON.parse(req.body.Cube_Ids);
     var Tags_List =JSON.parse(req.body.Tags);
 
@@ -1216,4 +1216,22 @@ exports.Report_TrendsComment_Submit = function(req, res) {
             }
         });
      }
+};
+
+
+
+// ----------------------------------------------------------------------  Search Trends Tags----------------------------------------------------------
+exports.Search_Trends_Tags = function(req, res) {
+    if(!req.params.Search_text || req.params.Search_text === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Search text can not be empty" });
+    }else{
+        TrendsModel.Trends_TagsSchema.find({Tag: { $regex: new RegExp(req.params.Search_text, "i") }, Active_Status: 'Active' }, { Tag: 1}, {}, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Trends Tag Find Query Error', 'Trends.controller.js', err);
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Find the Trends Tag Search"});           
+            } else {
+                res.status(200).send({ Status:"True", Output: "True", Response: result });
+            }
+        });
+    }
 };

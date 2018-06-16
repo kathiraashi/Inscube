@@ -37,6 +37,8 @@ module.exports = function(app) {
         app.get('/API/Trends/User_Trends/:User_Id', Controller.User_Trends);
 
         app.post('/API/Trends/Cube_Trends_Share', Controller.Cube_Trends_Share);
+
+        app.get('/API/Trends/Search_Trends_Tag/:Search_text', Controller.Search_Trends_Tags);
         
 
 };

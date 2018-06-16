@@ -6,6 +6,12 @@ var multer = require('multer');
 var moment = require('moment');
 var axios = require("axios");
 
+var admin = require('firebase-admin');
+var serviceAccount = require('./../../inscube_firebase_admin.json');
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
 
 // Cube Post File Upload Disk Storage and Validate Functions ----------------------------------------------------------------------------------------
 var Cube_Post_File_Storage = multer.diskStorage({
@@ -27,6 +33,35 @@ var Cube_Post_File_Upload = multer({
         callback(null, true);
     }
 }).array('attachments', 20);
+
+
+
+exports.Test_Push = function(req, res) {
+
+    var registrationToken = 'fdS8-YgQaDk:APA91bFwB_4HpWWuMqFpxb1i_rkumJI55L2VgYefkIiDoo4XadGQE2ruiYHWi8yIjm36ywFybIfL6kvKBSrneyK58hBgZdEVHgWjlXJC2talFCHfkIVVh4_i5DYrktMqBoAvSX-0SYq6';
+
+    var payload = {
+        notification: {
+            title: ' Test Push Notifications',
+            body: 'Test Body of Push Notification in Inscube',
+        }
+    };
+    
+    var options = {
+        priority: 'high',
+        timeToLive: 60 * 60 * 24
+    };
+
+    admin.messaging().sendToDevice(registrationToken, payload, options)
+        .then(function(response) {
+            res.status(200).send({ Status:"True", Output: response });
+        })
+        .catch(function(error) {
+            res.status(200).send({ Status:"False", Output: error });
+        });
+
+};
+
 
 
 
@@ -175,7 +210,7 @@ exports.CubePost_Submit = function(req, res) {
     });
 };
 
-
+// ----------------------------------------------------------------------  Cube Post List ----------------------------------------------------------
 exports.CubePost_List = function(req, res) {
     if(!req.params.User_Id || req.params.User_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
@@ -250,6 +285,7 @@ exports.CubePost_List = function(req, res) {
     }
 };
 
+// ----------------------------------------------------------------------  Cube Post All List ----------------------------------------------------------
 exports.CubePost_All_List = function(req, res) {
     if(!req.params.User_Id || req.params.User_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
@@ -323,7 +359,6 @@ exports.CubePost_All_List = function(req, res) {
     }
 };
 
-
 // ----------------------------------------------------------------------  Cube Post view ----------------------------------------------------------
 exports.CubePost_View = function(req, res) {
     if(!req.params.User_Id || req.params.User_Id === '') {
@@ -390,8 +425,6 @@ exports.CubePost_View = function(req, res) {
         });
     }
 };
-
-
 
 // ----------------------------------------------------------------------  Cube Post Update ----------------------------------------------------------
 exports.CubePost_Update = function(req, res) {
@@ -529,7 +562,6 @@ exports.CubePost_Update = function(req, res) {
     });
 };
 
-
 // ----------------------------------------------------------------------  Cube Post Delete ----------------------------------------------------------
 exports.CubePost_Delete = function(req, res) {
 
@@ -558,8 +590,6 @@ exports.CubePost_Delete = function(req, res) {
         });
         }
 };
-
-
 
 // ----------------------------------------------------------------------  Post Emote Submit ----------------------------------------------------------
 exports.Emote_Submit = function(req, res) {
@@ -672,7 +702,6 @@ exports.Emote_Submit = function(req, res) {
         }
 };
 
-
 // ----------------------------------------------------------------------  Post Emote Update ----------------------------------------------------------
 exports.Emote_Update = function(req, res) {
         if(!req.body.User_Id || req.body.User_Id === '') {
@@ -707,7 +736,6 @@ exports.Emote_Update = function(req, res) {
             });
         }
 };
-
 
 // ----------------------------------------------------------------------  Post Comment Submit ----------------------------------------------------------
 exports.Comment_Submit = function(req, res) {
@@ -774,8 +802,6 @@ exports.Comment_Submit = function(req, res) {
          }
 };
 
-
-
 // ----------------------------------------------------------------------  Post Comment List ----------------------------------------------------------
 exports.Comment_List = function(req, res) {
 
@@ -815,8 +841,6 @@ exports.Comment_List = function(req, res) {
         });
      }
 };
-
-
 
 // ----------------------------------------------------------------------  Post Comment Update ----------------------------------------------------------
 exports.Comment_Update = function(req, res) {
@@ -859,7 +883,6 @@ exports.Comment_Update = function(req, res) {
      }
 };
 
-
 // ----------------------------------------------------------------------  Post Comment Delete ----------------------------------------------------------
 exports.Comment_Delete = function(req, res) {
 
@@ -888,7 +911,6 @@ exports.Comment_Delete = function(req, res) {
      }
 };
 
-
 // ---------------------------------------------------------------------- Report Post Submit Check ----------------------------------------------------------
 exports.Report_PostSubmit_Check = function(req, res) {
 
@@ -912,7 +934,6 @@ exports.Report_PostSubmit_Check = function(req, res) {
         });
     }
 };
-
 
 // ---------------------------------------------------------------------- Report Post Submit ----------------------------------------------------------
 exports.Report_PostSubmit = function(req, res) {
@@ -943,8 +964,6 @@ exports.Report_PostSubmit = function(req, res) {
      }
 };
 
-
-
 // ---------------------------------------------------------------------- Report Comment Submit Check ----------------------------------------------------------
 exports.Report_CommentSubmit_Check = function(req, res) {
 
@@ -968,8 +987,6 @@ exports.Report_CommentSubmit_Check = function(req, res) {
         });
     }
 };
-
-
 
 // ---------------------------------------------------------------------- Report Comment Submit ----------------------------------------------------------
 exports.Report_CommentSubmit = function(req, res) {
@@ -1000,8 +1017,6 @@ exports.Report_CommentSubmit = function(req, res) {
      }
 };
 
-
-
 // ---------------------------------------------------------------------- Report User Submit Check ----------------------------------------------------------
 exports.Report_UserSubmit_Check = function(req, res) {
 
@@ -1025,8 +1040,6 @@ exports.Report_UserSubmit_Check = function(req, res) {
         });
     }
 };
-
-
 
 // ---------------------------------------------------------------------- Report User Submit ----------------------------------------------------------
 exports.Report_UserSubmit = function(req, res) {
@@ -1056,8 +1069,6 @@ exports.Report_UserSubmit = function(req, res) {
         });
      }
 };
-
-
 
 // ----------------------------------------------------------------------  Cube Based Post List ----------------------------------------------------------
 exports.Cube_Based_Post_List = function(req, res) {
@@ -1135,8 +1146,6 @@ exports.Cube_Based_Post_List = function(req, res) {
     }
 };
 
-
-
 // ----------------------------------------------------------------------  User Posts ----------------------------------------------------------
 exports.User_Posts = function(req, res) {
 
@@ -1212,9 +1221,6 @@ exports.User_Posts = function(req, res) {
         });
     }
 };
-
-
-
 
 // ----------------------------------------------------------------------  User Notifications ----------------------------------------------------------
 exports.Get_Notifications = function(req, res) {
@@ -1303,7 +1309,6 @@ exports.Notifications_recived = function(req, res) {
     }
 };
 
-
 // ----------------------------------------------------------------------  User Notifications Viewed----------------------------------------------------------
 exports.Notifications_Viewed = function(req, res) {
 
@@ -1328,7 +1333,6 @@ exports.Notifications_Viewed = function(req, res) {
         });
     }
 };
-
 
 // ----------------------------------------------------------------------  Users Search----------------------------------------------------------
 exports.Search_Users = function(req, res) {
@@ -1455,8 +1459,6 @@ exports.Search_Posts = function(req, res) {
         });
     }
 };
-
-
 
 // ----------------------------------------------------------------------  Cube Post Share ----------------------------------------------------------
 exports.Cube_Post_Share = function(req, res) {

@@ -2,6 +2,8 @@ module.exports = function(app) {
 
     var Controller = require('../controller/Posts.controller.js');
 
+        app.post('/API/Posts/Test_Push', Controller.Test_Push);
+
         app.post('/API/Posts/Cube_Post_Submit', Controller.CubePost_Submit);
 
         app.get('/API/Posts/Cube_Post_List/:User_Id/:Skip_Count', Controller.CubePost_List);
@@ -56,5 +58,4 @@ module.exports = function(app) {
 
         app.post('/API/Posts/Cube_Post_Share', Controller.Cube_Post_Share);
         
-
 };

@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
         From: { type : Object, required : true },
         Ip: { type : Object, required : true },
         Device_Info: { type : Object },
-        Active_States: String
+        Active_Status: String
         }, 
         { timestamps: true }
     );
@@ -15,7 +15,7 @@ var mongoose = require('mongoose');
         Firebase_Token: { type : Object, required : true },
         Ip: { type : String, required : true },
         Device_Info: { type : Object },
-        Active_States: String
+        Active_Status: String
         }, 
         { timestamps: true }
     );
