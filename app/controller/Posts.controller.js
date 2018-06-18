@@ -2,16 +2,12 @@ var ErrorManagement = require('./../../app/config/ErrorHandling.js');
 var CubeModel = require('../models/Cubes.model.js');
 var PostModel = require('../models/Post.model.js');
 var UserModel = require('../models/User.model.js');
+var LoginInfoModel = require('../models/Login_Info.model.js');
 var multer = require('multer');
 var moment = require('moment');
 var axios = require("axios");
 
 var admin = require('firebase-admin');
-var serviceAccount = require('./../../inscube_firebase_admin.json');
-
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-    });
 
 // Cube Post File Upload Disk Storage and Validate Functions ----------------------------------------------------------------------------------------
 var Cube_Post_File_Storage = multer.diskStorage({
@@ -37,29 +33,33 @@ var Cube_Post_File_Upload = multer({
 
 
 exports.Test_Push = function(req, res) {
-
-    var registrationToken = 'fdS8-YgQaDk:APA91bFwB_4HpWWuMqFpxb1i_rkumJI55L2VgYefkIiDoo4XadGQE2ruiYHWi8yIjm36ywFybIfL6kvKBSrneyK58hBgZdEVHgWjlXJC2talFCHfkIVVh4_i5DYrktMqBoAvSX-0SYq6';
-
-    var payload = {
-        notification: {
-            title: ' Test Push Notifications',
-            body: 'Test Body of Push Notification in Inscube',
-        }
-    };
-    
-    var options = {
-        priority: 'high',
-        timeToLive: 60 * 60 * 24
-    };
-
-    admin.messaging().sendToDevice(registrationToken, payload, options)
+    if(!req.body.Firebase_Token || req.body.Firebase_Token === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Firebase Token can not be empty" });
+    }else if(!req.body.Post_Id || req.body.Post_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
+    }else{
+        var registrationToken = req.body.Firebase_Token;
+        var payload = {
+            notification: {
+                title: ' Test Push Notifications',
+                body: 'Test Body of Push Notification in Inscube',
+            },
+            data: {
+                type: 'Highlight',
+                _id: req.body.Post_Id
+            }
+        };
+        var options = {
+            priority: 'high',
+            timeToLive: 60 * 60 * 24
+        };
+        admin.messaging().sendToDevice(registrationToken, payload, options)
         .then(function(response) {
-            res.status(200).send({ Status:"True", Output: response });
-        })
-        .catch(function(error) {
-            res.status(200).send({ Status:"False", Output: error });
+            res.status(200).send({Status:"True", Output:response });
+        }).catch( err => {
+            res.status(200).send({Status:"False", Output:err });
         });
-
+    }
 };
 
 
@@ -175,22 +175,51 @@ exports.CubePost_Submit = function(req, res) {
                                                 }).catch( err_2 => { console.log( err_2 ); });
 
                                                 const To_Notify = _info => {
-                                                    if (result.User_Id !== _info.User_Id) {
-                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                                            User_Id: result.User_Id,
-                                                            To_User_Id: _info.User_Id,
-                                                            Notify_Type: 'New_Post',
-                                                            Post_Id: result._id,
-                                                            Post_Type: result.Post_Category,
-                                                            Cube_Id: info,
-                                                            Emote_Id: '',
-                                                            Opinion_Id: '',
-                                                            Emote_Text: '',
-                                                            View_Status: 0,
-                                                            Active_Status: 'Active'
-                                                        });
-                                                        varPost_NotificationSchema.save();
-                                                    }
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': _info.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                                        if (result.User_Id !== _info.User_Id) {
+                                                            var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                                User_Id: result.User_Id,
+                                                                To_User_Id: _info.User_Id,
+                                                                Notify_Type: 'New_Post',
+                                                                Post_Id: result._id,
+                                                                Post_Type: result.Post_Category,
+                                                                Cube_Id: info,
+                                                                Emote_Id: '',
+                                                                Opinion_Id: '',
+                                                                Emote_Text: '',
+                                                                View_Status: 0,
+                                                                Active_Status: 'Active'
+                                                            });
+                                                            varPost_NotificationSchema.save();
+                                                        }
+                                                        if (App_Info !== null && result.User_Id !== _info.User_Id) {
+                                                            const PType = result.Post_Category;
+                                                            var TextAddon = 'a';
+                                                            var Post_Type = PType;
+                                                            if (PType === 'News' || PType === 'Idea' || PType === 'Article/Blog') { TextAddon = 'an'; }
+                                                            if (PType === 'News') {  Post_Type = 'Announcement'; }
+                                                            if (PType === 'Article/Blog') { Post_Type = 'Article'; }
+                                                            if (PType === 'Moments') { Post_Type = 'Moment'; }
+
+                                                            var registrationToken = App_Info.Firebase_Token;
+                                                            // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                            var payload = {
+                                                                notification: {
+                                                                    title: 'New Highlight Post',
+                                                                    body: User_Info.Inscube_Name + ' Posted ' + TextAddon + ' ' + Post_Type + ' in ' + Data[0].Name,
+                                                                },
+                                                                data: {
+                                                                    type: 'Highlight',
+                                                                    _id: result._id
+                                                                }
+                                                            };
+                                                            var options = {
+                                                                priority: 'high',
+                                                                timeToLive: 60 * 60 * 24
+                                                            };
+                                                            admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                        }
+                                                    });
                                                     return _info;
                                                 };
 
@@ -593,39 +622,41 @@ exports.CubePost_Delete = function(req, res) {
 
 // ----------------------------------------------------------------------  Post Emote Submit ----------------------------------------------------------
 exports.Emote_Submit = function(req, res) {
-        if(!req.body.User_Id || req.body.User_Id === '') {
-            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Post_Id || req.body.Post_Id === ''){
-            res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
-        }else if(!req.body.Emote_Text || req.body.Emote_Text === ''){
-            res.status(200).send({Status:"True", Output:"False", Message: "Emote Text can not be empty" });
-        }else{
-  
-            PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, 'User_Ids': req.body.User_Id, 'Emote_Text' : req.body.Emote_Text.toLowerCase(), 'Active_Status': 'Active' }, function(err, result) {
-                if(err) {
-                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
-                    res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
-                } else {
-                    if ( result === null) {
-                        PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, 'Emote_Text' : req.body.Emote_Text.toLowerCase(), 'Active_Status': 'Active' }, function(err_1, result_1) {
-                            if(err_1) {
-                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err_1);
-                                res.status(500).send({status:"False", Error:err_1, message: "Some error occurred while Find The  User Followed Cube List."});
-                            } else {
-                                if ( result_1 !== null) {
-                                    result_1.User_Ids.push(req.body.User_Id);
-                                    result_1.Count = result_1.Count + 1;
-                                    result_1.save(function(err_2, result_2) {
-                                        if(err_2) {
-                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
-                                            res.status(500).send({Status:"False", Error: err_2, Message: "Some error occurred while Cube Post Submit"});           
-                                        } else {
-                                            PostModel.Cube_Postschema.findOne({'_id': result_1.Post_Id }, function(err_4, result_4) {
-                                                if(err_4) {
-                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
-                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });           
-                                                } else {
-                                                    if (result_4.User_Id !== req.body.User_Id) {
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Post_Id || req.body.Post_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
+    }else if(!req.body.Emote_Text || req.body.Emote_Text === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Emote Text can not be empty" });
+    }else{
+
+        PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, 'User_Ids': req.body.User_Id, 'Emote_Text' : req.body.Emote_Text.toLowerCase(), 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                if ( result === null) {
+                    PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, 'Emote_Text' : req.body.Emote_Text.toLowerCase(), 'Active_Status': 'Active' }, function(err_1, result_1) {
+                        if(err_1) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err_1);
+                            res.status(500).send({status:"False", Error:err_1, message: "Some error occurred while Find The  User Followed Cube List."});
+                        } else {
+                            if ( result_1 !== null) {
+                                result_1.User_Ids.push(req.body.User_Id);
+                                result_1.Count = result_1.Count + 1;
+                                result_1.save(function(err_2, result_2) {
+                                    if(err_2) {
+                                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
+                                        res.status(500).send({Status:"False", Error: err_2, Message: "Some error occurred while Cube Post Submit"});           
+                                    } else {
+                                        PostModel.Cube_Postschema.findOne({'_id': result_1.Post_Id }, function(err_4, result_4) {
+                                            if(err_4) {
+                                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result_2 });           
+                                            } else {
+                                                result_4 = JSON.parse(JSON.stringify(result_4));
+                                                if (result_4.User_Id !== req.body.User_Id) {
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
                                                         var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                             User_Id: req.body.User_Id,
                                                             To_User_Id: result_4.User_Id,
@@ -636,39 +667,77 @@ exports.Emote_Submit = function(req, res) {
                                                             Cube_Ids: result_4.Cubes_Id,
                                                             Emote_Id: result_2._id,
                                                             Opinion_Id: '',
-                                                            Emote_Text: result_1.Emote_Text,
+                                                            Emote_Text: result_2.Emote_Text,
                                                             View_Status: 0,
                                                             Active_Status: 'Active'
                                                         });
                                                         varPost_NotificationSchema.save();
-                                                    }
+                                                        if (App_Info !== null) {
+                                                            UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                    const PType = result_4.Post_Category;
+                                                                    var TextAddon = 'a';
+                                                                    var Post_Type = PType;
+                                                                    if (PType === 'News' || PType === 'Idea' || PType === 'Article/Blog') { TextAddon = 'an'; }
+                                                                    if (PType === 'News') {  Post_Type = 'Announcement'; }
+                                                                    if (PType === 'Article/Blog') { Post_Type = 'Article'; }
+                                                                    if (PType === 'Moments') { Post_Type = 'Moment'; }
+
+                                                                    var registrationToken = App_Info.Firebase_Token;
+                                                                    // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                                    var payload = {
+                                                                        notification: {
+                                                                            title: 'New Comment Added Your Post',
+                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                                        },
+                                                                        data: {
+                                                                            type: 'Highlight',
+                                                                            _id: result_4._id
+                                                                        }
+                                                                    };
+                                                                    var options = {
+                                                                        priority: 'high',
+                                                                        timeToLive: 60 * 60 * 24
+                                                                    };
+                                                                    admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                                });
+                                                            });
+                                                        }else{
+                                                            res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                        }
+                                                    });
+                                                } else {
                                                     res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                                                 }
-                                            });
-                                        }
-                                    });
-                                } else {
-                                    var Ids = [];
-                                    Ids.push(req.body.User_Id);
-                                    var varPost_Emoteschema = new PostModel.Post_Emoteschema({
-                                        User_Ids: Ids,
-                                        Post_Id: req.body.Post_Id,
-                                        Emote_Text: req.body.Emote_Text.toLowerCase(),
-                                        Count: 1,
-                                        Active_Status: 'Active'
-                                    });
-                
-                                    varPost_Emoteschema.save(function(err_3, result_3) {
-                                        if(err_3) {
-                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_3);
-                                            res.status(500).send({Status:"False", Error:err_3, Message: "Some error occurred while Cube Post Submit"});           
-                                        } else {
-                                            PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(err_4, result_4) {
-                                                if(err_4) {
-                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
-                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_3 });           
-                                                } else {
-                                                    if (result_4.User_Id !== req.body.User_Id) {
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                var Ids = [];
+                                Ids.push(req.body.User_Id);
+                                var varPost_Emoteschema = new PostModel.Post_Emoteschema({
+                                    User_Ids: Ids,
+                                    Post_Id: req.body.Post_Id,
+                                    Emote_Text: req.body.Emote_Text.toLowerCase(),
+                                    Count: 1,
+                                    Active_Status: 'Active'
+                                });
+            
+                                varPost_Emoteschema.save(function(err_3, result_3) {
+                                    if(err_3) {
+                                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_3);
+                                        res.status(500).send({Status:"False", Error:err_3, Message: "Some error occurred while Cube Post Submit"});           
+                                    } else {
+                                        PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(err_4, result_4) {
+                                            if(err_4) {
+                                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                            } else {
+                                                result_4 = JSON.parse(JSON.stringify(result_4));
+                                                if (result_4.User_Id !== req.body.User_Id) {
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
                                                         var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                             User_Id: req.body.User_Id,
                                                             To_User_Id: result_4.User_Id,
@@ -684,98 +753,194 @@ exports.Emote_Submit = function(req, res) {
                                                             Active_Status: 'Active'
                                                         });
                                                         varPost_NotificationSchema.save();
-                                                    }
+                                                        if (App_Info !== null) {
+                                                            UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                    const PType = result_4.Post_Category;
+                                                                    var TextAddon = 'a';
+                                                                    var Post_Type = PType;
+                                                                    if (PType === 'News' || PType === 'Idea' || PType === 'Article/Blog') { TextAddon = 'an'; }
+                                                                    if (PType === 'News') {  Post_Type = 'Announcement'; }
+                                                                    if (PType === 'Article/Blog') { Post_Type = 'Article'; }
+                                                                    if (PType === 'Moments') { Post_Type = 'Moment'; }
+
+                                                                    var registrationToken = App_Info.Firebase_Token;
+                                                                    // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                                    var payload = {
+                                                                        notification: {
+                                                                            title: 'New Comment Added Your Post',
+                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_3.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                                        },
+                                                                        data: {
+                                                                            type: 'Highlight',
+                                                                            _id: result_4._id
+                                                                        }
+                                                                    };
+                                                                    var options = {
+                                                                        priority: 'high',
+                                                                        timeToLive: 60 * 60 * 24
+                                                                    };
+                                                                    admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                                });
+                                                            });
+                                                        }else{
+                                                            res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                        }
+                                                    });
+                                                } else {
                                                     res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
                                                 }
-                                            });
-                                        }
-                                    });
-                                } 
-                            }
-                        });
-                    } else {
-                        res.status(200).send({ Status:"True", Output: "False", Message: 'Already exists! vote for it' });
-                    }
-
+                                            }
+                                        });
+                                    }
+                                });
+                            } 
+                        }
+                    });
+                } else {
+                    res.status(200).send({ Status:"True", Output: "False", Message: 'Already exists! vote for it' });
                 }
-            });
-        }
+
+            }
+        });
+    }
 };
 
 // ----------------------------------------------------------------------  Post Emote Update ----------------------------------------------------------
 exports.Emote_Update = function(req, res) {
-        if(!req.body.User_Id || req.body.User_Id === '') {
-            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Post_Id || req.body.Post_Id === ''){
-            res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
-        }else if(!req.body.Emote_Id || req.body.Emote_Id === ''){
-            res.status(200).send({Status:"True", Output:"False", Message: "Emote Id can not be empty" });
-        }else{
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Post_Id || req.body.Post_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
+    }else if(!req.body.Emote_Id || req.body.Emote_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Emote Id can not be empty" });
+    }else{
+        PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, '_id': req.body.Emote_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                if ( result !== null) {
+                    result.User_Ids.push(req.body.User_Id);
+                    result.Count = result.Count + 1;
+                    result.save(function(err_1, result_2) {
+                        if(err_1) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_1);
+                            res.status(500).send({Status:"False", Error: err_1, Message: "Some error occurred while Cube Post Submit"});           
+                        } else {
+                            PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(err_4, result_4) {
+                                if(err_4) {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
+                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                } else {
+                                    result_4 = JSON.parse(JSON.stringify(result_4));
+                                    if (result_4.User_Id !== req.body.User_Id) {
+                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                            var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                User_Id: req.body.User_Id,
+                                                To_User_Id: result_4.User_Id,
+                                                Notify_Type: 'Emote',
+                                                Post_Id: req.body.Post_Id,
+                                                Post_Type: result_4.Post_Category,
+                                                Cube_Id: result_4.Cubes_Id[0],
+                                                Cube_Ids: result_4.Cubes_Id,
+                                                Emote_Id: result_2._id,
+                                                Opinion_Id: '',
+                                                Emote_Text: result_2.Emote_Text,
+                                                View_Status: 0,
+                                                Active_Status: 'Active'
+                                            });
+                                            varPost_NotificationSchema.save();
+                                            if (App_Info !== null) {
+                                                UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                    CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                        const PType = result_4.Post_Category;
+                                                        var TextAddon = 'a';
+                                                        var Post_Type = PType;
+                                                        if (PType === 'News' || PType === 'Idea' || PType === 'Article/Blog') { TextAddon = 'an'; }
+                                                        if (PType === 'News') {  Post_Type = 'Announcement'; }
+                                                        if (PType === 'Article/Blog') { Post_Type = 'Article'; }
+                                                        if (PType === 'Moments') { Post_Type = 'Moment'; }
 
-            PostModel.Post_Emoteschema.findOne({'Post_Id': req.body.Post_Id, '_id': req.body.Emote_Id, 'Active_Status': 'Active' }, function(err, result) {
-                if(err) {
-                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
-                    res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+                                                        var registrationToken = App_Info.Firebase_Token;
+                                                        // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                        var payload = {
+                                                            notification: {
+                                                                title: 'New Comment Added Your Post',
+                                                                body: User_Info.Inscube_Name + ' Commented ' + result_2.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                            },
+                                                            data: {
+                                                                type: 'Highlight',
+                                                                _id: result_4._id
+                                                            }
+                                                        };
+                                                        var options = {
+                                                            priority: 'high',
+                                                            timeToLive: 60 * 60 * 24
+                                                        };
+                                                        admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                        res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                    });
+                                                });
+                                            }else{
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                            }
+                                        });
+                                    } else {
+                                        res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                    }
+                                }
+                            });
+                        }
+                    });
                 } else {
-                    if ( result !== null) {
-                        result.User_Ids.push(req.body.User_Id);
-                        result.Count = result.Count + 1;
-                        result.save(function(err_1, result_1) {
-                            if(err_1) {
-                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_1);
-                                res.status(500).send({Status:"False", Error: err_1, Message: "Some error occurred while Cube Post Submit"});           
-                            } else {
-                                res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
-                            }
-                        });
-                    } else {
-                        res.status(200).send({ Status:"True", Output: "False", Message: 'Some Error Occurred!' });
-                    }
-
+                    res.status(200).send({ Status:"True", Output: "False", Message: 'Some Error Occurred!' });
                 }
-            });
-        }
+            }
+        });
+    }
 };
 
 // ----------------------------------------------------------------------  Post Comment Submit ----------------------------------------------------------
 exports.Comment_Submit = function(req, res) {
 
-        if(!req.body.User_Id || req.body.User_Id === '') {
-            res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        }else if(!req.body.Post_Id || req.body.Post_Id === ''){
-            res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
-        }else if(!req.body.Comment_Text || req.body.Comment_Text === '' ){
-            res.status(200).send({Status:"True", Output:"False", Message: "Comment can not be empty" });
-        }else{
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Post_Id || req.body.Post_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Post Id can not be empty" });
+    }else if(!req.body.Comment_Text || req.body.Comment_Text === '' ){
+        res.status(200).send({Status:"True", Output:"False", Message: "Comment can not be empty" });
+    }else{
 
-            var varPost_Commentschema = new PostModel.Post_Commentschema({
-                User_Id: req.body.User_Id,
-                Post_Id: req.body.Post_Id,
-                Comment_Text: req.body.Comment_Text,
-                Active_Status: 'Active'
-            });
-            varPost_Commentschema.save(function(err, result) {
-                if(err) {
-                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err);
-                    res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Cube Post Submit"});           
-                } else {
-                    
-                    UserModel.UserSchema.findOne({'_id': result.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
-                        if(err_user) {
-                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', err_user);
-                            res.status(500).send({status:"False", Error:err_user, message: "Some error occurred while Find The  User Info."});
-                        } else {
-                            result = JSON.parse(JSON.stringify(result));
-                            result.User_Name = User_Info.Inscube_Name;
-                            result.User_Image = User_Info.Image;
-                            result.Time_Ago = moment(result.updatedAt).fromNow();
-                            PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(err_4, result_4) {
-                                if(err_4) {
-                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
-                                    res.status(200).send({ Status:"True", Output: "True", Response: result });           
-                                } else {
-                                    
-                                    if (result_4.User_Id !== req.body.User_Id) {
+        var varPost_Commentschema = new PostModel.Post_Commentschema({
+            User_Id: req.body.User_Id,
+            Post_Id: req.body.Post_Id,
+            Comment_Text: req.body.Comment_Text,
+            Active_Status: 'Active'
+        });
+        varPost_Commentschema.save(function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err);
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Cube Post Submit"});           
+            } else {
+                UserModel.UserSchema.findOne({'_id': result.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                    if(err_user) {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Cubes.controller.js - 12', err_user);
+                        res.status(500).send({status:"False", Error:err_user, message: "Some error occurred while Find The  User Info."});
+                    } else {
+                        result = JSON.parse(JSON.stringify(result));
+                        result.User_Name = User_Info.Inscube_Name;
+                        result.User_Image = User_Info.Image;
+                        result.Time_Ago = moment(result.updatedAt).fromNow();
+                        PostModel.Cube_Postschema.findOne({'_id': req.body.Post_Id }, function(err_4, result_4) {
+                            if(err_4) {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_2);
+                                res.status(200).send({ Status:"True", Output: "True", Response: result });           
+                            } else {
+                                result_4 = JSON.parse(JSON.stringify(result_4));
+                                if (result_4.User_Id !== req.body.User_Id) {
+                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
                                         var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                             User_Id: req.body.User_Id,
                                             To_User_Id: result_4.User_Id,
@@ -791,15 +956,45 @@ exports.Comment_Submit = function(req, res) {
                                             Active_Status: 'Active'
                                         });
                                         varPost_NotificationSchema.save();
-                                    }
-                                    res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                        if (App_Info !== null) {
+                                            CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                const PType = result_4.Post_Category;
+                                                var Post_Type = PType;
+                                                if (PType === 'News') {  Post_Type = 'Announcement'; }
+                                                if (PType === 'Article/Blog') { Post_Type = 'Article'; }
+                                                if (PType === 'Moments') { Post_Type = 'Moment'; }
+
+                                                var registrationToken = App_Info.Firebase_Token;
+                                                // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                var payload = {
+                                                    notification: {
+                                                        title: 'New Opinion on your Post',
+                                                        body: User_Info.Inscube_Name + ' Shared an Opinion on your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                    },
+                                                    data: {
+                                                        type: 'Highlight',
+                                                        _id: result_4._id
+                                                    }
+                                                };
+                                                var options = {
+                                                    priority: 'high',
+                                                    timeToLive: 60 * 60 * 24
+                                                };
+                                                admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                            });
+                                        } else{
+                                            res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                        }
+                                    });
                                 }
-                            });
-                        }
-                    });
-                }
-            });
-         }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 };
 
 // ----------------------------------------------------------------------  Post Comment List ----------------------------------------------------------

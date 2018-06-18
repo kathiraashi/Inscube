@@ -5,6 +5,13 @@ var cors = require('cors');
 var ErrorManagement = require('./app/config/ErrorHandling.js');
 var parser = require('ua-parser-js');
 
+var admin = require('firebase-admin');
+var serviceAccount = require('./inscube_firebase_admin.json');
+
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount)
+    });
+
 var port = process.env.PORT || 3000;
 var app = express();
 

@@ -22,6 +22,8 @@ module.exports = function(app) {
 
         app.post('/API/Trends/Trends_Emote_Submit', Controller.Trends_Emote_Submit);
 
+        app.post('/API/Trends/Trends_Emote_Update', Controller.Trends_Emote_Update);
+
         app.post('/API/Trends/Trends_Comment_Submit', Controller.Trends_Comment_Submit);
 
         app.get('/API/Trends/Trends_Comment_List/:Trends_Id', Controller.Trends_Comment_List);

@@ -157,7 +157,6 @@ exports.UserRegister = function(req, res) {
                                         });
                                     }else{ // Firebase_Token Already Registered  -----------------------------
                                         result_1.Ip = Ip;
-                                        result_1.Device_Info = DeviceInfo;
                                         result_1.User_Id = result._id;
                                         result_1.Active_Status = 'Active';
                                         result_1.save( function(err_3, result_3) { // Android App SignIn Info Update -----------------------------
@@ -281,17 +280,71 @@ exports.UserValidate = function(req, res) {
                             res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Login Info Create Error! " });
                         } else {
                             if (req.body.Firebase_Token) { // Login from App  -----------------------------
-                                LoginInfoModel.AndroidAppInfoSchema.findOne({'Firebase_Token': req.body.Firebase_Token}, function(err_1, result_1) {
-                                    if(err_1) {
-                                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Login Android App Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err_1);
-                                        res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Android App Info Find Error! " });
-                                    } else {
-                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result._id, 'Active_Status': 'Active'}, function(err_2, result_2) {
-                                            if(err_2) {
-                                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Login Android App Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err_2);
-                                                res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Android App Info Find Error! " });
-                                            } else {
-                                                if(result_1 === null && result_2 === null){ // Firebase_Token Not Registered  -----------------------------
+                                result = JSON.parse(JSON.stringify(result));
+                                const AndroidUserUpdate = result =>
+                                    Promise.all([
+                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'Firebase_Token': req.body.Firebase_Token, 'User_Id': result._id}).exec(),
+                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'Firebase_Token': req.body.Firebase_Token}).exec(),
+                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result._id, 'Active_Status': 'Active'}).exec(),
+                                        ]).then( Data => {
+                                            var Condition_1 = Data[0];
+                                            var Condition_2 = Data[1];
+                                            var Condition_3 = Data[2];
+
+                                            if (Condition_2 === null && Condition_3 === null) {
+                                                var varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
+                                                    User_Id:  result._id,
+                                                    Firebase_Token: req.body.Firebase_Token,
+                                                    Ip: Ip,
+                                                    Device_Info: DeviceInfo,
+                                                    Active_Status: 'Active'
+                                                });
+                                                varAndroidAppInfo.save(function(err_3, result_3) {
+                                                    res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                                });
+                                            } else if (Condition_1 !== null && Condition_3 === null) {
+                                                Condition_1.Ip = Ip;
+                                                Condition_1.Active_Status = 'Active';
+                                                Condition_1.save( function(err_4, result_4) {
+                                                        res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                                });
+                                            } else if (Condition_1 !== null && Condition_3 !== null) {
+                                                var _Id1 = JSON.parse(JSON.stringify(Condition_1))._id;
+                                                var _Id2 = JSON.parse(JSON.stringify(Condition_3))._id;
+                                                if (_Id1 === _Id2 ) {
+                                                    res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                                } else {
+                                                    Condition_3.Active_Status = 'Inactive';
+                                                    Condition_3.save( function(err_4, result_4) {
+                                                        Condition_1.Ip = Ip;
+                                                        Condition_1.Active_Status = 'Active';
+                                                        Condition_1.save( function(err_5, result_5) {
+                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                                        });
+                                                    });
+                                                }
+                                            } else if (Condition_2 !== null) {
+                                                if (Condition_3 === null) {
+                                                    Condition_2.Ip = Ip;
+                                                    Condition_2.User_Id = result._id;
+                                                    Condition_2.Active_Status = 'Active';
+                                                    Condition_2.save( function(err_4, result_4) {
+                                                        res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                                    });
+                                                } else {
+                                                    Condition_3.Active_Status = 'Inactive';
+                                                    Condition_3.save( function(err_4, result_4) {
+                                                        Condition_2.Ip = Ip;
+                                                        Condition_2.User_Id = result._id;
+                                                        Condition_2.Active_Status = 'Active';
+                                                        Condition_2.save( function(err_5, result_5) {
+                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                                        });
+                                                    });
+                                                }
+                                            } else if (Condition_2 === null && Condition_3 !== null ) {
+                                                Condition_3.Active_Status = 'Inactive';
+                                                Condition_3.save( function(err_4, result_4) {
                                                     var varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
                                                         User_Id:  result._id,
                                                         Firebase_Token: req.body.Firebase_Token,
@@ -299,56 +352,17 @@ exports.UserValidate = function(req, res) {
                                                         Device_Info: DeviceInfo,
                                                         Active_Status: 'Active'
                                                     });
-                                                    varAndroidAppInfo.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                                        if(err_3) {
-                                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Android App Info Creation Error! " });           
-                                                        } else {
-                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
-                                                        }
+                                                    varAndroidAppInfo.save(function(err_3, result_3) {
+                                                        res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
                                                     });
-                                                }else if(result_1 !== null ) { // Firebase_Token Already Registered  -----------------------------
-                                                    result_1.Ip = Ip;
-                                                    result_1.Device_Info = DeviceInfo;
-                                                    result_1.User_Id = result._id;
-                                                    result_1.Active_Status = 'Active';
-                                                    result_1.save( function(err_4, result_4) { // Android App SignIn Info Update -----------------------------
-                                                        if(err_4) {
-                                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Update Query Error', 'SignIn_SignUp.controller.js - 85', err_4);
-                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Android App Info Update Error! " });            
-                                                        } else {
-                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
-                                                        }
-                                                    });
-                                                }else if(result_2 !== null ) { // User_Id Already Registered  -----------------------------
-                                                    result_2.Active_Status = 'Inactive';
-                                                    result_2.save( function(err_5, result_5) { // Android App SignIn Info Update -----------------------------
-                                                        if(err_5) {
-                                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Update Query Error', 'SignIn_SignUp.controller.js - 85', err_5);
-                                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Android App Info Update Error! " });            
-                                                        } else {
-                                                            var varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
-                                                                User_Id:  result._id,
-                                                                Firebase_Token: req.body.Firebase_Token,
-                                                                Ip: Ip,
-                                                                Device_Info: DeviceInfo,
-                                                                Active_Status: 'Active'
-                                                            });
-                                                            varAndroidAppInfo.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                                                if(err_3) {
-                                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                                                    res.status(200).send({ Status:"True", Output:'True', Response: result, Message: "Android App Info Creation Error! " });           
-                                                                } else {
-                                                                    res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }
+                                                });
+                                            } else {
+                                                res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success'});
                                             }
-                                        });
-                                    }
-                                });
+                                        }).catch(error => {
+                                            res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
+                                        });     
+                                AndroidUserUpdate(result);
                             }else { // Login from Web  -----------------------------
                                 res.status(200).send({ Status:"True", Output:'True', Response: result, Message: 'Sign In Success' });
                             }
@@ -360,8 +374,7 @@ exports.UserValidate = function(req, res) {
     }
 };
 
-
-// ---------------------------------------------------------------------- User Sign in Validate ---------------------------------------------------------------
+// ---------------------------------------------------------------------- User inside the App ---------------------------------------------------------------
 exports.User_App_Entry = function(req, res) {
     if(!req.body.User_Id || req.body.User_Id === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
@@ -373,96 +386,94 @@ exports.User_App_Entry = function(req, res) {
             getIp = getIp.split(':');
         var Ip = getIp[getIp.length - 1];
         var DeviceInfo = parser(req.headers['user-agent']);
-        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': req.body.User_Id, 'Firebase_Token': req.body.Firebase_Token}, function(err_1, result_1) {
-            if(err_1) {
-                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Login Android App Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err_1);
-                res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Find Error! " });
+        UserModel.UserSchema.findOne({'_id': req.body.User_Id}, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Login Android App Info Find Query Error', 'SignIn_SignUp.controller.js', err);
+                res.status(200).send({ Status:"True", Output:'False', Message: "User Id Can not be Valid!" });
             } else {
-                LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': req.body.User_Id, 'Active_Status': 'Active'}, function(err_2, result_2) {
-                    if(err_2) {
-                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Login Android App Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err_2);
-                        res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Find Error! " });
-                    } else {
-                        LoginInfoModel.AndroidAppInfoSchema.findOne({'Firebase_Token': req.body.Firebase_Token}, function(err_3, result_3) {
-                            if(err_3) {
-                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Login Android App Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err_3);
-                                res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Find Error! " });
-                            } else {
-                                if(result_1 === null && result_2 === null && result_3 === null) {
-                                    const varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
-                                        User_Id: req.body.User_Id,
+                result = JSON.parse(JSON.stringify(result));
+                const AndroidUserUpdate = result =>
+                    Promise.all([
+                        LoginInfoModel.AndroidAppInfoSchema.findOne({'Firebase_Token': req.body.Firebase_Token, 'User_Id': result._id}).exec(),
+                        LoginInfoModel.AndroidAppInfoSchema.findOne({'Firebase_Token': req.body.Firebase_Token}).exec(),
+                        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result._id, 'Active_Status': 'Active'}).exec(),
+                        ]).then( Data => {
+                            var Condition_1 = Data[0];
+                            var Condition_2 = Data[1];
+                            var Condition_3 = Data[2];
+
+                            if (Condition_2 === null && Condition_3 === null) {
+                                var varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
+                                    User_Id:  result._id,
+                                    Firebase_Token: req.body.Firebase_Token,
+                                    Ip: Ip,
+                                    Device_Info: DeviceInfo,
+                                    Active_Status: 'Active'
+                                });
+                                varAndroidAppInfo.save(function(err_3, result_3) {
+                                    res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
+                                });
+                            } else if (Condition_1 !== null && Condition_3 === null) {
+                                Condition_1.Ip = Ip;
+                                Condition_1.Active_Status = 'Active';
+                                Condition_1.save( function(err_4, result_4) {
+                                        res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
+                                });
+                            } else if (Condition_1 !== null && Condition_3 !== null) {
+                                var _Id1 = JSON.parse(JSON.stringify(Condition_1))._id;
+                                var _Id2 = JSON.parse(JSON.stringify(Condition_3))._id;
+                                if (_Id1 === _Id2 ) {
+                                    res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
+                                } else {
+                                    Condition_3.Active_Status = 'Inactive';
+                                    Condition_3.save( function(err_4, result_4) {
+                                        Condition_1.Ip = Ip;
+                                        Condition_1.Active_Status = 'Active';
+                                        Condition_1.save( function(err_5, result_5) {
+                                            res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
+                                        });
+                                    });
+                                }
+                            } else if (Condition_2 !== null) {
+                                if (Condition_3 === null) {
+                                    Condition_2.Ip = Ip;
+                                    Condition_2.User_Id = result._id;
+                                    Condition_2.Active_Status = 'Active';
+                                    Condition_2.save( function(err_4, result_4) {
+                                        res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
+                                    });
+                                } else {
+                                    Condition_3.Active_Status = 'Inactive';
+                                    Condition_3.save( function(err_4, result_4) {
+                                        Condition_2.Ip = Ip;
+                                        Condition_2.User_Id = result._id;
+                                        Condition_2.Active_Status = 'Active';
+                                        Condition_2.save( function(err_5, result_5) {
+                                            res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
+                                        });
+                                    });
+                                }
+                            } else if (Condition_2 === null && Condition_3 !== null ) {
+                                Condition_3.Active_Status = 'Inactive';
+                                Condition_3.save( function(err_4, result_4) {
+                                    var varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
+                                        User_Id:  result._id,
                                         Firebase_Token: req.body.Firebase_Token,
                                         Ip: Ip,
                                         Device_Info: DeviceInfo,
                                         Active_Status: 'Active'
                                     });
-                                    varAndroidAppInfo.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                        if(err_3) {
-                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                            res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Creation Error! " });           
-                                        } else {
-                                            res.status(200).send({ Status:"True", Output:'True', Message: 'Sign In Success' });
-                                        }
+                                    varAndroidAppInfo.save(function(err_3, result_3) {
+                                        res.status(200).send({ Status:"True", Output:'True', Message: 'Success' });
                                     });
-                                } else if(result_1 !== null && result_1.Active_Status === 'Active' ) {
-                                    result_1.Ip = Ip;
-                                    result_1.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                        if(err_3) {
-                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                            res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Creation Error! " });           
-                                        } else {
-                                            res.status(200).send({ Status:"True", Output:'True', Message: 'Sign In Success' });
-                                        }
-                                    });
-                                } else if(result_1 !== null && result_1.Active_Status === 'Inactive' &&  result_2 !== null ) {
-                                    result_2.Active_Status = 'Inactive';
-                                    result_2.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                        if(err_3) {
-                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                            res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Creation Error! " });           
-                                        } else {
-                                            result_1.Ip = Ip;
-                                            result_1.Active_Status = 'Active';
-                                            result_1.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                                if(err_3) {
-                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                                    res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Creation Error! " });           
-                                                } else {
-            
-                                                    res.status(200).send({ Status:"True", Output:'True', Message: 'Sign In Success' });
-                                                }
-                                            });
-                                        }
-                                    });
-                                } else if(result_2 !== null && result_1 === null) {
-                                    result_2.Active_Status = 'Inactive';
-                                    result_2.save( function(err_5, result_5) { // Android App SignIn Info Update -----------------------------
-                                        if(err_5) {
-                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Update Query Error', 'SignIn_SignUp.controller.js - 85', err_5);
-                                            res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Update Error! " });            
-                                        } else {
-                                            var varAndroidAppInfo = new LoginInfoModel.AndroidAppInfoSchema({
-                                                User_Id:  req.body.User_Id,
-                                                Firebase_Token: req.body.Firebase_Token,
-                                                Ip: Ip,
-                                                Device_Info: DeviceInfo,
-                                                Active_Status: 'Active'
-                                            });
-                                            varAndroidAppInfo.save(function(err_3, result_3) { // Android App SignIn Info Creation -----------------------------
-                                                if(err_3) {
-                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Android App Info Save Query Error', 'SignIn_SignUp.controller.js - 74', err_3);
-                                                    res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Creation Error! " });           
-                                                } else {
-                                                    res.status(200).send({ Status:"True", Output:'True', Message: 'Sign In Success' });
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
+                                });
+                            } else {
+                                res.status(200).send({ Status:"True", Output:'True', Message: "Success" });
                             }
-                        });
-                    }
-                });
+                        }).catch(error => {
+                            res.status(200).send({ Status:"True", Output:'True', Message: "Android App Info Find Error!" });
+                        });     
+                AndroidUserUpdate(result);
             }
         });
     }

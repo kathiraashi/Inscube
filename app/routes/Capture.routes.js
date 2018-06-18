@@ -20,6 +20,8 @@ module.exports = function(app) {
 
         app.post('/API/Capture/Capture_Emote_Submit', Controller.Capture_Emote_Submit);
 
+        app.post('/API/Capture/Capture_Emote_Update', Controller.Capture_Emote_Update);
+
         app.post('/API/Capture/Capture_Comment_Submit', Controller.Capture_Comment_Submit);
 
         app.get('/API/Capture/Capture_Comment_List/:Capture_Id', Controller.Capture_Comment_List);

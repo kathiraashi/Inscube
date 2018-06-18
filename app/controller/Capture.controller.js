@@ -3,9 +3,11 @@ var CubeModel = require('../models/Cubes.model.js');
 var PostModel = require('../models/Post.model.js');
 var CaptureModel = require('../models/Capture,model.js');
 var UserModel = require('../models/User.model.js');
+var LoginInfoModel = require('../models/Login_Info.model.js');
 var multer = require('multer');
 var moment = require('moment');
 
+var admin = require('firebase-admin');
 
 // Cube Post File Upload Disk Storage and Validate Functions ----------------------------------------------------------------------------------------
 var Cube_Capture_File_Storage = multer.diskStorage({
@@ -103,22 +105,44 @@ exports.CubeCapture_Submit = function(req, res) {
                                             ).then( result_2 => { return Data[0]; });
 
                                             const To_Notify = _info => {
-                                                if (result.User_Id !== _info.User_Id) {
-                                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                                        User_Id: result.User_Id,
-                                                        To_User_Id: _info.User_Id,
-                                                        Notify_Type: 'New_Capture',
-                                                        Capture_Id: result._id,
-                                                        Capture_Text: result.Capture_Text,
-                                                        Cube_Id: info,
-                                                        Emote_Id: '',
-                                                        Opinion_Id: '',
-                                                        Emote_Text: '',
-                                                        View_Status: 0,
-                                                        Active_Status: 'Active'
-                                                    });
-                                                    varPost_NotificationSchema.save();
-                                                }
+                                                LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': _info.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                                    if (result.User_Id !== _info.User_Id) {
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                            User_Id: result.User_Id,
+                                                            To_User_Id: _info.User_Id,
+                                                            Notify_Type: 'New_Capture',
+                                                            Capture_Id: result._id,
+                                                            Capture_Text: result.Capture_Text,
+                                                            Cube_Id: info,
+                                                            Emote_Id: '',
+                                                            Opinion_Id: '',
+                                                            Emote_Text: '',
+                                                            View_Status: 0,
+                                                            Active_Status: 'Active'
+                                                        });
+                                                        varPost_NotificationSchema.save();
+                                                    }
+                                                    if (App_Info !== null && result.User_Id !== _info.User_Id) {
+
+                                                        // var registrationToken = App_Info.Firebase_Token;
+                                                        var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                        var payload = {
+                                                            notification: {
+                                                                title: 'New Moment Captured',
+                                                                body: User_Info.Inscube_Name + ' shared a new moment in ' + Data[0].Name,
+                                                            },
+                                                            data: {
+                                                                type: 'Capture',
+                                                                _id: result._id
+                                                            }
+                                                        };
+                                                        var options = {
+                                                            priority: 'high',
+                                                            timeToLive: 60 * 60 * 24
+                                                        };
+                                                        admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                    }
+                                                });
                                                 return _info;
                                             };
                                         return Send_Notification(Users_List);
@@ -805,23 +829,6 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture_Id FindOne Query Error', 'Capture.controller.js', err_2);
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result_3 });           
                                             } else {
-                                                if (result_4.User_Id !== req.body.User_Id) {
-                                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                                        User_Id: req.body.User_Id,
-                                                        To_User_Id: result_4.User_Id,
-                                                        Notify_Type: 'Capture_Emote',
-                                                        Capture_Id: req.body.Capture_Id,
-                                                        Capture_Text: result_4.Capture_Text,
-                                                        Cube_Id: result_4.Cubes_Id[0],
-                                                        Cube_Ids: result_4.Cubes_Id,
-                                                        Emote_Id: result_3._id,
-                                                        Opinion_Id: '',
-                                                        Emote_Text: result_3.Emote_Text,
-                                                        View_Status: 0,
-                                                        Active_Status: 'Active'
-                                                    });
-                                                    varPost_NotificationSchema.save();
-                                                }
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
                                             }
                                         });
@@ -832,6 +839,41 @@ exports.Capture_Emote_Submit = function(req, res) {
                     });
                 } else {
                     res.status(200).send({ Status:"True", Output: "False", Message: 'Already exists! vote for it' });
+                }
+
+            }
+        });
+    }
+};
+
+// ----------------------------------------------------------------------  Capture Emote Update ----------------------------------------------------------
+exports.Capture_Emote_Update = function(req, res) {
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Capture_Id || req.body.Capture_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Capture Id can not be empty" });
+    }else if(!req.body.Emote_Id || req.body.Emote_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Emote Id can not be empty" });
+    }else{
+
+        CaptureModel.Capture_Emoteschema.findOne({'Capture_Id': req.body.Capture_Id, '_id': req.body.Emote_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                if ( result !== null) {
+                    result.User_Ids.push(req.body.User_Id);
+                    result.Count = result.Count + 1;
+                    result.save(function(err_1, result_1) {
+                        if(err_1) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_1);
+                            res.status(500).send({Status:"False", Error: err_1, Message: "Some error occurred while Cube Post Submit"});           
+                        } else {
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                        }
+                    });
+                } else {
+                    res.status(200).send({ Status:"True", Output: "False", Message: 'Some Error Occurred!' });
                 }
 
             }
