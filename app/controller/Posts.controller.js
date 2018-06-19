@@ -78,7 +78,6 @@ exports.CubePost_Submit = function(req, res) {
         }else if(!Cubes_List || Cubes_List.length <= 0 ){
             res.status(200).send({Status:"True", Output:"False", Message: "Selected Cubes can not be empty" });
         }else{
-
             var Return_Json = [];
             var Attach_File = [];
             if ( req.files.length > 0) {
@@ -95,7 +94,6 @@ exports.CubePost_Submit = function(req, res) {
                     }
                 });
             }
-
             var LinkInfo = {};
             if(req.body.Post_Link && req.body.Post_Link !== '') {
                 var str = req.body.Post_Link;
@@ -118,7 +116,6 @@ exports.CubePost_Submit = function(req, res) {
             }else{
                 gotonext();
             }
-
             function gotonext() {
                 
                 var varCube_Postschema = new PostModel.Cube_Postschema({
@@ -202,7 +199,6 @@ exports.CubePost_Submit = function(req, res) {
                                                             if (PType === 'Moments') { Post_Type = 'Moment'; }
 
                                                             var registrationToken = App_Info.Firebase_Token;
-                                                            // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
                                                             var payload = {
                                                                 notification: {
                                                                     title: 'New Highlight Post',
@@ -684,7 +680,6 @@ exports.Emote_Submit = function(req, res) {
                                                                     if (PType === 'Moments') { Post_Type = 'Moment'; }
 
                                                                     var registrationToken = App_Info.Firebase_Token;
-                                                                    // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
                                                                     var payload = {
                                                                         notification: {
                                                                             title: 'New Comment Added Your Post',
@@ -765,7 +760,6 @@ exports.Emote_Submit = function(req, res) {
                                                                     if (PType === 'Moments') { Post_Type = 'Moment'; }
 
                                                                     var registrationToken = App_Info.Firebase_Token;
-                                                                    // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
                                                                     var payload = {
                                                                         notification: {
                                                                             title: 'New Comment Added Your Post',
@@ -864,7 +858,6 @@ exports.Emote_Update = function(req, res) {
                                                         if (PType === 'Moments') { Post_Type = 'Moment'; }
 
                                                         var registrationToken = App_Info.Firebase_Token;
-                                                        // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
                                                         var payload = {
                                                             notification: {
                                                                 title: 'New Comment Added Your Post',
@@ -965,7 +958,6 @@ exports.Comment_Submit = function(req, res) {
                                                 if (PType === 'Moments') { Post_Type = 'Moment'; }
 
                                                 var registrationToken = App_Info.Firebase_Token;
-                                                // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
                                                 var payload = {
                                                     notification: {
                                                         title: 'New Opinion on your Post',

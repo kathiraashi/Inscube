@@ -128,9 +128,7 @@ exports.CubeTrends_Submit = function(req, res) {
                                                     varPost_NotificationSchema.save();
                                                 }
                                                 if (App_Info !== null && result.User_Id !== _info.User_Id) {
-
                                                     var registrationToken = App_Info.Firebase_Token;
-                                                    // var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
                                                     var payload = {
                                                         notification: {
                                                             title: 'New # Campaign Shared',

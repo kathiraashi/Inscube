@@ -81,9 +81,7 @@ exports.CubeCapture_Submit = function(req, res) {
                             result.User_Image = User_Info.Image;
                             result.Emotes = [];
                             result.Comments = [];
-                            
                             var CubeIds = result.Cube_Ids;
-
                             const GetCategory_Info = (CubeIds) => Promise.all( CubeIds.map(info => Category_Info(info)) 
                             ).then( result_1 => {
                                     result.Cubes_Info = result_1;
@@ -92,18 +90,15 @@ exports.CubeCapture_Submit = function(req, res) {
                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture Submit Category Info Find Main Promise Error', 'Capture.controller.js ', err_1);
                                 res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube Capture Submit Category Info Find Promise Error "});
                             });
-                
                             const Category_Info = info =>
                                 Promise.all([
                                     CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
                                     CubeModel.Cube_Followersschema.find({'Cube_Id': info, 'Active_Status': 'Active' }).exec(),
                                     ]).then( Data => {
                                         var Users_List = JSON.parse(JSON.stringify(Data[1]));
-
                                         const Send_Notification = (Users_List) => Promise.all(
                                                 Users_List.map(_info => To_Notify(_info)) 
                                             ).then( result_2 => { return Data[0]; });
-
                                             const To_Notify = _info => {
                                                 LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': _info.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
                                                     if (result.User_Id !== _info.User_Id) {
@@ -123,9 +118,7 @@ exports.CubeCapture_Submit = function(req, res) {
                                                         varPost_NotificationSchema.save();
                                                     }
                                                     if (App_Info !== null && result.User_Id !== _info.User_Id) {
-
-                                                        // var registrationToken = App_Info.Firebase_Token;
-                                                        var registrationToken = 'dVE00xvFvZE:APA91bF24-wjTNouuugGy5FRoafQPINktW9pmqYdjT87deS9w6ja1Lf-TOXmCFQOFj8_sxGTguIE9fSuvhhoMIwCZVUNSN5bMkAWihAzAZA-pgkdy16i88PEgwJ6kxZd3lFOXRHtDvkb';
+                                                        var registrationToken = App_Info.Firebase_Token;
                                                         var payload = {
                                                             notification: {
                                                                 title: 'New Moment Captured',
@@ -786,24 +779,53 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture FindOne Query Error', 'Posts.controller.js', err_2);
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result_2 });           
                                             } else {
+                                                result_4 = JSON.parse(JSON.stringify(result_4));
                                                 if (result_4.User_Id !== req.body.User_Id) {
-                                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                                        User_Id: req.body.User_Id,
-                                                        To_User_Id: result_4.User_Id,
-                                                        Notify_Type: 'Capture_Emote',
-                                                        Capture_Id: req.body.Capture_Id,
-                                                        Capture_Text: result_4.Capture_Text,
-                                                        Cube_Id: result_4.Cubes_Id[0],
-                                                        Cube_Ids: result_4.Cubes_Id,
-                                                        Emote_Id: result_2._id,
-                                                        Opinion_Id: '',
-                                                        Emote_Text: result_1.Emote_Text,
-                                                        View_Status: 0,
-                                                        Active_Status: 'Active'
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                            User_Id: req.body.User_Id,
+                                                            To_User_Id: result_4.User_Id,
+                                                            Notify_Type: 'Capture_Emote',
+                                                            Capture_Id: req.body.Capture_Id,
+                                                            Capture_Text: result_4.Capture_Text,
+                                                            Cube_Id: result_4.Cubes_Id[0],
+                                                            Cube_Ids: result_4.Cubes_Id,
+                                                            Emote_Id: result_2._id,
+                                                            Opinion_Id: '',
+                                                            Emote_Text: result_1.Emote_Text,
+                                                            View_Status: 0,
+                                                            Active_Status: 'Active'
+                                                        });
+                                                        varPost_NotificationSchema.save();
+                                                        if (App_Info !== null) {
+                                                            UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                    var registrationToken = App_Info.Firebase_Token;
+                                                                    var payload = {
+                                                                        notification: {
+                                                                            title: 'New Comment Added Your Capture Moment',
+                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your Capture Moment in ' + Cube_Info.Name,
+                                                                        },
+                                                                        data: {
+                                                                            type: 'Capture',
+                                                                            _id: result_4._id
+                                                                        }
+                                                                    };
+                                                                    var options = {
+                                                                        priority: 'high',
+                                                                        timeToLive: 60 * 60 * 24
+                                                                    };
+                                                                    admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                                });
+                                                            });
+                                                        }else{
+                                                            res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                        }
                                                     });
-                                                    varPost_NotificationSchema.save();
+                                                } else {
+                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                                                 }
-                                                res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                                             }
                                         });
                                     }
@@ -818,7 +840,6 @@ exports.Capture_Emote_Submit = function(req, res) {
                                     Count: 1,
                                     Active_Status: 'Active'
                                 });
-            
                                 varCapture_Emoteschema.save(function(err_3, result_3) {
                                     if(err_3) {
                                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture Emote Submit Query Error', 'Capture.controller.js', err_3);
@@ -829,7 +850,53 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture_Id FindOne Query Error', 'Capture.controller.js', err_2);
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result_3 });           
                                             } else {
-                                                res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                result_4 = JSON.parse(JSON.stringify(result_4));
+                                                if (result_4.User_Id !== req.body.User_Id) {
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                            User_Id: req.body.User_Id,
+                                                            To_User_Id: result_4.User_Id,
+                                                            Notify_Type: 'Capture_Emote',
+                                                            Capture_Id: req.body.Capture_Id,
+                                                            Capture_Text: result_4.Capture_Text,
+                                                            Cube_Id: result_4.Cubes_Id[0],
+                                                            Cube_Ids: result_4.Cubes_Id,
+                                                            Emote_Id: result_3._id,
+                                                            Opinion_Id: '',
+                                                            Emote_Text: result_3.Emote_Text,
+                                                            View_Status: 0,
+                                                            Active_Status: 'Active'
+                                                        });
+                                                        varPost_NotificationSchema.save();
+                                                        if (App_Info !== null) {
+                                                            UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                    var registrationToken = App_Info.Firebase_Token;
+                                                                    var payload = {
+                                                                        notification: {
+                                                                            title: 'New Comment Added Your Capture Moment',
+                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your Capture Moment in ' + Cube_Info.Name,
+                                                                        },
+                                                                        data: {
+                                                                            type: 'Capture',
+                                                                            _id: result_4._id
+                                                                        }
+                                                                    };
+                                                                    var options = {
+                                                                        priority: 'high',
+                                                                        timeToLive: 60 * 60 * 24
+                                                                    };
+                                                                    admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                                });
+                                                            });
+                                                        }else{
+                                                            res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                        }
+                                                    });
+                                                } else {
+                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                }
                                             }
                                         });
                                     }
@@ -869,13 +936,65 @@ exports.Capture_Emote_Update = function(req, res) {
                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_1);
                             res.status(500).send({Status:"False", Error: err_1, Message: "Some error occurred while Cube Post Submit"});           
                         } else {
-                            res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                            CaptureModel.Cube_Captureschema.findOne({'_id': req.body.Capture_Id }, function(err_4, result_4) {
+                                if(err_4) {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture Submit Query Error', 'Capture.controller.js - 62', err_2);
+                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                } else {
+                                    result_4 = JSON.parse(JSON.stringify(result_4));
+                                    if (result_4.User_Id !== req.body.User_Id) {
+                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                            var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                User_Id: req.body.User_Id,
+                                                To_User_Id: result_4.User_Id,
+                                                Notify_Type: 'Capture_Emote',
+                                                Capture_Id: req.body.Capture_Id,
+                                                Capture_Text: result_4.Capture_Text,
+                                                Cube_Id: result_4.Cubes_Id[0],
+                                                Cube_Ids: result_4.Cubes_Id,
+                                                Emote_Id: result_1._id,
+                                                Opinion_Id: '',
+                                                Emote_Text: result_1.Emote_Text,
+                                                View_Status: 0,
+                                                Active_Status: 'Active'
+                                            });
+                                            varPost_NotificationSchema.save();
+                                            if (App_Info !== null) {
+                                                UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                    CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                        var registrationToken = App_Info.Firebase_Token;
+                                                        var payload = {
+                                                            notification: {
+                                                                title: 'New Comment Added Your Capture Moment',
+                                                                body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your Capture Moment in ' + Cube_Info.Name,
+                                                            },
+                                                            data: {
+                                                                type: 'Capture',
+                                                                _id: result_4._id
+                                                            }
+                                                        };
+                                                        var options = {
+                                                            priority: 'high',
+                                                            timeToLive: 60 * 60 * 24
+                                                        };
+                                                        admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                        res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                                                    });
+                                                });
+                                            }else{
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                                            }
+                                        });
+                                    } else {
+                                        res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                                    }
+                                }
+                            });
                         }
                     });
                 } else {
                     res.status(200).send({ Status:"True", Output: "False", Message: 'Some Error Occurred!' });
                 }
-
             }
         });
     }
@@ -918,24 +1037,49 @@ exports.Capture_Comment_Submit = function(req, res) {
                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture FindOne Query Error', 'Capture.controller.js', err_2);
                                 res.status(200).send({ Status:"True", Output: "True", Response: result });           
                             } else {
+                                result_4 = JSON.parse(JSON.stringify(result_4));
                                 if (result_4.User_Id !== req.body.User_Id) {
-                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                        User_Id: req.body.User_Id,
-                                        To_User_Id: result_4.User_Id,
-                                        Notify_Type: 'Capture_Opinion',
-                                        Capture_Id: req.body.Capture_Id,
-                                        Capture_Text: result_4.Capture_Text,
-                                        Cube_Id: result_4.Cubes_Id[0],
-                                        Cube_Ids: result_4.Cubes_Id,
-                                        Emote_Id: '',
-                                        Opinion_Id: result._id,
-                                        Emote_Text: '',
-                                        View_Status: 0,
-                                        Active_Status: 'Active'
+                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                            User_Id: req.body.User_Id,
+                                            To_User_Id: result_4.User_Id,
+                                            Notify_Type: 'Capture_Opinion',
+                                            Capture_Id: req.body.Capture_Id,
+                                            Capture_Text: result_4.Capture_Text,
+                                            Cube_Id: result_4.Cubes_Id[0],
+                                            Cube_Ids: result_4.Cubes_Id,
+                                            Emote_Id: '',
+                                            Opinion_Id: result._id,
+                                            Emote_Text: '',
+                                            View_Status: 0,
+                                            Active_Status: 'Active'
+                                        });
+                                        varPost_NotificationSchema.save();
+                                        if (App_Info !== null) {
+                                            CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                var registrationToken = App_Info.Firebase_Token;
+                                                var payload = {
+                                                    notification: {
+                                                        title: 'New Opinion on your Capture Moment',
+                                                        body: User_Info.Inscube_Name + ' Shared an Opinion on your Capture Moment in ' + Cube_Info.Name,
+                                                    },
+                                                    data: {
+                                                        type: 'Capture',
+                                                        _id: result_4._id
+                                                    }
+                                                };
+                                                var options = {
+                                                    priority: 'high',
+                                                    timeToLive: 60 * 60 * 24
+                                                };
+                                                admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                            });
+                                        }
                                     });
-                                    varPost_NotificationSchema.save();
+                                } else{
+                                    res.status(200).send({ Status:"True", Output: "True", Response: result });
                                 }
-                                res.status(200).send({ Status:"True", Output: "True", Response: result });
                             }
                         });
                     }
