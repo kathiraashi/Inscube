@@ -1,0 +1,35 @@
+<div class="CreatePost">
+   <div class="postheader" fxLayout="row" fxLayoutAlign="start" >
+     <div fxFlex="65px" class="text-center">
+         <img  src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userimg">
+     </div>
+     <div fxFlex class="text-left">
+       <h5 class="m-0 posttype"> Edit Your Comment </h5>
+     </div>
+     <div fxFlex class="text-left">
+           <button type="button" style="padding: 0px 15px; font-size: 35px;" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+               <span aria-hidden="true">&times;</span>
+           </button>
+       </div>
+   </div>
+ 
+   <hr style="margin-top:3px;margin-bottom:0px">
+ 
+   <div class="modal-body">
+ 
+       <input #comment class="postlink mb-20" value="{{data.Value.Comment_Text}}" placeholder="Enter Your Comment...">
+   
+   
+   
+           <div fxLayout fxLayoutAlign="space-between">
+               <div fxFlex="85%">
+               </div>
+               <div fxFlex="15%" style="line-height:75px;">
+                   <button type="button" (click)="submit_comment(comment.value)" mat-raised-button color="primary" style="background-color: #d75739"> 
+                       <span > Submit </span>
+                    </button>
+               </div>
+           </div>
+ 
+   </div>
+ </div>

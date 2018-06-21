@@ -89,7 +89,16 @@ import { FeedsViewComponent } from './feeds-view/feeds-view.component';
 import { PostShareCubesListComponent } from './Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
 import { EditTopicComponent } from './Modal_Components/edit-topic/edit-topic.component';
 import { AlertPrivacyUpdateComponent } from './Modal_Components/alert-privacy-update/alert-privacy-update.component';
+import { FeedsCaptureComponent } from './feeds/feeds-capture/feeds-capture.component';
+import { FeedsTrendsComponent } from './feeds/feeds-trends/feeds-trends.component';
 
+import { CaptureService } from './service/capture/capture.service';
+import { CaptureEmoteAddComponent } from './Capture_Modal_Components/capture-emote-add/capture-emote-add.component';
+import { CaptureEditComponent } from './Capture_Modal_Components/capture-edit/capture-edit.component';
+import { ReportCaptureComponent } from './Capture_Modal_Components/report-capture/report-capture.component';
+import { EditCaptureCommentComponent } from './Capture_Modal_Components/edit-capture-comment/edit-capture-comment.component';
+import { ReportCaptureCommentComponent } from './Capture_Modal_Components/report-capture-comment/report-capture-comment.component';
+import { CaptureShareCubesListComponent } from './Capture_Modal_Components/capture-share-cubes-list/capture-share-cubes-list.component';
 
 
 @NgModule({
@@ -143,7 +152,15 @@ import { AlertPrivacyUpdateComponent } from './Modal_Components/alert-privacy-up
     FeedsViewComponent,
     PostShareCubesListComponent,
     EditTopicComponent,
-    AlertPrivacyUpdateComponent
+    AlertPrivacyUpdateComponent,
+    FeedsCaptureComponent,
+    FeedsTrendsComponent,
+    CaptureEmoteAddComponent,
+    CaptureEditComponent,
+    ReportCaptureComponent,
+    EditCaptureCommentComponent,
+    ReportCaptureCommentComponent,
+    CaptureShareCubesListComponent
   ],
   imports: [
       // Default Modules
@@ -185,6 +202,7 @@ import { AlertPrivacyUpdateComponent } from './Modal_Components/alert-privacy-up
               PostService,
               PostSubmitService,
               CubeViewRelatedService,
+              CaptureService,
             ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -210,7 +228,13 @@ import { AlertPrivacyUpdateComponent } from './Modal_Components/alert-privacy-up
                     AddEmailInviteComponent,
                     PostShareCubesListComponent,
                     EditTopicComponent,
-                    AlertPrivacyUpdateComponent
+                    AlertPrivacyUpdateComponent,
+                    CaptureEmoteAddComponent,
+                    CaptureEditComponent,
+                    ReportCaptureComponent,
+                    EditCaptureCommentComponent,
+                    ReportCaptureCommentComponent,
+                    CaptureShareCubesListComponent
                   ]
 })
 export class AppModule { }

@@ -1,0 +1,31 @@
+.CreatePost .postheader{
+   padding: 3px 0px
+}
+.CreatePost .userimg{
+    width: 45px;
+    height: 45px;
+    border-radius: 45px;
+}
+.CreatePost .posttype{
+   line-height: 45px;
+   font-size: 19px;
+   font-weight: 700;
+   color: #333333;
+   letter-spacing: 0.7px;
+   font-family: 'Ubuntu', sans-serif;
+}
+
+.CreatePost .postlink{
+   border: none; 
+   border-radius: 5px;
+   width: 100%;
+   height: 40px;
+   padding: 5px;
+   color: #333333;
+   font-weight: 600;
+   font-size: 14px;
+   letter-spacing: 0.7px;
+   font-family: 'Ubuntu', sans-serif;
+   border: 1px solid #dedede;
+   margin: 10px 0px;
+}

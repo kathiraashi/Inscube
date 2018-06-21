@@ -1,6 +1,4 @@
-import { Component, OnInit, ElementRef, TemplateRef, ViewChild  } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-import { Router } from '@angular/router';
+import { Component, OnInit, TemplateRef  } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -61,9 +59,7 @@ export class FeedsCenterComponent implements OnInit {
   constructor(public snackBar: MatSnackBar,
               private modalService: BsModalService,
               public Post_Service: PostService,
-              private router: Router,
               public _componentConnectService: PostSubmitService,
-              private elementRef: ElementRef,
               private _lightbox: Lightbox
             ) {
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
@@ -120,7 +116,7 @@ export class FeedsCenterComponent implements OnInit {
      }
 
   ngOnInit() {
-    this.screenHeight = window.innerHeight - 80;
+    this.screenHeight = window.innerHeight - 125;
     this.scrollHeight = this.screenHeight + 'px';
 
     this.carouselBanner = {
@@ -152,7 +148,7 @@ export class FeedsCenterComponent implements OnInit {
   }
 
  public myfunc(event: Event) {
-    console.log(event);
+    // console.log(event);
  }
 
  Show_Image(URL) {
@@ -203,6 +199,7 @@ export class FeedsCenterComponent implements OnInit {
 
 
   Active_CommentChange(Post_Index) {
+    this.view_less_comment = false;
     if (this.ActiveComment !== Post_Index) {
       this.Loader_2 = true;
       this.ActiveComment = Post_Index;

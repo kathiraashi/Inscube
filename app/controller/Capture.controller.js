@@ -788,8 +788,8 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                             Notify_Type: 'Capture_Emote',
                                                             Capture_Id: req.body.Capture_Id,
                                                             Capture_Text: result_4.Capture_Text,
-                                                            Cube_Id: result_4.Cubes_Id[0],
-                                                            Cube_Ids: result_4.Cubes_Id,
+                                                            Cube_Id: result_4.Cube_Ids[0],
+                                                            Cube_Ids: result_4.Cube_Ids,
                                                             Emote_Id: result_2._id,
                                                             Opinion_Id: '',
                                                             Emote_Text: result_1.Emote_Text,
@@ -799,7 +799,7 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                         varPost_NotificationSchema.save();
                                                         if (App_Info !== null) {
                                                             UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
-                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
@@ -859,8 +859,8 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                             Notify_Type: 'Capture_Emote',
                                                             Capture_Id: req.body.Capture_Id,
                                                             Capture_Text: result_4.Capture_Text,
-                                                            Cube_Id: result_4.Cubes_Id[0],
-                                                            Cube_Ids: result_4.Cubes_Id,
+                                                            Cube_Id: result_4.Cube_Ids[0],
+                                                            Cube_Ids: result_4.Cube_Ids,
                                                             Emote_Id: result_3._id,
                                                             Opinion_Id: '',
                                                             Emote_Text: result_3.Emote_Text,
@@ -870,7 +870,7 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                         varPost_NotificationSchema.save();
                                                         if (App_Info !== null) {
                                                             UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
-                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
@@ -950,8 +950,8 @@ exports.Capture_Emote_Update = function(req, res) {
                                                 Notify_Type: 'Capture_Emote',
                                                 Capture_Id: req.body.Capture_Id,
                                                 Capture_Text: result_4.Capture_Text,
-                                                Cube_Id: result_4.Cubes_Id[0],
-                                                Cube_Ids: result_4.Cubes_Id,
+                                                Cube_Id: result_4.Cube_Ids[0],
+                                                Cube_Ids: result_4.Cube_Ids,
                                                 Emote_Id: result_1._id,
                                                 Opinion_Id: '',
                                                 Emote_Text: result_1.Emote_Text,
@@ -961,7 +961,7 @@ exports.Capture_Emote_Update = function(req, res) {
                                             varPost_NotificationSchema.save();
                                             if (App_Info !== null) {
                                                 UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
-                                                    CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                    CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
                                                         var registrationToken = App_Info.Firebase_Token;
                                                         var payload = {
                                                             notification: {
@@ -1022,13 +1022,12 @@ exports.Capture_Comment_Submit = function(req, res) {
                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture Comment Submit Query Error', 'Capture.controller.js', err);
                 res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Submit the Cube Capture Comment"});           
             } else {
-                
+                result = JSON.parse(JSON.stringify(result));
                 UserModel.UserSchema.findOne({'_id': result.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
                     if(err_user) {
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'UserInfo FindOne Query Error', 'Capture.controller.js', err_user);
                         res.status(500).send({status:"False", Error:err_user, message: "Some error occurred while Find The User Info."});
                     } else {
-                        result = JSON.parse(JSON.stringify(result));
                         result.User_Name = User_Info.Inscube_Name;
                         result.User_Image = User_Info.Image;
                         result.Time_Ago = moment(result.updatedAt).fromNow();
@@ -1046,8 +1045,8 @@ exports.Capture_Comment_Submit = function(req, res) {
                                             Notify_Type: 'Capture_Opinion',
                                             Capture_Id: req.body.Capture_Id,
                                             Capture_Text: result_4.Capture_Text,
-                                            Cube_Id: result_4.Cubes_Id[0],
-                                            Cube_Ids: result_4.Cubes_Id,
+                                            Cube_Id: result_4.Cube_Ids[0],
+                                            Cube_Ids: result_4.Cube_Ids,
                                             Emote_Id: '',
                                             Opinion_Id: result._id,
                                             Emote_Text: '',
@@ -1056,7 +1055,7 @@ exports.Capture_Comment_Submit = function(req, res) {
                                         });
                                         varPost_NotificationSchema.save();
                                         if (App_Info !== null) {
-                                            CubeModel.CubesSchema.findOne({ '_id':  result_4.Cubes_Id[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                            CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
                                                 var registrationToken = App_Info.Firebase_Token;
                                                 var payload = {
                                                     notification: {
@@ -1075,6 +1074,8 @@ exports.Capture_Comment_Submit = function(req, res) {
                                                 admin.messaging().sendToDevice(registrationToken, payload, options);
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result });
                                             });
+                                        } else {
+                                            res.status(200).send({ Status:"True", Output: "True", Response: result });
                                         }
                                     });
                                 } else{

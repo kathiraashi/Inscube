@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FeedsMainComponent implements OnInit {
 
+  Active_Tab = 'Highlights';
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ChangeActiveTab(name) {
+    if (name !== this.Active_Tab) {
+      this.Active_Tab = name;
+    }
   }
 
 }

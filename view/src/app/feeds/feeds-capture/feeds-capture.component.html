@@ -1,0 +1,332 @@
+<div class="Captures" [ngStyle]="{'height': scrollHeight }">
+  <ng-scrollbar>
+
+    <ng-container *ngIf="Capture_List?.length <= 0 && !Loader_1">
+      <div style="width: 100%; height: 200px;text-align: center;">
+        <h5 style="line-height: 200px"> No Capture available </h5>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="Loader_1">
+      <div style="width: 100%; height: 200px; text-align: center">
+        <img style="height: 100px; margin-top: 50px" src="assets/images/loader.gif" alt="">
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="Capture_List?.length > 0 && !Loader_1">
+      <div *ngFor="let Capture of Capture_List; let i=index" class="CapturesPost " style="margin-bottom: 25px">
+          <!-- Captures Post Info Header div -->
+          <div class="PostHeader" fxLayout="row" fxLayoutAlign="space-between">
+            <div fxFlex>
+              <div class="leftSide">
+                <div class="" style="height: 50px;" fxLayout="row" fxLayoutAlign="start center">
+                  <div fxFlex="45px">
+                    <img [routerLink]="[ '/Profile_View', Capture.User_Id ]" src="{{UsersBaseUrl}}{{Capture.User_Image}}" alt="" class="postuserImg" >
+                  </div>
+                  <div fxFlex>
+                    <p class="postusername"> 
+                      <span style="cursor:pointer; color: #333" [routerLink]="[ '/Profile_View', Capture.User_Id ]"> {{Capture.User_Name | slice:0:20}}{{Capture.User_Name?.length > 20 ? '...' : ' ' }} </span> 
+                      <ng-container *ngIf="Capture.Shared_Capture === 'True'">
+                        shared <span style="cursor:pointer; color: #333" [routerLink]="[ '/Profile_View', Capture.Shared_Capture_User_Id ]"> {{Capture.Capture_Owner_Name | slice:0:20}}{{Capture.Capture_Owner_Name?.length > 20 ? '...' : '`s' }} </span> Capture
+                      </ng-container>
+                    </p>
+                    <p class="postusercategory"> {{ Capture.updatedAt | amTimeAgo}}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div fxFlex="35%">
+              <div class="rightSide">
+                <div class="" fxLayout="row" fxLayoutAlign="end center">
+                  <div class="text-right" fxFill>
+                    <p *ngIf="Capture.User_Id === LoginUser._id" class="postaction"> 
+                      <i (click)="Trigger_Post(i)" [matMenuTriggerFor]="ReportCaptureUser" class="material-icons">more_horiz</i>
+                    </p>
+                    <p *ngIf="Capture.User_Id !== LoginUser._id" class="postaction"> 
+                      <i (click)="Trigger_Post(i)" [matMenuTriggerFor]="ReportCapture" class="material-icons">more_horiz</i>
+                    </p>
+                    <p class="Selected_Cubes" style="width: 300px"> 
+                        <ngx-carousel [inputs]="carouselTile" style="width: 300px">
+                           <ngx-tile style="padding: 0px" NgxCarouselItem *ngFor="let Cubes of Capture.Cubes_Info; let postLikes = index;">
+                              <div class="tile">
+                                 <div class="cat_div">
+                                 <img [routerLink]="[ '/Cube_View', Cubes._id ]" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt="">
+                                 </div>
+                              </div>
+                           </ngx-tile>
+                           <button NgxCarouselPrev class="leftR">&lt;</button>
+                           <button NgxCarouselNext class="rightR">&gt;</button>
+                        </ngx-carousel>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Captures Post Info Header div End -->
+          <hr style="opacity:0.6; margin:0px 5px 5px 5px">
+          <!-- Captures Post -->
+          <div class="postmain" fxLayout="row" style="padding: 5px 0px;">
+            <div fxFlex class="text-center">
+              <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Capture.Capture_Text}} </h5>
+
+               <ngx-carousel class="ImageGallery" [inputs]="carouselBanner" (carouselLoad)="myfunc($event)">
+                  <ngx-item NgxCarouselItem *ngFor="let Video of Capture.Capture_Video; let n =index">
+                    <div class="bannerStyle">
+                        <div class="bannerStyle_Inner">
+                          <video controls height="400px" width="100%">
+                              <source src="{{CapturesBaseUrl}}{{Video.File_Name}}" type="video/{{Video.File_Name | slice:-3}}">
+                          </video>
+                        </div>
+                    </div>
+                  </ngx-item>
+                  <button NgxCarouselPrev class='leftRs'>&lt;</button>
+                  <button NgxCarouselNext class='rightRs'>&gt;</button>
+               </ngx-carousel>
+
+            </div>
+          </div>
+          <!-- Captures Post END -->
+          <hr style="margin-bottom:2px !important; opacity:0.8;margin-top: 0px">
+          <!-- Captures Post Share Like And More -->
+          <div class="postLikes" fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxFlex class="text-left" style="height:35px">
+              <div class="like">
+                <!-- <img src="assets/images/icons/1.png" alt=""> -->
+                <img (click)="Emote_Add(i)" src="assets/images/icons/5.png" alt="">
+                <img (click)="Active_CommentChange(i)" src="assets/images/icons/3.png" alt="">
+              </div>
+            </div>
+            <div fxFlex class="text-right" style="height:35px">
+              <div class="share">
+                <img (click)="Trigger_Post(i); Share_Post()" src="assets/images/icons/7.png" alt="">
+              </div>
+            </div>
+          </div>
+          <!-- CapturesPost Share Like And More  END-->
+          <hr style="margin-bottom:2px !important; opacity:0.8;margin-top: 5px">
+          <!-- Captures Post Share Like And More -->
+          <div *ngIf="Capture.Emotes?.length > 0" class="postchat">
+            <div class="emote_grid">
+              <ng-container *ngFor="let emote of Capture.Emotes | slice:0:Capture.Splice_Count; let k=index">
+                  <div *ngIf="!emote.Already" class="emote" (click)="Emote_Submit(i, k)" [ngClass]="{'Selected': emote.Already}"> 
+                      <div class="emote_div">
+                          <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
+                      </div>
+                  </div>
+                  <div *ngIf="emote.Already" class="emote Selected"> 
+                      <div class="emote_div">
+                          <p> {{emote.Emote_Text}} </p> &nbsp; | &nbsp; <span> {{emote.Count}} </span> 
+                      </div>
+                  </div>
+              </ng-container>
+            </div>
+          </div>
+
+          <div *ngIf="Capture.Emote_Count > Capture.Splice_Count" class="row">
+            <div class="col-sm-12">
+              <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_More_Emote(i)">  View more... </span></p>
+            </div>
+          </div>
+
+          <div *ngIf="Capture.Emote_Count <= Capture.Splice_Count && Capture.Emote_Count > 5" class="row">
+            <div class="col-sm-12">
+              <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_Less_Emote(i)">  View less... </span></p>
+            </div>
+          </div>
+          <!-- Captures Post Share Like And More  END-->
+
+
+
+
+          <!-- Captures Post Share Like And More -->
+            <div  *ngIf="ActiveComment === i" class="postchat" style="padding: 10px 0px;" fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxFlex="50px" class="text-left">
+                <div class="chatUserImg text-center">
+                  <img  src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="">
+                </div>
+              </div>
+              <div fxFlex class="text-center">
+                <div class="chatInput">
+                  <input #input type="text" placeholder="Post your comment..."> </div>
+              </div>
+              <div fxFlex="60px" class="text-right">
+                <div class="chatsend text-center">
+                  <i (click)="SubmitComment(input.value, i); input.value='' " class="material-icons">send</i>
+                </div>
+              </div>
+            </div>
+            <!-- Captures Post Share Like And More  END-->
+
+
+            <ng-container *ngIf="Loader_2 && ActiveComment === i">
+              <div style="width: 100%; height: 120px; text-align: center">
+                <img style="height: 60px; margin-top: 30px" src="assets/images/loader.gif" alt="">
+              </div>
+            </ng-container>
+
+            <!-- Captures Post Comments-->
+            <div *ngIf="ActiveComment === i" class="Comments mt-20">
+              <ng-container *ngIf="Capture.Comments?.length > 0 && !Loader_2">
+                <div *ngFor="let Comment of Capture.Comments; let l=index" class="commentPost">
+                  <div class="commentinfo">
+                    <div class="PostHeader" fxLayout="row" fxLayoutAlign="space-between">
+                      <div fxFlex>
+                        <div class="leftSide">
+                          <div class="" fxLayout="row" fxLayoutAlign="start center">
+                            <div fxFlex="45px">
+                                <img src="{{UsersBaseUrl}}{{Comment.User_Image}}" alt="" class="postuserImg">
+                            </div>
+                            <div fxFlex>
+                              <p class="postusercategory">
+                                <span class="postusername" style="cursor:pointer" > {{ Comment.User_Name }} </span> </p>
+                              <p class="postuserfollowers">  {{ Comment.updatedAt | amTimeAgo}} </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div fxFlex="25%">
+                        <div class="rightSide">
+                          <div class="" fxLayout="row" fxLayoutAlign="end center">
+                            <div class="text-right" fxFlex>
+                              <p *ngIf="Comment.User_Id === LoginUser._id" class="postaction"> 
+                                <i (click)="Trigger_Comment(l)" [matMenuTriggerFor]="ReportCommentUser" class="material-icons">more_horiz</i>
+                              </p>
+                              <p *ngIf="Comment.User_Id !== LoginUser._id" class="postaction"> 
+                                <i (click)="Trigger_Comment(l)" [matMenuTriggerFor]="ReportComment" class="material-icons">more_horiz</i>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <hr class="m-0">
+                  <div class="commentbody">
+                    <p class="commenttext"> {{Comment.Comment_Text}} </p>
+                  </div>
+                </div>
+
+                <div *ngIf="view_all_comment" class="row">
+                  <div class="col-sm-12">
+                    <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_All_Comments()">  View All... </span></p>
+                  </div>
+                </div>
+
+                <div *ngIf="view_less_comment" class="row">
+                  <div class="col-sm-12">
+                    <p class="viewAll text-right"> <span style="cursor:pointer" (click)="View_Less_Comments()">  View Less... </span></p>
+                  </div>
+                </div>
+
+                <br>
+              </ng-container>
+            </div>
+            <!-- Captures Post Comments END-->
+
+
+      </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="Loader_3">
+      <div style="width: 100%; height: 70px; margin-top:-10px; text-align: center">
+        <img style="height: 50px; margin-top: 0px" src="assets/images/loader.gif" alt="">
+      </div>
+    </ng-container>
+
+
+    <ng-container *ngIf="Show_Load_More && !Loader_1 && !Loader_3">
+      <p class="Load_more"> <span (click)="Load_More_Posts()"> More posts </span> </p>
+    </ng-container>
+
+    <ng-container *ngIf="!Show_Load_More && Posts_List?.length > 0">
+      <div style="width: 100%; height: 30px;text-align: center;">
+        <h5 style="line-height: 20px; font-size:17px;"> No more posts </h5>
+      </div>
+    </ng-container>
+
+
+  </ng-scrollbar>
+</div>
+
+
+<mat-menu #ReportCaptureUser="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+    <div class="dropdarrow"></div>
+    <hr class="m-0">
+    <div (click)="Delete_Post()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+        <div class="dropd_icon" fxFlex="30px">
+            <i class="material-icons">delete_forever</i>
+        </div>
+        <div fxFlex>
+            <p class="dropd_text"> Delete </p>
+        </div>
+    </div>
+</mat-menu>
+
+
+<mat-menu #ReportCapture="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+    <div (click)="Report_Post()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+        <div class="dropd_icon" fxFlex="30px">
+            <i class="material-icons">announcement</i>
+        </div>
+        <div fxFlex>
+            <p class="dropd_text">Report Capture </p>
+        </div>
+    </div>
+    <div class="dropdarrow"></div>
+    <hr class="m-0">
+    <div (click)="Report_User()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+        <div class="dropd_icon" fxFlex="30px">
+            <i class="material-icons">report</i>
+        </div>
+        <div fxFlex>
+            <p class="dropd_text"> Report User </p>
+        </div>
+    </div>
+</mat-menu>
+
+
+
+<mat-menu #ReportComment="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+  <div (click)="Report_Comment()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+      <div  class="dropd_icon" fxFlex="30px">
+          <i class="material-icons">announcement</i>
+      </div>
+      <div fxFlex>
+          <p class="dropd_text" style="width: 120px;">Report Comment </p>
+      </div>
+  </div>
+  <div class="dropdarrow"></div>
+  <hr class="m-0">
+  <div (click)="Report_User()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+      <div class="dropd_icon" fxFlex="30px">
+          <i class="material-icons">report</i>
+      </div>
+      <div fxFlex>
+          <p class="dropd_text"> Report User </p>
+      </div>
+  </div>
+</mat-menu>
+
+
+<mat-menu #ReportCommentUser="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+  <div (click)="EditComment_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="dropd_icon" fxFlex="30px">
+          <i class="material-icons">border_color</i>
+      </div>
+      <div fxFlex>
+          <p class="dropd_text">Edit </p>
+      </div>
+  </div>
+  <div class="dropdarrow"></div>
+  <hr class="m-0">
+  <div (click)="Delete_Comment()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+      <div class="dropd_icon" fxFlex="30px">
+          <i class="material-icons">delete_forever</i>
+      </div>
+      <div fxFlex>
+          <p class="dropd_text"> Delete </p>
+      </div>
+  </div>
+</mat-menu>

@@ -15,7 +15,26 @@
             <app-feeds-left></app-feeds-left>
         </div>
         <div fxFlex="47%" >
-            <app-feeds-center></app-feeds-center>
+            <div class="Tabs">
+                <div class="Tab_List" (click)="ChangeActiveTab('Highlights')" [ngClass]="{active: Active_Tab === 'Highlights'}">
+                    <span> Highlights </span>
+                </div>
+                <div class="Tab_List" (click)="ChangeActiveTab('Capture')" [ngClass]="{active: Active_Tab === 'Capture'}">
+                    <span> Capture Moments </span>
+                </div>
+                <div class="Tab_List" (click)="ChangeActiveTab('Trends')" [ngClass]="{active: Active_Tab === 'Trends'}" >
+                    <span> Trends </span>
+                </div>
+            </div>
+            <ng-container *ngIf="Active_Tab === 'Highlights'">
+                <app-feeds-center></app-feeds-center>
+            </ng-container>
+            <ng-container *ngIf="Active_Tab === 'Capture'">
+                <app-feeds-capture></app-feeds-capture>
+            </ng-container>
+            <ng-container *ngIf="Active_Tab === 'Trends'">
+                <app-feeds-trends></app-feeds-trends>
+            </ng-container>
         </div>
         <div fxFlex="19%" fxFlex.md="22%" fxFlex.sm="22%" fxFlex.xs="22%" style="background-color:#ffffff; box-shadow:#66666678 0px 1px 8px 0px;">
             <app-feeds-right></app-feeds-right>
