@@ -1,0 +1,4 @@
+[2018-06-25T11:59:36.757] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Cannot read property '0' of undefined"}
+[2018-06-25T12:16:07.514] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Cannot read property '0' of undefined"}
+[2018-06-25T12:16:22.979] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Cannot read property '0' of undefined"}
+[2018-06-25T12:18:46.784] [ERROR] Error - {"Error_Name":"Cube Trends Update Tag Info Find Sub Promise Error","Error_Address":"Trends.controller.js","Ip":"1","Device_Info":{"ua":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.87 Safari/537.36","browser":{"name":"Chrome","version":"67.0.3396.87","major":"67"},"engine":{"name":"WebKit","version":"537.36"},"os":{"name":"Windows","version":"10"},"device":{},"cpu":{"architecture":"amd64"}},"Request_Body":{}}

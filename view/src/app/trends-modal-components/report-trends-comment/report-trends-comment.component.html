@@ -1,0 +1,33 @@
+<div class="modal-header">
+    <h4 style="color: #d75739;font-size: 21px;" class="modal-title"> {{data.Title}} </h4>
+    <button type="button" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  
+    <div class="modal-body Create_Cube">
+      <div class="row">
+          <div class="col-sm-12 tick" >
+            <img class="ml-0" (click)="ActiveCategorySelect('Harassment')"  style="cursor:pointer" [ngClass]="{ 'p-10': ActiveText !== 'Harassment' }" src="./../../assets/images/tick.png" alt=""> <p> Harassment </p> 
+          </div>
+          <div class="col-sm-12 tick" >
+            <img class="ml-0" (click)="ActiveCategorySelect('Spam')"  style="cursor:pointer" [ngClass]="{ 'p-10': ActiveText !== 'Spam' }" src="./../../assets/images/tick.png" alt=""> <p> Spam </p> 
+          </div>
+          <div class="col-sm-12 tick" >
+            <img class="ml-0" (click)="ActiveCategorySelect('Repeated')"  style="cursor:pointer" [ngClass]="{ 'p-10': ActiveText !== 'Repeated' }" src="./../../assets/images/tick.png" alt=""> <p> Repeated </p> 
+          </div>
+          <div class="col-sm-12 tick" >
+            <img class="ml-0" (click)="ActiveCategorySelect('Other')"  style="cursor:pointer" [ngClass]="{ 'p-10': ActiveText !== 'Other' }" src="./../../assets/images/tick.png" alt=""> <p> Other </p> 
+          </div>
+          <div class="col-sm-12 explain">
+            <label> Explain </label>
+            <input type="text" #explain>
+            <span *ngIf="ErrorShow" style="color:red;font-size:15px;display: block;margin-left: 13%;"> Explanation is Required </span>
+          </div>
+      </div>
+    </div>
+  
+    <div class="modal-footer">
+        <button type="submit" (click)="submit(explain.value)"  style="float: right;" mat-raised-button color="primary" style="background-color: #d75739; color: #fff"  > Submit </button>    
+    </div>
+  

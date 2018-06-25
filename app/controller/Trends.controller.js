@@ -502,8 +502,6 @@ exports.CubeTrends_Delete = function(req, res) {
 exports.CubeTrends_Filter = function(req, res) {
     if(!req.body.User_Id || req.body.User_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-    }else if(!req.body.Skip_Count || req.body.Skip_Count === ''){
-        res.status(200).send({Status:"True", Output:"False", Message: "Skip Count can not be empty" });
     }else if(!req.body.Trends_Tag || req.body.Trends_Tag === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Trends Tag can not be empty" });
     }else{
@@ -950,8 +948,8 @@ exports.Trends_Emote_Submit = function(req, res) {
                                                         Notify_Type: 'Trends_Emote',
                                                         Trends_Id: req.body.Trends_Id,
                                                         Trends_Text: result_4.Trends_Text,
-                                                        Cube_Id: result_4.Cubes_Id[0],
-                                                        Cube_Ids: result_4.Cubes_Id,
+                                                        Cube_Id: result_4.Cube_Ids[0],
+                                                        Cube_Ids: result_4.Cube_Ids,
                                                         Emote_Id: result_2._id,
                                                         Opinion_Id: '',
                                                         Emote_Text: result_1.Emote_Text,
@@ -1082,8 +1080,8 @@ exports.Trends_Comment_Submit = function(req, res) {
                                         Notify_Type: 'Trends_Opinion',
                                         Trends_Id: req.body.Trends_Id,
                                         Trends_Text: result_4.Trends_Text,
-                                        Cube_Id: result_4.Cubes_Id[0],
-                                        Cube_Ids: result_4.Cubes_Id,
+                                        Cube_Id: result_4.Cube_Ids[0],
+                                        Cube_Ids: result_4.Cube_Ids,
                                         Emote_Id: '',
                                         Opinion_Id: result._id,
                                         Emote_Text: '',

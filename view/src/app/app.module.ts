@@ -99,6 +99,13 @@ import { ReportCaptureComponent } from './Capture_Modal_Components/report-captur
 import { EditCaptureCommentComponent } from './Capture_Modal_Components/edit-capture-comment/edit-capture-comment.component';
 import { ReportCaptureCommentComponent } from './Capture_Modal_Components/report-capture-comment/report-capture-comment.component';
 import { CaptureShareCubesListComponent } from './Capture_Modal_Components/capture-share-cubes-list/capture-share-cubes-list.component';
+import { TrendsService } from './service/trends/trends.service';
+import { TrendsEditComponent } from './trends-modal-components/trends-edit/trends-edit.component';
+import { TrendsEmoteAddComponent } from './trends-modal-components/trends-emote-add/trends-emote-add.component';
+import { TrendsShareCubesListComponent } from './trends-modal-components/trends-share-cubes-list/trends-share-cubes-list.component';
+import { EditTrendsCommentComponent } from './trends-modal-components/edit-trends-comment/edit-trends-comment.component';
+import { ReportTrendsComponent } from './trends-modal-components/report-trends/report-trends.component';
+import { ReportTrendsCommentComponent } from './trends-modal-components/report-trends-comment/report-trends-comment.component';
 
 
 @NgModule({
@@ -160,7 +167,13 @@ import { CaptureShareCubesListComponent } from './Capture_Modal_Components/captu
     ReportCaptureComponent,
     EditCaptureCommentComponent,
     ReportCaptureCommentComponent,
-    CaptureShareCubesListComponent
+    CaptureShareCubesListComponent,
+    TrendsEditComponent,
+    TrendsEmoteAddComponent,
+    TrendsShareCubesListComponent,
+    EditTrendsCommentComponent,
+    ReportTrendsComponent,
+    ReportTrendsCommentComponent
   ],
   imports: [
       // Default Modules
@@ -203,6 +216,7 @@ import { CaptureShareCubesListComponent } from './Capture_Modal_Components/captu
               PostSubmitService,
               CubeViewRelatedService,
               CaptureService,
+              TrendsService,
             ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -234,7 +248,13 @@ import { CaptureShareCubesListComponent } from './Capture_Modal_Components/captu
                     ReportCaptureComponent,
                     EditCaptureCommentComponent,
                     ReportCaptureCommentComponent,
-                    CaptureShareCubesListComponent
+                    CaptureShareCubesListComponent,
+                    TrendsEditComponent,
+                    TrendsEmoteAddComponent,
+                    TrendsShareCubesListComponent,
+                    EditTrendsCommentComponent,
+                    ReportTrendsComponent,
+                    ReportTrendsCommentComponent
                   ]
 })
 export class AppModule { }

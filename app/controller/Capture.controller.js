@@ -635,7 +635,7 @@ exports.Cube_Capture_Share = function(req, res) {
                     Shared_Capture: 'True',
                     Shared_Capture_User_Id: Post_result.User_Id,
                     Shared_Capture_Id: Post_result._id,
-                    Capture_Video: Post_result.Attachments,
+                    Capture_Video: Post_result.Capture_Video,
                     Active_Status: 'Active'
                 });
                 varCube_Captureschema.save(function(err, result) {

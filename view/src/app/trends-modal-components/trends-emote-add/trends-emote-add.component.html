@@ -1,0 +1,24 @@
+<div class="CreatePost">
+    <div class="postheader" fxLayout="row" fxLayoutAlign="start" >
+      <div fxFlex class="text-left">
+        <h5 class="m-0 posttype"> Emote </h5>
+      </div>
+      <div fxFlex class="text-left">
+            <button type="button" style="padding: 0px 15px; font-size: 35px;" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+                <span aria-hidden="true"> &times; </span>
+            </button>
+        </div>
+    </div>
+  
+    <hr style="margin-top:3px;margin-bottom:0px">
+  
+    <div class="modal-body">
+            <input (input)="valuechange($event.target.value)" maxlength="11" class="postlink mb-20" placeholder=" ( Maximum 10 Characters)">
+            <p *ngIf="Show_Alert" style="color:red;margin: 0px; font-size: 14px;"> {{Alert_Message}} </p>
+            <div fxLayout fxLayoutAlign="end" style="padding: 0px 20px; height: 35px;">
+                    <button type="submit" [disabled]="!Show_Submit" [ngClass]="{'disabled': !Show_Submit }" (click)="Submit()" mat-raised-button color="primary" style="background-color: #d75739"> 
+                        <span style="color:#fff"> Submit </span>
+                     </button>
+            </div>
+    </div>
+  </div>

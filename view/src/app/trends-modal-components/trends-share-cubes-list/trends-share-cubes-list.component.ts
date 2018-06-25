@@ -3,14 +3,15 @@ import { Subject } from 'rxjs/Subject';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 import { CubeService } from './../../service/cube/cube.service';
-import { CaptureService } from './../../service/capture/capture.service';
+import { TrendsService } from './../../service/trends/trends.service';
 
 @Component({
-  selector: 'app-capture-share-cubes-list',
-  templateUrl: './capture-share-cubes-list.component.html',
-  styleUrls: ['./capture-share-cubes-list.component.css']
+  selector: 'app-trends-share-cubes-list',
+  templateUrl: './trends-share-cubes-list.component.html',
+  styleUrls: ['./trends-share-cubes-list.component.css']
 })
-export class CaptureShareCubesListComponent implements OnInit {
+export class TrendsShareCubesListComponent implements OnInit {
+
 
   onClose: Subject<any>;
 
@@ -25,7 +26,7 @@ export class CaptureShareCubesListComponent implements OnInit {
 
   constructor(  public _bsModalRef: BsModalRef,
                 public Cube_Service: CubeService,
-                public Capture_Service: CaptureService
+                public Trends_Service: TrendsService
               ) {
                 this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
   }
@@ -55,8 +56,8 @@ export class CaptureShareCubesListComponent implements OnInit {
   }
 
   Submit() {
-    const data = {User_Id: this.LoginUser._id, Capture_Id: this.data.Post_Info._id, Cube_Ids: JSON.stringify(this.Selected_Cube)};
-    this.Capture_Service.Cube_Capture_Share(data).subscribe( datas => {
+    const data = {User_Id: this.LoginUser._id, Trends_Id: this.data.Post_Info._id, Cube_Ids: JSON.stringify(this.Selected_Cube)};
+    this.Trends_Service.Cube_Trends_Share(data).subscribe( datas => {
       if (datas['Status'] === 'True' && datas['Output'] === 'True') {
               this.onClose.next({Status: 'Yes'});
               this._bsModalRef.hide();
@@ -66,4 +67,5 @@ export class CaptureShareCubesListComponent implements OnInit {
       }
     });
   }
+
 }

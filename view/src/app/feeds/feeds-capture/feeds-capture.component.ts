@@ -14,7 +14,7 @@ import { ReportCaptureCommentComponent } from './../../Capture_Modal_Components/
 import { ReportUserComponent } from './../../Modal_Components/report-user/report-user.component';
 import { DeleteConfirmationComponent } from './../../Modal_Components/delete-confirmation/delete-confirmation.component';
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
-import { PostShareCubesListComponent } from './../../Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
+import { CaptureShareCubesListComponent } from './../../Capture_Modal_Components/capture-share-cubes-list/capture-share-cubes-list.component';
 
 import { PostService } from './../../service/post/post.service';
 import { CaptureService } from './../../service/capture/capture.service';
@@ -384,7 +384,7 @@ export class FeedsCaptureComponent implements OnInit {
 
    Share_Post() {
       const initialState = { data: { Post_Info : this.Trigger_PostInfo } };
-      this.modalRef = this.modalService.show(PostShareCubesListComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+      this.modalRef = this.modalService.show(CaptureShareCubesListComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
       this.modalRef.content.onClose.subscribe(result => {
          if (result.Status === 'Yes') {
             this.snackBar.open( 'Post Successfully Shared' , ' ', {
@@ -398,7 +398,7 @@ export class FeedsCaptureComponent implements OnInit {
 
    Load_More_Posts() {
       this.Loader_3 = true;
-      this.Post_Service.Cube_Post_List(this.LoginUser._id, this.Skip_Count).subscribe( datas => {
+      this.Capture_Service.Cube_Capture_List(this.LoginUser._id, this.Skip_Count).subscribe( datas => {
          this.Loader_3 = false;
          this.Skip_Count = this.Skip_Count + 15;
          if (datas['Status'] === 'True') {
@@ -414,9 +414,9 @@ export class FeedsCaptureComponent implements OnInit {
             if ( new_Posts.length < 15) {
                this.Show_Load_More = false;
             }
-            this.Posts_List = this.Posts_List.concat(new_Posts);
+            this.Capture_List = this.Capture_List.concat(new_Posts);
          }
       });
    }
 
-   }
+}
