@@ -85,7 +85,7 @@ export class ProfileCenterComponent implements OnInit {
                 });
               });
 
-              this._componentConnectService.currentMessage.subscribe(message => { // New Post Submit Response
+              this._componentConnectService.New_Post_Added.subscribe(message => { // New Post Submit Response
                 if (message !== '' ) {
                   this.Posts_List.splice(0 , 0, message);
                   this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );

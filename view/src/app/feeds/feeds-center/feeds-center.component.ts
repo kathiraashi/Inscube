@@ -82,7 +82,7 @@ export class FeedsCenterComponent implements OnInit {
                   }
               });
 
-              this._componentConnectService.currentMessage.subscribe(message => { // New Post Submit Response
+              this._componentConnectService.New_Post_Added.subscribe(message => { // New Post Submit Response
                 if (message !== '' ) {
                   this.Skip_Count = this.Skip_Count + 1;
                   this.Posts_List.splice(0 , 0, message);

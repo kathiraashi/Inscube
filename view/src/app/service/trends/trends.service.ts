@@ -108,5 +108,10 @@ export class TrendsService {
       .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
    }
 
+   public Search_Trends_Tag(Search_text: any): Observable<any[]>  {
+      return this.http .get(API_URL + 'Search_Trends_Tag/' + Search_text)
+      .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+   }
+
 
 }

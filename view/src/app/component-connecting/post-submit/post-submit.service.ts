@@ -5,8 +5,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class PostSubmitService {
 
-  private messageSource = new BehaviorSubject<any>('');
-  currentMessage = this.messageSource.asObservable();
+  private newPostSource = new BehaviorSubject<any>('');
+  New_Post_Added = this.newPostSource.asObservable();
+
+  private newTrendsSource = new BehaviorSubject<any>('');
+  New_Trends_Added = this.newTrendsSource.asObservable();
 
   private ReloadFeeds = new BehaviorSubject<any>('');
   Reload_Feeds = this.ReloadFeeds.asObservable();
@@ -14,8 +17,12 @@ export class PostSubmitService {
   constructor() { }
 
   Post_Submited(data: any) {
-     this.messageSource.next(data);
+     this.newPostSource.next(data);
   }
+
+  Trends_Submited(data: any) {
+    this.newTrendsSource.next(data);
+ }
 
   Refersh_Feeds(data: any) {
     this.ReloadFeeds.next(data);

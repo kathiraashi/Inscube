@@ -106,7 +106,7 @@ import { TrendsShareCubesListComponent } from './trends-modal-components/trends-
 import { EditTrendsCommentComponent } from './trends-modal-components/edit-trends-comment/edit-trends-comment.component';
 import { ReportTrendsComponent } from './trends-modal-components/report-trends/report-trends.component';
 import { ReportTrendsCommentComponent } from './trends-modal-components/report-trends-comment/report-trends-comment.component';
-
+import { CreateTrendsComponent } from './trends-modal-components/create-trends/create-trends.component';
 
 @NgModule({
   declarations: [
@@ -173,7 +173,8 @@ import { ReportTrendsCommentComponent } from './trends-modal-components/report-t
     TrendsShareCubesListComponent,
     EditTrendsCommentComponent,
     ReportTrendsComponent,
-    ReportTrendsCommentComponent
+    ReportTrendsCommentComponent,
+    CreateTrendsComponent
   ],
   imports: [
       // Default Modules
@@ -216,7 +217,7 @@ import { ReportTrendsCommentComponent } from './trends-modal-components/report-t
               PostSubmitService,
               CubeViewRelatedService,
               CaptureService,
-              TrendsService,
+              TrendsService
             ],
   bootstrap: [AppComponent],
   entryComponents: [
@@ -254,7 +255,8 @@ import { ReportTrendsCommentComponent } from './trends-modal-components/report-t
                     TrendsShareCubesListComponent,
                     EditTrendsCommentComponent,
                     ReportTrendsComponent,
-                    ReportTrendsCommentComponent
+                    ReportTrendsCommentComponent,
+                    CreateTrendsComponent
                   ]
 })
 export class AppModule { }

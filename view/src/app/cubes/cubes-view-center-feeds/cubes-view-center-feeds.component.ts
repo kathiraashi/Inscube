@@ -15,7 +15,6 @@ import { ReportUserComponent } from './../../Modal_Components/report-user/report
 import { EditCommentComponent } from './../../Modal_Components/edit-comment/edit-comment.component';
 import { ReportCommentComponent } from './../../Modal_Components/report-comment/report-comment.component';
 import { DeleteConfirmationComponent } from './../../Modal_Components/delete-confirmation/delete-confirmation.component';
-import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 import { PostShareCubesListComponent } from './../../Modal_Components/post-share-cubes-list/post-share-cubes-list.component';
 
 import { PostService } from './../../service/post/post.service';
@@ -61,7 +60,6 @@ export class CubesViewCenterFeedsComponent implements OnInit {
               private modalService: BsModalService,
               public Post_Service: PostService,
               private router: Router,
-              public _componentConnectService: PostSubmitService,
               private elementRef: ElementRef,
               private _lightbox: Lightbox,
               private active_route: ActivatedRoute,
@@ -85,13 +83,6 @@ export class CubesViewCenterFeedsComponent implements OnInit {
                         }); }); } );
                     }
                 });
-              });
-
-              this._componentConnectService.currentMessage.subscribe(message => { // New Post Submit Response
-                if (message !== '' ) {
-                  this.Posts_List.splice(0 , 0, message);
-                  this.Posts_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
-                }
               });
      }
 

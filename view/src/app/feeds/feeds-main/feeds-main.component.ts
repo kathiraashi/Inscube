@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
+
 @Component({
   selector: 'app-feeds-main',
   templateUrl: './feeds-main.component.html',
@@ -9,7 +11,16 @@ export class FeedsMainComponent implements OnInit {
 
   Active_Tab = 'Highlights';
 
-  constructor() { }
+  constructor(
+    public _PostSubmitted: PostSubmitService,
+  ) {
+    this._PostSubmitted.New_Trends_Added.subscribe(message => {
+      this.Active_Tab = 'Trends';
+     });
+     this._PostSubmitted.New_Post_Added.subscribe(message => {
+      this.Active_Tab = 'Highlights';
+     });
+   }
 
   ngOnInit() {
   }

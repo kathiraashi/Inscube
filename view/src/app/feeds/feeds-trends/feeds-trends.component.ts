@@ -93,29 +93,12 @@ export class FeedsTrendsComponent implements OnInit {
                      }
                });
 
-               this._componentConnectService.Reload_Feeds.subscribe(message => {
-                  this.Trends_List = [];
-                  this.Loader_1 = true;
-                  this.Show_Load_More = true;
-                  this.Trends_Service.Cube_Trends_List(this.LoginUser._id, 0).subscribe( datas => {
-                     this.Loader_1 = false;
-                     this.Skip_Count = 15;
-                     if (datas['Status'] === 'True') {
-                           this.Trends_List = datas['Response'];
-                           this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
-                           this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
-                              if (this.LoginUser._id === y ) {
-                                 x.Already = true;
-                              } else {
-                                 x.Already = false;
-                              }
-                           }); }); } );
-                           if ( this.Trends_List.length < 15) {
-                           this.Show_Load_More = false;
-                           }
-                     }
-                  });
+               this._componentConnectService.New_Trends_Added.subscribe(message => {
+                 this.reload_Trends();
                });
+               this._componentConnectService.Reload_Feeds.subscribe(message => {
+                  this.reload_Trends();
+                });
       }
 
    ngOnInit() {
@@ -152,6 +135,30 @@ export class FeedsTrendsComponent implements OnInit {
 
    public myfunc(event: Event) {
       // console.log(event);
+   }
+
+   reload_Trends() {
+      this.Trends_List = [];
+      this.Loader_1 = true;
+      this.Show_Load_More = true;
+      this.Trends_Service.Cube_Trends_List(this.LoginUser._id, 0).subscribe( datas => {
+         this.Loader_1 = false;
+         this.Skip_Count = 15;
+         if (datas['Status'] === 'True') {
+               this.Trends_List = datas['Response'];
+               this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+               this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+                  if (this.LoginUser._id === y ) {
+                     x.Already = true;
+                  } else {
+                     x.Already = false;
+                  }
+               }); }); } );
+               if ( this.Trends_List.length < 15) {
+               this.Show_Load_More = false;
+               }
+         }
+      });
    }
 
    Show_Image(URL) {

@@ -7,6 +7,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { CreatePostComponent } from './../../Modal_Components/create-post/create-post.component';
 import { ViewAllCubesComponent } from './../../Modal_Components/view-all-cubes/view-all-cubes.component';
 import { DiscoverCubesComponent } from './../../Modal_Components/discover-cubes/discover-cubes.component';
+import { CreateTrendsComponent } from './../../trends-modal-components/create-trends/create-trends.component';
 
 import { CubeService } from './../../service/cube/cube.service';
 
@@ -55,6 +56,14 @@ export class FeedsLeftComponent implements OnInit {
   PostCreate_Model() {
     const initialState = { title: 'Modal with component' };
       this.modalRef = this.modalService.show(CreatePostComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+      this.modalRef.content.onClose.subscribe(result => {
+         this.router.navigate(['Cube_Posts']);
+      });
+  }
+
+  CreateTrends_Model() {
+    const initialState = { title: 'Modal with component' };
+      this.modalRef = this.modalService.show(CreateTrendsComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
       this.modalRef.content.onClose.subscribe(result => {
          this.router.navigate(['Cube_Posts']);
       });

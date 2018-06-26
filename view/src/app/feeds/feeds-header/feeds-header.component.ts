@@ -1,15 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject } from 'rxjs/Subject';
 
-import { TypeaheadMatch } from 'ngx-bootstrap/typeahead';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 
 import { ScrollbarComponent } from 'ngx-scrollbar';
 
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
-import { CreatePostComponent } from './../../Modal_Components/create-post/create-post.component';
 
 import { PostService } from './../../service/post/post.service';
 
