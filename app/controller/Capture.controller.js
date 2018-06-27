@@ -666,20 +666,22 @@ exports.Cube_Capture_Share = function(req, res) {
                                         const GetCategory_Info = (cubeIds) => Promise.all(
                                             cubeIds.map(info => Category_Info(info)) 
                                         ).then( result_1 => {
-                                                var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                                    User_Id: req.body.User_Id,
-                                                    To_User_Id: Post_result.User_Id,
-                                                    Notify_Type: 'Capture_Shared',
-                                                    Capture_Id: result._id,
-                                                    Capture_Text: result.Capture_Text,
-                                                    Cube_Id: cubeIds[0],
-                                                    Emote_Id: '',
-                                                    Opinion_Id: '',
-                                                    Emote_Text: '',
-                                                    View_Status: 0,
-                                                    Active_Status: 'Active'
-                                                });
-                                                varPost_NotificationSchema.save();
+                                                if (result.User_Id !== Post_result.User_Id) {
+                                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                        User_Id: req.body.User_Id,
+                                                        To_User_Id: Post_result.User_Id,
+                                                        Notify_Type: 'Capture_Shared',
+                                                        Capture_Id: result._id,
+                                                        Capture_Text: result.Capture_Text,
+                                                        Cube_Id: cubeIds[0],
+                                                        Emote_Id: '',
+                                                        Opinion_Id: '',
+                                                        Emote_Text: '',
+                                                        View_Status: 0,
+                                                        Active_Status: 'Active'
+                                                    });
+                                                    varPost_NotificationSchema.save();
+                                                }
 
                                                 result.Cubes_Info = result_1;
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result });

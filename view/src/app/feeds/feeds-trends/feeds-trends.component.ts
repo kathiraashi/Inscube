@@ -11,13 +11,13 @@ import { ReportTrendsComponent } from './../../trends-modal-components/report-tr
 import { EditTrendsCommentComponent } from './../../trends-modal-components/edit-trends-comment/edit-trends-comment.component';
 import { ReportTrendsCommentComponent } from './../../trends-modal-components/report-trends-comment/report-trends-comment.component';
 import { TrendsShareCubesListComponent } from './../../trends-modal-components/trends-share-cubes-list/trends-share-cubes-list.component';
+import { EditTrendsComponent } from './../../trends-modal-components/edit-trends/edit-trends.component';
 
 import { ReportUserComponent } from './../../Modal_Components/report-user/report-user.component';
 import { DeleteConfirmationComponent } from './../../Modal_Components/delete-confirmation/delete-confirmation.component';
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 
 import { PostService } from './../../service/post/post.service';
-import { CaptureService } from './../../service/capture/capture.service';
 
 import { TrendsService } from './../../service/trends/trends.service';
 
@@ -67,7 +67,6 @@ export class FeedsTrendsComponent implements OnInit {
 
    constructor(public snackBar: MatSnackBar,
                private modalService: BsModalService,
-               public Capture_Service: CaptureService,
                public Trends_Service: TrendsService,
                public Post_Service: PostService,
                public _componentConnectService: PostSubmitService,
@@ -138,6 +137,9 @@ export class FeedsTrendsComponent implements OnInit {
    }
 
    reload_Trends() {
+      this.screenHeight = window.innerHeight - 125;
+      this.scrollHeight = this.screenHeight + 'px';
+      this.Tag_Filter = false;
       this.Trends_List = [];
       this.Loader_1 = true;
       this.Show_Load_More = true;
@@ -276,6 +278,21 @@ export class FeedsTrendsComponent implements OnInit {
       this.Trigger_CommentInfo = this.Trends_List[this.ActiveComment].Comments[index];
       this.Trigger_UserId = this.Trigger_CommentInfo.User_Id;
    }
+
+   EditPost_Model() {
+      const initialState = { data: { Post_Info : this.Trigger_PostInfo} };
+        this.modalRef = this.modalService.show(EditTrendsComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
+        this.modalRef.content.onClose.subscribe(result => {
+           if (result.Status) {
+            const _index =  this.Trends_List.findIndex(x => x._id === result.Response._id);
+            this.Trends_List[_index].Trends_Tags = result.Response.Trends_Tags;
+            this.Trends_List[_index].Trends_Text = result.Response.Trends_Text;
+            this.Trends_List[_index].Cubes_Id = result.Response.Cubes_Id;
+            this.Trends_List[_index].Cubes_Info = result.Response.Cubes_Info;
+            this.Trends_List[_index].updatedAt = result.Response.updatedAt;
+           }
+        });
+    }
 
    Delete_Post() {
       const initialState = { data: { Text : 'Are you sure! ', Text_1 : 'Deleting will permanently remove it from inscube'} };
@@ -440,32 +457,6 @@ export class FeedsTrendsComponent implements OnInit {
       this.Trends_Service.Cube_Trends_Filter(_Data).subscribe( datas => {
          this.Loader_1 = false;
          this.Tag_Skip_Count = 15;
-            if (datas['Status'] === 'True') {
-               this.Trends_List = datas['Response'];
-               this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
-               this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
-                  if (this.LoginUser._id === y ) {
-                     x.Already = true;
-                  } else {
-                     x.Already = false;
-                  }
-               }); }); } );
-               if ( this.Trends_List.length < 15) {
-                  this.Show_Load_More = false;
-               }
-            }
-      });
-   }
-
-   View_all_trends() {
-      this.screenHeight = window.innerHeight - 125;
-      this.scrollHeight = this.screenHeight + 'px';
-      this.Tag_Filter = false;
-      this.Trends_List = [];
-      this.Loader_1 = true;
-      this.Trends_Service.Cube_Trends_List(this.LoginUser._id, 0).subscribe( datas => {
-         this.Loader_1 = false;
-         this.Skip_Count =  15;
             if (datas['Status'] === 'True') {
                this.Trends_List = datas['Response'];
                this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );

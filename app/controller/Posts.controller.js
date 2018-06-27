@@ -63,8 +63,6 @@ exports.Test_Push = function(req, res) {
 };
 
 
-
-
 // ----------------------------------------------------------------------  Cube Post Submit ----------------------------------------------------------
 exports.CubePost_Submit = function(req, res) {
     Cube_Post_File_Upload(req, res, function(upload_err) {
@@ -979,6 +977,8 @@ exports.Comment_Submit = function(req, res) {
                                             res.status(200).send({ Status:"True", Output: "True", Response: result });
                                         }
                                     });
+                                }else {
+                                    res.status(200).send({ Status:"True", Output: "True", Response: result });
                                 }
                             }
                         });
@@ -1706,7 +1706,7 @@ exports.Cube_Post_Share = function(req, res) {
                                         const GetCategory_Info = (cubeIds) => Promise.all(  // Main Promise For Category info Get --------------
                                             cubeIds.map(info => Category_Info(info)) 
                                         ).then( result_1 => {
-                                            
+                                            if (result.User_Id !== Post_result.User_Id) {
                                                 var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                     User_Id: req.body.User_Id,
                                                     To_User_Id: Post_result.User_Id,
@@ -1720,8 +1720,8 @@ exports.Cube_Post_Share = function(req, res) {
                                                     View_Status: 0,
                                                     Active_Status: 'Active'
                                                 });
-                                                
                                                 varPost_NotificationSchema.save();
+                                            }
 
                                                 result.Cubes_Info = result_1;
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result });

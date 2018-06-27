@@ -64,9 +64,7 @@ export class FeedsViewComponent implements OnInit {
     private active_route: ActivatedRoute,
               private modalService: BsModalService,
               public Post_Service: PostService,
-              private router: Router,
               public _componentConnectService: PostSubmitService,
-              private elementRef: ElementRef,
               private _lightbox: Lightbox
             ) {
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
@@ -124,7 +122,7 @@ export class FeedsViewComponent implements OnInit {
   }
 
   public myfunc(event: Event) {
-    console.log(event);
+    // console.log(event);
  }
 
  Show_Image(URL) {
@@ -149,8 +147,6 @@ export class FeedsViewComponent implements OnInit {
           const _index =  this.Posts_List[Post_Index].Emotes.findIndex(x => x._id === result.Responce._id);
           result.Responce.Already = true;
           this.Posts_List[Post_Index].Emotes[_index] = result.Responce;
-        } else {
-          console.log(result);
         }
       });
   }
@@ -177,6 +173,7 @@ export class FeedsViewComponent implements OnInit {
 
 
   Active_CommentChange(Post_Index) {
+    this.view_less_comment = false;
     if (this.ActiveComment !== Post_Index) {
       this.Loader_2 = true;
       this.ActiveComment = Post_Index;
@@ -256,7 +253,10 @@ export class FeedsViewComponent implements OnInit {
           this.Posts_List[_index].Cubes_Id = result.Response.Cubes_Id;
           this.Posts_List[_index].Cubes_Info = result.Response.Cubes_Info;
           this.Posts_List[_index].Post_Link = result.Response.Post_Link;
+          this.Posts_List[_index].Post_Link_Info = {};
+          this.Posts_List[_index].Post_Link_Info = result.Response.Post_Link_Info;
           this.Posts_List[_index].Attachments = result.Response.Attachments;
+          this.Posts_List[_index].Attach_File = result.Response.Attach_File;
           this.Posts_List[_index].updatedAt = result.Response.updatedAt;
          }
       });
@@ -328,7 +328,6 @@ export class FeedsViewComponent implements OnInit {
   }
 
   EditComment_Model() {
-    console.log(this.Trigger_CommentInfo);
     const initialState = { data: { Value : this.Trigger_CommentInfo} };
       this.modalRef = this.modalService.show(EditCommentComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
       this.modalRef.content.onClose.subscribe(result => {
@@ -379,6 +378,7 @@ export class FeedsViewComponent implements OnInit {
   }
 
 
+
   Share_Post() {
     const initialState = { data: { Post_Info : this.Trigger_PostInfo } };
     this.modalRef = this.modalService.show(PostShareCubesListComponent, Object.assign({initialState}, { class: 'maxWidth700 modal-lg' }));
@@ -394,4 +394,3 @@ export class FeedsViewComponent implements OnInit {
   }
 
 }
-

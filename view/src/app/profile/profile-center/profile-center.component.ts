@@ -94,7 +94,7 @@ export class ProfileCenterComponent implements OnInit {
      }
 
   ngOnInit() {
-    this.screenHeight = window.innerHeight - 80;
+    this.screenHeight = window.innerHeight - 125;
     this.scrollHeight = this.screenHeight + 'px';
 
     this.carouselBanner = {

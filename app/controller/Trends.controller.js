@@ -629,7 +629,6 @@ exports.Report_Trends_Submit = function(req, res) {
 
 // -----------------------------------------------------------  Cube Based Trends List ----------------------------------------------------------
 exports.Cube_Based_Trends_List = function(req, res) {
-
     if(!req.params.Cube_Id || req.params.Cube_Id === '') {
         res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
     }else{
@@ -696,13 +695,159 @@ exports.Cube_Based_Trends_List = function(req, res) {
     }
 };
 
+// -----------------------------------------------------------  Cube Based Trends Filter List --------------------------------------------------
+exports.CubeBased_Trends_Filter = function(req, res) {
+    if(!req.body.Cube_Id || req.body.Cube_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+    }else if(!req.body.Trends_Tag || req.body.Trends_Tag === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Trends Tag can not be empty" });
+    }else{
+        TrendsModel.Cube_TrendsSchema.find({ 'Cube_Ids': req.body.Cube_Id, 'Trends_Tags': req.body.Trends_Tag, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends Find Query Error', 'Trends.controller.js', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cube Trends."});
+            } else {
+                result =  JSON.parse(JSON.stringify(result));
+                
+                const Get_Post_Info = (result) => Promise.all(
+                    result.map(info_1 => PostInfo(info_1)) 
+                    ).then( result_2 => {
+                            result_2.sort(function(a,b) { return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(); });
+                            result_2 = result_2.map((Objects) => {  Objects.Time_Ago = moment(Objects.Time_Ago).fromNow();  return Objects; });
+                            result_2.reverse();
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                    }).catch( err_2 => {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Related Trends Info Find Promise Error', 'Trends.controller.js', err_2);
+                        res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Related Trends Info Promise Error"});
+                    });
+
+                    const PostInfo = info_1 =>
+                        Promise.all([
+                            UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                            TrendsModel.Trends_Emoteschema.find({ 'Trends_Id': info_1._id }).exec(),
+                            UserModel.UserSchema.findOne({ '_id': info_1.Shared_Trends_User_Id }, { Inscube_Name: 1}).exec(),
+                            ]).then( Data => {
+
+                                info_1.User_Name = Data[0].Inscube_Name;
+                                info_1.User_Image = Data[0].Image;
+                                info_1.Time_Ago = info_1.updatedAt;
+                                info_1.Emotes = Data[1];
+                                if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
+                                info_1.Comments = [];
+                                var cubeIds = info_1.Cube_Ids;
+
+                                    const GetCategory_Info = (cubeIds) => Promise.all(
+                                            cubeIds.map(info => Category_Info(info)) 
+                                        ).then( result_3 => {
+                                            info_1.Cubes_Info = result_3;
+                                            return info_1;
+                                        }).catch( err_1 => {
+                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Related Trends Cube Info Find Promise Error', 'Trends.controller.js', err_1);
+                                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube Related Trends Cube Info Promise Error "});
+                                        });
+                        
+                                        const Category_Info = info =>
+                                            Promise.all([
+                                                CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                                ]).then( Data => {
+                                                    return Data[0];
+                                                }).catch(error => {
+                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Related Trends Cube Info Find Promise Error', 'Trends.controller.js', error);
+                                                });     
+                                return GetCategory_Info(cubeIds);
+
+                            }).catch(error_1 => {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Related Trends Info Find Promise Error', 'Trends.controller.js', error_1);
+                            });     
+                Get_Post_Info(result);              
+            }
+        });
+    }
+};
+
 // -----------------------------------------------------------   User Trends ----------------------------------------------------------
 exports.User_Trends = function(req, res) {
-
     if(!req.params.User_Id || req.params.User_Id === '') {
-        res.status(200).send({Status:"True", Output:"False", Message: "Cube Id can not be empty" });
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
     }else{
         TrendsModel.Cube_TrendsSchema.find({ 'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Based Cube Trends List Find Query Error', 'Trends.controller.js', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The User Based Cube Trends List."});
+            } else {
+                result =  JSON.parse(JSON.stringify(result));
+                
+                const Get_Post_Info = (result) => Promise.all(
+                    result.map(info_1 => PostInfo(info_1)) 
+                    ).then( result_2 => {
+                            result_2.sort(function(a,b) {
+                                return new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime();
+                            });
+                            result_2 = result_2.map((Objects) => {
+                                    Objects.Time_Ago = moment(Objects.Time_Ago).fromNow();
+                                return Objects;
+                            });
+                            result_2.reverse();
+
+                            res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                    }).catch( err_2 => {
+                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Based Cube Trends List Find Promise Error', 'Trends.controller.js', err_2);
+                        res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the User Based Cube Trends List Promise Error "});
+                    });
+
+                    const PostInfo = info_1 =>
+                        Promise.all([
+                            UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                            PostModel.Post_Emoteschema.find({ 'Trends_Id': info_1._id }).exec(),
+                            UserModel.UserSchema.findOne({ '_id': info_1.Shared_Trends_User_Id }, { Inscube_Name: 1}).exec(),
+                            ]).then( Data => {
+
+                                info_1.User_Name = Data[0].Inscube_Name;
+                                info_1.User_Image = Data[0].Image;
+                                info_1.Time_Ago = info_1.updatedAt;
+                                info_1.Emotes = Data[1];
+                                if(Data[2] !== null){ info_1.Post_Owner_Name = Data[2].Inscube_Name; }
+                                info_1.Comments = [];
+                                var cubeIds = info_1.Cube_Ids;
+
+                                    const GetCategory_Info = (cubeIds) => Promise.all(
+                                            cubeIds.map(info => Category_Info(info)) 
+                                        ).then( result_3 => {
+                                            info_1.Cubes_Info = result_3;
+                                            return info_1;
+                                        }).catch( err_1 => {
+                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Based Cube Trends List Cube Info Find Promise Error', 'Trends.controller.js', err_1);
+                                            res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the User Based Cube Trends List Cube Info Promise Error "});
+                                        });
+                        
+                                        const Category_Info = info =>
+                                            Promise.all([ 
+                                                CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                                ]).then( Data => {
+                                                    return Data[0];
+                                                }).catch(error => {
+                                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Based Cube Trends List Cube Info Promise Error', 'Trends.controller.js', error);
+                                                });     
+                                return GetCategory_Info(cubeIds); 
+
+                            }).catch(error_1 => {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Based Cube Trends List Promise Error', 'Trends.controller.js', error_1);
+                            });     
+                Get_Post_Info(result);
+                            
+            }
+        });
+    }
+};
+
+// -----------------------------------------------------------   User Based Trends Filter ----------------------------------------------------------
+exports.UserBased_Trends_Filter = function(req, res) {
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Trends_Tag || req.body.Trends_Tag === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Trends Tag can not be empty" });
+    }else{
+        TrendsModel.Cube_TrendsSchema.find({ 'User_Id': req.body.User_Id, 'Trends_Tags': req.body.Trends_Tag, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 } }, function(err, result) {
             if(err) {
                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Based Cube Trends List Find Query Error', 'Trends.controller.js', err);
                 res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The User Based Cube Trends List."});
@@ -828,21 +973,22 @@ exports.Cube_Trends_Share = function(req, res) {
                                         const GetCategory_Info = (cubeIds) => Promise.all(
                                             cubeIds.map(info => Category_Info(info)) 
                                         ).then( result_1 => {
-                                                var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                                    User_Id: req.body.User_Id,
-                                                    To_User_Id: Post_result.User_Id,
-                                                    Notify_Type: 'Trends_Shared',
-                                                    Trends_Id: result._id,
-                                                    Trends_Text: result.Trends_Text,
-                                                    Cube_Id: cubeIds[0],
-                                                    Emote_Id: '',
-                                                    Opinion_Id: '',
-                                                    Emote_Text: '',
-                                                    View_Status: 0,
-                                                    Active_Status: 'Active'
-                                                });
-                                                varPost_NotificationSchema.save();
-
+                                                if (result.User_Id !== Post_result.User_Id) {
+                                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                        User_Id: req.body.User_Id,
+                                                        To_User_Id: Post_result.User_Id,
+                                                        Notify_Type: 'Trends_Shared',
+                                                        Trends_Id: result._id,
+                                                        Trends_Text: result.Trends_Text,
+                                                        Cube_Id: cubeIds[0],
+                                                        Emote_Id: '',
+                                                        Opinion_Id: '',
+                                                        Emote_Text: '',
+                                                        View_Status: 0,
+                                                        Active_Status: 'Active'
+                                                    });
+                                                    varPost_NotificationSchema.save();
+                                                }
                                                 result.Cubes_Info = result_1;
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result });
                                         }).catch( err_1 => {
@@ -942,6 +1088,7 @@ exports.Trends_Emote_Submit = function(req, res) {
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result_2 });           
                                             } else {
                                                 if (result_4.User_Id !== req.body.User_Id) {
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
                                                     var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
                                                         User_Id: req.body.User_Id,
                                                         To_User_Id: result_4.User_Id,
@@ -957,8 +1104,35 @@ exports.Trends_Emote_Submit = function(req, res) {
                                                         Active_Status: 'Active'
                                                     });
                                                     varPost_NotificationSchema.save();
+                                                    if (App_Info !== null) {
+                                                        UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                            CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                var registrationToken = App_Info.Firebase_Token;
+                                                                var payload = {
+                                                                    notification: {
+                                                                        title: 'New Comment Added Your #campaign',
+                                                                        body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your  #campaign in ' + Cube_Info.Name,
+                                                                    },
+                                                                    data: {
+                                                                        type: 'Trends',
+                                                                        _id: result_4._id
+                                                                    }
+                                                                };
+                                                                var options = {
+                                                                    priority: 'high',
+                                                                    timeToLive: 60 * 60 * 24
+                                                                };
+                                                                admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                                res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                            });
+                                                        });
+                                                    }else{
+                                                        res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                                    }
+                                                    });
+                                                } else {
+                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                                                 }
-                                                res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
                                             }
                                         });
                                     }
@@ -983,7 +1157,53 @@ exports.Trends_Emote_Submit = function(req, res) {
                                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends_Id FindOne Query Error', 'Trends.controller.js', err_2);
                                                 res.status(200).send({ Status:"True", Output: "True", Response: result_3 });           
                                             } else {
-                                                res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                result_4 = JSON.parse(JSON.stringify(result_4));
+                                                if (result_4.User_Id !== req.body.User_Id) {
+                                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                            User_Id: req.body.User_Id,
+                                                            To_User_Id: result_4.User_Id,
+                                                            Notify_Type: 'Trends_Emote',
+                                                            Trends_Id: req.body.Trends_Id,
+                                                            Trends_Text: result_4.Trends_Text,
+                                                            Cube_Id: result_4.Cube_Ids[0],
+                                                            Cube_Ids: result_4.Cube_Ids,
+                                                            Emote_Id: result_3._id,
+                                                            Opinion_Id: '',
+                                                            Emote_Text: result_3.Emote_Text,
+                                                            View_Status: 0,
+                                                            Active_Status: 'Active'
+                                                        });
+                                                        varPost_NotificationSchema.save();
+                                                        if (App_Info !== null) {
+                                                            UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                                CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                                    var registrationToken = App_Info.Firebase_Token;
+                                                                    var payload = {
+                                                                        notification: {
+                                                                            title: 'New Comment Added Your #campaign',
+                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your #campaign in ' + Cube_Info.Name,
+                                                                        },
+                                                                        data: {
+                                                                            type: 'Trends',
+                                                                            _id: result_4._id
+                                                                        }
+                                                                    };
+                                                                    var options = {
+                                                                        priority: 'high',
+                                                                        timeToLive: 60 * 60 * 24
+                                                                    };
+                                                                    admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                                });
+                                                            });
+                                                        }else{
+                                                            res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                        }
+                                                    });
+                                                } else {
+                                                    res.status(200).send({ Status:"True", Output: "True", Response: result_3 });
+                                                }
                                             }
                                         });
                                     }
@@ -1023,7 +1243,60 @@ exports.Trends_Emote_Update = function(req, res) {
                             ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Query Error', 'Posts.controller.js - 62', err_1);
                             res.status(500).send({Status:"False", Error: err_1, Message: "Some error occurred while Cube Post Submit"});           
                         } else {
-                            res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                            TrendsModel.Cube_TrendsSchema.findOne({'_id': req.body.Trends_Id }, function(err_4, result_4) {
+                                if(err_4) {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Capture Submit Query Error', 'Capture.controller.js - 62', err_2);
+                                    res.status(200).send({ Status:"True", Output: "True", Response: result_2 });
+                                } else {
+                                    result_4 = JSON.parse(JSON.stringify(result_4));
+                                    if (result_4.User_Id !== req.body.User_Id) {
+                                        LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                            var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                                User_Id: req.body.User_Id,
+                                                To_User_Id: result_4.User_Id,
+                                                Notify_Type: 'Trends_Emote',
+                                                Trends_Id: req.body.Trends_Id,
+                                                Trends_Text: result_4.Trends_Text,
+                                                Cube_Id: result_4.Cube_Ids[0],
+                                                Cube_Ids: result_4.Cube_Ids,
+                                                Emote_Id: result_1._id,
+                                                Opinion_Id: '',
+                                                Emote_Text: result_1.Emote_Text,
+                                                View_Status: 0,
+                                                Active_Status: 'Active'
+                                            });
+                                            varPost_NotificationSchema.save();
+                                            if (App_Info !== null) {
+                                                UserModel.UserSchema.findOne({'_id': req.body.User_Id }, { Image: 1, Inscube_Name: 1}, function(err_user, User_Info) {
+                                                    CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                        var registrationToken = App_Info.Firebase_Token;
+                                                        var payload = {
+                                                            notification: {
+                                                                title: 'New Comment Added Your #campaign',
+                                                                body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your #campaign in ' + Cube_Info.Name,
+                                                            },
+                                                            data: {
+                                                                type: 'Trends',
+                                                                _id: result_4._id
+                                                            }
+                                                        };
+                                                        var options = {
+                                                            priority: 'high',
+                                                            timeToLive: 60 * 60 * 24
+                                                        };
+                                                        admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                        res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                                                    });
+                                                });
+                                            }else{
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                                            }
+                                        });
+                                    } else {
+                                        res.status(200).send({ Status:"True", Output: "True", Response: result_1 });
+                                    }
+                                }
+                            });
                         }
                     });
                 } else {
@@ -1073,24 +1346,51 @@ exports.Trends_Comment_Submit = function(req, res) {
                                 ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends FindOne Query Error', 'Trends.controller.js', err_2);
                                 res.status(200).send({ Status:"True", Output: "True", Response: result });           
                             } else {
+                                result_4 = JSON.parse(JSON.stringify(result_4));
                                 if (result_4.User_Id !== req.body.User_Id) {
-                                    var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
-                                        User_Id: req.body.User_Id,
-                                        To_User_Id: result_4.User_Id,
-                                        Notify_Type: 'Trends_Opinion',
-                                        Trends_Id: req.body.Trends_Id,
-                                        Trends_Text: result_4.Trends_Text,
-                                        Cube_Id: result_4.Cube_Ids[0],
-                                        Cube_Ids: result_4.Cube_Ids,
-                                        Emote_Id: '',
-                                        Opinion_Id: result._id,
-                                        Emote_Text: '',
-                                        View_Status: 0,
-                                        Active_Status: 'Active'
+                                    LoginInfoModel.AndroidAppInfoSchema.findOne({'User_Id': result_4.User_Id, 'Active_Status': 'Active'}, function(App_err, App_Info) {
+                                        var varPost_NotificationSchema = new UserModel.Post_NotificationSchema({
+                                            User_Id: req.body.User_Id,
+                                            To_User_Id: result_4.User_Id,
+                                            Notify_Type: 'Trends_Opinion',
+                                            Trends_Id: req.body.Trends_Id,
+                                            Trends_Text: result_4.Trends_Text,
+                                            Cube_Id: result_4.Cube_Ids[0],
+                                            Cube_Ids: result_4.Cube_Ids,
+                                            Emote_Id: '',
+                                            Opinion_Id: result._id,
+                                            Emote_Text: '',
+                                            View_Status: 0,
+                                            Active_Status: 'Active'
+                                        });
+                                        varPost_NotificationSchema.save();
+                                        if (App_Info !== null) {
+                                            CubeModel.CubesSchema.findOne({ '_id':  result_4.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}, function(err_cube, Cube_Info) {
+                                                var registrationToken = App_Info.Firebase_Token;
+                                                var payload = {
+                                                    notification: {
+                                                        title: 'New Opinion on your #campaign',
+                                                        body: User_Info.Inscube_Name + ' Shared an Opinion on your #campaign in ' + Cube_Info.Name,
+                                                    },
+                                                    data: {
+                                                        type: 'Trends',
+                                                        _id: result_4._id
+                                                    }
+                                                };
+                                                var options = {
+                                                    priority: 'high',
+                                                    timeToLive: 60 * 60 * 24
+                                                };
+                                                admin.messaging().sendToDevice(registrationToken, payload, options);
+                                                res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                            });
+                                        } else {
+                                            res.status(200).send({ Status:"True", Output: "True", Response: result });
+                                        }
                                     });
-                                    varPost_NotificationSchema.save();
+                                } else{
+                                    res.status(200).send({ Status:"True", Output: "True", Response: result });
                                 }
-                                res.status(200).send({ Status:"True", Output: "True", Response: result });
                             }
                         });
                     }
@@ -1136,7 +1436,7 @@ exports.Trends_Comment_List = function(req, res) {
                 GetUser_Info(result);
             }
         });
-     }
+    }
 };
 
 // ----------------------------------------------------------------------  Trends Comment Update ----------------------------------------------------------

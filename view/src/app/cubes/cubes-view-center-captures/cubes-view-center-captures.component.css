@@ -1,0 +1,611 @@
+
+.Captures .headerPost{
+   height: 50px;
+   background-color: #ffffff;
+   margin: 0px 3px 5px 3px;
+   box-shadow: rgba(102, 102, 102, 0.47) 0px 1px 8px 0px;
+}
+
+.Captures .headerPost .leftArea{    
+   padding: 0px 10px;
+   line-height: 50px;
+   font-size: 17px;
+   font-weight: 600;
+   color: #333333;
+   letter-spacing: 0.5px;
+   font-family: 'Ubuntu', sans-serif;
+}
+.Captures .headerPost .leftArea i{    
+   font-size: 19px;
+   padding: 0px 10px;
+}
+
+.Captures .CapturesPost{
+   background-color:#ffffff;
+   box-shadow: 0px 0px 5px 1px #607d8b63;
+   margin: 3px;
+   padding-bottom: 0px;
+}
+
+
+.Captures .CapturesPost .PostHeader{
+   padding: 0px 10px;
+}
+.Captures .CapturesPost .leftSide .postuserImg{
+   height: 38px;
+   width: 38px;
+   margin-top: 0px;
+   cursor: pointer;
+   border-radius: 60px;
+}
+.Captures .CapturesPost .leftSide .postusername{
+   line-height: 17px;
+   font-size: 12px;
+   letter-spacing: 0.5px;
+   margin: 0px;
+   color: #a9a9a9;
+   font-family: 'Ubuntu', sans-serif;
+}
+.Captures .CapturesPost .leftSide .postusercategory{
+   margin: 0px;
+   line-height: 15px;
+   font-size: 11px;
+   color: #9c9a9a;
+   font-family: 'Ubuntu', sans-serif;
+}
+.Captures .CapturesPost .leftSide .postuserfollowers{
+   margin: 0px;
+   line-height: 14px;
+   font-size: 10px;
+   color: #9c9a9a;
+   font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+.Captures .CapturesPost .rightSide .postaction{
+   line-height: 10px;
+   font-size: 24px;
+   margin: 0px;
+   color: gray;
+}
+.Captures .CapturesPost .rightSide .postaction i{
+   height: 11px;
+   line-height: 11px;
+   margin-bottom: 0px;
+   margin-top: 4px;
+   cursor: pointer;
+   font-size: 27px;
+}
+.Captures .CapturesPost .rightSide .postdate{
+   margin: 0px;
+   line-height: 10px;
+   margin-top: -4px;
+   color: #9c9a9a;
+   font-size: 11px;
+   letter-spacing: 0.4px;
+   font-family: 'Ubuntu', sans-serif;
+}
+.Captures .Selected_Cubes{
+   margin: 2px 0px;
+   display: flex;
+   float: right;
+   margin-right: 20px;
+}
+.Captures .Selected_Cubes img{
+   width: 28px;
+   height: 28px;
+   border-radius: 10px;
+   cursor: pointer;
+}
+.leftR {
+   position: absolute;
+   margin: auto;
+   top: 0;
+   bottom: 0;
+   width: 22px;
+   height: 30px;
+   left: -25px;
+   border: none;
+   outline: none;
+   background-color: transparent;
+   font-weight: 800;
+   line-height: 15px;
+   color: #d75739;
+   font-size: 18px;
+}
+
+.rightR {
+   position: absolute;
+   margin: auto;
+   top: 0;
+   bottom: 0;
+   width: 22px;
+   height: 30px;
+   right: -25px;
+   border: none;
+   outline: none;
+   background-color: transparent;
+   font-weight: 800;
+   line-height: 15px;
+   color: #d75739;
+   font-size: 18px;
+}
+
+
+.File_View{
+   display: block;
+   margin-left: 5px;
+   margin-top: 15px;
+   width: 100%;
+   font-size: 15px;
+   font-weight: 500;
+   position: relative;
+}
+
+.Captures .CapturesPost .postLikes .like{
+   display: inline-flex;
+   margin-top: 0px;
+}
+.Captures .CapturesPost .postLikes {
+   padding: 0px;
+}
+.Captures .CapturesPost .postLikes .like img{
+   width: 35px;
+   height: 35px;
+   cursor: pointer;
+}
+.Captures .CapturesPost .postLikes .share{
+   display: inline-flex;
+   cursor: pointer;
+   margin-top: 0px;
+}
+.Captures .CapturesPost .postLikes .share img{
+   width: 35px;
+   height: 35px;
+   margin-right: 20px;
+}
+
+
+.Captures .CapturesPost .postchat {
+   padding: 0px;
+}
+
+.Captures .CapturesPost .postchat .chatUserImg img{
+   width: 32px;
+   height: 32px;
+   border-radius: 50px;
+}
+
+.Captures .CapturesPost .postchat .chatInput input{
+   width: 100%;
+   height: 32px;
+   outline: transparent;
+   border: 1px solid lightgray;
+   border-color: lightgray;
+   padding: 0px 10px;
+   font-size: 12px;
+   font-family: 'Ubuntu', sans-serif;
+   font-weight: 500;
+   letter-spacing: 0.5px;
+   color: #333333;
+}
+
+.Captures .CapturesPost .postchat .chatsend i{
+   font-size: 26px;
+   color: #333333;
+   transform: rotate(-35deg);
+   cursor: pointer;
+}
+
+
+.scrolldiv{
+   overflow-Y: auto;
+   overflow-x: hidden;
+}
+
+
+
+
+.Captures .commentPost{
+   background-color: #ffffff;
+   box-shadow: 0px 0px 3px 1px #607d8b63;
+   margin:10px;
+   padding: 2px;
+}
+
+.Captures .commentPost .commentbody .commenttext{
+   font-size: 15px;
+   color: gray;
+   margin: 2px 10px;
+   word-spacing: 2.5px;
+   line-height: 20px;
+}
+.Captures .commentPost .PostHeader{
+   padding: 0px 2px;
+}
+.Captures .commentPost .leftSide .postuserImg{
+   height: 33px;
+   width: 33px;
+   border-radius: 35px;
+}
+.Captures .commentPost .leftSide .postusername{
+   margin: 0px;
+   line-height: 17px;
+   font-size: 13px;
+   /* font-weight: 600; */
+   color: #827f7f;
+   letter-spacing: 0.5px;
+}
+.Captures .commentPost .leftSide .postusercategory{
+   margin: 0px;
+   line-height: 17px;
+   font-size: 12px;
+   color: #9c9a9a;
+}
+.Captures .commentPost .leftSide .postuserfollowers{
+   margin: 0px;
+   line-height: 17px;
+   font-size: 12px;
+   color: #9c9a9a;
+}
+
+.Captures .commentPost .rightSide .postaction{
+   line-height: 5px;
+   font-size: 24px;
+   margin: 0px;
+   color: gray;
+}
+.Captures .commentPost .rightSide .postaction i{
+   height: 11px;
+   line-height: 11px;
+   margin-bottom: 0px;
+   margin-top: 0px;
+   cursor: pointer;
+   font-size: 25px;
+}
+.Captures .commentPost .rightSide .postdate{
+   margin: 0px;
+   line-height: 16px;
+   margin-top: -4px;
+   color: #9c9a9a;
+   font-size: 11px;
+   letter-spacing: 0.4px;
+}
+
+
+.Captures .commentPost .postLikesLevel2 {
+   padding: 2px 15px;
+}
+.Captures .commentPost .postLikesLevel2 .like{
+   display: inline-flex;
+   cursor: pointer;
+   margin-top: 0px;
+}
+
+.Captures .commentPost .postLikesLevel2 .like img{
+   width: 20px;
+   height: 20px;
+}
+.Captures .commentPost .postLikesLevel2 .like .count{
+   line-height: 20px;
+   font-size: 12px;
+   letter-spacing: 0.7px;
+   font-weight: 600;
+   margin: 0px 5px;
+   color: #666666cf;
+}
+.Captures .commentPost .postLikesLevel2 .chat{
+   display: inline-flex;
+   cursor: pointer;
+   margin-top: 0px;
+}
+.Captures .commentPost .postLikesLevel2 .chat img{
+   width: 20px;
+   height: 20px;
+}
+.Captures .commentPost .postLikesLevel2 .chat .count{
+   line-height: 20px;
+   font-size: 12px;
+   letter-spacing: 0.7px;
+   font-weight: 600;
+   margin: 0px 5px;
+   color: #666666cf;
+}
+.Captures .commentPost .postLikesLevel2 .share{
+   display: inline-flex;
+   cursor: pointer;
+   margin-top: 0px;
+}
+.Captures .commentPost .postLikesLevel2 .share img{
+   width: 20px;
+   height: 20px;
+}
+.Captures .commentPost .postLikesLevel2 .share .count{
+   line-height: 20px;
+   font-size: 12px;
+   letter-spacing: 0.7px;
+   font-weight: 600;
+   margin: 0px 5px;
+   color: #666666cf;
+}
+
+
+
+.viewAll{
+   margin: 0px;
+   font-size: 12px;
+   font-weight: 500;
+   color: #999999;
+   letter-spacing: 0.6px;
+   margin-right: 5px;
+   padding-bottom: 3px;
+   font-family: 'Ubuntu', sans-serif;
+}
+
+
+
+.html5gallery-container-0{
+   background:  #ffffff !important;
+}
+
+.DisplayNone{
+   display: none !important;
+}
+
+
+
+
+
+
+
+
+
+.dropd{
+   width: 155px;
+   padding: 3px 5px;
+   background-color: #f3f3f3;
+}
+
+.dropd .dropd_text{
+   font-size: 13px;
+   font-weight: 700;
+   letter-spacing: 0.4px;
+   color: #666666a3;
+   line-height: 33px;
+   margin: 0px;
+}
+
+.dropd .dropd_icon i{
+   color: #666666a3;
+   font-size: 23px;
+   margin-top: 6px;
+}
+.dropdarrow{
+   position: absolute;
+   width: 30px;
+   height: 30px;
+   background-color: #f3f3f3;
+   top: -3px;
+   left: 15px;
+   transform: rotate(45DEG);
+   z-index: -1;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.thumpnailbox{
+   margin: 20px 15px 10px 15px;
+   background-color: #f3f3f38a;
+   box-shadow: 0px 0px 5px 1px #3333332e;
+   padding: 2px;
+}
+.thumpnailbox-left{
+   padding: 0px;
+   width:33.3%
+}
+.thumpnailbox-img{
+   height: 130px;
+   width: 100%;
+}
+.thumpnailbox-right{
+   padding: 0px;
+   text-align: left;
+   padding-left: 10px;
+   width:66.6%
+}
+.thumpnailbox-textField{
+   height: 90px;
+   overflow: hidden;
+}
+.thumpnailbox-header{
+   text-align: left;
+   font-size: 14px;
+   margin: 0px;
+   font-weight: 600;
+   font-family: 'Ubuntu', sans-serif;
+   letter-spacing: 0.4px;
+   color: #373f46;
+}
+.thumpnailbox-decription{
+   text-align: left;
+   font-size: 13px;
+   margin: 0px;
+   font-family: 'Ubuntu', sans-serif;
+   color: #888888;
+   line-height: 18px;
+}
+.thumpnailbox-link{
+   text-align: left;
+   font-size: 12px;
+   margin: 0px;
+   font-family: 'Ubuntu', sans-serif;
+   color: #114d72;
+   line-height: 17px;
+}
+.thumpnailbox-link a{
+   color: #00000042;
+}
+.postLink{
+   text-align: left;
+   margin: 10px 5px 0px 15px;
+   font-size: 13px;
+   font-family: 'Ubuntu', sans-serif;
+   color: #114d72;
+   line-height: 17px;
+}
+.postLink a{
+   color: #3190e4;
+}
+
+.share_drop{
+   background-color: #f3f3f3;
+   padding: 5px;
+   text-align: center;
+}
+.share_drop_icon{
+   text-align: center;
+}
+.share_drop img{
+   width: 32px;
+   height: 32px;
+   cursor: pointer;
+}
+.share_drop i{
+   font-size: 20px;
+   color: #38508E;
+   border: 2px solid #38508E;
+   padding: 3px 7px;
+   border-radius: 6px;
+   cursor: pointer;
+}
+
+
+
+.LoadMore{
+   margin-bottom: 30px;
+   font-size: 13px;
+   letter-spacing: 0.3px;
+   color: #333;
+}
+.LoadMore span{
+   padding: 5px 10px;
+   background-color: #ffda00;
+   cursor: pointer;
+   font-family: 'Ubuntu', sans-serif;
+}
+
+
+.emote_grid{
+   display: grid;
+   grid-template-columns: 20% 20% 20% 20% 20%;
+   padding: 0px;
+}
+.emote{
+   border: 1px solid #d75739;
+   border-radius: 30px;
+   margin: 4px 2px;
+   text-align: center;
+   cursor: pointer;
+}
+.emote.Selected{
+   border: 1px solid #d75739;
+   background-color: #d75739;
+   cursor: default;
+}
+
+.emote_div{
+   padding: 4px 0px;
+   font-size: 12px;
+   color: #666;
+   display: inline-flex;
+}
+.emote.Selected .emote_div{
+   color: #fff;
+}
+
+.emote p{
+   margin: 0px;
+   text-align: center;
+}
+
+.close_Mode{
+   position: absolute;
+   margin: 0px;
+   right: -16px;
+   top: -16px;
+   background-color: #fff;
+   width: 25px;
+   height: 25px;
+   text-align: center;
+   font-weight: 700;
+   border-radius: 20px;
+   z-index: 2;
+   cursor: pointer;
+}
+.Video_button{
+   right: 0px;
+   position: absolute;
+   margin: auto;
+   top: 0px;
+   bottom: 0px;
+   left: 0px;
+   line-height: 400px;
+}
+.Video_button i{
+   color: #ffffff;
+   font-size: 80px;
+   background-color: #75737399;
+   border-radius: 10px;
+   cursor: pointer;
+}
+.gallery_info_button{
+   position: absolute;
+   right: 0px;
+   font-family: fantasy;
+   color: #d75739;
+   background-color: #e6e5e5;
+   padding: 0px 10px;
+   letter-spacing: 0.5px;
+}
+.Image_button{
+   position: absolute;
+   right: 0px;
+   bottom: -6px;
+   margin-bottom:0px;
+}
+
+.Image_button i{
+   color: #ffffff;
+   font-size: 35px;
+   background-color: #75737399;
+   border-radius: 0px;
+   cursor: pointer;
+}
+
+
+
+.Load_more{
+   width: 100%;
+   text-align: center;
+}
+.Load_more span{
+   background-color: #d75739;
+   color: #fff;
+   padding: 7px 15px;
+   border-radius: 5px;
+   cursor: pointer;
+}

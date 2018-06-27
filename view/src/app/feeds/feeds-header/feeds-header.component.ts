@@ -87,7 +87,6 @@ export class FeedsHeaderComponent implements OnInit {
           } else {
             this.Search_Posts = [];
           }
-          console.log(this.Search_Posts);
         });
       }
     }
@@ -125,7 +124,6 @@ export class FeedsHeaderComponent implements OnInit {
           } else {
             this.Search_Posts = [];
           }
-          console.log(this.Search_Posts);
         });
       }
     } else {
@@ -179,6 +177,24 @@ export class FeedsHeaderComponent implements OnInit {
     });
     this.Notifications_List.splice(_index, 1);
     this.router.navigate(['/Post_View', _id]);
+  }
+
+  View_capture(_id, _Notyify_Id) {
+    const _index =  this.Notifications_List.findIndex(x => x._id === _Notyify_Id);
+    this.Post_Service.Notifications_viewed(this.Notifications_List[_index]._id).subscribe(data => {
+      console.log(data);
+    });
+    this.Notifications_List.splice(_index, 1);
+    this.router.navigate(['/Capture_View', _id]);
+  }
+
+  View_trends(_id, _Notyify_Id) {
+    const _index =  this.Notifications_List.findIndex(x => x._id === _Notyify_Id);
+    this.Post_Service.Notifications_viewed(this.Notifications_List[_index]._id).subscribe(data => {
+      console.log(data);
+    });
+    this.Notifications_List.splice(_index, 1);
+    this.router.navigate(['/Trends_View', _id]);
   }
 
   Activity_Check() {

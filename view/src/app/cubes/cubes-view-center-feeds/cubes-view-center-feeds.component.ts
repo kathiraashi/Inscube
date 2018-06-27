@@ -60,7 +60,6 @@ export class CubesViewCenterFeedsComponent implements OnInit {
               private modalService: BsModalService,
               public Post_Service: PostService,
               private router: Router,
-              private elementRef: ElementRef,
               private _lightbox: Lightbox,
               private active_route: ActivatedRoute,
             ) {
@@ -88,7 +87,7 @@ export class CubesViewCenterFeedsComponent implements OnInit {
 
 
   ngOnInit() {
-    this.screenHeight = window.innerHeight - 80;
+    this.screenHeight = window.innerHeight - 125;
     this.scrollHeight = this.screenHeight + 'px';
 
     this.carouselBanner = {

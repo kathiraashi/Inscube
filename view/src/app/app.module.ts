@@ -107,6 +107,13 @@ import { EditTrendsCommentComponent } from './trends-modal-components/edit-trend
 import { ReportTrendsComponent } from './trends-modal-components/report-trends/report-trends.component';
 import { ReportTrendsCommentComponent } from './trends-modal-components/report-trends-comment/report-trends-comment.component';
 import { CreateTrendsComponent } from './trends-modal-components/create-trends/create-trends.component';
+import { EditTrendsComponent } from './trends-modal-components/edit-trends/edit-trends.component';
+import { CaptureViewComponent } from './capture-view/capture-view.component';
+import { TrendsViewComponent } from './trends-view/trends-view.component';
+import { CubesViewCenterCapturesComponent } from './cubes/cubes-view-center-captures/cubes-view-center-captures.component';
+import { CubesViewCenterTrendsComponent } from './cubes/cubes-view-center-trends/cubes-view-center-trends.component';
+import { ProfileCapturesComponent } from './profile/profile-captures/profile-captures.component';
+import { ProfileTrendsComponent } from './profile/profile-trends/profile-trends.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +181,14 @@ import { CreateTrendsComponent } from './trends-modal-components/create-trends/c
     EditTrendsCommentComponent,
     ReportTrendsComponent,
     ReportTrendsCommentComponent,
-    CreateTrendsComponent
+    CreateTrendsComponent,
+    EditTrendsComponent,
+    CaptureViewComponent,
+    TrendsViewComponent,
+    CubesViewCenterCapturesComponent,
+    CubesViewCenterTrendsComponent,
+    ProfileCapturesComponent,
+    ProfileTrendsComponent
   ],
   imports: [
       // Default Modules
@@ -256,7 +270,8 @@ import { CreateTrendsComponent } from './trends-modal-components/create-trends/c
                     EditTrendsCommentComponent,
                     ReportTrendsComponent,
                     ReportTrendsCommentComponent,
-                    CreateTrendsComponent
+                    CreateTrendsComponent,
+                    EditTrendsComponent
                   ]
 })
 export class AppModule { }

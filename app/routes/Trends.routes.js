@@ -20,6 +20,8 @@ module.exports = function(app) {
 
         app.get('/API/Trends/Cube_Based_Trends_List/:Cube_Id/:User_Id', Controller.Cube_Based_Trends_List);
 
+        app.post('/API/Trends/CubeBased_Trends_Filter', Controller.CubeBased_Trends_Filter);
+
         app.post('/API/Trends/Trends_Emote_Submit', Controller.Trends_Emote_Submit);
 
         app.post('/API/Trends/Trends_Emote_Update', Controller.Trends_Emote_Update);
@@ -37,6 +39,8 @@ module.exports = function(app) {
         app.post('/API/Trends/Report_TrendsComment', Controller.Report_TrendsComment_Submit);
 
         app.get('/API/Trends/User_Trends/:User_Id', Controller.User_Trends);
+
+        app.post('/API/Trends/UserBased_Trends_Filter', Controller.UserBased_Trends_Filter);
 
         app.post('/API/Trends/Cube_Trends_Share', Controller.Cube_Trends_Share);
 

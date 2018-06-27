@@ -84,7 +84,13 @@
                   <div class="postmain" fxLayout="row" style="padding: 5px 0px;">
                     <div fxFlex class="text-center">
                       <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Post.Post_Text}} </h5>
-        
+                      
+                      <ng-container *ngIf="Post.Attach_File && Post.Attach_File?.length > 0 ">
+                          <div class="text-left">
+                              <span class="File_View"> Attached File: <a href="{{PostsBaseUrl}}{{Post.Attach_File[0].File_Name}}" target="blanck"> {{Post.Attach_File[0].File_Name}}</a></span>
+                          </div>
+                        </ng-container>
+                        
                       <ng-container *ngIf="Post.Post_Link !== '' && Post.Post_Link_Info && Post.Post_Link_Info !== '' && Post.Post_Link.indexOf('http://www.youtube') === -1 && Post.Post_Link.indexOf('https://youtu') === -1 && Post.Post_Link.indexOf('https://www.youtube') === -1">
                         <a href="{{Post.Post_Link_Info.url}}" target="blanck"> 
                         <div *ngIf="Post.Post_Link_Info !== ''" class="row thumpnailbox">

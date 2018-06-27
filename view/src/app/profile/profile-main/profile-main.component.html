@@ -15,7 +15,26 @@
           <app-profile-left></app-profile-left>
       </div>
       <div fxFlex="47%" >
-          <app-profile-center></app-profile-center>
+        <div class="Tabs">
+            <div class="Tab_List" (click)="ChangeActiveTab('Highlights')" [ngClass]="{active: Active_Tab === 'Highlights'}">
+                <span> Highlights </span>
+            </div>
+            <div class="Tab_List" (click)="ChangeActiveTab('Capture')" [ngClass]="{active: Active_Tab === 'Capture'}">
+                <span> Cube Capture </span>
+            </div>
+            <div class="Tab_List" (click)="ChangeActiveTab('Trends')" [ngClass]="{active: Active_Tab === 'Trends'}" >
+                <span> Trends </span>
+            </div>
+        </div>
+        <ng-container *ngIf="Active_Tab === 'Highlights'">
+            <app-profile-center></app-profile-center>
+        </ng-container>
+        <ng-container *ngIf="Active_Tab === 'Capture'">
+            <app-profile-captures></app-profile-captures>
+        </ng-container>
+        <ng-container *ngIf="Active_Tab === 'Trends'">
+            <app-profile-trends></app-profile-trends>
+        </ng-container>
       </div>
       <div fxFlex="19%" fxFlex.md="22%" fxFlex.sm="22%" fxFlex.xs="22%" style="background-color:#ffffff; box-shadow:#66666678 0px 1px 8px 0px;">
           <app-feeds-right></app-feeds-right>

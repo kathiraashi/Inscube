@@ -19,6 +19,8 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { InviteCubeRedirectionComponent } from './invite-cube-redirection/invite-cube-redirection.component';
     import { PasswordResetRedirectionComponent } from './password-reset-redirection/password-reset-redirection.component';
     import { FeedsViewComponent } from './feeds-view/feeds-view.component';
+    import { CaptureViewComponent } from './capture-view/capture-view.component';
+    import { TrendsViewComponent } from './trends-view/trends-view.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -91,6 +93,16 @@ const appRoutes: Routes = [
     { path: 'Post_View/:Post_Id',
         component: FeedsViewComponent,
         data: { animation: { value: 'Post_View', } },
+        canActivate: [AuthGuard]
+    },
+    { path: 'Capture_View/:Capture_Id',
+        component: CaptureViewComponent,
+        data: { animation: { value: 'Capture_View', } },
+        canActivate: [AuthGuard]
+    },
+    { path: 'Trends_View/:Trends_Id',
+        component: TrendsViewComponent,
+        data: { animation: { value: 'Trends_View', } },
         canActivate: [AuthGuard]
     },
 ];

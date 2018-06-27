@@ -12,6 +12,8 @@ export class CubesViewMainComponent implements OnInit {
 
   View_Source = 'Posts';
 
+  Active_Tab = 'Highlights';
+
   constructor(private active_route: ActivatedRoute,
               private Cube_View_Source: CubeViewRelatedService
             ) {
@@ -23,6 +25,12 @@ export class CubesViewMainComponent implements OnInit {
         this.View_Source = data;
       }
     });
+  }
+
+  ChangeActiveTab(name) {
+    if (name !== this.Active_Tab) {
+      this.Active_Tab = name;
+    }
   }
 
 }

@@ -3,7 +3,7 @@
   <ng-container *ngIf="Tag_Filter">
     <div class="Tag_Filter">
       <h5> {{Tag_Filter_Tag}} </h5>
-      <span (click)="View_all_trends()"> X </span>
+      <span (click)="reload_Trends()"> X </span>
     </div>
   </ng-container>
 
@@ -252,6 +252,14 @@
 
 
 <mat-menu #ReportTrendUser="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
+    <div *ngIf="Trigger_PostInfo && Trigger_PostInfo.Shared_Trends !== 'True'" (click)="EditPost_Model()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="dropd_icon" fxFlex="30px">
+          <i class="material-icons">border_color</i>
+      </div>
+      <div fxFlex>
+          <p class="dropd_text">Edit </p>
+      </div>
+    </div>
     <div class="dropdarrow"></div>
     <hr class="m-0">
     <div (click)="Delete_Post()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">

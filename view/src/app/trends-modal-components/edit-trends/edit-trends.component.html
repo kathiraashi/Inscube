@@ -1,0 +1,77 @@
+<div class="CreatePost">
+  <div class="postheader" fxLayout="row" fxLayoutAlign="start" >
+    <div fxFlex="65px" class="text-center">
+        <img  src="{{UsersBaseUrl}}{{LoginUser.Image}}" alt="" class="userimg">
+    </div>
+    <div fxFlex class="text-left">
+      <h5 class="m-0 posttype"> Edit Your #Campaign </h5>
+    </div>
+    <div fxFlex class="text-left">
+          <button type="button" style="padding: 0px 15px; font-size: 35px;" class="close" aria-label="Close" (click)="_bsModalRef.hide()">
+              <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+  </div>
+  <hr style="margin-top:3px;margin-bottom:0px">
+  <div class="modal-body">
+        <ng-container *ngIf="Selected_Tags.length > 0 || Old_Tags.length > 0">
+            <div class="Selected_Tags_list">
+               <p class="Selected_Tag" *ngFor="let Tag of Old_Tags; let i=index">
+                  <span class="Tag_Name"> {{Tag}} </span> <span class="Remove_Tag" (click)="removeOldTag(i)"> + </span>
+               </p>
+               <p class="Selected_Tag" *ngFor="let Tag of Selected_Tags; let i=index">
+                  <span class="Tag_Name"> {{Tag}} </span> <span class="Remove_Tag" (click)="removeTag(i)"> + </span>
+               </p>
+            </div>
+        </ng-container>
+
+        <span class="Tag_Search" dropdown [autoClose]="true" [isOpen]="status.isopen">
+            <p class="SearchTagInput"> #
+                <input [(ngModel)]="search_text" (ngModelChange)="Search_Text_change($event)" class="SearchInput" type="text" placeholder="Tags">
+                <span class="Tag_Create" [ngClass]="{'Inactive': search_text === undefined || search_text === '' || this.search_text === '#' }" (click)="CreateNewTag()"> Create </span>
+             </p>
+            <div *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="basic-link">
+                <div class="search_result" style="height: 300px;">
+                    <ng-scrollbar #scrollRef>
+                        <div *ngFor="let Tag of Search_Tags; let i=index" class="search_list" (click)="pushTag(i)">
+                            {{Tag.Tag}}
+                        </div>
+                        <p class="NoData" *ngIf="!Spinner && Search_Tags.length <= 0"> --------  Tags not found  ------- </p>
+                    </ng-scrollbar>
+                </div>
+            </div>
+        </span>
+    <form [formGroup]="Form" (ngSubmit)="onSubmit()" enctype="multipart/form-data" style="padding:0px 15px">
+          <textarea formControlName="Trends_Text" style="margin-top: 15px;" class="posttext" placeholder="Write your Campaign"></textarea>
+
+          <p style="margin: 0px;color: #888;font-size: 14px;">
+              Select cubes
+          </p>
+  
+          <div fxLayout fxLayoutAlign="space-between end">
+              <div fxFlex="85%">
+                  <div class="mt-10 grid_row">
+  
+                  <div *ngFor="let item of Cubes_List | slice:0:slice_Count; let i=index" class="cat-img-item">
+                      <img [ngClass]="{'Selected': item.Selected }" id="1" src="{{CubeBaseUrl}}{{item.Image}}" alt="" (click)="Select_Cube(i)">
+                      <p (click)="Select_Cube(i)" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }}  </p>
+                  </div>
+
+
+                  <div *ngIf="Cubes_List?.length > slice_Count">
+                      <p (click)="select_More_Model()" class="viewall"> ... </p>
+                  </div>
+  
+                  </div>
+              </div>
+              <div fxFlex="15%" style="line-height:75px;">
+                  <button type="submit" [ngClass]="{'disabled': Post_Submit }" [disabled]="Post_Submit" mat-raised-button color="primary" style="background-color: #d75739; margin-left:20px"> 
+                      <span *ngIf="!Post_Submit"> Submit </span>
+                      <span *ngIf="Post_Submit" style="color:#fff"> Uploading... </span>
+                   </button>
+              </div>
+          </div>
+  
+      </form>
+  </div>
+</div>

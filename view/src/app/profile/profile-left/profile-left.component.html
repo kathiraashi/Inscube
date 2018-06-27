@@ -5,7 +5,7 @@
             <img class="userimg" src="{{UsersBaseUrl}}{{User_Info.Image}}" alt="">
         </div>
     </div>
-    <div>
+    <div *ngIf="User_Info !== undefined">
         <p class="username"> {{User_Info.Inscube_Name}} </p>
     </div>
   <!-- UserDetails End -->
@@ -110,23 +110,40 @@
   <ng-container *ngIf="User_Cubes_List?.length > 0 && !Loader_2">
       <div class="row">
           <div class="col-sm-12 listFlexDiv">
-              <div  *ngFor="let item of User_Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
-                  <img class="followimg" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
-                  <p class="followname" [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
-              </div>
+                <ng-container *ngIf="User_Info !== undefined && User_Info._id === LoginUser._id">
+                    <div  *ngFor="let item of User_Cubes_List | slice:0:4; let i=index" class="col-xs-3 followPart ">
+                        <img class="followimg" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                        <p class="followname" [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="User_Info !== undefined && User_Info._id !== LoginUser._id">
+                    <div  *ngFor="let item of User_Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
+                        <img class="followimg" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                        <p class="followname" [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
+                    </div>
+                </ng-container>
           </div>
       </div>
   </ng-container>
 
 
-  <div *ngIf="User_Cubes_List?.length > 8" class="row">
-      <div class="col-sm-12 text-right">
-          <p class="viewAll"> <span (click)="View_All_MyCubes()" > View All... </span>  </p>
-      </div>
-    </div>
+    <ng-container *ngIf="User_Info !== undefined && User_Info._id !== LoginUser._id">
+        <div *ngIf="User_Cubes_List?.length > 8" class="row">
+            <div class="col-sm-12 text-right">
+                <p class="viewAll"> <span (click)="View_All_MyCubes()" > View All... </span>  </p>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="User_Info !== undefined && User_Info._id === LoginUser._id">
+        <div *ngIf="User_Cubes_List?.length > 4" class="row">
+            <div class="col-sm-12 text-right">
+                <p class="viewAll"> <span (click)="View_All_MyCubes()" > View All... </span>  </p>
+            </div>
+        </div>
+    </ng-container>
   
   <!-- Followers End  -->
-    <ng-container *ngIf=" User_Info !== undefined && User_Info._id === LoginUser._id">
+    <ng-container *ngIf="User_Info !== undefined && User_Info._id === LoginUser._id">
         <div class="Left_bar_Button">  
             <button (click)="privacy_model()" > Privacy settings </button>
             <button (click)="password_change()" > Change password </button>

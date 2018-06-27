@@ -23,6 +23,11 @@ export class TrendsService {
       .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
    }
 
+   public Cube_Trends_Update(data: any): Observable<any[]>  {
+      return this.http .post(API_URL + 'Cube_Trends_Update', data)
+      .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+  }
+
    public Cube_Trends_List(User_Id: any, Skip_Count: any): Observable<any[]>  {
       return this.http .get(API_URL + 'Cube_Trends_List/' + User_Id + '/' + Skip_Count )
       .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
@@ -92,6 +97,16 @@ export class TrendsService {
       return this.http .get(API_URL + 'Cube_Based_Trends_List/' + Cube_Id + '/' + User_Id )
       .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
    }
+
+    public CubeBased_Trends_Filter(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'CubeBased_Trends_Filter', data )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+
+    public UserBased_Trends_Filter(data: any): Observable<any[]>  {
+        return this.http .post(API_URL + 'UserBased_Trends_Filter', data )
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
 
    public User_Trends(User_Id: any ): Observable<any[]>  {
       return this.http .get(API_URL + 'User_Trends/' + User_Id )
