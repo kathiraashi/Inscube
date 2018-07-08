@@ -114,6 +114,7 @@ import { CubesViewCenterCapturesComponent } from './cubes/cubes-view-center-capt
 import { CubesViewCenterTrendsComponent } from './cubes/cubes-view-center-trends/cubes-view-center-trends.component';
 import { ProfileCapturesComponent } from './profile/profile-captures/profile-captures.component';
 import { ProfileTrendsComponent } from './profile/profile-trends/profile-trends.component';
+import { TrendsTagFilterListComponent } from './trends-tag-filter-list/trends-tag-filter-list.component';
 
 @NgModule({
   declarations: [
@@ -188,7 +189,8 @@ import { ProfileTrendsComponent } from './profile/profile-trends/profile-trends.
     CubesViewCenterCapturesComponent,
     CubesViewCenterTrendsComponent,
     ProfileCapturesComponent,
-    ProfileTrendsComponent
+    ProfileTrendsComponent,
+    TrendsTagFilterListComponent
   ],
   imports: [
       // Default Modules

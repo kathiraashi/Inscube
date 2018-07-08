@@ -131,8 +131,8 @@ exports.CubeTrends_Submit = function(req, res) {
                                                     var registrationToken = App_Info.Firebase_Token;
                                                     var payload = {
                                                         notification: {
-                                                            title: 'New # Campaign Shared',
-                                                            body: User_Info.Inscube_Name + ' shared a new # Campaign in ' + Data[0].Name,
+                                                            title: 'New # campaign shared',
+                                                            body: User_Info.Inscube_Name + ' shared a new # campaign in ' + Data[0].Name,
                                                         },
                                                         data: {
                                                             type: 'Trend',
@@ -567,6 +567,91 @@ exports.CubeTrends_Filter = function(req, res) {
                                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends List Cube Info Find Promise Error', 'Trends.controller.js ', error_1);
                                 });     
                         Get_Trends_Info(result_1);
+                    }
+                });
+            }
+        });
+    }
+};
+
+
+
+
+// -----------------------------------------------------------  Cube Trends Filter List --------------------------------------------------
+exports.CubeTrends_TagId_Filter = function(req, res) {
+    if(!req.body.User_Id || req.body.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Tag_Id || req.body.Tag_Id === ''){
+        res.status(200).send({Status:"True", Output:"False", Message: "Trends Tag Id can not be empty" });
+    }else{
+        CubeModel.Cube_Followersschema.find({'User_Id': req.body.User_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Trends.controller.js', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The User Followed Cube List."});
+            } else {
+                var CubesArray = [];
+                var Return_Json = result.map((Objects) => { CubesArray.push(Objects.Cube_Id); });
+                var Skip_Count = parseInt(req.body.Skip_Count);
+                TrendsModel.Trends_TagsSchema.findOne({ '_id': req.body.Tag_Id }, function(tag_err, tag_result) { 
+                    if(tag_err) {
+                    res.status(500).send({status:"False", Error:tag_err});
+                   } else {
+                        TrendsModel.Cube_TrendsSchema.find({'Cube_Ids': { $in: CubesArray }, 'Trends_Tags': tag_result.Tag, 'Active_Status': 'Active' }, {}, {sort: { updatedAt: -1 }, skip: Skip_Count, limit: 15 }, function(err_1, result_1) {
+                            if(err_1) {
+                                res.status(500).send({status:"False", Error:err_1});
+                            } else {
+                                
+                                result_1 = JSON.parse(JSON.stringify(result_1));
+                                
+                                const Get_Trends_Info = (result_1) => Promise.all(
+                                    result_1.map(info_1 => TrendsInfo(info_1)) 
+                                ).then( result_2 => {
+                                        result_2 = result_2.map((Objects) => { Objects.Time_Ago = moment(Objects.Time_Ago).fromNow();  return Objects; });
+                                        res.status(200).send({ Status:"True", Output: "True", Response: result_2, Tag: tag_result.Tag });
+                                }).catch( err_2 => {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends List Category Info Find Main Promise Error', 'Trends.controller.js', err_2);
+                                    res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Trends Info Find Promise Error "});
+                                });
+                                const TrendsInfo = info_1 =>
+                                    Promise.all([
+                                        UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                                        TrendsModel.Trends_Emoteschema.find({ 'Trends_Id': info_1._id }).exec(),
+                                        UserModel.UserSchema.findOne({ '_id': info_1.Shared_Trends_User_Id }, { Inscube_Name: 1}).exec(),
+                                        ]).then( Data => {
+                                            info_1.User_Name = Data[0].Inscube_Name;
+                                            info_1.User_Image = Data[0].Image;
+                                            info_1.Time_Ago = info_1.updatedAt;
+                                            info_1.Emotes = Data[1];
+                                            if(Data[2] !== null){ info_1.Trends_Owner_Name = Data[2].Inscube_Name; }
+                                            info_1.Comments = [];
+                                            var cubeIds = info_1.Cube_Ids;
+
+                                                const GetCube_Info = (cubeIds) => Promise.all(
+                                                        cubeIds.map(info => Cube_Info(info)) 
+                                                    ).then( result_3 => {
+                                                        info_1.Cubes_Info = result_3;
+                                                        return info_1;
+                                                    }).catch( err_3 => {
+                                                        ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends Submit Cube Info Find Promise Error', 'Trends.controller.js', err_3);
+                                                        res.status(500).send({Status:"False", Error:err_3, Message: "Some error occurred while Find the Cube Trends list Cube Info Find Promise Error "});
+                                                    });
+                                    
+                                                    const Cube_Info = info =>
+                                                        Promise.all([ 
+                                                            CubeModel.CubesSchema.findOne({ '_id': info }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                                            ]).then( Datas => {
+                                                                return Datas[0];
+                                                            }).catch(error => {
+                                                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends list Cube Info Find Promise Error', 'Trends.controller.js', error);
+                                                            });     
+                                            return GetCube_Info(cubeIds);
+
+                                        }).catch(error_1 => {
+                                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Trends List Cube Info Find Promise Error', 'Trends.controller.js ', error_1);
+                                        });     
+                                Get_Trends_Info(result_1);
+                            }
+                        });
                     }
                 });
             }
@@ -1110,8 +1195,8 @@ exports.Trends_Emote_Submit = function(req, res) {
                                                                 var registrationToken = App_Info.Firebase_Token;
                                                                 var payload = {
                                                                     notification: {
-                                                                        title: 'New Comment Added Your #campaign',
-                                                                        body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your  #campaign in ' + Cube_Info.Name,
+                                                                        title: 'New comment added your #campaign',
+                                                                        body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your  #campaign in ' + Cube_Info.Name,
                                                                     },
                                                                     data: {
                                                                         type: 'Trends',
@@ -1181,8 +1266,8 @@ exports.Trends_Emote_Submit = function(req, res) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
-                                                                            title: 'New Comment Added Your #campaign',
-                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your #campaign in ' + Cube_Info.Name,
+                                                                            title: 'New comment added your #campaign',
+                                                                            body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your #campaign in ' + Cube_Info.Name,
                                                                         },
                                                                         data: {
                                                                             type: 'Trends',
@@ -1272,8 +1357,8 @@ exports.Trends_Emote_Update = function(req, res) {
                                                         var registrationToken = App_Info.Firebase_Token;
                                                         var payload = {
                                                             notification: {
-                                                                title: 'New Comment Added Your #campaign',
-                                                                body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your #campaign in ' + Cube_Info.Name,
+                                                                title: 'New comment added your #campaign',
+                                                                body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your #campaign in ' + Cube_Info.Name,
                                                             },
                                                             data: {
                                                                 type: 'Trends',
@@ -1369,8 +1454,8 @@ exports.Trends_Comment_Submit = function(req, res) {
                                                 var registrationToken = App_Info.Firebase_Token;
                                                 var payload = {
                                                     notification: {
-                                                        title: 'New Opinion on your #campaign',
-                                                        body: User_Info.Inscube_Name + ' Shared an Opinion on your #campaign in ' + Cube_Info.Name,
+                                                        title: 'New opinion on your #campaign',
+                                                        body: User_Info.Inscube_Name + ' shared an opinion on your #campaign in ' + Cube_Info.Name,
                                                     },
                                                     data: {
                                                         type: 'Trends',

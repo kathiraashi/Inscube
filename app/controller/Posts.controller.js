@@ -199,8 +199,8 @@ exports.CubePost_Submit = function(req, res) {
                                                             var registrationToken = App_Info.Firebase_Token;
                                                             var payload = {
                                                                 notification: {
-                                                                    title: 'New Highlight Post',
-                                                                    body: User_Info.Inscube_Name + ' Posted ' + TextAddon + ' ' + Post_Type + ' in ' + Data[0].Name,
+                                                                    title: 'New highlight post',
+                                                                    body: User_Info.Inscube_Name + ' posted ' + TextAddon + ' ' + Post_Type + ' in ' + Data[0].Name,
                                                                 },
                                                                 data: {
                                                                     type: 'Highlight',
@@ -680,8 +680,8 @@ exports.Emote_Submit = function(req, res) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
-                                                                            title: 'New Comment Added Your Post',
-                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                                            title: 'New comment added your post',
+                                                                            body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
                                                                         },
                                                                         data: {
                                                                             type: 'Highlight',
@@ -760,8 +760,8 @@ exports.Emote_Submit = function(req, res) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
-                                                                            title: 'New Comment Added Your Post',
-                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_3.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                                            title: 'New comment added your post',
+                                                                            body: User_Info.Inscube_Name + ' commented ' + result_3.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
                                                                         },
                                                                         data: {
                                                                             type: 'Highlight',
@@ -858,8 +858,8 @@ exports.Emote_Update = function(req, res) {
                                                         var registrationToken = App_Info.Firebase_Token;
                                                         var payload = {
                                                             notification: {
-                                                                title: 'New Comment Added Your Post',
-                                                                body: User_Info.Inscube_Name + ' Commented ' + result_2.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                                title: 'New comment added your post',
+                                                                body: User_Info.Inscube_Name + ' commented ' + result_2.Emote_Text + ' to your ' + Post_Type + ' in ' + Cube_Info.Name,
                                                             },
                                                             data: {
                                                                 type: 'Highlight',
@@ -958,8 +958,8 @@ exports.Comment_Submit = function(req, res) {
                                                 var registrationToken = App_Info.Firebase_Token;
                                                 var payload = {
                                                     notification: {
-                                                        title: 'New Opinion on your Post',
-                                                        body: User_Info.Inscube_Name + ' Shared an Opinion on your ' + Post_Type + ' in ' + Cube_Info.Name,
+                                                        title: 'New opinion on your post',
+                                                        body: User_Info.Inscube_Name + ' shared an opinion on your ' + Post_Type + ' in ' + Cube_Info.Name,
                                                     },
                                                     data: {
                                                         type: 'Highlight',

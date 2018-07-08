@@ -1,5 +1,10 @@
 var UserModel = require('../models/User.model.js');
 var LoginInfoModel = require('../models/Login_Info.model.js');
+
+var CaptureModel = require('../models/Capture,model.js');
+var PostModel = require('../models/Post.model.js');
+var TrendsModel = require('../models/Trends,model.js');
+
 var ErrorManagement = require('./../../app/config/ErrorHandling.js');
 var parser = require('ua-parser-js');
 var get_ip = require('ipware')().get_ip;
@@ -78,6 +83,47 @@ exports.UserEmailValidate = function(req, res) {
     }
 };
 
+// ---------------------------------------------------------------------- Countries List----------------------------------------------------------
+exports.Country_List = function(req, res) {
+    UserModel.Global_Country.find({}, {Country_Name: 1}, {}, function(err, result) {
+        if(err) {
+            res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Find the Country List"});           
+        } else {
+            res.status(200).send({ Status:"True", Output: "True", Response: result });
+        }
+    });
+};
+
+// ---------------------------------------------------------------------- States List ----------------------------------------------------------
+exports.State_List = function(req, res) {
+    if(!req.params.Country_Id || req.params.Country_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Country Id can not be empty" });
+    }else{
+        UserModel.Global_State.find({ Country_DatabaseId: req.params.Country_Id }, { State_Name: 1}, {}, function(err, result) {
+            if(err) {
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Find the State List"});           
+            } else {
+                res.status(200).send({ Status:"True", Output: "True", Response: result });
+            }
+        });
+    }
+};
+
+// ---------------------------------------------------------------------- Cities List ----------------------------------------------------------
+exports.City_List = function(req, res) {
+    if(!req.params.State_Id || req.params.State_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "State Id can not be empty" });
+    }else{
+        UserModel.Global_City.find({ State_DatabaseId: req.params.State_Id }, { City_Name: 1}, {}, function(err, result) {
+            if(err) {
+                res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while Find the City List"});           
+            } else {
+                res.status(200).send({ Status:"True", Output: "True", Response: result });
+            }
+        });
+    }
+};
+
 // ---------------------------------------------------------------------- User Register ---------------------------------------------------------------
 exports.UserRegister = function(req, res) {
     if(!req.body.Inscube_Name || req.body.Inscube_Name === '') {
@@ -93,15 +139,16 @@ exports.UserRegister = function(req, res) {
             Inscube_Name: '@' + Ins_name,
             Email: req.body.Email,
             Password: req.body.Password,
-            Color_Code: req.body.Color_Code || '',
-            Image: req.body.Image || 'UserImage.png',
-            DOB: req.body.DOB || '',
-            City: req.body.City || '',
-            Country: req.body.Country || '',
-            Gender: req.body.Gender || '',
-            Hash_Tag_1: req.body.Hash_Tag_1 || '',
-            Hash_Tag_2: req.body.Hash_Tag_2 || '',
-            Hash_Tag_3: req.body.Hash_Tag_3 || '',
+            Color_Code: '',
+            Image: 'UserImage.png',
+            DOB: '',
+            City: {},
+            Country: {},
+            State: {},
+            Gender: '',
+            Hash_Tag_1: '',
+            Hash_Tag_2: '',
+            Hash_Tag_3: '',
             Show_Profile_To : 'Everyone',
             Active_Status: 'Active'
         });
@@ -186,8 +233,8 @@ exports.UserRegisterCompletion = function(req, res) {
         
         if(!req.body.User_Id || req.body.User_Id === '' ) {
             res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
-        // }else if(!req.body.Color_Code && req.body.Color_Code === '' ){
-        //     res.status(200).send({Status:"True", Output:"False", Message: "Color Code can not be empty" });
+        }else if(!req.body.Country && req.body.Country === '' ){
+            res.status(200).send({Status:"True", Output:"False", Message: "Country can not be empty" });
         }else if(upload_err){
             res.status(200).send({Status:"True", Output:"False", Message: "Only 'png, gif, jpg and jpeg' images are allowed" });
         }else{
@@ -203,12 +250,23 @@ exports.UserRegisterCompletion = function(req, res) {
                         } else if(result.Image !== '' ) {
                             User_Image = result.Image;
                         }
+                        var State = {};
+                        var City = {};
+                        if (req.body.State !== '') {
+                            State = JSON.parse(req.body.State);
+                        }
+                        if (req.body.City !== '') {
+                            City = JSON.parse(req.body.City);
+                        }
                         result.Color_Code = req.body.Color_Code || 'Color1';
                         result.Image = User_Image;
                         result.DOB = req.body.DOB;
                         result.City = req.body.City;
                         result.Country = req.body.Country;
                         result.Gender = req.body.Gender;
+                        result.Country = JSON.parse(req.body.Country);
+                        result.State = State;
+                        result.City = City;
                         result.Hash_Tag_1 = req.body.Hash_Tag_1;
                         result.Hash_Tag_2 = req.body.Hash_Tag_2;
                         result.Hash_Tag_3 = req.body.Hash_Tag_3;
@@ -556,6 +614,99 @@ exports.User_Info = function(req, res) {
 };
 
 
+// ---------------------------------------------------------------------- User Delete ---------------------------------------------------------------
+exports.User_Delete = function(req, res) {
+
+    if(!req.body.User_Id || req.body.User_Id === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else if(!req.body.Type || req.body.Type === '' ) {
+        res.status(200).send({Status:"True", Output:"False", Message: "Type can not be empty" });
+    }else{
+        UserModel.UserSchema.findOne({'_id': req.body.User_Id}, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+                res.status(500).send({ Status:"False", Error:err, Message: "User Info Find Error! " });
+            } else {
+                if (result !== null) {
+                    var ActionUser_Id = req.body.User_Id;
+                    var Changing_Status = 'Delete';
+                    if (req.body.Type === 'Deactivate') {
+                        Changing_Status = 'Deactivate';
+                    }
+                    Promise.all([
+                        // User Status Change
+                        UserModel.UserSchema.updateMany(
+                            { _id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status } }
+                        ).exec(),
+
+                        // User Cube Status Change
+                        CubeModel.CubesSchema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status } }
+                        ).exec(),
+
+                        // User Topic Status Change
+                        CubeModel.Cube_Topicschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { Active_Status: Active_Status }
+                        ).exec(),
+
+                        // User Followers Status Change
+                        CubeModel.Cube_Followersschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status } }
+                        ).exec(),
+
+                        // User Post Status Change
+                        PostModel.Cube_Postschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status } }
+                        ).exec(),
+
+                        // if User Post Shared -> this Post Ownership Change to Shared User
+                        PostModel.Cube_Postschema.updateMany(
+                            { Shared_Post: 'True', Shared_Post_User_Id: ActionUser_Id },
+                            { $set: { Shared_Post: 'False'}, $unset: {Shared_Post_User_Id: 1, Shared_Post_Id: 1} }
+                        ).exec(),
+
+                        // if User is the One of this Post Emote -> Remove User Id From this Emote
+                        PostModel.Post_Emoteschema.updateMany(
+                            { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: true } },
+                            { $pull: { User_Ids: ActionUser_Id } }
+                        ).exec(),
+
+                        // If Only The User of This Post Emote -> Status Change 
+                        PostModel.Post_Emoteschema.updateMany(
+                            { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: false } },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        // User Post Comment Status Change
+                        PostModel.Post_Commentschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        // User Notification Status Change
+                        UserModel.Post_NotificationSchema.updateMany(
+                            {  $or: [ { User_Id: ActionUser_Id }, { To_User_Id: ActionUser_Id } ] },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec()
+                    ]).then( Data => {
+                        res.status(200).send({ Status:"True", Output:"True", Return: Data });
+                    }).catch( error => {
+                        res.status(200).send({ Status:"True", Output:"False", Return: error });
+                    });
+                }else {
+                    res.status(200).send({ Status:"True", Output:"False", Response: result_1, Message: 'Invalid User Info' });
+                }
+            }
+        });
+    }
+};
+
+
 // ---------------------------------------------------------------------- User Privacy Update ---------------------------------------------------------------
 exports.Privacy_Update = function(req, res) {
 
@@ -866,3 +1017,7 @@ exports.AndroidVersionGet = function(req, res) {
         }
     });
 };
+
+
+
+

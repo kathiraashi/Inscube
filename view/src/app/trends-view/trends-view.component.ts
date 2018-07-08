@@ -29,9 +29,9 @@ import { TrendsService } from './../service/trends/trends.service';
 export class TrendsViewComponent implements OnInit {
 
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  CapturesBaseUrl = 'http://localhost:3000/API/Uploads/Capture_Attachments/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
+  CapturesBaseUrl = 'http://localhost:4000/API/Uploads/Capture_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;
@@ -74,7 +74,6 @@ export class TrendsViewComponent implements OnInit {
               private active_route: ActivatedRoute,
               private route: Router
               ) {
-              this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
               this.active_route.url.subscribe((u) => {
               this.Trends_Id = this.active_route.snapshot.params['Trends_Id'];

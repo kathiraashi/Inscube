@@ -121,8 +121,8 @@ exports.CubeCapture_Submit = function(req, res) {
                                                         var registrationToken = App_Info.Firebase_Token;
                                                         var payload = {
                                                             notification: {
-                                                                title: 'New Moment Captured',
-                                                                body: User_Info.Inscube_Name + ' shared a new moment in ' + Data[0].Name,
+                                                                title: 'New cube capture',
+                                                                body: User_Info.Inscube_Name + ' shared a new cube capture in ' + Data[0].Name,
                                                             },
                                                             data: {
                                                                 type: 'Capture',
@@ -805,8 +805,8 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
-                                                                            title: 'New Comment Added Your Capture Moment',
-                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your Capture Moment in ' + Cube_Info.Name,
+                                                                            title: 'New comment added your cube capture',
+                                                                            body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your cube capture in ' + Cube_Info.Name,
                                                                         },
                                                                         data: {
                                                                             type: 'Capture',
@@ -876,8 +876,8 @@ exports.Capture_Emote_Submit = function(req, res) {
                                                                     var registrationToken = App_Info.Firebase_Token;
                                                                     var payload = {
                                                                         notification: {
-                                                                            title: 'New Comment Added Your Capture Moment',
-                                                                            body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your Capture Moment in ' + Cube_Info.Name,
+                                                                            title: 'New comment added your cube capture',
+                                                                            body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your cube capture in ' + Cube_Info.Name,
                                                                         },
                                                                         data: {
                                                                             type: 'Capture',
@@ -967,8 +967,8 @@ exports.Capture_Emote_Update = function(req, res) {
                                                         var registrationToken = App_Info.Firebase_Token;
                                                         var payload = {
                                                             notification: {
-                                                                title: 'New Comment Added Your Capture Moment',
-                                                                body: User_Info.Inscube_Name + ' Commented ' + result_1.Emote_Text + ' to your Capture Moment in ' + Cube_Info.Name,
+                                                                title: 'New comment added your cube capture',
+                                                                body: User_Info.Inscube_Name + ' commented ' + result_1.Emote_Text + ' to your cube capture in ' + Cube_Info.Name,
                                                             },
                                                             data: {
                                                                 type: 'Capture',
@@ -1061,8 +1061,8 @@ exports.Capture_Comment_Submit = function(req, res) {
                                                 var registrationToken = App_Info.Firebase_Token;
                                                 var payload = {
                                                     notification: {
-                                                        title: 'New Opinion on your Capture Moment',
-                                                        body: User_Info.Inscube_Name + ' Shared an Opinion on your Capture Moment in ' + Cube_Info.Name,
+                                                        title: 'New opinion on your cube capture',
+                                                        body: User_Info.Inscube_Name + ' shared an opinion on your cube capture in ' + Cube_Info.Name,
                                                     },
                                                     data: {
                                                         type: 'Capture',
@@ -1246,4 +1246,59 @@ exports.Report_CaptureComment_Submit = function(req, res) {
             }
         });
      }
+};
+
+
+
+
+
+// ----------------------------------------------------------------------  Captures Search----------------------------------------------------------
+exports.Search_Captures = function(req, res) {
+    if(!req.params.Search_text || req.params.Search_text === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "Search text can not be empty" });
+    } else if(!req.params.User_Id || req.params.User_Id === '') {
+        res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+    }else{
+        CubeModel.Cube_Followersschema.find({'User_Id': req.params.User_Id, 'Active_Status': 'Active' }, function(err, result) {
+            if(err) {
+                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Followed Cube List Find Query Error', 'Cubes.controller.js - 12', err);
+                res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The  User Followed Cube List."});
+            } else {
+                var CubesArray = [];
+                var Return_Json = result.map((Objects) => {
+                    CubesArray.push(Objects.Cube_Id);
+                });
+                CaptureModel.Cube_Captureschema.find({'Cube_Ids': { $in: CubesArray }, Capture_Text: { $regex: new RegExp(req.params.Search_text, "i") }, 'Active_Status': 'Active' }, {Capture_Video: 0}, {sort: { updatedAt: -1 } }, function(err_1, result_1) {
+                    if(err_1) {
+                        res.status(500).send({status:"False", Error:err_1});
+                    } else {
+                        result_1 = JSON.parse(JSON.stringify(result_1));
+                        const Get_Post_Info = (result_1) => Promise.all(
+                            result_1.map(info_1 => PostInfo(info_1)) 
+                        ).then( result_2 => {
+                                res.status(200).send({ Status:"True", Output: "True", Response: result_2  });
+                        }).catch( err_2 => {
+                            
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Main Promise Error', 'Posts.controller.js - 75', err_2);
+                            res.status(500).send({Status:"False", Error:err_2, Message: "Some error occurred while Find the Cube Post Submit Info Find Promise Error "});
+                        });
+                        const PostInfo = info_1 =>
+                            Promise.all([
+                                UserModel.UserSchema.findOne({ '_id': info_1.User_Id }).exec(),
+                                CubeModel.CubesSchema.findOne({ '_id': info_1.Cube_Ids[0] }, {Category_Id: 1, Image: 1, Name: 1}).exec(),
+                                ]).then( Data => {
+                                    info_1.User_Name = Data[0].Inscube_Name;
+                                    info_1.User_Image = Data[0].Image;
+                                    info_1.Cube_Name = Data[1].Name;
+                                    info_1.Cubes_Count = (info_1.Cube_Ids).length;
+                                    return info_1;
+                                }).catch(error_1 => {
+                                    ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cube Post Submit Category Info Find Sub Promise Error', 'Posts.controller.js - 85', error_1);
+                                });     
+                        Get_Post_Info(result_1);
+                    }
+                });
+            }
+        });
+    }
 };

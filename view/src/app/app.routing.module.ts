@@ -21,6 +21,7 @@ import { NotAuthGuard } from './guard/not-auth.guard';
     import { FeedsViewComponent } from './feeds-view/feeds-view.component';
     import { CaptureViewComponent } from './capture-view/capture-view.component';
     import { TrendsViewComponent } from './trends-view/trends-view.component';
+    import { TrendsTagFilterListComponent } from './trends-tag-filter-list/trends-tag-filter-list.component';
 
 const appRoutes: Routes = [
     { path: '',
@@ -103,6 +104,11 @@ const appRoutes: Routes = [
     { path: 'Trends_View/:Trends_Id',
         component: TrendsViewComponent,
         data: { animation: { value: 'Trends_View', } },
+        canActivate: [AuthGuard]
+    },
+    { path: 'Trends_Tag_Filter/:Tag_Id',
+        component: TrendsTagFilterListComponent,
+        data: { animation: { value: 'Trends_Tag_Filter', } },
         canActivate: [AuthGuard]
     },
 ];

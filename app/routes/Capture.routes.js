@@ -37,6 +37,8 @@ module.exports = function(app) {
         app.get('/API/Capture/User_Captures/:User_Id', Controller.User_Captures);
 
         app.post('/API/Capture/Cube_Capture_Share', Controller.Cube_Capture_Share);
+
+        app.get('/API/Capture/Search_Captures/:User_Id/:Search_text', Controller.Search_Captures);
         
 
 };

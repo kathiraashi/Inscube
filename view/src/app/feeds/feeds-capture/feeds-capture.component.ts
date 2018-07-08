@@ -27,9 +27,9 @@ import { CaptureService } from './../../service/capture/capture.service';
 })
 export class FeedsCaptureComponent implements OnInit {
 
-   UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-   CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-   CapturesBaseUrl = 'http://localhost:3000/API/Uploads/Capture_Attachments/';
+   UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+   CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
+   CapturesBaseUrl = 'http://localhost:4000/API/Uploads/Capture_Attachments/';
 
    modalRef: BsModalRef;
    carouselBanner: NgxCarousel;

@@ -2,6 +2,10 @@
     border: 0px !important;
 }
 
+p-autocomplete.ng-dirty.ng-invalid > .ui-autocomplete > .ui-inputtext{
+    border-color: red;
+}
+
 /* Select box style One */
     .Select_Box_Style_1 .ui-dropdown{
         height: 40px;
@@ -36,7 +40,7 @@
     }
     .Select_Box_Style_1 .ui-inputtext.ui-state-focus, .ui-inputtext:focus{
         border-color: #2196f3d6 !important;
-        box-shadow: 0px 0px 1px 1px #2196f363 !important;
+        /* box-shadow: 0px 0px 1px 1px #2196f363 !important; */
     }
     .Select_Box_Style_1 .ui-inputtext{
         font-size: 14px;
@@ -48,8 +52,26 @@
     }
     .ui-dropdown.ui-state-focus, .ui-multiselect.ui-state-focus{
         border-color: #2196f3d6 !important;
-        box-shadow: 0px 0px 1px 1px #2196f363 !important;
+        /* box-shadow: 0px 0px 1px 1px #2196f363 !important; */
     }
+
+
+
+    .Search_templete_Style_2 .ui-autocomplete-panel .ui-state-highlight {
+        border-color: #d75839;
+        background: #d75839;
+        color: #FFFFFF;
+    }
+    .Search_templete_Style_2 .ui-autocomplete-panel .ui-autocomplete-list{
+        padding: 0px;
+    }
+    .Search_templete_Style_2 .ui-autocomplete-panel .ui-autocomplete-list-item{
+        padding: 6px;
+        border-radius: 0px;
+    }
+
+
+
 
 /* create post selectButton css */
     .ui-selectbutton{

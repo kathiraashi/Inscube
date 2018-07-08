@@ -1,37 +1,37 @@
 import { Component, OnInit, TemplateRef  } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+
 import { MatSnackBar } from '@angular/material';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { NgxCarousel } from 'ngx-carousel';
 import { Lightbox } from 'angular2-lightbox';
-import { Router, ActivatedRoute } from '@angular/router';
 
-import { TrendsEmoteAddComponent } from './../../trends-modal-components/trends-emote-add/trends-emote-add.component';
-import { ReportTrendsComponent } from './../../trends-modal-components/report-trends/report-trends.component';
-import { EditTrendsCommentComponent } from './../../trends-modal-components/edit-trends-comment/edit-trends-comment.component';
-import { ReportTrendsCommentComponent } from './../../trends-modal-components/report-trends-comment/report-trends-comment.component';
-import { TrendsShareCubesListComponent } from './../../trends-modal-components/trends-share-cubes-list/trends-share-cubes-list.component';
-import { EditTrendsComponent } from './../../trends-modal-components/edit-trends/edit-trends.component';
+import { TrendsEmoteAddComponent } from './../trends-modal-components/trends-emote-add/trends-emote-add.component';
+import { ReportTrendsComponent } from './../trends-modal-components/report-trends/report-trends.component';
+import { EditTrendsCommentComponent } from './../trends-modal-components/edit-trends-comment/edit-trends-comment.component';
+import { ReportTrendsCommentComponent } from './../trends-modal-components/report-trends-comment/report-trends-comment.component';
+import { TrendsShareCubesListComponent } from './../trends-modal-components/trends-share-cubes-list/trends-share-cubes-list.component';
+import { EditTrendsComponent } from './../trends-modal-components/edit-trends/edit-trends.component';
 
-import { ReportUserComponent } from './../../Modal_Components/report-user/report-user.component';
-import { DeleteConfirmationComponent } from './../../Modal_Components/delete-confirmation/delete-confirmation.component';
-import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
+import { ReportUserComponent } from './../Modal_Components/report-user/report-user.component';
+import { DeleteConfirmationComponent } from './../Modal_Components/delete-confirmation/delete-confirmation.component';
+import { PostSubmitService } from './../component-connecting/post-submit/post-submit.service';
 
-import { PostService } from './../../service/post/post.service';
+import { PostService } from './../service/post/post.service';
 
-import { TrendsService } from './../../service/trends/trends.service';
+import { TrendsService } from './../service/trends/trends.service';
 
 @Component({
-  selector: 'app-profile-trends',
-  templateUrl: './profile-trends.component.html',
-  styleUrls: ['./profile-trends.component.css']
+  selector: 'app-trends-tag-filter-list',
+  templateUrl: './trends-tag-filter-list.component.html',
+  styleUrls: ['./trends-tag-filter-list.component.css']
 })
-export class ProfileTrendsComponent implements OnInit {
+export class TrendsTagFilterListComponent implements OnInit {
 
 
   UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
   CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
-  CapturesBaseUrl = 'http://localhost:4000/API/Uploads/Capture_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;
@@ -63,43 +63,50 @@ export class ProfileTrendsComponent implements OnInit {
   Trigger_PostInfo;
   Trigger_CommentInfo;
   Trigger_UserId;
-  User_Id;
+  Skip_Count = 0;
   Tag_Skip_Count = 0;
+
+  Trends_Id;
 
   constructor(public snackBar: MatSnackBar,
               private modalService: BsModalService,
               public Trends_Service: TrendsService,
               public Post_Service: PostService,
               public _componentConnectService: PostSubmitService,
-              private router: Router,
               private _lightbox: Lightbox,
               private active_route: ActivatedRoute,
+              private route: Router
               ) {
               this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
               this.active_route.url.subscribe((u) => {
-                this.User_Id = this.active_route.snapshot.params['User_Id'];
-              this.Trends_Service.User_Trends(this.User_Id).subscribe( datas => {
-                 this.Loader_1 = false;
-                    if (datas['Status'] === 'True') {
-                       this.Trends_List = datas['Response'];
-                       this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
-                       this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
-                          if (this.LoginUser._id === y ) {
-                             x.Already = true;
-                          } else {
-                             x.Already = false;
-                          }
-                       }); }); } );
-                       if ( this.Trends_List.length < 15) {
-                          this.Show_Load_More = false;
-                       }
-                    }
-                  });
+              this.Tag_Filter = false;
+              this.Trends_Id = this.active_route.snapshot.params['Tag_Id'];
+              const _Data = { User_Id: this.LoginUser._id, Skip_Count: this.Skip_Count, Tag_Id: this.Trends_Id };
+                this.Trends_Service.CubeTrends_TagId_Filter(_Data).subscribe( datas => {
+                  this.Loader_1 = false;
+                  this.Tag_Filter_Tag = datas['Tag'];
+                  this.Skip_Count =  15;
+                      if (datas['Status'] === 'True') {
+                        this.Trends_List = datas['Response'];
+                        this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+                        this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+                            if (this.LoginUser._id === y ) {
+                              x.Already = true;
+                            } else {
+                              x.Already = false;
+                            }
+                        }); }); } );
+                        if ( this.Trends_List.length < 15) {
+                            this.Show_Load_More = false;
+                        }
+                      }
                 });
+              });
+
      }
 
   ngOnInit() {
-     this.screenHeight = window.innerHeight - 125;
+     this.screenHeight = window.innerHeight - 160;
      this.scrollHeight = this.screenHeight + 'px';
 
      this.carouselBanner = {
@@ -134,16 +141,35 @@ export class ProfileTrendsComponent implements OnInit {
      // console.log(event);
   }
 
-
-  Show_Image(URL) {
-     const _album: Array<any> = [{ src: URL}];
-     this._lightbox.open(_album, 0);
+  reload_Trends() {
+     this.screenHeight = window.innerHeight - 160;
+     this.scrollHeight = this.screenHeight + 'px';
+     this.Trends_List = [];
+     this.Loader_1 = true;
+     this.Tag_Filter = false;
+     this.Show_Load_More = true;
+     const _Data = { User_Id: this.LoginUser._id, Skip_Count: 0, Tag_Id: this.Trends_Id };
+     this.Trends_Service.CubeTrends_TagId_Filter(_Data).subscribe( datas => {
+        this.Loader_1 = false;
+        this.Skip_Count = 15;
+        this.Tag_Filter_Tag = datas['Tag'];
+        if (datas['Status'] === 'True') {
+              this.Trends_List = datas['Response'];
+              this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+              this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+                 if (this.LoginUser._id === y ) {
+                    x.Already = true;
+                 } else {
+                    x.Already = false;
+                 }
+              }); }); } );
+              if ( this.Trends_List.length < 15) {
+              this.Show_Load_More = false;
+              }
+        }
+     });
   }
 
-  Show_Video(template: TemplateRef<any>, URL) {
-     this.modalRef = this.modalService.show(template,  Object.assign({}, { class: 'modal-md' }));
-     this.video_Url = URL;
-  }
 
   Emote_Add(_Index) {
      const initialState = { data: {Emotes: this.Trends_List[_Index].Emotes, Post_Info:  this.Trends_List[_Index] } };
@@ -273,6 +299,7 @@ export class ProfileTrendsComponent implements OnInit {
         if (result.Status === 'Yes') {
         this.Trends_Service.Cube_Trends_Delete(this.Trigger_PostInfo._id).subscribe( datas => {
            if (datas['Status'] === 'True' && datas['Output'] === 'True') {
+              this.Skip_Count = this.Skip_Count - 1;
               const _index =  this.Trends_List.findIndex(x => x._id === this.Trigger_PostInfo._id);
               this.Trends_List.splice(_index, 1);
            }
@@ -393,54 +420,80 @@ export class ProfileTrendsComponent implements OnInit {
      });
   }
 
-
-  Tag_Filer_Change(_index) {
-    this.Trends_List = [];
-    this.Loader_1 = true;
-    this.Tag_Filter = true;
-    this.screenHeight = window.innerHeight - 160;
-    this.scrollHeight = this.screenHeight + 'px';
-    this.Tag_Filter_Tag = this.Trigger_PostInfo.Trends_Tags[_index];
-    const data = { User_Id : this.User_Id, Trends_Tag : this.Tag_Filter_Tag };
-    this.Trends_Service.UserBased_Trends_Filter(data).subscribe( datas => {
-       this.Loader_1 = false;
-          if (datas['Status'] === 'True') {
-             this.Trends_List = datas['Response'];
-             this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
-             this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
-                if (this.LoginUser._id === y ) {
-                   x.Already = true;
-                } else {
-                   x.Already = false;
-                }
-             }); }); } );
-          }
-    });
- }
-
-
- reload_Trends() {
-  this.screenHeight = window.innerHeight - 125;
-  this.scrollHeight = this.screenHeight + 'px';
-  this.Tag_Filter = false;
-  this.Trends_List = [];
-  this.Loader_1 = true;
-  this.Trends_Service.User_Trends(this.User_Id).subscribe( datas => {
-     this.Loader_1 = false;
-     if (datas['Status'] === 'True') {
-           this.Trends_List = datas['Response'];
-           this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
-           this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+  Load_More_Posts() {
+     this.Loader_3 = true;
+     const _Data = { User_Id: this.LoginUser._id, Skip_Count: this.Skip_Count, Tag_Id: this.Trends_Id };
+     this.Trends_Service.CubeTrends_TagId_Filter(_Data).subscribe( datas => {
+        this.Loader_3 = false;
+        this.Skip_Count = this.Skip_Count + 15;
+        if (datas['Status'] === 'True') {
+           const new_Posts = datas['Response'];
+           new_Posts.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+           new_Posts.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
               if (this.LoginUser._id === y ) {
-                 x.Already = true;
+              x.Already = true;
               } else {
-                 x.Already = false;
+              x.Already = false;
               }
            }); }); } );
-     }
-  });
-}
+           if ( new_Posts.length < 15) {
+              this.Show_Load_More = false;
+           }
+           this.Trends_List = this.Trends_List.concat(new_Posts);
+        }
+     });
+  }
 
+  Tag_Filer_Change(_index) {
+     this.Trends_List = [];
+     this.Loader_1 = true;
+     this.Tag_Filter = true;
+     this.Tag_Skip_Count = 0;
+     this.Tag_Filter_Tag = this.Trigger_PostInfo.Trends_Tags[_index];
+     const _Data = { User_Id: this.LoginUser._id, Skip_Count: this.Tag_Skip_Count, Trends_Tag: this.Tag_Filter_Tag };
+     this.Trends_Service.Cube_Trends_Filter(_Data).subscribe( datas => {
+        this.Loader_1 = false;
+        this.Tag_Skip_Count = 15;
+           if (datas['Status'] === 'True') {
+              this.Trends_List = datas['Response'];
+              this.Trends_List.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+              this.Trends_List.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+                 if (this.LoginUser._id === y ) {
+                    x.Already = true;
+                 } else {
+                    x.Already = false;
+                 }
+              }); }); } );
+              if ( this.Trends_List.length < 15) {
+                 this.Show_Load_More = false;
+              }
+           }
+     });
+  }
+
+  Filter_Load_More_Posts() {
+     this.Loader_3 = true;
+     const _Data = { User_Id: this.LoginUser._id, Skip_Count: this.Tag_Skip_Count, Trends_Tag: this.Tag_Filter_Tag };
+     this.Trends_Service.Cube_Trends_Filter(_Data).subscribe( datas => {
+        this.Loader_3 = false;
+        this.Tag_Skip_Count = this.Tag_Skip_Count + 15;
+        if (datas['Status'] === 'True') {
+           const new_Posts = datas['Response'];
+           new_Posts.map(v => { v.Emote_Count = (v.Emotes).length ; v.Splice_Count = 5; } );
+           new_Posts.map(v => { v.Emotes.map(x => { x.User_Ids.map(y => {
+              if (this.LoginUser._id === y ) {
+              x.Already = true;
+              } else {
+              x.Already = false;
+              }
+           }); }); } );
+           if ( new_Posts.length < 15) {
+              this.Show_Load_More = false;
+           }
+           this.Trends_List = this.Trends_List.concat(new_Posts);
+        }
+     });
+  }
 
 
 }

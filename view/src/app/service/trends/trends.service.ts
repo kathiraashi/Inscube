@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://localhost:3000/API/Trends/';
+const API_URL = 'http://localhost:4000/API/Trends/';
 
 @Injectable()
 export class TrendsService {
@@ -122,6 +122,11 @@ export class TrendsService {
       return this.http .post(API_URL + 'Cube_Trends_Filter', data)
       .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
    }
+
+   public CubeTrends_TagId_Filter(data: any): Observable<any[]>  {
+    return this.http .post(API_URL + 'CubeTrends_TagId_Filter', data)
+    .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+ }
 
    public Search_Trends_Tag(Search_text: any): Observable<any[]>  {
       return this.http .get(API_URL + 'Search_Trends_Tag/' + Search_text)

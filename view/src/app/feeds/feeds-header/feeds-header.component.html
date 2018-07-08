@@ -16,7 +16,7 @@
                     <div *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="basic-link">
                         <div class="search_tabs">
                             <div class="search_tab" [ngClass]="{'active': activeTab === 'Cubes'}" (click)="change_activeTab('Cubes')">
-                                <p> Cubes <small *ngIf="activeTab === 'Cubes'"> ({{Search_Cudes?.length}}) </small> </p>
+                                <p> Cubes <small *ngIf="activeTab === 'Cubes'"> ({{Search_Cubes?.length}}) </small> </p>
                             </div>
                             <div class="search_tab" [ngClass]="{'active': activeTab === 'Users'}" (click)="change_activeTab('Users')">
                                 <p> Users <small *ngIf="activeTab === 'Users'"> ({{Search_Users?.length}}) </small></p>
@@ -24,12 +24,18 @@
                             <div class="search_tab" [ngClass]="{'active': activeTab === 'Posts'}" (click)="change_activeTab('Posts')">
                                 <p> Posts <small *ngIf="activeTab === 'Posts'"> ({{Search_Posts?.length}}) </small> </p>
                             </div>
+                            <div class="search_tab" [ngClass]="{'active': activeTab === 'Captures'}" (click)="change_activeTab('Captures')">
+                                <p> Captures <small *ngIf="activeTab === 'Captures'"> ({{Search_Captures?.length}}) </small> </p>
+                            </div>
+                            <div class="search_tab" [ngClass]="{'active': activeTab === 'Trends'}" (click)="change_activeTab('Trends')">
+                                <p> Trends <small *ngIf="activeTab === 'Trends'"> ({{Search_Trends?.length}}) </small> </p>
+                            </div>
                         </div>
                         <div class="search_result" style="height: 300px;">
                             <ng-scrollbar #scrollRef>
 
-                                <ng-container *ngIf="Search_Cudes && Search_Cudes?.length > 0 && activeTab === 'Cubes'">
-                                    <div *ngFor="let cube of Search_Cudes; let i=index" class="search_list_Cube" (click)="clear()" [routerLink]="[ '/Cube_View', cube._id ]">
+                                <ng-container *ngIf="Search_Cubes && Search_Cubes?.length > 0 && activeTab === 'Cubes'">
+                                    <div *ngFor="let cube of Search_Cubes; let i=index" class="search_list_Cube" (click)="clear()" [routerLink]="[ '/Cube_View', cube._id ]">
                                         <img src="{{CubeBaseUrl}}{{cube.Image}}" alt="Cube Image">
                                         <div class="info"> 
                                             <p class="name"> {{cube.Name | slice:0:50}} {{cube.Name?.length > 50 ? '...' : ' ' }} <span> ( {{cube.Category_Name}} ) </span></p>
@@ -71,10 +77,33 @@
                                                 <ng-container *ngIf="post.Cubes_Count > 1"> <span> and {{post.Cubes_Count -1}} more cube<ng-container *ngIf="post.Cubes_Count > 2">s</ng-container> </span> </ng-container> 
                                             </p>
                                             <p class="text_line">
-
                                                 <span class="text"> {{post.Post_Text | slice:0:72}} {{post.Post_Text?.length > 72 ? '...' : ' ' }} </span>
                                                 <span class="timeago"> {{post.updatedAt | amTimeAgo}} </span>
                                             </p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngIf="Search_Captures && Search_Captures?.length > 0 && activeTab === 'Captures'">
+                                    <div *ngFor="let Capture of Search_Captures; let i=index" class="search_list_Post" (click)="clear()" [routerLink]="[ '/Capture_View', Capture._id ]">
+                                        <img src="{{UsersBaseUrl}}{{Capture.User_Image}}" alt="User Image">
+                                        <div class="info"> 
+                                            <p class="name">{{Capture.User_Name | slice:0:20}} {{Capture.User_Name?.length > 20 ? '...' : ' ' }}
+                                                <span> added a cube capture in </span>  {{Capture.Cube_Name | slice:0:20}} {{Capture.Cube_Name?.length > 20 ? '...' : ' ' }}
+                                                <ng-container *ngIf="Capture.Cubes_Count > 1"> <span> and {{Capture.Cubes_Count -1}} more cube<ng-container *ngIf="Capture.Cubes_Count > 2">s</ng-container> </span> </ng-container> 
+                                            </p>
+                                            <p class="text_line">
+                                                <span class="text"> {{Capture.Capture_Text | slice:0:72}} {{Capture.Capture_Text?.length > 72 ? '...' : ' ' }} </span>
+                                                <span class="timeago"> {{Capture.updatedAt | amTimeAgo}} </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </ng-container>
+
+                                <ng-container *ngIf="Search_Trends && Search_Trends?.length > 0 && activeTab === 'Trends'">
+                                    <div *ngFor="let Trend of Search_Trends; let i=index" (click)="clear()" class="search_list" [routerLink]="[ '/Trends_Tag_Filter', Trend._id ]" style="line-height: 25px;height: 30px;" >
+                                        <div class="info"> 
+                                            <p class="name"> #{{Trend.Tag | slice:0:80}} {{Trend.Tag?.length > 80 ? '...' : ' ' }} </p>
                                         </div>
                                     </div>
                                 </ng-container>

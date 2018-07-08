@@ -26,9 +26,9 @@ import { PostService } from './../../service/post/post.service';
 })
 export class FeedsCenterComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  PostsBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
+  PostsBaseUrl = 'http://localhost:4000/API/Uploads/Post_Attachments/';
 
   modalRef: BsModalRef;
   carouselBanner: NgxCarousel;

@@ -5,7 +5,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
 
-const API_URL = 'http://localhost:3000/API/Signin_Signup/';
+const API_URL = 'http://localhost:4000/API/Signin_Signup/';
 
 @Injectable()
 export class SigninSignupService {
@@ -40,6 +40,19 @@ export class SigninSignupService {
                                 }
                             return result;
                         }).catch(this.handleError);
+    }
+
+    public Country_List(): Observable<any[]>  {
+        return this.http .get(API_URL + 'Country_List')
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public State_List(Country_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'State_List/' + Country_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+    }
+    public City_List(State_Id: any): Observable<any[]>  {
+        return this.http .get(API_URL + 'City_List/' + State_Id)
+        .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
     public Privacy_Update_Check(User_Id: any): Observable<any[]>  {

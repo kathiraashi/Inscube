@@ -16,27 +16,21 @@ import { DataSharedVarServiceService } from './../service/data-shared-var-servic
 })
 export class ProfileCompletionComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
 
   colorTheme = 'theme-red';
   bsConfig: Partial<BsDatepickerConfig>;
   Gender_List;
   selectedGender;
 
-  selectedCountry: string;
-  countries: string[] = [
-    // 'Alabama',
-    // 'Alaska',
-    // 'Arizona',
-    // 'Arkansas',
-  ];
+  AllCountry: any[];
+  countries: any[];
 
-  selectedCities: string;
-  cities: string[] = [
-    // 'California',
-    // 'Colorado',
-    // 'Connecticut',
-  ];
+  AllStateOfCountry: any[];
+  states: any[];
+
+  AllCityOfState: string;
+  cities: any[];
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -57,21 +51,103 @@ export class ProfileCompletionComponent implements OnInit {
         this.Gender_List = [{name: 'Male'}, {name: 'Female'}, {name: 'Others'}, {name: 'Not specify'}];
         this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
         this.If_Invite = this.ShareingService.GetInviteRoute();
+        this.Service.Country_List().subscribe( country => {
+          if (country['Status'] === 'True' && country['Output'] === 'True') {
+              this.AllCountry = country['Response'];
+          }
+        });
   }
 
-  ngOnInit() {
-    this.Form = this.formBuilder.group({
-      User_Id: new FormControl(this.LoginUser._id, Validators.required),
-      Color_Code: new FormControl('color1',  Validators.required),
-      DOB: new FormControl(''),
-      City: new FormControl(''),
-      Country: new FormControl(''),
-      Gender: new FormControl(''),
-      Hash_Tag_1: new FormControl(''),
-      Hash_Tag_2: new FormControl(''),
-      Hash_Tag_3: new FormControl('')
-    });
-  }
+            ngOnInit() {
+              this.Form = this.formBuilder.group({
+                User_Id: new FormControl(this.LoginUser._id, Validators.required),
+                Color_Code: new FormControl('color1',  Validators.required),
+                DOB: new FormControl(''),
+                Country: new FormControl('', Validators.required),
+                State: new FormControl(''),
+                City: new FormControl(''),
+                Gender: new FormControl(''),
+                Hash_Tag_1: new FormControl(''),
+                Hash_Tag_2: new FormControl(''),
+                Hash_Tag_3: new FormControl('')
+              });
+            }
+
+// County Filter And Select
+   filterCountry(_event) {
+      const query = _event.query;
+      const filtered: any[] = [];
+      for (let i = 0; i < this.AllCountry.length; i++) {
+         const country = this.AllCountry[i];
+         if (country['Country_Name'].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+               filtered.push(country);
+         }
+      }
+      this.countries = filtered;
+   }
+   CountryOnBlur(_value) {
+      if (typeof(this.Form.controls['Country'].value) !== 'object') {
+         this.Form.controls['Country'].setValue('');
+         this.Form.controls['State'].setValue('');
+         this.Form.controls['City'].setValue('');
+      }
+   }
+   CountryOnSelect(_value) {
+      this.Form.controls['State'].setValue('');
+      this.Form.controls['City'].setValue('');
+      this.Service.State_List(this.Form.controls['Country'].value['_id']).subscribe( state => {
+         if (state['Status'] === 'True' && state['Output'] === 'True') {
+            this.AllStateOfCountry = state['Response'];
+         }
+      });
+   }
+
+
+// State Filter And Select
+   filterState(_event) {
+      const query = _event.query;
+      const filtered: any[] = [];
+      for (let i = 0; i < this.AllStateOfCountry.length; i++) {
+         const state = this.AllStateOfCountry[i];
+         if (state['State_Name'].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+               filtered.push(state);
+         }
+      }
+      this.states = filtered;
+   }
+   StateOnBlur(_value) {
+      if (typeof(this.Form.controls['State'].value) !== 'object') {
+         this.Form.controls['State'].setValue('');
+         this.Form.controls['City'].setValue('');
+      }
+   }
+   StateOnSelect(_value) {
+      this.Form.controls['City'].setValue('');
+      this.Service.City_List(this.Form.controls['State'].value['_id']).subscribe( city => {
+         if (city['Status'] === 'True' && city['Output'] === 'True') {
+            this.AllCityOfState = city['Response'];
+         }
+      });
+   }
+
+// State Filter And Select
+   filterCity(_event) {
+      const query = _event.query;
+      const filtered: any[] = [];
+      for (let i = 0; i < this.AllCityOfState.length; i++) {
+         const city = this.AllCityOfState[i];
+         if (city['City_Name'].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+               filtered.push(city);
+         }
+      }
+      this.cities = filtered;
+   }
+   CityOnBlur(_value) {
+      if (typeof(this.Form.controls['City'].value) !== 'object') {
+         this.Form.controls['City'].setValue('');
+      }
+   }
+
 
   onFileChange(event) {
     if (event.target.files && event.target.files.length > 0) {
@@ -90,19 +166,10 @@ export class ProfileCompletionComponent implements OnInit {
 
   onSubmit() {
     let Gender_value = '';
-    let City_value = '';
-    let Country_value = '';
 
     if (this.Form.controls['Gender'].value !== undefined) {
       Gender_value = this.Form.controls['Gender'].value.name;
     }
-    if (this.Form.controls['City'].value !== undefined) {
-      City_value = this.Form.controls['City'].value;
-    }
-    if (this.Form.controls['Country'].value !== undefined) {
-      Country_value = this.Form.controls['Country'].value;
-    }
-
 
       this.FormData.set('User_Id', this.Form.controls['User_Id'].value);
       this.FormData.set('Color_Code', this.Form.controls['Color_Code'].value);
@@ -110,8 +177,11 @@ export class ProfileCompletionComponent implements OnInit {
       this.FormData.set('Hash_Tag_1', this.Form.controls['Hash_Tag_1'].value);
       this.FormData.set('Hash_Tag_2', this.Form.controls['Hash_Tag_2'].value);
       this.FormData.set('Hash_Tag_3', this.Form.controls['Hash_Tag_3'].value);
-      this.FormData.set('City', City_value);
-      this.FormData.set('Country', Country_value);
+
+      this.FormData.set('Country', JSON.stringify(this.Form.controls['Country'].value));
+      this.FormData.set('State', JSON.stringify(this.Form.controls['State'].value));
+      this.FormData.set('City', JSON.stringify(this.Form.controls['City'].value));
+
       this.FormData.set('Gender', Gender_value);
       this.Service.Register_Completion(this.FormData).subscribe( datas => {
         if (datas['Status'] === 'True') {
@@ -125,13 +195,5 @@ export class ProfileCompletionComponent implements OnInit {
         }
       });
     }
-
-  Skip() {
-    if (this.If_Invite.CubeId !== '' ) {
-      this.router.navigate(['Cube_View', this.If_Invite.CubeId ]);
-    } else {
-      this.router.navigate(['Categories']);
-    }
- }
 
 }

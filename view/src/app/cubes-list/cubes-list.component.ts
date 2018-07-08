@@ -20,7 +20,7 @@ export class CubesListComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
 
   Cubes_List;
   LoginUser;

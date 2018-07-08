@@ -14,6 +14,8 @@ module.exports = function(app) {
 
         app.post('/API/Trends/Cube_Trends_Filter', Controller.CubeTrends_Filter);
 
+        app.post('/API/Trends/CubeTrends_TagId_Filter', Controller.CubeTrends_TagId_Filter);
+
         app.post('/API/Trends/Report_Trends_Check', Controller.Report_Trends_Check);
 
         app.post('/API/Trends/Report_Trends', Controller.Report_Trends_Submit);

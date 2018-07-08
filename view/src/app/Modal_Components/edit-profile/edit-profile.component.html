@@ -65,34 +65,53 @@
             </div>
 
             <div fxLayout="row" fxLayoutAlign="space-between start"> 
-              <div fxFlex="49%" class="Search_templete_Style_1"> 
-                  <input formControlName="Country" placeholder="Country" 
-                        [(ngModel)]="selectedCountry" 
-                        [typeahead]="countries" 
-                        [typeaheadItemTemplate]="SearchItemTemplate"
-                        [typeaheadScrollable]="true"
-                        [typeaheadOptionsInScrollableView]="7">
+               <div fxFlex="32.5%" class="Search_templete_Style_2"> 
+                  <p-autoComplete 
+                          formControlName="Country"
+                          placeholder="Country"
+                          [suggestions]="countries" 
+                          [style]="{'width':'100%'}" 
+                          [inputStyle]="{'width':'100%','height':'40px'}" 
+                          field ="Country_Name"
+                          (onSelect)="CountryOnSelect($event)"
+                          (onBlur)="CountryOnBlur($event.target.value)"
+                          (completeMethod)="filterCountry($event)">
+                  </p-autoComplete>
               </div>
-              <div fxFlex="49%" class="Search_templete_Style_1"> 
-                  <input formControlName="City" placeholder="City" 
-                        [(ngModel)]="selectedCities" 
-                        [typeahead]="cities" 
-                        [typeaheadItemTemplate]="SearchItemTemplate"
-                        [typeaheadScrollable]="true"
-                        [typeaheadOptionsInScrollableView]="7"> 
+              <div fxFlex="32.5%" class="Search_templete_Style_2"> 
+                <p-autoComplete 
+                        formControlName="State"
+                        placeholder="State"
+                        [suggestions]="states" 
+                        [style]="{'width':'100%'}" 
+                        [inputStyle]="{'width':'100%','height':'40px'}" 
+                        field ="State_Name"
+                        (onSelect)="StateOnSelect($event)"
+                        (onBlur)="StateOnBlur($event.target.value)"
+                        (completeMethod)="filterState($event)">
+                </p-autoComplete>
+              </div>
+              <div fxFlex="32.5%" class="Search_templete_Style_2"> 
+                <p-autoComplete 
+                        formControlName="City"
+                        placeholder="City"
+                        [suggestions]="cities" 
+                        [style]="{'width':'100%'}" 
+                        [inputStyle]="{'width':'100%','height':'40px'}" 
+                        field ="City_Name"
+                        (onBlur)="CityOnBlur($event.target.value)"
+                        (completeMethod)="filterCity($event)">
+                </p-autoComplete>
               </div>
             </div>
-
-            <ng-template #SearchItemTemplate let-model="item" let-index="index">
-                <small> {{model}}</small>
-            </ng-template>
+            <br>
 
             <div class="row">
               <div class="col-sm-6">
 
               </div>
               <div class="col-sm-6" style="display: inline;">
-                <button style="float: right" class="btn ptn-primary" type="submit" > Update </button> 
+                <button style="float: right" [disabled]="Form.invalid" class="btn ptn-primary" type="submit" > Update </button> 
               </div>
             </div>
             

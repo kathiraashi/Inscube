@@ -20,9 +20,9 @@ import { PostService } from './../../service/post/post.service';
   styleUrls: ['./edit-post.component.css']
 })
 export class EditPostComponent implements OnInit {
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  PostBaseUrl = 'http://localhost:3000/API/Uploads/Post_Attachments/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
+  PostBaseUrl = 'http://localhost:4000/API/Uploads/Post_Attachments/';
 
   data;
 

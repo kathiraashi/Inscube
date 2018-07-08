@@ -7,6 +7,11 @@ module.exports = function(app) {
         app.post('/API/Signin_Signup/Register', Controller.UserRegister);
         app.post('/API/Signin_Signup/Register_Completion', Controller.UserRegisterCompletion);
         app.post('/API/Signin_Signup/User_Validate', Controller.UserValidate);
+        app.post('/API/Signin_Signup/User_Delete', Controller.User_Delete);
+
+        app.get('/API/Signin_Signup/Country_List', Controller.Country_List);
+        app.get('/API/Signin_Signup/State_List/:Country_Id', Controller.State_List);
+        app.get('/API/Signin_Signup/City_List/:State_Id', Controller.City_List);
 
         app.post('/API/Signin_Signup/User_App_Entry', Controller.User_App_Entry);
 

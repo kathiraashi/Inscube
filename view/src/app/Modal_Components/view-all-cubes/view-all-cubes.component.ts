@@ -13,8 +13,8 @@ export class ViewAllCubesComponent implements OnInit {
 
   onClose: Subject<any>;
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
 
   LoginUser;
   Cubes_List;

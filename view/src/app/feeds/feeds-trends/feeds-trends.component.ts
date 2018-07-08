@@ -28,9 +28,9 @@ import { TrendsService } from './../../service/trends/trends.service';
 })
 export class FeedsTrendsComponent implements OnInit {
 
-   UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-   CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-   CapturesBaseUrl = 'http://localhost:3000/API/Uploads/Capture_Attachments/';
+   UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+   CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
+   CapturesBaseUrl = 'http://localhost:4000/API/Uploads/Capture_Attachments/';
 
    modalRef: BsModalRef;
    carouselBanner: NgxCarousel;
@@ -95,9 +95,9 @@ export class FeedsTrendsComponent implements OnInit {
                this._componentConnectService.New_Trends_Added.subscribe(message => {
                  this.reload_Trends();
                });
-               this._componentConnectService.Reload_Feeds.subscribe(message => {
-                  this.reload_Trends();
-                });
+            //    this._componentConnectService.Reload_Feeds.subscribe(message => {
+            //       this.reload_Trends();
+            //     });
       }
 
    ngOnInit() {

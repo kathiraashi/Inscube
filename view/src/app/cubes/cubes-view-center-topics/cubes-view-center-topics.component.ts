@@ -23,9 +23,9 @@ import { CubeService } from './../../service/cube/cube.service';
 })
 export class CubesViewCenterTopicsComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
-  TopicBaseUrl = 'http://localhost:3000/API/Uploads/Topic_Attachments/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
+  TopicBaseUrl = 'http://localhost:4000/API/Uploads/Topic_Attachments/';
 
   scrollHeight;
   screenHeight: number;

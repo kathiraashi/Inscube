@@ -9,6 +9,8 @@ import { ScrollbarComponent } from 'ngx-scrollbar';
 import { PostSubmitService } from './../../component-connecting/post-submit/post-submit.service';
 
 import { PostService } from './../../service/post/post.service';
+import { CaptureService } from './../../service/capture/capture.service';
+import { TrendsService } from './../../service/trends/trends.service';
 
 @Component({
   selector: 'app-feeds-header',
@@ -20,15 +22,17 @@ export class FeedsHeaderComponent implements OnInit {
   @ViewChild(ScrollbarComponent) scrollRef: ScrollbarComponent;
   modalRef: BsModalRef;
 
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
 
   status: { isopen: boolean } = { isopen: false };
   search_text: String;
   activeTab = 'Cubes';
   Search_Users: any[] = [];
-  Search_Cudes: any[] = [];
+  Search_Cubes: any[] = [];
   Search_Posts: any[] = [];
+  Search_Captures: any[] = [];
+  Search_Trends: any[] = [];
   Spinner: Boolean = false;
 
   lists;
@@ -41,6 +45,8 @@ export class FeedsHeaderComponent implements OnInit {
     private modalService: BsModalService,
     private router: Router,
     public Post_Service: PostService,
+    public Capture_Service: CaptureService,
+    public Trends_Service: TrendsService,
     public Post_connecting_change: PostSubmitService) {
       this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
       this.Active_Page = this.active_route.routeConfig.path;
@@ -72,20 +78,41 @@ export class FeedsHeaderComponent implements OnInit {
         this.Post_Service.Search_Cubes(this.LoginUser._id, this.search_text).subscribe(datas => {
           this.Spinner = false;
           if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
-            this.Search_Cudes = datas['Response'];
+            this.Search_Cubes = datas['Response'];
           } else {
-            this.Search_Cudes = [];
+            this.Search_Cubes = [];
           }
         });
       }
       if (text === 'Posts') {
-        this.Spinner = true;
         this.Post_Service.Search_Posts(this.LoginUser._id, this.search_text).subscribe(datas => {
           this.Spinner = false;
           if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
             this.Search_Posts = datas['Response'];
           } else {
             this.Search_Posts = [];
+          }
+        });
+      }
+      if (text === 'Captures') {
+        this.Spinner = true;
+        this.Capture_Service.Search_Captures(this.LoginUser._id, this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Captures = datas['Response'];
+          } else {
+            this.Search_Captures = [];
+          }
+        });
+      }
+      if (text === 'Trends') {
+        this.Spinner = true;
+        this.Trends_Service.Search_Trends_Tag(this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Trends = datas['Response'];
+          } else {
+            this.Search_Trends = [];
           }
         });
       }
@@ -100,9 +127,9 @@ export class FeedsHeaderComponent implements OnInit {
         this.Post_Service.Search_Cubes(this.LoginUser._id, value).subscribe(datas => {
           this.Spinner = false;
           if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
-            this.Search_Cudes = datas['Response'];
+            this.Search_Cubes = datas['Response'];
           } else {
-            this.Search_Cudes = [];
+            this.Search_Cubes = [];
           }
         });
       }
@@ -126,18 +153,44 @@ export class FeedsHeaderComponent implements OnInit {
           }
         });
       }
+      if (this.activeTab === 'Captures') {
+        this.Spinner = true;
+        this.Capture_Service.Search_Captures(this.LoginUser._id, this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Captures = datas['Response'];
+          } else {
+            this.Search_Captures = [];
+          }
+        });
+      }
+      if (this.activeTab === 'Trends') {
+        this.Spinner = true;
+        this.Trends_Service.Search_Trends_Tag(this.search_text).subscribe(datas => {
+          this.Spinner = false;
+          if (datas['Status'] === 'True' && datas['Output'] === 'True' && datas['Response'].length > 0) {
+            this.Search_Trends = datas['Response'];
+          } else {
+            this.Search_Trends = [];
+          }
+        });
+      }
     } else {
       this.Search_Users = [];
-      this.Search_Cudes = [];
+      this.Search_Cubes = [];
       this.Search_Posts = [];
+      this.Search_Captures = [];
+      this.Search_Trends = [];
       this.status.isopen = false;
     }
   }
 
   clear() {
     this.Search_Users = [];
-    this.Search_Cudes = [];
+    this.Search_Cubes = [];
     this.Search_Posts = [];
+    this.Search_Captures = [];
+    this.Search_Trends = [];
     this.search_text = '';
     this.status.isopen = false;
   }

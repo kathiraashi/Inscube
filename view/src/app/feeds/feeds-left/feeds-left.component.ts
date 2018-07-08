@@ -20,9 +20,9 @@ export class FeedsLeftComponent implements OnInit {
 
   modalRef: BsModalRef;
 
-  CategoryBaseUrl = 'http://localhost:3000/API/Uploads/Category/';
-  UsersBaseUrl = 'http://localhost:3000/API/Uploads/Users/';
-  CubeBaseUrl = 'http://localhost:3000/API/Uploads/Cubes/';
+  CategoryBaseUrl = 'http://localhost:4000/API/Uploads/Category/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
 
   LoginUser;
   Cubes_List: any[] = [];

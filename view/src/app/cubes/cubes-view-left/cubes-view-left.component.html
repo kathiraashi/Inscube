@@ -34,9 +34,17 @@
 
 
 
-  <div class="cube_info_icon">
+  <!-- <div class="cube_info_icon">
     <i class="material-icons" >location_on</i>
     <p class="discription"> {{Cube_Info.Location}} </p>
+  </div> -->
+  <div class="cube_info_icon">
+    <i class="material-icons" >location_on</i>
+    <p class="discription">
+        <ng-container *ngIf="Cube_Info['Country']">{{Cube_Info['Country']['Country_Name']}},</ng-container>
+        <ng-container *ngIf="Cube_Info['State']">{{Cube_Info['State']['State_Name']}},</ng-container>
+        <ng-container *ngIf="Cube_Info['City']">{{Cube_Info['City']['City_Name']}}</ng-container>
+    </p>
   </div>
 
   <div class="cube_info_icon">

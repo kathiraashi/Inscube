@@ -84,7 +84,7 @@ label{
 }
 .TabData input:focus{
     border-color: #2196f3d6 !important;
-    box-shadow: 0px 0px 1px 1px #2196f363 !important;
+    /* box-shadow: 0px 0px 1px 1px #2196f363 !important; */
 }
 .TabData input:-ms-input-placeholder { color: #939598 !important; }
 .TabData input::-webkit-input-placeholder { color: #939598 !important; }

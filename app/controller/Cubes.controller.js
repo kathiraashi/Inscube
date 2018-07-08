@@ -119,6 +119,19 @@ exports.CreateCube = function(req, res) {
                         if (req.file !== undefined ) {  Cube_Image = req.file.filename;
                         } else { Cube_Image = data.Image; }
 
+                        var Country = {};
+                        var State = {};
+                        var City = {};
+                        if (req.body.Country !== '') {
+                            Country = JSON.parse(req.body.Country);
+                        }
+                        if (req.body.State !== '') {
+                            State = JSON.parse(req.body.State);
+                        }
+                        if (req.body.City !== '') {
+                            City = JSON.parse(req.body.City);
+                        }
+
                     var varCubesSchema = new CubeModel.CubesSchema({
                         User_Id: req.body.User_Id,
                         Category_Id: req.body.Category_Id,
@@ -127,7 +140,9 @@ exports.CreateCube = function(req, res) {
                         Security: req.body.Security || '',
                         Security_Code: req.body.Security_Code || '',
                         Description: req.body.Description || '',
-                        Location: req.body.Location || '',
+                        Country: Country,
+                        State: State,
+                        City: City,
                         Web: req.body.Web || '',
                         Mail: req.body.Mail || '',
                         Contact: req.body.Contact || '',
@@ -695,6 +710,18 @@ exports.Update_Cube = function(req, res) {
                         } else { 
                             Cube_Image = result.Image; 
                         }
+                    var Country = {};
+                    var State = {};
+                    var City = {};
+                    if (req.body.Country !== '') {
+                        Country = JSON.parse(req.body.Country);
+                    }
+                    if (req.body.State !== '') {
+                        State = JSON.parse(req.body.State);
+                    }
+                    if (req.body.City !== '') {
+                        City = JSON.parse(req.body.City);
+                    }
 
                     result.Category_Id = req.body.Category_Id;
                     result.Name = req.body.Name;
@@ -702,7 +729,9 @@ exports.Update_Cube = function(req, res) {
                     result.Security = req.body.Security;
                     result.Security_Code = req.body.Security_Code;
                     result.Description = req.body.Description;
-                    result.Location = req.body.Location;
+                    result.Country = Country;
+                    result.State = State;
+                    result.City = City;
                     result.Web = req.body.Web;
                     result.Mail = req.body.Mail;
                     result.Contact = req.body.Contact;
