@@ -8,7 +8,8 @@ var Cube_TrendsSchema = mongoose.Schema({
     Shared_Trends: { type : String },
     Shared_Trends_User_Id: { type : String },
     Shared_Trends_Id: { type : String },
-    Active_Status: String
+    Active_Status: String,
+    RemovedCube_Ids: { type : String }
     }, 
     { timestamps: true }
 );
@@ -17,7 +18,8 @@ var Trends_TagsSchema = mongoose.Schema({
     Tag: { type : String , required : true },
     User_Id: { type : String , required : true },
     Trends_Ids: { type : Array , required : true },
-    Active_Status: String
+    Active_Status: String,
+    Removed_User_Id: Array,
     }, 
     { timestamps: true }
 );
@@ -27,7 +29,8 @@ var Trends_Emoteschema = mongoose.Schema({
     Trends_Id: { type : String , required : true },
     Emote_Text: { type : String, required : true },
     Count: Number,
-    Active_Status: String
+    Active_Status: String,
+    Removed_User_Ids: { type : Array }
     }, 
     { timestamps: true }
 );

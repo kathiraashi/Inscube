@@ -12,7 +12,8 @@ var Cube_Postschema = mongoose.Schema({
     Shared_Post_Id: { type : String },
     Attachments: { type : Array },
     Attach_File: { type : Array },
-    Active_Status: String
+    Active_Status: String,
+    RemovedCube_Ids: { type : Array }
     }, 
     { timestamps: true }
 );
@@ -22,7 +23,8 @@ var Post_Emoteschema = mongoose.Schema({
     Post_Id: { type : String , required : true },
     Emote_Text: { type : String, required : true },
     Count: Number,
-    Active_Status: String
+    Active_Status: String,
+    Removed_User_Ids: { type : Array }
     }, 
     { timestamps: true }
 );

@@ -9,6 +9,8 @@ module.exports = function(app) {
         app.post('/API/Signin_Signup/User_Validate', Controller.UserValidate);
         app.post('/API/Signin_Signup/User_Delete', Controller.User_Delete);
 
+
+
         app.get('/API/Signin_Signup/Country_List', Controller.Country_List);
         app.get('/API/Signin_Signup/State_List/:Country_Id', Controller.State_List);
         app.get('/API/Signin_Signup/City_List/:State_Id', Controller.City_List);
@@ -34,5 +36,7 @@ module.exports = function(app) {
         app.get('/API/Signin_Signup/Password_reset_Email_Validate/:Email', Controller.Password_reset_Email_Validate);
         app.get('/API/Signin_Signup/Send_Email_Password_Reset_OTP/:Email', Controller.Send_Email_Password_Reset_OTP);
         app.get('/API/Signin_Signup/password_reset_OTP_check/:User_Id/:OTP', Controller.password_reset_OTP_check);
+
+        app.post('/API/Signin_Signup/News_Today', Controller.News_Today);
 
 };

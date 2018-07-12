@@ -8,7 +8,8 @@ var Cube_Captureschema = mongoose.Schema({
     Shared_Capture: { type : String },
     Shared_Capture_User_Id: { type : String },
     Shared_Capture_Id: { type : String },
-    Active_Status: String
+    Active_Status: String,
+    RemovedCube_Ids: { type : Array }
     }, 
     { timestamps: true }
 );
@@ -18,7 +19,8 @@ var Capture_Emoteschema = mongoose.Schema({
     Capture_Id: { type : String , required : true },
     Emote_Text: { type : String, required : true },
     Count: Number,
-    Active_Status: String
+    Active_Status: String,
+    Removed_User_Ids: { type : Array }
     }, 
     { timestamps: true }
 );

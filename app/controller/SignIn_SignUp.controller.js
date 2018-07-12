@@ -17,6 +17,9 @@ var api_key = 'key-1018902c1f72fc21e3dc109706b593e3';
 var domain = 'www.inscube.com';
 var mailgun = require('mailgun-js')({apiKey: api_key, domain: domain});
 
+const NewsAPI = require('newsapi');
+const newsapi = new NewsAPI('a3de3345419e4cddaee2c3f76162a724');
+
 
 // User Image Upload Disk Storage and Validate Functions ----------------------------------------------------------------------------------------
 var User_Image_Storage = multer.diskStorage({
@@ -640,6 +643,9 @@ exports.User_Delete = function(req, res) {
                             { $set: { Active_Status: Changing_Status } }
                         ).exec(),
 
+                        // User Cubes List Find
+                        CubeModel.CubesSchema.find({ User_Id: ActionUser_Id }).exec(),
+
                         // User Cube Status Change
                         CubeModel.CubesSchema.updateMany(
                             { User_Id: ActionUser_Id },
@@ -649,7 +655,7 @@ exports.User_Delete = function(req, res) {
                         // User Topic Status Change
                         CubeModel.Cube_Topicschema.updateMany(
                             { User_Id: ActionUser_Id },
-                            { Active_Status: Active_Status }
+                            { $set: {Active_Status: Changing_Status} }
                         ).exec(),
 
                         // User Followers Status Change
@@ -673,7 +679,7 @@ exports.User_Delete = function(req, res) {
                         // if User is the One of this Post Emote -> Remove User Id From this Emote
                         PostModel.Post_Emoteschema.updateMany(
                             { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: true } },
-                            { $pull: { User_Ids: ActionUser_Id } }
+                            { $pull: { User_Ids: ActionUser_Id }, $push: { Removed_User_Ids: ActionUser_Id} }
                         ).exec(),
 
                         // If Only The User of This Post Emote -> Status Change 
@@ -692,11 +698,167 @@ exports.User_Delete = function(req, res) {
                         UserModel.Post_NotificationSchema.updateMany(
                             {  $or: [ { User_Id: ActionUser_Id }, { To_User_Id: ActionUser_Id } ] },
                             { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        // User Capture Status Change
+                        CaptureModel.Cube_Captureschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status } }
+                        ).exec(),
+
+                        // if User Capture Shared -> this Capture Ownership Change to Shared User
+                        CaptureModel.Cube_Captureschema.updateMany(
+                            { Shared_Capture: 'True', Shared_Capture_User_Id: ActionUser_Id },
+                            { $set: { Shared_Capture: 'False'}, $unset: {Shared_Capture_User_Id: 1, Shared_Capture_Id: 1} }
+                        ).exec(),
+
+                        // User Capture Comment Status Change
+                        CaptureModel.Capture_Commentschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        // if User is the One of this Capture Emote -> Remove User Id From this Emote
+                        CaptureModel.Capture_Emoteschema.updateMany(
+                            { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: true } },
+                            { $pull: { User_Ids: ActionUser_Id }, $push: { Removed_User_Ids: ActionUser_Id}  }
+                        ).exec(),
+
+                        // If Only The User of This Capture Emote -> Status Change 
+                        CaptureModel.Capture_Emoteschema.updateMany(
+                            { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: false } },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        // User Trend Status Change
+                        TrendsModel.Cube_TrendsSchema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status } }
+                        ).exec(),
+
+                        // if User Trend Shared -> this Trend Ownership Change to Shared User
+                        TrendsModel.Cube_TrendsSchema.updateMany(
+                            { Shared_Trends: 'True', Shared_Trends_User_Id: ActionUser_Id },
+                            { $set: { Shared_Trends: 'False'}, $unset: {Shared_Trends_User_Id: 1, Shared_Trends_Id: 1} }
+                        ).exec(),
+
+                        // User Trend Comment Status Change
+                        TrendsModel.Trends_Commentschema.updateMany(
+                            { User_Id: ActionUser_Id },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        // if User is the One of this Trend Emote -> Remove User Id From this Emote
+                        TrendsModel.Trends_Emoteschema.updateMany(
+                            { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: true } },
+                            { $pull: { User_Ids: ActionUser_Id }, $push: { Removed_User_Ids: ActionUser_Id}  }
+                        ).exec(),
+
+                        // If Only The User of This Trend Emote -> Status Change 
+                        TrendsModel.Trends_Emoteschema.updateMany(
+                            { User_Ids: ActionUser_Id, 'User_Ids.1': { $exists: false } },
+                            { $set: { Active_Status: Changing_Status} }
+                        ).exec(),
+
+                        //Trend Tag Create User Move To Removed User 
+                        TrendsModel.Trends_TagsSchema.updateMany(
+                            { User_Id: ActionUser_Id},
+                            { $set: { User_Id: '', Removed_User_Id: ActionUser_Id } }
                         ).exec()
+
                     ]).then( Data => {
-                        res.status(200).send({ Status:"True", Output:"True", Return: Data });
+                        var Cubes_Ids = Data[1].map(x => x._id );
+                        Cubes_Ids = JSON.parse(JSON.stringify(Cubes_Ids));
+
+                        const CubeRemoved = Cube_Id => {
+                            return Promise.all([
+                                    CubeModel.Cube_Followersschema.updateMany(
+                                        { Cube_Id: Cube_Id },
+                                        { $set: { Active_Status: Changing_Status } }
+                                    ).exec(),
+
+                                    UserModel.Post_NotificationSchema.updateMany(
+                                        { Cube_Id: Cube_Id },
+                                        { $set: { Active_Status: Changing_Status } }
+                                    ).exec(),
+
+                                    PostModel.Cube_Postschema.updateMany(
+                                        { Cubes_Id: Cube_Id, 'Cubes_Id.1': { $exists: true } },
+                                        { $pull: { Cubes_Id: Cube_Id }, $push: { RemovedCube_Ids: Cube_Id } }
+                                    ).exec(),
+
+                                    PostModel.Cube_Postschema.updateMany(
+                                        { Cubes_Id: Cube_Id, Active_Status: 'Active', 'Cubes_Id.1': { $exists: false } },
+                                        { $pull: { Cubes_Id: Cube_Id }, $push: { RemovedCube_Ids: Cube_Id }, $set: { Active_Status: Changing_Status } }
+                                    ).exec(),
+
+                                    CaptureModel.Cube_Captureschema.updateMany(
+                                        { Cube_Ids: Cube_Id, 'Cube_Ids.1': { $exists: true } },
+                                        { $pull: { Cube_Ids: Cube_Id }, $push: { RemovedCube_Ids: Cube_Id } }
+                                    ).exec(),
+
+                                    CaptureModel.Cube_Captureschema.updateMany(
+                                        { Cube_Ids: Cube_Id, 'Cube_Ids.1': { $exists: false } },
+                                        { $pull: { Cube_Ids: Cube_Id }, $push: { RemovedCube_Ids: Cube_Id }, $set: { Active_Status: Changing_Status } }
+                                    ).exec(),
+
+                                    TrendsModel.Cube_TrendsSchema.updateMany(
+                                        { Cube_Ids: Cube_Id, 'Cube_Ids.1': { $exists: true }  },
+                                        { $pull: { Cube_Ids: Cube_Id }, $push: { RemovedCube_Ids: Cube_Id } }
+                                    ).exec(),
+
+                                    TrendsModel.Cube_TrendsSchema.updateMany(
+                                        { Cube_Ids: Cube_Id, 'Cube_Ids.1': { $exists: false }  },
+                                        { $pull: { Cube_Ids: Cube_Id }, $push: { RemovedCube_Ids: Cube_Id }, $set: { Active_Status: Changing_Status } }
+                                    ).exec(),
+
+                                    PostModel.Cube_Postschema.find({ Cubes_Id: Cube_Id, 'Cubes_Id.1': { $exists: false } }, {_id: 1}, {}).exec(),
+                                    CaptureModel.Cube_Captureschema.find({ Cube_Ids: Cube_Id, 'Cube_Ids.1': { $exists: false } }, {_id: 1}, {} ).exec(),
+                                    TrendsModel.Cube_TrendsSchema.find({ Cube_Ids: Cube_Id, 'Cube_Ids.1': { $exists: false } }, {_id: 1}, {} ).exec()
+                                ]).then( Data_1 => {
+                                    var Return_Data = [[], [], []];
+                                    Return_Data[8] = Data_1[8].map(x => x._id);
+                                    Return_Data[9] = Data_1[9].map(x => x._id);
+                                    Return_Data[10] = Data_1[10].map(x => x._id);
+                                    return Return_Data;
+                                }).catch(error_1 => {
+                                    res.status(200).send({ Status:"True", Output:"False", Return: error_1 ,Message: 'error_1' });
+                                });
+                        };
+
+                        Promise.all(
+                                Cubes_Ids.map(Cube_Id => CubeRemoved(Cube_Id))
+                            ).then( Data_2 => {
+                                var Removed_CubePosts = [[], [], []];
+                                Data_2.map(arr => {
+                                    Removed_CubePosts[0] =  Removed_CubePosts[0].concat(arr[0]);
+                                    Removed_CubePosts[1] =  Removed_CubePosts[1].concat(arr[1]);
+                                    Removed_CubePosts[2] =  Removed_CubePosts[2].concat(arr[2]);
+                                });
+                                Removed_CubePosts = JSON.parse(JSON.stringify(Removed_CubePosts));
+                                Removed_CubePosts[0] = Array.from(new Set(Removed_CubePosts[0])); // Remove Duplicates
+                                Removed_CubePosts[1] = Array.from(new Set(Removed_CubePosts[1]));
+                                Removed_CubePosts[2] = Array.from(new Set(Removed_CubePosts[2]));
+                                Promise.all(
+                                    Removed_CubePosts[0].map(Post_Id => 
+                                        UserModel.Post_NotificationSchema.updateMany({ Post_Id: Post_Id }, { $set: { Active_Status: Changing_Status} } ).exec()
+                                    ),
+                                    Removed_CubePosts[1].map(Post_Id => 
+                                        UserModel.Post_NotificationSchema.updateMany({ Capture_Id: Post_Id }, { $set: { Active_Status: Changing_Status} } ).exec()
+                                    ),
+                                    Removed_CubePosts[2].map(Post_Id => 
+                                        UserModel.Post_NotificationSchema.updateMany({ Trends_Id: Post_Id }, { $set: { Active_Status: Changing_Status} } ).exec()
+                                    )
+                                ).then(response_one => {
+                                    res.status(200).send({ Status:"True", Output:"True",  Response: 'Success' });
+                                }).catch(error_3 => {
+                                    res.status(200).send({ Status:"True", Output:"error_3", Response: error_2, Message: 'error_3' });
+                                });
+                            }).catch( error_2 => {
+                                res.status(200).send({ Status:"True", Output:"False", Response: error_2, Message: 'error_2' });
+                            });
                     }).catch( error => {
-                        res.status(200).send({ Status:"True", Output:"False", Return: error });
+                        res.status(200).send({ Status:"True", Output:"False", Return: error ,Message: 'error' });
                     });
                 }else {
                     res.status(200).send({ Status:"True", Output:"False", Response: result_1, Message: 'Invalid User Info' });
@@ -1016,6 +1178,23 @@ exports.AndroidVersionGet = function(req, res) {
             res.send({status:"True", data: data[0] });
         }
     });
+};
+
+
+
+
+
+
+
+exports.News_Today = function (req, res) {
+    newsapi.v2.topHeadlines({
+        country: 'in',
+        language: 'en',
+        pageSize: 10,
+        page: 1
+      }).then(response => {
+          res.send({status:"True", data: response });
+      });
 };
 
 
