@@ -353,9 +353,23 @@ exports.CubesList = function(req, res) {
             var Return_Cube_List = [];
             const GetCubeList = (result) => Promise.all(  // Main Promise For Cube List Get --------------
                     result.map(info => getCubeRelatedInfo(info)) 
-                ).then( result_1 => {  
-                    res.status(200).send({ Status:"True", Output: "True", Response: Return_Cube_List });
-                }).catch( err_1 => { 
+                ).then( result_1 => {
+                    UserModel.UserSchema.findOne({ '_id':  req.params.User_Id }, {Country: 1}, function(err_1, result_1) {
+                        if(err_1) {
+                            ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Info Find Query Error', 'Cubes.controller.js - 12', err_1);
+                            res.status(500).send({status:"False", Error:err_1, message: "Some error occurred while Find The User Info."});
+                        } else {
+                            var Country = "India";
+                            if(typeof result_1.Country === 'object' && result_1.Country.Country_Name && result_1.Country.Country_Name !== '') {
+                                Country = result_1.Country.Country_Name;
+                            }
+                            Return_Cube_List = Return_Cube_List.sort( function(x,y) {
+                                return x.Country_Location == Country ? -1 : y.Country_Location == Country ? 1 : 0; 
+                            });
+                            res.status(200).send({ Status:"True", Output: "True", Response: Return_Cube_List });
+                        }
+                    });
+                }).catch( err_1 => {
                     ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
                     res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
                 });
@@ -364,19 +378,27 @@ exports.CubesList = function(req, res) {
                 Promise.all([ 
                     CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
                     CubeModel.Cube_Followersschema.findOne({'User_Id': req.params.User_Id, 'Cube_Id': info._id, 'Active_Status': 'Active' }).exec(),
+                    UserModel.UserSchema.findOne({'_id' : info.User_Id }, {Country: 1}).exec(),
                     ]).then( Data => {
-
+                        
                         if ( Data[1] === null ) {
-                            info = JSON.parse(JSON.stringify(info)); 
+                            info = JSON.parse(JSON.stringify(info));
+                            Data[2]  = JSON.parse(JSON.stringify(Data[2]));
+
+                            if (typeof info.Country === 'object' && info.Country.Country_Name && info.Country.Country_Name !== '' ) {
+                                info.Country_Location = info.Country.Country_Name;
+                            } else if(typeof Data[2].Country === 'object' && Data[2].Country.Country_Name && Data[2].Country.Country_Name !== '') {
+                                info.Country_Location = Data[2].Country.Country_Name;
+                            } else {
+                                info.Country_Location = 'India';
+                            }
                             info.Members = Data[0];
                             Return_Cube_List.push(info);
                         }
-                        
                         return info;
-                    }).catch(error => { 
+                    }).catch(error => {
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'Cubes List Find Cube Related Info Sub Promise Error', 'Cubes.controller.js - 237', error);
                     });
-
             GetCubeList(result); // Main Promise Call Function Cube --------------
         }
     });
@@ -385,7 +407,7 @@ exports.CubesList = function(req, res) {
 
 // ---------------------------------------------------------------------- Cubes List ----------------------------------------------------------
 exports.All_Cube_List = function(req, res) {
-    CubeModel.CubesSchema.find({'Active_Status': 'Active'}, {__v: 0}, function(err, result) {
+    CubeModel.CubesSchema.find({'Active_Status': 'Active'}, {__v: 0}, {sort: { updatedAt: -1 }}, function(err, result) {
         if(err) {
             res.status(500).send({status:"False", Error:err, message: "Some error occurred while Find The Cubes List."});
         } else {
@@ -596,7 +618,21 @@ exports.User_UnFollowed_Cubes = function(req, res) {
                 const GetCubeInfo = (result) => Promise.all(  // Main Promise For Cube List Get --------------
                         result.map(info => CubeFilter(info)) 
                     ).then( result_1 => {  
-                        res.status(200).send({ Status:"True", Output: "True", Response: Return_Cubes });
+                        UserModel.UserSchema.findOne({ '_id':  req.params.User_Id }, {Country: 1}, function(err_1, result_1) {
+                            if(err_1) {
+                                ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Info Find Query Error', 'Cubes.controller.js - 12', err_1);
+                                res.status(500).send({status:"False", Error:err_1, message: "Some error occurred while Find The User Info."});
+                            } else {
+                                var Country = "India";
+                                if(typeof result_1.Country === 'object' && result_1.Country.Country_Name && result_1.Country.Country_Name !== '') {
+                                    Country = result_1.Country.Country_Name;
+                                }
+                                Return_Cubes = Return_Cubes.sort( function(x,y) {
+                                    return x.Country_Location == Country ? -1 : y.Country_Location == Country ? 1 : 0; 
+                                });
+                                res.status(200).send({ Status:"True", Output: "True", Response: Return_Cubes });
+                            }
+                        });
                     }).catch( err_1 => { 
                         ErrorManagement.ErrorHandling.ErrorLogCreation(req, ' User Followed Cubes List Find Main Promise Error', 'Cubes.controller.js - 226', err_1);
                         res.status(500).send({Status:"False", Error:err_1, Message: "Some error occurred while Find the Cube List Promise Error "});
@@ -607,9 +643,18 @@ exports.User_UnFollowed_Cubes = function(req, res) {
                         CubeModel.Cube_CategorySchema.findOne({'_id': info.Category_Id}).exec(),
                         CubeModel.Cube_Followersschema.count({ 'Cube_Id': info._id,  'Active_Status': 'Active' }).exec(),
                         CubeModel.Cube_Followersschema.findOne({'Cube_Id': info._id, 'User_Id' : req.params.User_Id, 'Active_Status': 'Active' } ).exec(),
+                        UserModel.UserSchema.findOne({'_id' : info.User_Id }, {Country: 1}).exec(),
                         ]).then( Data => {
                             info = JSON.parse(JSON.stringify(info));
                             if (Data[2] === null) {
+                                Data[3]  = JSON.parse(JSON.stringify(Data[3]));
+                                if (typeof info.Country === 'object' && info.Country.Country_Name && info.Country.Country_Name !== '' ) {
+                                    info.Country_Location = info.Country.Country_Name;
+                                } else if(typeof Data[3].Country === 'object' && Data[3].Country.Country_Name && Data[3].Country.Country_Name !== '') {
+                                    info.Country_Location = Data[3].Country.Country_Name;
+                                } else {
+                                    info.Country_Location = 'India';
+                                }
                                 info.Category_Name = Data[0].Name;
                                 info.Members_Count = Data[1];
                                 Return_Cubes.push(info);

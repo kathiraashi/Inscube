@@ -31,8 +31,11 @@ export class DiscoverCubesComponent implements OnInit {
 
   LoginUser;
   Cubes_List;
+  Original_Cubes_List;
   Loader_1: Boolean = true;
   Loader_2: Boolean = true;
+
+  NameSearch: Boolean = true;
 
   ActiveCategory;
 
@@ -84,9 +87,30 @@ export class DiscoverCubesComponent implements OnInit {
     this.Cube_Service.Cubes_List(this.ActiveCategory._id, this.LoginUser._id).subscribe( datas => {
       this.Loader_2 = false;
       if (datas['Status'] === 'True') {
+        this.Original_Cubes_List = datas['Response'];
         this.Cubes_List = datas['Response'];
       }
     });
+  }
+
+  SearchCubeName(value: string) {
+    if (value !== '' && this.Cubes_List.length > 0) {
+      this.NameSearch = true;
+      this.Cubes_List = this.Original_Cubes_List.filter(Obj => Obj.Name.toLowerCase().indexOf(value.toLowerCase()) > -1 );
+    } else {
+      this.NameSearch = false;
+      this.Cubes_List = this.Original_Cubes_List;
+    }
+  }
+
+  SearchCountryName(value: string) {
+    if (value !== '' && this.Cubes_List.length > 0) {
+      this.NameSearch = true;
+      this.Cubes_List = this.Original_Cubes_List.filter(Obj => Obj.Country_Location.toLowerCase().indexOf(value.toLowerCase()) > -1 );
+    } else {
+      this.NameSearch = false;
+      this.Cubes_List = this.Original_Cubes_List;
+    }
   }
 
   JoinCodeGet(Cube_Index) {

@@ -23,6 +23,7 @@ export class CubesListComponent implements OnInit {
   CubeBaseUrl = 'http://localhost:4000/API/Uploads/Cubes/';
 
   Cubes_List;
+  Original_Cubes_List;
   LoginUser;
   Category_Name;
   Category_Info;
@@ -41,6 +42,7 @@ export class CubesListComponent implements OnInit {
       this.Service.Cubes_List(Category_Id, this.LoginUser._id).subscribe( datas => {
         if (datas['Status'] === 'True') {
           this.Cubes_List = datas['Response'];
+          this.Original_Cubes_List = datas['Response'];
         } else {
           this.router.navigate(['Categories']);
         }
@@ -54,6 +56,23 @@ export class CubesListComponent implements OnInit {
       this.router.navigate(['Categories']);
     }
 
+  }
+
+
+  SearchCubeName(value: string) {
+    if (value !== '' && this.Cubes_List.length > 0) {
+      this.Cubes_List = this.Original_Cubes_List.filter(Obj => Obj.Name.toLowerCase().indexOf(value.toLowerCase()) > -1 );
+    } else {
+      this.Cubes_List = this.Original_Cubes_List;
+    }
+  }
+
+  SearchCountryName(value: string) {
+    if (value !== '' && this.Cubes_List.length > 0) {
+      this.Cubes_List = this.Original_Cubes_List.filter(Obj => Obj.Country_Location.toLowerCase().indexOf(value.toLowerCase()) > -1 );
+    } else {
+      this.Cubes_List = this.Original_Cubes_List;
+    }
   }
 
   openConfirmDialog() {

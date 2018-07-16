@@ -68,3 +68,24 @@
     font-size: 28px;
     color: #2b546b;
 }
+
+
+.SearchDiscoverInput {
+    display: flex;
+    align-items: center;
+    border: 1px solid lightgray;
+    margin: 10px 0px 0px 0px;
+}
+.SearchDiscoverInput input {
+    width: 100%;
+    border: none;
+    height: 33px;
+    padding: 0px 5px;
+    outline: none;
+    font-size: 14px;
+    letter-spacing: 0.4px;
+}
+.SearchDiscoverInput i {
+    color: gray;
+    padding: 0px 5px;
+}

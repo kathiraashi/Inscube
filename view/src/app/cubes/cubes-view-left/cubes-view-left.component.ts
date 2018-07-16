@@ -86,14 +86,16 @@ export class CubesViewLeftComponent implements OnInit {
                         );
                         if (!Cube_Member) {
                             this.Cube_Info.Followed = false;
+                            this.Cube_View_Source.Cube_View_Source('Topics');
+                            this.View_Source = 'Topics';
                         } else {
                             this.Cube_Info.Followed = true;
+                            this.Cube_View_Source.Cube_View_Source('Posts');
+                            this.View_Source = 'Posts';
                         }
                     }
                 });
             });
-            this.Cube_View_Source.Cube_View_Source('Posts');
-            this.View_Source = 'Posts';
         });
   }
 

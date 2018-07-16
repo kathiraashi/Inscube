@@ -36,7 +36,11 @@
     
       <div class="user_info_icon">
         <i class="material-icons">location_on</i>
-        <p class="discription"> {{User_Info.Country.Country_Name}}, {{User_Info.State.State_Name}},  {{User_Info.City.City_Name}}</p>
+        <p class="discription">
+            <ng-container *ngIf="User_Info['Country']">{{User_Info['Country']['Country_Name']}},</ng-container>
+            <ng-container *ngIf="User_Info['State']">{{User_Info['State']['State_Name']}},</ng-container>
+            <ng-container *ngIf="User_Info['City']">{{User_Info['City']['City_Name']}}</ng-container>
+        </p>
       </div>
   </ng-container>
 

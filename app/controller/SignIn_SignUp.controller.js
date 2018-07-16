@@ -153,7 +153,8 @@ exports.UserRegister = function(req, res) {
             Hash_Tag_2: '',
             Hash_Tag_3: '',
             Show_Profile_To : 'Everyone',
-            Active_Status: 'Active'
+            Active_Status: 'Active',
+            Privacy_Update_Checked : 'Success'
         });
         varUserSchema.save(function(err, result) { // User Creation -----------------------------
             if(err) {
@@ -286,7 +287,7 @@ exports.UserRegisterCompletion = function(req, res) {
                             }
                         });
                     }else {
-                        res.status(200).send({ Status:"True", Output:"False", Response: result_1, Message: 'Invalid User Info' });
+                        res.status(200).send({ Status:"True", Output:"False", Response: result, Message: 'Invalid User Info' });
                     }
                 }
             });

@@ -18,6 +18,24 @@
             <div class="header_right" fxFlex="46%" > <span (click)="openConfirmDialog()"> Create your own social media </span> </div>
         </div>
 
+        <ng-container *ngIf="Original_Cubes_List ?.length > 0">
+            <div class="row">
+               <div class="col-sm-2"> </div>
+                  <div class="col-sm-4">
+                     <div class="SearchDiscoverInput">
+                        <input type="text" placeholder="Search by name" (input)="SearchCubeName($event.target.value)">
+                        <i class="material-icons">search</i>
+                     </div>
+                  </div>
+                  <div class="col-sm-4">
+                     <div class="SearchDiscoverInput">
+                        <input type="text" placeholder="Search by country" (input)="SearchCountryName($event.target.value)">
+                        <i class="material-icons">search</i>
+                     </div>
+                  </div>
+               </div>
+         </ng-container>
+
         <div style="max-height:550px;overflow-y: auto">
           <div class="row Cat_list">
 
