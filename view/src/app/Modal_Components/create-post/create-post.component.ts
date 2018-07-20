@@ -193,7 +193,7 @@ export class CreatePostComponent implements OnInit {
     }
 
     select_More_Model() {
-        const Add_Count = 8;
+        const Add_Count = 24;
         this.slice_Count = this.slice_Count + Add_Count;
     }
 

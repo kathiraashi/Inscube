@@ -79,7 +79,7 @@ export class ProfileCompletionComponent implements OnInit {
       const filtered: any[] = [];
       for (let i = 0; i < this.AllCountry.length; i++) {
          const country = this.AllCountry[i];
-         if (country['Country_Name'].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+         if (country['Country_Name'].toLowerCase().includes(query.toLowerCase())) {
                filtered.push(country);
          }
       }
@@ -109,7 +109,7 @@ export class ProfileCompletionComponent implements OnInit {
       const filtered: any[] = [];
       for (let i = 0; i < this.AllStateOfCountry.length; i++) {
          const state = this.AllStateOfCountry[i];
-         if (state['State_Name'].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+         if (state['State_Name'].toLowerCase().includes(query.toLowerCase())) {
                filtered.push(state);
          }
       }
@@ -136,7 +136,7 @@ export class ProfileCompletionComponent implements OnInit {
       const filtered: any[] = [];
       for (let i = 0; i < this.AllCityOfState.length; i++) {
          const city = this.AllCityOfState[i];
-         if (city['City_Name'].toLowerCase().indexOf(query.toLowerCase()) === 0) {
+         if (city['City_Name'].toLowerCase().includes(query.toLowerCase())) {
                filtered.push(city);
          }
       }
