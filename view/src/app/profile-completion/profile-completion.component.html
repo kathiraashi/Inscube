@@ -53,7 +53,12 @@
                   </p-dropdown>
               </div>
               <div fxFlex="49%" style="text-align: left"> 
-                  <input type="text" formControlName="DOB"  placeholder="Date of birth" bsDatepicker [bsConfig]="bsConfig"> 
+                  <input type="text" 
+                           formControlName="DOB" 
+                           placeholder="Date of birth" 
+                           bsDatepicker 
+                           [bsConfig]="bsConfig"
+                           [maxDate]="maxDate"> 
               </div>
             </div>
 

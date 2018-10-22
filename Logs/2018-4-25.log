@@ -1,6 +1,0 @@
-[2018-04-25T13:30:41.545] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Route.post() requires a callback function but got a [object Undefined]"}
-[2018-04-25T13:46:43.774] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Cannot read property 'Image' of null"}
-[2018-04-25T13:49:58.326] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: info is not defined"}
-[2018-04-25T15:36:29.510] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Route.post() requires a callback function but got a [object Undefined]"}
-[2018-04-25T20:11:58.463] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"TypeError: Email_Objects.map is not a function"}
-[2018-04-25T20:15:39.722] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: User_Image is not defined"}

@@ -1,6 +1,0 @@
-[2018-04-16T20:19:46.926] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"Error: Route.post() requires a callback function but got a [object Undefined]"}
-[2018-04-16T21:12:38.819] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: result_1 is not defined"}
-[2018-04-16T21:12:46.478] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: result_1 is not defined"}
-[2018-04-16T21:12:54.495] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: result_1 is not defined"}
-[2018-04-16T21:13:02.518] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: result_1 is not defined"}
-[2018-04-16T21:13:26.558] [ERROR] Error - {"Error_Name":"","Error_Address":"","Error_Message":"ReferenceError: result_1 is not defined"}

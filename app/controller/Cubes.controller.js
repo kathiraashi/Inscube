@@ -69,7 +69,7 @@ exports.CategoryList = function(req, res) {
 
             const getCubeInfo = info => // Sub Promise For Cube Count Find --------------
                 Promise.all([ 
-                    CubeModel.CubesSchema.count({ 'Category_Id': info._id }).exec(),
+                    CubeModel.CubesSchema.count({ 'Category_Id': info._id, Active_Status: 'Active' }).exec(),
                     ]).then( Data => {
                         var result = JSON.parse(JSON.stringify(info)); 
                         result.Cubes_Count = Data[0];
@@ -385,13 +385,16 @@ exports.CubesList = function(req, res) {
                             info = JSON.parse(JSON.stringify(info));
                             Data[2]  = JSON.parse(JSON.stringify(Data[2]));
 
-                            if (typeof info.Country === 'object' && info.Country.Country_Name && info.Country.Country_Name !== '' ) {
+
+                            if (info.Country !== null && typeof info.Country === 'object' && info.Country.Country_Name && info.Country.Country_Name !== '') {
                                 info.Country_Location = info.Country.Country_Name;
                             } else if(typeof Data[2].Country === 'object' && Data[2].Country.Country_Name && Data[2].Country.Country_Name !== '') {
                                 info.Country_Location = Data[2].Country.Country_Name;
                             } else {
                                 info.Country_Location = 'India';
                             }
+
+                            
                             info.Members = Data[0];
                             Return_Cube_List.push(info);
                         }

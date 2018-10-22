@@ -34,3 +34,11 @@
     font-size: 14px;
     margin: 0px;
 }
+.button_1{
+   padding: 5px 20px;
+   font-size: 17px;
+   font-weight: 600;
+   color: #d75739;
+   border-radius: 50px;
+   cursor: pointer;
+}

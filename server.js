@@ -68,8 +68,8 @@ app.use('/API/Uploads', express.static('Uploads'));
 // });
 
 
-app.get('*', function(req, res, next){
-    res.send('This is Server Side Page');
+app.use('*', function(req, res, next){
+   res.send('This is Server Side Page');
 });
 
 

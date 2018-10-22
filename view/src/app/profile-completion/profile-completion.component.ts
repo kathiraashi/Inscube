@@ -16,12 +16,14 @@ import { DataSharedVarServiceService } from './../service/data-shared-var-servic
 })
 export class ProfileCompletionComponent implements OnInit {
 
-  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
+  UsersBaseUrl = 'http://inscube.com/API/Uploads/Users/';
 
   colorTheme = 'theme-red';
   bsConfig: Partial<BsDatepickerConfig>;
   Gender_List;
   selectedGender;
+
+  maxDate: Date = new Date('December 31, 1999');
 
   AllCountry: any[];
   countries: any[];

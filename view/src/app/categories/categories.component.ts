@@ -13,7 +13,7 @@ import { DataSharedVarServiceService } from './../service/data-shared-var-servic
 })
 export class CategoriesComponent implements OnInit {
 
-  CategoryBaseUrl = 'http://localhost:4000/API/Uploads/Category/';
+  CategoryBaseUrl = 'http://inscube.com/API/Uploads/Category/';
 
   Category_List;
 
@@ -37,5 +37,9 @@ export class CategoriesComponent implements OnInit {
     this.ShareingService.SetCategory_Id(Cat_id, Cat_Name);
     this.router.navigate(['Cubes_List']);
   }
+
+  gotofeed() {
+   this.router.navigate(['Cube_Posts']);
+ }
 
 }

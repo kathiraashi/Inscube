@@ -6,7 +6,11 @@
     <div fxFlex="80%" style="border-radius: 5px; background-color:#fff">
 
       <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:5px; text-align:center">
-        <img style="width: 167px; margin: 5px 0px;" src="assets/images/logo.png"> 
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+         <div> </div>
+         <div fxFlex="50%"> <img style="width: 167px; margin: 5px 0px;" src="assets/images/logo.png"> </div>
+         <div> <span (click)="gotofeed()" class="button_1"> Go to feed </span> </div>
+       </div>
         <hr style="margin: 3px;border-radius: 0px;">
 
         <div fxLayout="row" fxLayoutAlign="start start">
