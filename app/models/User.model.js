@@ -18,7 +18,8 @@ var UserSchema = mongoose.Schema({
     Show_Profile_To: String,
     Active_Status: String,
     Email_Verify_Token: String,
-    Privacy_Update_Checked: String
+    Privacy_Update_Checked: String,
+    Explainer_Completed: Boolean
     }, 
     { timestamps: true }
 );

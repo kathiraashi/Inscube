@@ -64,6 +64,12 @@ export class SigninSignupService {
         .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
     }
 
+   public Explainer_Completed_Update(User_Id: any): Observable<any[]>  {
+      return this.http .get(API_URL + 'Explainer_Completed_Update/' + User_Id)
+      .map(response => { const datas = response.json(); return datas; }) .catch(this.handleError);
+   }
+
+
     public Register_Completion(data: any) {
         return this.http .post(API_URL + 'Register_Completion' , data)
         .map(response => {

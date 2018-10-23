@@ -1,46 +1,49 @@
 <div class="feedsMain">
-    <div style="position: fixed;
-                width: 100%;
-                height: 100%;
-                background-color: #e6e5e5 !important;
-                z-index: -1;">
-        </div>
-    <app-feeds-header></app-feeds-header>
+   <ng-container *ngIf="Explainer_Completed">
+      <div style="position: fixed;width: 100%; height: 100%; background-color: #e6e5e5 !important; z-index: -1;"> </div>
+      <app-feeds-header></app-feeds-header>
 
-
-<div class="feeds pt-20">
-
-    <div fxLayout="row" fxLayoutGap="2.5%" fxLayoutAlign="center start">
-        <div fxFlex="19%" fxFlex.md="22%" fxFlex.sm="22%" fxFlex.xs="22%" style="background-color:#ffffff; box-shadow:#66666678 0px 1px 8px 0px;">
-            <app-feeds-left></app-feeds-left>
-        </div>
-        <div fxFlex="47%" >
-            <div class="Tabs">
-                <div class="Tab_List" (click)="ChangeActiveTab('Highlights')" [ngClass]="{active: Active_Tab === 'Highlights'}">
-                    <span> Highlights </span>
-                </div>
-                <div class="Tab_List" (click)="ChangeActiveTab('Capture')" [ngClass]="{active: Active_Tab === 'Capture'}">
-                    <span> Cube Capture </span>
-                </div>
-                <div class="Tab_List" (click)="ChangeActiveTab('Trends')" [ngClass]="{active: Active_Tab === 'Trends'}" >
-                    <span> Trends </span>
-                </div>
+      <div class="feeds pt-20">
+         <div fxLayout="row" fxLayoutGap="2.5%" fxLayoutAlign="center start">
+            <div fxFlex="19%" fxFlex.md="22%" fxFlex.sm="22%" fxFlex.xs="22%" style="background-color:#ffffff; box-shadow:#66666678 0px 1px 8px 0px;">
+               <app-feeds-left></app-feeds-left>
             </div>
-            <ng-container *ngIf="Active_Tab === 'Highlights'">
-                <app-feeds-center></app-feeds-center>
-            </ng-container>
-            <ng-container *ngIf="Active_Tab === 'Capture'">
-                <app-feeds-capture></app-feeds-capture>
-            </ng-container>
-            <ng-container *ngIf="Active_Tab === 'Trends'">
-                <app-feeds-trends></app-feeds-trends>
-            </ng-container>
-        </div>
-        <div fxFlex="19%" fxFlex.md="22%" fxFlex.sm="22%" fxFlex.xs="22%" style="background-color:#ffffff; box-shadow:#66666678 0px 1px 8px 0px;">
-            <app-feeds-right></app-feeds-right>
-        </div>
-    </div>
-
-</div>
+            <div fxFlex="47%" >
+               <div class="Tabs">
+                  <div class="Tab_List" (click)="ChangeActiveTab('Highlights')" [ngClass]="{active: Active_Tab === 'Highlights'}">
+                     <span> Highlights </span>
+                  </div>
+                  <div class="Tab_List" (click)="ChangeActiveTab('Capture')" [ngClass]="{active: Active_Tab === 'Capture'}">
+                     <span> Cube Capture </span>
+                  </div>
+                  <div class="Tab_List" (click)="ChangeActiveTab('Trends')" [ngClass]="{active: Active_Tab === 'Trends'}" >
+                     <span> Trends </span>
+                  </div>
+               </div>
+               <ng-container *ngIf="Active_Tab === 'Highlights'">
+                  <app-feeds-center></app-feeds-center>
+               </ng-container>
+               <ng-container *ngIf="Active_Tab === 'Capture'">
+                  <app-feeds-capture></app-feeds-capture>
+               </ng-container>
+               <ng-container *ngIf="Active_Tab === 'Trends'">
+                  <app-feeds-trends></app-feeds-trends>
+               </ng-container>
+            </div>
+            <div fxFlex="19%" fxFlex.md="22%" fxFlex.sm="22%" fxFlex.xs="22%" style="background-color:#ffffff; box-shadow:#66666678 0px 1px 8px 0px;">
+                  <app-feeds-right></app-feeds-right>
+            </div>
+         </div>
+      </div>
+   </ng-container>
+   
+   <ng-container *ngIf="!Explainer_Completed">
+      <img *ngIf="ShowingImg === '1'" src="../../../assets//images//Explainer/One.png" (click)="GoNext('2')">
+      <img *ngIf="ShowingImg === '2'" src="../../../assets//images//Explainer/Two.png" (click)="GoNext('3')">
+      <img *ngIf="ShowingImg === '3'" src="../../../assets//images//Explainer/Three.png" (click)="GoNext('4')">
+      <img *ngIf="ShowingImg === '4'" src="../../../assets//images//Explainer/Four.png" (click)="GoNext('5')">
+      <img *ngIf="ShowingImg === '5'" src="../../../assets//images//Explainer/Five.png" (click)="GoNext('6')">
+      <img *ngIf="ShowingImg === '6'" src="../../../assets//images//Explainer/Six.png" (click)="Complete()">
+   </ng-container>
 
 </div> <!-- feedsMain -->

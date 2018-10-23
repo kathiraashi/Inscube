@@ -20,6 +20,8 @@ module.exports = function(app) {
         app.get('/API/Signin_Signup/Privacy_Update_Check/:User_Id', Controller.Privacy_Update_Check);
         app.get('/API/Signin_Signup/Privacy_Update_Agree/:User_Id', Controller.Privacy_Update_Agree);
 
+        app.get('/API/Signin_Signup/Explainer_Completed_Update/:User_Id', Controller.Explainer_Completed_Update);
+
         app.get('/API/Signin_Signup/User_Info/:User_Id', Controller.User_Info);
         app.post('/API/Signin_Signup/Privacy_Update', Controller.Privacy_Update);
         app.post('/API/Signin_Signup/Password_Change', Controller.Password_Change);

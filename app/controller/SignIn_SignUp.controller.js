@@ -154,7 +154,8 @@ exports.UserRegister = function(req, res) {
             Hash_Tag_3: '',
             Show_Profile_To : 'Everyone',
             Active_Status: 'Active',
-            Privacy_Update_Checked : 'Success'
+            Privacy_Update_Checked : 'Success',
+            Explainer_Completed : false
         });
         varUserSchema.save(function(err, result) { // User Creation -----------------------------
             if(err) {
@@ -592,6 +593,36 @@ exports.Privacy_Update_Agree = function(req, res) {
         });
     }
 };
+
+
+// ---------------------------------------------------------------------- Explainer Completed Update ---------------------------------------------------------------
+exports.Explainer_Completed_Update = function(req, res) {
+   if(!req.params.User_Id || req.params.User_Id === '' ) {
+       res.status(200).send({Status:"True", Output:"False", Message: "User Id can not be empty" });
+   }else{
+       UserModel.UserSchema.findOne({'_id': req.params.User_Id}, { Password: 0, __v: 0 }, function(err, result) {
+           if(err) {
+               ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Find Query Error', 'SignIn_SignUp.controller.js - 58', err);
+               res.status(500).send({ Status:"False", Error:err, Message: "User Info Find Error! " });
+           } else {
+               if (result !== null) {
+                   result.Explainer_Completed = true;
+                   result.save(function(err_1, result_1) {
+                       if(err) {
+                           ErrorManagement.ErrorHandling.ErrorLogCreation(req, 'User Register Completion User Info Update Query Error', 'SignIn_SignUp.controller.js - 51', err);
+                           res.status(500).send({Status:"False", Error:err, Message: "Some error occurred while User Info Update"});           
+                       } else {
+                           res.status(200).send({ Status:"True", Output:"True", Message: 'Successfully Updated' });
+                       }
+                   });
+               }else {
+                   res.status(200).send({ Status:"True", Output:"False", Message: 'Invalid User Info' });
+               }
+           }
+       });
+   }
+};
+
 
 
 // ---------------------------------------------------------------------- User Info ---------------------------------------------------------------
