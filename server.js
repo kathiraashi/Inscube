@@ -19,7 +19,8 @@ var app = express();
 // Process On Every Error
     process.on('unhandledRejection', (reason, promise) => {
         ErrorManagement.ErrorHandling.ErrorLogCreation('', '', '', reason);
-        console.error("'Un Handled Rejection' Error Log File - " + new Date().toLocaleDateString());
+        console.log(reason);
+      console.error("'Un Handled Rejection' Error Log File - " + new Date().toLocaleDateString());
     });
     process.on('uncaughtException', function (err) {
         console.log(err);
@@ -30,8 +31,8 @@ var app = express();
 
 // DB Connection
 //
-    mongoose.connect('mongodb://localhost/Inscube');
-    // mongoose.connect('mongodb://kathiravan:kathir143@ds241699.mlab.com:41699/inscube');
+   //  mongoose.connect('mongodb://localhost/Inscube');
+    mongoose.connect('mongodb://kathiravan:kathir143@ds241699.mlab.com:41699/inscube');
     mongoose.connection.on('error', function(err) {
         ErrorManagement.ErrorHandling.ErrorLogCreation('', 'Mongodb Connection Error', 'Server.js - 31', err);
     });
