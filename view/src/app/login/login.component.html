@@ -1,96 +1,162 @@
-<div class="LoginBackground" style="min-width:500px; position: absolute; height: 100%; width: 100%;background: linear-gradient(to right, rgba(0,0,0, 0.7) , rgba(0,0,0, 0.7)),url(assets/images/bg.jpg) no-repeat center center fixed;">
-
-  <div style="margin-top:30px;" fxLayout="row" fxLayoutAlign="space-around start">
-
-    <!-- ----------------------- Left Bar ------------------------- -->
-    <div fxFlex="420px" style="border-radius: 5px;">
-
-      <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:10px; text-align:center; background-color:#fff">
-        <img style="width: 167px; margin: 5px 0px;" src="assets/images/logo.png"> 
-        <hr style="margin: 3px;border-radius: 0px;">
-        <div class="LoginPage_Tabs" fxLayout="row" fxLayoutAlign="start start">
-            <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Register' }" (click)="ActiveTabchange('Register')" fxFlex="50%"> Register </div>
-            <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Login' }" (click)="ActiveTabchange('Login')" fxFlex="50%"> Login </div>
-        </div>
-
-        <!-- ----------------------- Register Tab ------------------------- -->
-        <div *ngIf="ActiveTab === 'Register'" class="Register_Tab">
-            <form [formGroup]="RegisterForm" (ngSubmit)="submit()">
-                <h4> Are You In The Cube ? </h4>
-
-                <input type="text" formControlName="Inscube_Name" (blur)="Check_Inscube_Name_Availabel()" placeholder="@ Inscube Name">
-                <p class="error alertStyle-1 m-0" *ngIf="RegisterForm['controls'].Inscube_Name.dirty &&  RegisterForm.value.Inscube_Name ==='' "> Inscube name is required </p>
-                <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name !== '' && Inscube_NameNotAvailabel">  Username unavailable </p>
-                <!-- <p class="textgreen alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name != '' && Inscube_NameAvailabel"> '@{{Available_Ins_Name}}' is Available </p> -->
-
-                <input type="email" formControlName="Email" (blur)="Check_Email_Availabel()" placeholder="Your Email">
-                <p class="error alertStyle-1" *ngIf="RegisterForm.value.Email !== '' && EmailFormat_Error "> Invalid email format! </p>
-                <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Email.dirty &&  RegisterForm.value.Email === '' "> Email is required </p>
-                <p class="error alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailNotAvailabel"> Email already exist  </p>
-                <!-- <p class="textgreen alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailAvailabel">  Available </p> -->
-
-                <input type="password"  formControlName="Password" (blur)="checkFormValidation()" (keypress)="checkFormValidation()" placeholder="Password">
-                <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Password.dirty &&  RegisterForm.value.Password === '' "> Password is required </p>
-
-                <p class="style_2" style="margin-left: 30px;"> 
-                    <input type="checkbox" formControlName="checkbox" (change)="checkFormValidation()" style="width: 17px !important; height: 17px; position: absolute; left: 25px;">
-                     By signing up, you agree to the 
-                     <span [routerLink]="[ '/Terms']" > terms of service </span> 
-                     and 
-                     <span [routerLink]="[ '/Privacy']"> privacy policy </span> 
-                </p>
-                <button type="submit" [disabled]="!Register_Form_Valid" [ngClass]="{'disabled': !Register_Form_Valid}" class="btn ptn-primary"> Register now </button>
-                <p class="style_3"> <span (click)="ActiveTabchange('Login')"> Already have an account?  </span>  </p>
-                <div fxLayout="row" fxLayoutAlign="center start">
-                    <a href="https://play.google.com/store/apps/details?id=com.test.aashi.inscubenewbuild" target="blanck">
-                        <img fxFlex="200px" src="assets/images/playsotre.png">
-                    </a> 
-                </div>
-            </form>
-        </div>
-
-        <!-- ----------------------- Login Tab ------------------------- -->
-        <div *ngIf="ActiveTab === 'Login'" class="Login_Tab">
-            <form [formGroup]="SignInForm" (ngSubmit)="LoginFormsubmit()">
-                <p class="textstyle_1"> Log into your account </p>
-
-                <input type="email" formControlName="Email" placeholder="Your Email">
-                <p class="error alertStyle-1" *ngIf="SignInForm['controls'].Email.dirty &&  SignInForm.value.Email === '' "> Email is required </p>
-
-                <input type="password" formControlName="Password" placeholder="Password">
-                <p class="error alertStyle-1" *ngIf="SignInForm['controls'].Password.dirty &&  SignInForm.value.Password === '' "> Password is required </p>
-
-                <p class="style_2"> <span (click)="ForgotPassword()"> Forgot password? </span>   </p>
-                <button class="btn ptn-primary" type="submit" [ngClass]="{'disabled': SignInForm.value.Email =='' || SignInForm.value.Password =='' }" [disabled]="SignInForm.value.Email =='' || SignInForm.value.Password ==''"> Login now </button>
-                <p class="style_3"> <span (click)="ActiveTabchange('Register')"> Create new account !!  </span> </p>
-                <div fxLayout="row" fxLayoutAlign="center start">
-                    <a href="https://play.google.com/store/apps/details?id=com.test.aashi.inscubenewbuild" target="blanck">
-                        <img fxFlex="200px" src="assets/images/playsotre.png">
-                    </a> 
-                </div>
-            </form>
-        </div>
-      </mat-card>
-
-      <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="center start">
-        <div class='LinK_Style_1' fxFlex="100px">
-            <p [routerLink]="[ '/About']" > About </p>
-        </div>
-        <div class='LinK_Style_1' fxFlex="100px">
-            <p> Careers </p>
-        </div>
-        <div class='LinK_Style_1' fxFlex="100px">
-            <p [routerLink]="[ '/Terms']"  > Terms </p>
-        </div>
-        <div class='LinK_Style_1' fxFlex="100px">
-            <p [routerLink]="[ '/Privacy']" > Privacy </p>
-        </div>
-        <div class='LinK_Style_1' fxFlex="100px">
-            <p [routerLink]="[ '/Contact']" > Contact </p>
-        </div>
-
-    </div>
-
-    </div>
-  </div>
+<div class="LoginBackground" style="min-width:500px; position: absolute; height: 100%; width: 100%;">
+   <div class="nav_bar">
+      <img src="../../assets/images//inscube-logo.png" >
+      <ul class="menu">
+         <!-- <li class="menu_list" [routerLink]="[ '/About']">About</li>
+         <li class="menu_list">Careers</li> -->
+         <li class="menu_list" [routerLink]="[ '/Terms']">Terms</li>
+         <li class="menu_list" [routerLink]="[ '/Privacy']">Privacy</li>
+         <li class="menu_list" [routerLink]="[ '/Contact']">Contact</li>
+      </ul>
+   </div>
+   <div class="container">
+      <div class="Content_Section">
+         <div class="row">
+            <div class="col-sm-7 content">
+               <div class="Content_Login">
+               <h2>Welcome to the world's first Alternate Social Network</h2><br>
+               <h3>where YOU CAN CREATE YOUR OWN SOCIAL NETWORK</h3><br><br>
+               <div class="row">
+                  <div class="col-sm-4">
+                     <h5>create</h5>
+                     <h4>COMMUNITIES</h4>
+                     <img src="../../assets/images/1 (1).png" style="width:100px;height:100px">
+                     <h5>that are exclusive</h5>
+                  </div>
+                  <div class="col-sm-4">
+                     <h5>start</h5>
+                     <h4>CONVERSATIONS</h4>
+                     <img src="../../assets/images/2 (1).png" style="width:100px;height:100px">
+                     <h5>that are impactful</h5>
+                  </div>
+                  <div class="col-sm-4">
+                     <h5>make</h5>
+                     <h4>CONNECTIONS</h4>
+                     <img src="../../assets/images/4.png" style="width:100px;height:100px">
+                     <h5>that are meaningful</h5>
+                  </div>
+               </div>
+            </div>
+            </div>
+            <div class="col-sm-5">
+               <div style="margin-left:50px;">
+                  <!-- ----------------------- Register and Login Section ------------------------- -->
+                  <div style="border-radius: 5px; width: 420px; ">
+                     <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:10px; text-align:center; background-color:#fff">
+                        <div class="LoginPage_Tabs" fxLayout="row" fxLayoutAlign="start start">
+                           <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Register' }" (click)="ActiveTabchange('Register')" fxFlex="50%"> Register </div>
+                           <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Login' }" (click)="ActiveTabchange('Login')" fxFlex="50%"> Login </div>
+                        </div>
+                        <!-- ----------------------- Register Tab ------------------------- -->
+                        <div *ngIf="ActiveTab === 'Register'" class="Register_Tab">
+                           <form [formGroup]="RegisterForm" (ngSubmit)="submit()">
+                              <h4> Are You In The Cube ? </h4>
+                              <input type="text" formControlName="Inscube_Name" (blur)="Check_Inscube_Name_Availabel()" placeholder="@ Inscube Name">
+                              <p class="error alertStyle-1 m-0" *ngIf="RegisterForm['controls'].Inscube_Name.dirty &&  RegisterForm.value.Inscube_Name ==='' "> Inscube name is required </p>
+                              <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name !== '' && Inscube_NameNotAvailabel">  Username unavailable </p>
+                              <input type="email" formControlName="Email" (blur)="Check_Email_Availabel()" placeholder="Your Email">
+                              <p class="error alertStyle-1" *ngIf="RegisterForm.value.Email !== '' && EmailFormat_Error "> Invalid email format! </p>
+                              <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Email.dirty &&  RegisterForm.value.Email === '' "> Email is required </p>
+                              <p class="error alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailNotAvailabel"> Email already exist  </p>
+                              <input type="password"  formControlName="Password" (blur)="checkFormValidation()" (keypress)="checkFormValidation()" placeholder="Password">
+                              <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Password.dirty &&  RegisterForm.value.Password === '' "> Password is required </p>
+                              <p class="style_2" style="margin-left: 30px;"> 
+                                 <input type="checkbox" formControlName="checkbox" (change)="checkFormValidation()" style="width: 17px !important; height: 17px; position: absolute; left: 25px;">
+                                    By signing up, you agree to the 
+                                    <span [routerLink]="[ '/Terms']" > terms of service </span> 
+                                    and 
+                                    <span [routerLink]="[ '/Privacy']"> privacy policy </span> 
+                              </p>
+                              <button type="submit" [disabled]="!Register_Form_Valid" [ngClass]="{'disabled': !Register_Form_Valid}" class="btn ptn-primary"> Register now </button>
+                              <p class="style_3"> <span (click)="ActiveTabchange('Login')"> Already have an account?  </span>  </p>
+                              <div fxLayout="row" fxLayoutAlign="center start">
+                                 <a href="https://play.google.com/store/apps/details?id=com.test.aashi.inscubenewbuild" target="blanck">
+                                    <img fxFlex="200px" src="assets/images/playsotre.png">
+                                 </a> 
+                              </div>
+                           </form>
+                        </div>
+                        <!-- ----------------------- Login Tab ------------------------- -->
+                        <div *ngIf="ActiveTab === 'Login'" class="Login_Tab">
+                           <form [formGroup]="SignInForm" (ngSubmit)="LoginFormsubmit()">
+                              <p class="textstyle_1"> Log into your account </p>
+            
+                              <input type="email" formControlName="Email" placeholder="Your Email">
+                              <p class="error alertStyle-1" *ngIf="SignInForm['controls'].Email.dirty &&  SignInForm.value.Email === '' "> Email is required </p>
+            
+                              <input type="password" formControlName="Password" placeholder="Password">
+                              <p class="error alertStyle-1" *ngIf="SignInForm['controls'].Password.dirty &&  SignInForm.value.Password === '' "> Password is required </p>
+            
+                              <p class="style_2"> <span (click)="ForgotPassword()"> Forgot password? </span>   </p>
+                              <button class="btn ptn-primary" type="submit" [ngClass]="{'disabled': SignInForm.value.Email =='' || SignInForm.value.Password =='' }" [disabled]="SignInForm.value.Email =='' || SignInForm.value.Password ==''"> Login now </button>
+                              <p class="style_3"> <span (click)="ActiveTabchange('Register')"> Create new account !!  </span> </p>
+                              <div fxLayout="row" fxLayoutAlign="center start">
+                                 <a href="https://play.google.com/store/apps/details?id=com.test.aashi.inscubenewbuild" target="blanck">
+                                    <img fxFlex="200px" src="assets/images/playsotre.png">
+                                 </a> 
+                              </div>
+                           </form>
+                        </div>
+                     </mat-card>
+                  </div>
+                  
+                     <!-- <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="center start">
+                        <div class='LinK_Style_1' fxFlex="100px">
+                           <p [routerLink]="[ '/About']" > About </p>
+                        </div>
+                        <div class='LinK_Style_1' fxFlex="100px">
+                           <p> Careers </p>
+                        </div>
+                        <div class='LinK_Style_1' fxFlex="100px">
+                           <p [routerLink]="[ '/Terms']"  > Terms </p>
+                        </div>
+                        <div class='LinK_Style_1' fxFlex="100px">
+                           <p [routerLink]="[ '/Privacy']" > Privacy </p>
+                        </div>
+                        <div class='LinK_Style_1' fxFlex="100px">
+                           <p [routerLink]="[ '/Contact']" > Contact </p>
+                        </div>
+            
+                     </div> -->
+            
+               </div>
+            </div>
+         </div><br>
+         <br><br><br>
+         <!-- <div class="arrow">
+            <span></span>
+         </div> -->
+         <h1 style="text-align: center;font-weight: 800;font-size: 30px;color:#E9472B;letter-spacing: 2.88px;">Our Mission</h1><br><br>
+         <div class="row">
+            <div class="col-sm-7">
+               <video width="600" height="350" controls>
+                  <source src="../../assets/images/videoplayback.mp4">
+               </video>
+            </div>
+            <div class="col-sm-5 content" style="margin-top:35px;">
+               <p>Inscube is an alternate social network with the mission of ‘CREATING A BETTER SOCIAL WORLD TOGETHER’ with communities at its core. The world is united by communities with like-minded people irrespective of the location, religion, gender, culture, etc.</p><br>
+               <p>That’s why we have created a platform exclusively for communities, for people to come together for a cause, initiative meaningful conversations, ask curious questions, share ideas or express their talents.</p>
+               <h3>ARE YOU IN THE CUBE?</h3>
+            </div>
+         </div><br><br><br><br><br>
+         <h1 style="text-align: center;font-weight: 800;font-size: 30px;color:#E9472B;letter-spacing: 2.88px;">Features</h1><br><br>
+         <div class="row">
+            <div class="col-sm-3">
+               <img src="../../assets/images/5.png" style="width:250px;height:250px">
+            </div>
+            <div class="col-sm-3">
+               <img src="../../assets/images/6.png" style="width:250px;height:250px">
+            </div>
+            <div class="col-sm-3">
+               <img src="../../assets/images/7.png" style="width:250px;height:250px">
+            </div>
+            <div class="col-sm-3">
+               <img src="../../assets/images/8.png" style="width:250px;height:250px">
+            </div>
+         </div><br>
+         <h4 style="text-align:center;font-size: 25px;font-weight: 400;letter-spacing: 0.88px;">Bored of the Blues and tired of the Swipes? It's time to join the Cube!</h4><br>
+         <h3 style="text-align:center">Let's <span style="color:#E9472B">#MakeSocialMediaGreatAgain</span></h3><br>
+         <button class="button"><span>Join the CUBE</span></button>
+      </div>
+   </div>
 </div>

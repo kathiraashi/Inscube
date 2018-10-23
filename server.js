@@ -19,7 +19,8 @@ var app = express();
 // Process On Every Error
     process.on('unhandledRejection', (reason, promise) => {
         ErrorManagement.ErrorHandling.ErrorLogCreation('', '', '', reason);
-        console.error("'Un Handled Rejection' Error Log File - " + new Date().toLocaleDateString());
+        console.log(reason);
+      console.error("'Un Handled Rejection' Error Log File - " + new Date().toLocaleDateString());
     });
     process.on('uncaughtException', function (err) {
         console.log(err);
