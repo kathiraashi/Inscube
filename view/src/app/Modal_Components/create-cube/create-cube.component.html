@@ -135,16 +135,28 @@
 
         <div fxLayout="row" fxLayoutAlign="space-around start" style="margin-top: 20px"> 
             <div fxFlex="25%" class="Addons">
-                <i class="material-icons" [ngClass]="{'active': Locatin_Input}"  (click)="View_Location_Input()" >location_on</i>
+               <span [ngClass]="{'active': Locatin_Input}"  (click)="View_Location_Input()">
+                  <i class="material-icons" >location_on</i>
+                  <span class="i_name"> Location </span>
+               </span>
             </div>
             <div fxFlex="25%" class="Addons">
-                <i class="material-icons" [ngClass]="{'active': Website_Input}"  (click)="View_Website_Input()" >language</i>
+               <span [ngClass]="{'active': Website_Input}" (click)="View_Website_Input()">
+                  <i class="material-icons" >language</i>
+                  <span class="i_name"> Website </span>
+               </span>
             </div>
             <div fxFlex="25%" class="Addons">
-                <i class="material-icons" [ngClass]="{'active': Email_Input}"  (click)="View_Email_Input()" >mail_outline</i>
+               <span [ngClass]="{'active': Email_Input}" (click)="View_Email_Input()" >
+                  <i class="material-icons">mail_outline</i>
+                  <span class="i_name"> Email </span>
+               </span>
             </div>
             <div fxFlex="25%" class="Addons">
-                <i class="material-icons" [ngClass]="{'active': Contact_Input}"  (click)="View_Contact_Input()" >call</i>
+               <span [ngClass]="{'active': Contact_Input}" (click)="View_Contact_Input()">
+                  <i class="material-icons"  >call</i>
+                  <span class="i_name"> Mobile </span>
+               </span>
             </div>
         </div>
     </div>

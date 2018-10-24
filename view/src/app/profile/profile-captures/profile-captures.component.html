@@ -68,7 +68,7 @@
             <!-- Captures Post -->
             <div class="postmain" fxLayout="row" style="padding: 5px 0px;">
               <div fxFlex class="text-center">
-                <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Capture.Capture_Text}} </h5>
+                <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;white-space: pre-wrap;"> {{Capture.Capture_Text}} </h5>
   
                  <ngx-carousel class="ImageGallery" [inputs]="carouselBanner" (carouselLoad)="myfunc($event)">
                     <ngx-item NgxCarouselItem *ngFor="let Video of Capture.Capture_Video; let n =index">
@@ -203,7 +203,7 @@
                     </div>
                     <hr class="m-0">
                     <div class="commentbody">
-                      <p class="commenttext"> {{Comment.Comment_Text}} </p>
+                      <p class="commenttext" style="white-space: pre-wrap;"> {{Comment.Comment_Text}} </p>
                     </div>
                   </div>
   

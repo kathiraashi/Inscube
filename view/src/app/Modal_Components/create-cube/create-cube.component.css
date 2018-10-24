@@ -95,12 +95,23 @@
 .Addons i{
     font-size: 30px;
     color: #8c8c8c;
-    cursor: pointer;
 }
-.Addons i:hover{
+.Addons span{
+   display: inline-grid;
+   cursor: pointer;
+}
+.Addons span .i_name{
+   font-size: 13px;
+   color: #777;
+   letter-spacing: 0.5px;
+}
+.Addons span:hover i,
+.Addons span.active i
+{
     color: #d75839;
 }
-.Addons i.active{
+.Addons span:hover .i_name,
+.Addons span.active .i_name{
     color: #d75839;
 }
 .modal-footer{

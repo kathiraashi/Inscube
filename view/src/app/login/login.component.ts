@@ -139,6 +139,10 @@ export class LoginComponent implements OnInit {
 
   }
 
+   scroll(el) {
+      el.scrollIntoView({behavior: 'smooth', block: 'start', inline: 'nearest'});
+   }
+
   ActiveTabchange(name) {
     if (name !== this.ActiveTab ) {
       this.ActiveTab = name;

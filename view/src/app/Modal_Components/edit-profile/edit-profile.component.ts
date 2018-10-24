@@ -28,11 +28,13 @@ export class EditProfileComponent implements OnInit {
   AllCountry: any[];
   countries: any[];
 
-  AllStateOfCountry: any[];
   states: any[];
+  SelectedState;
 
-  AllCityOfState: string;
   cities: any[];
+  SelectedCity;
+
+  maxDate: Date = new Date('December 31, 1999');
 
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -58,7 +60,10 @@ export class EditProfileComponent implements OnInit {
         this.LoginUser = JSON.parse(localStorage.getItem('CurrentUser'));
         this.Service.Country_List().subscribe( country => {
           if (country['Status'] === 'True' && country['Output'] === 'True') {
-              this.AllCountry = country['Response'];
+            this.AllCountry = country['Response'];
+            setTimeout(() => {
+               this.Form.controls['Country'].setValue(this.data.User_Info.Country);
+            }, 500);
           }
         });
   }
@@ -83,7 +88,8 @@ export class EditProfileComponent implements OnInit {
     if ( this.data.User_Info.Country && typeof(this.data.User_Info.Country) === 'object' && Object.keys(this.data.User_Info.Country).length > 0 ) {
       this.Service.State_List(this.data.User_Info.Country['_id']).subscribe( state => {
         if (state['Status'] === 'True' && state['Output'] === 'True') {
-            this.AllStateOfCountry = state['Response'];
+            this.states = state['Response'];
+            this.SelectedState = this.data.User_Info.State;
         }
       });
     }
@@ -91,7 +97,8 @@ export class EditProfileComponent implements OnInit {
     if ( this.data.User_Info.State && typeof(this.data.User_Info.State) === 'object' && Object.keys(this.data.User_Info.State).length > 0) {
       this.Service.City_List(this.data.User_Info.State['_id']).subscribe( state => {
         if (state['Status'] === 'True' && state['Output'] === 'True') {
-            this.AllCityOfState = state['Response'];
+            this.cities = state['Response'];
+            this.SelectedCity = this.data.User_Info.City;
         }
       });
     }
@@ -123,56 +130,28 @@ export class EditProfileComponent implements OnInit {
     this.Form.controls['City'].setValue('');
     this.Service.State_List(this.Form.controls['Country'].value['_id']).subscribe( state => {
       if (state['Status'] === 'True' && state['Output'] === 'True') {
-          this.AllStateOfCountry = state['Response'];
+          this.states = state['Response'];
       }
     });
   }
 
-
-  // State Filter And Select
-  filterState(_event) {
-    const query = _event.query;
-    const filtered: any[] = [];
-    for (let i = 0; i < this.AllStateOfCountry.length; i++) {
-      const state = this.AllStateOfCountry[i];
-      if (state['State_Name'].toLowerCase().includes(query.toLowerCase())) {
-            filtered.push(state);
-      }
-    }
-    this.states = filtered;
-  }
-  StateOnBlur(_value) {
-    if (typeof(this.Form.controls['State'].value) !== 'object') {
-      this.Form.controls['State'].setValue('');
+// State Filter And Select
+StateOnBlur() {
+   if (typeof(this.Form.controls['Country'].value) !== 'object') {
       this.Form.controls['City'].setValue('');
-    }
-  }
-  StateOnSelect(_value) {
-    this.Form.controls['City'].setValue('');
-    this.Service.City_List(this.Form.controls['State'].value['_id']).subscribe( city => {
-      if (city['Status'] === 'True' && city['Output'] === 'True') {
-          this.AllCityOfState = city['Response'];
-      }
-    });
-  }
-
-  // State Filter And Select
-  filterCity(_event) {
-    const query = _event.query;
-    const filtered: any[] = [];
-    for (let i = 0; i < this.AllCityOfState.length; i++) {
-      const city = this.AllCityOfState[i];
-      if (city['City_Name'].toLowerCase().includes(query.toLowerCase())) {
-            filtered.push(city);
-      }
-    }
-    this.cities = filtered;
-  }
-  CityOnBlur(_value) {
-    if (typeof(this.Form.controls['City'].value) !== 'object') {
-      this.Form.controls['City'].setValue('');
-    }
-  }
+      this.cities = [];
+   }
+}
+StateOnSelect(_value) {
+   this.Form.controls['City'].setValue('');
+   if (typeof(this.Form.controls['Country'].value) === 'object') {
+      this.Service.City_List(this.SelectedState['_id']).subscribe( city => {
+         if (city['Status'] === 'True' && city['Output'] === 'True') {
+            this.cities = city['Response'];
+         }
+      });
+   }
+}
 
   onFileChange(event) {
     if (event.target.files && event.target.files.length > 0) {

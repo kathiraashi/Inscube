@@ -1,36 +1,39 @@
 <div class="LoginBackground" style="min-width:500px; position: absolute; height: 100%; width: 100%;">
-   <div class="nav_bar">
-      <img src="../../assets/images//inscube-logo.png" >
-      <ul class="menu">
-         <!-- <li class="menu_list" [routerLink]="[ '/About']">About</li>
-         <li class="menu_list">Careers</li> -->
-         <li class="menu_list" [routerLink]="[ '/Terms']">Terms</li>
-         <li class="menu_list" [routerLink]="[ '/Privacy']">Privacy</li>
-         <li class="menu_list" [routerLink]="[ '/Contact']">Contact</li>
-      </ul>
+   <div #targetOne></div>
+   <div class="Header">
+      <div class="container">
+         <div class="Header-Menus">
+            <img src="../../assets/images//inscube-logo.png" >
+            <div class="menus">
+               <span> <a [routerLink]="[ '/Terms']"> Terms </a> </span>
+               <span> <a [routerLink]="[ '/Privacy']"> Privacy </a> </span>
+               <span> <a [routerLink]="[ '/Contact']"> Contact </a> </span>
+            </div>
+         </div>
+      </div>
    </div>
    <div class="container">
       <div class="Content_Section">
          <div class="row">
             <div class="col-sm-7 content">
                <div class="Content_Login">
-               <h2>Welcome to the world's first Alternate Social Network</h2><br>
+               <h1>Welcome to the world's first Alternate Social Network</h1><br>
                <h3>where YOU CAN CREATE YOUR OWN SOCIAL NETWORK</h3><br><br>
                <div class="row">
                   <div class="col-sm-4">
-                     <h5>create</h5>
+                     <h6>create</h6>
                      <h4>COMMUNITIES</h4>
                      <img src="../../assets/images/1 (1).png" style="width:100px;height:100px">
                      <h5>that are exclusive</h5>
                   </div>
                   <div class="col-sm-4">
-                     <h5>start</h5>
+                     <h6>start</h6>
                      <h4>CONVERSATIONS</h4>
                      <img src="../../assets/images/2 (1).png" style="width:100px;height:100px">
                      <h5>that are impactful</h5>
                   </div>
                   <div class="col-sm-4">
-                     <h5>make</h5>
+                     <h6>make</h6>
                      <h4>CONNECTIONS</h4>
                      <img src="../../assets/images/4.png" style="width:100px;height:100px">
                      <h5>that are meaningful</h5>
@@ -41,8 +44,8 @@
             <div class="col-sm-5">
                <div style="margin-left:50px;">
                   <!-- ----------------------- Register and Login Section ------------------------- -->
-                  <div style="border-radius: 5px; width: 420px; ">
-                     <mat-card class="example-card" style="border-radius: 5px; padding:0px; padding-bottom:10px; text-align:center; background-color:#fff">
+                  <div style="border-radius: 0px; width: 420px; ">
+                     <mat-card class="example-card" style="border-radius: 0px; box-shadow: 1px 1px 14px #bbbbbb; padding:0px; padding-bottom:10px; text-align:center; background-color:#fff">
                         <div class="LoginPage_Tabs" fxLayout="row" fxLayoutAlign="start start">
                            <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Register' }" (click)="ActiveTabchange('Register')" fxFlex="50%"> Register </div>
                            <div class="Tabs" [ngClass]="{'Active': ActiveTab === 'Login' }" (click)="ActiveTabchange('Login')" fxFlex="50%"> Login </div>
@@ -50,7 +53,6 @@
                         <!-- ----------------------- Register Tab ------------------------- -->
                         <div *ngIf="ActiveTab === 'Register'" class="Register_Tab">
                            <form [formGroup]="RegisterForm" (ngSubmit)="submit()">
-                              <h4> Are You In The Cube ? </h4>
                               <input type="text" formControlName="Inscube_Name" (blur)="Check_Inscube_Name_Availabel()" placeholder="@ Inscube Name">
                               <p class="error alertStyle-1 m-0" *ngIf="RegisterForm['controls'].Inscube_Name.dirty &&  RegisterForm.value.Inscube_Name ==='' "> Inscube name is required </p>
                               <p class="error alertStyle-1 m-0" *ngIf="RegisterForm.value.Inscube_Name !== '' && Inscube_NameNotAvailabel">  Username unavailable </p>
@@ -60,7 +62,7 @@
                               <p class="error alertStyle-1 " *ngIf="RegisterForm.value.Email !== '' && EmailNotAvailabel"> Email already exist  </p>
                               <input type="password"  formControlName="Password" (blur)="checkFormValidation()" (keypress)="checkFormValidation()" placeholder="Password">
                               <p class="error alertStyle-1" *ngIf="RegisterForm['controls'].Password.dirty &&  RegisterForm.value.Password === '' "> Password is required </p>
-                              <p class="style_2" style="margin-left: 30px;"> 
+                              <p class="style_2" style="margin-left: 25px;"> 
                                  <input type="checkbox" formControlName="checkbox" (change)="checkFormValidation()" style="width: 17px !important; height: 17px; position: absolute; left: 25px;">
                                     By signing up, you agree to the 
                                     <span [routerLink]="[ '/Terms']" > terms of service </span> 
@@ -99,64 +101,91 @@
                         </div>
                      </mat-card>
                   </div>
-                  
-                     <!-- <div style="margin-top:30px" fxLayout="row" fxLayoutAlign="center start">
-                        <div class='LinK_Style_1' fxFlex="100px">
-                           <p [routerLink]="[ '/About']" > About </p>
-                        </div>
-                        <div class='LinK_Style_1' fxFlex="100px">
-                           <p> Careers </p>
-                        </div>
-                        <div class='LinK_Style_1' fxFlex="100px">
-                           <p [routerLink]="[ '/Terms']"  > Terms </p>
-                        </div>
-                        <div class='LinK_Style_1' fxFlex="100px">
-                           <p [routerLink]="[ '/Privacy']" > Privacy </p>
-                        </div>
-                        <div class='LinK_Style_1' fxFlex="100px">
-                           <p [routerLink]="[ '/Contact']" > Contact </p>
-                        </div>
-            
-                     </div> -->
-            
                </div>
             </div>
          </div><br>
          <br><br><br>
-         <!-- <div class="arrow">
-            <span></span>
-         </div> -->
-         <h1 style="text-align: center;font-weight: 800;font-size: 30px;color:#E9472B;letter-spacing: 2.88px;">Our Mission</h1><br><br>
+         <div class="arrow">
+            <span (click)="scroll(targetTwo)"> <i class="material-icons"> keyboard_arrow_down</i> </span>
+         </div>
+         <div #targetTwo></div>
+         <h1 style="text-align: center;font-weight: 800;font-size: 30px;color:#E9472B;letter-spacing: 1.88px;text-transform: uppercase;font-family: lulo-clean-w01-one-bold,sans-serif;">Our Mission</h1><br><br>
          <div class="row">
-            <div class="col-sm-7">
-               <video width="600" height="350" controls>
-                  <source src="../../assets/images/videoplayback.mp4">
-               </video>
+            <div class="col-sm-6">
+               <iframe width="100%" height="100%" src="https://www.youtube.com/embed/nwdpBU7uKN4" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
             </div>
-            <div class="col-sm-5 content" style="margin-top:35px;">
+            <div class="col-sm-6 content" style="margin-top: 25px; margin-bottom: 25px;">
                <p>Inscube is an alternate social network with the mission of ‘CREATING A BETTER SOCIAL WORLD TOGETHER’ with communities at its core. The world is united by communities with like-minded people irrespective of the location, religion, gender, culture, etc.</p><br>
                <p>That’s why we have created a platform exclusively for communities, for people to come together for a cause, initiative meaningful conversations, ask curious questions, share ideas or express their talents.</p>
                <h3>ARE YOU IN THE CUBE?</h3>
             </div>
          </div><br><br><br><br><br>
-         <h1 style="text-align: center;font-weight: 800;font-size: 30px;color:#E9472B;letter-spacing: 2.88px;">Features</h1><br><br>
+         <div class="arrow">
+            <span (click)="scroll(targetThree)"> <i class="material-icons"> keyboard_arrow_down</i> </span>
+         </div>
+         <div #targetThree></div>
+         <h1 style="text-align: center;font-weight: 800;font-size: 30px;color:#E9472B;letter-spacing: 1.88px;text-transform: uppercase;font-family: lulo-clean-w01-one-bold,sans-serif;">Features</h1><br><br>
          <div class="row">
             <div class="col-sm-3">
-               <img src="../../assets/images/5.png" style="width:250px;height:250px">
+               <div class="Animation_Section">
+                  <div class="Text_Section">
+                     <div class="Text">
+                        <img style="width: 50px;" src="../../assets//images/doublequote.png">
+                        <p> Create an exclusive community for your institution, organization, company or friends </p> 
+                     </div>
+                  </div>
+                  <div class="Image_Section"> 
+                     <img src="../../assets/images/5.png">
+                     <p> Create your own social network </p>
+                  </div>
+               </div>
             </div>
             <div class="col-sm-3">
-               <img src="../../assets/images/6.png" style="width:250px;height:250px">
+               <div class="Animation_Section">
+                  <div class="Text_Section">
+                     <div class="Text">
+                        <img style="width: 50px;" src="../../assets//images/doublequote.png">
+                        <p> Share stories, articles, announcements, talent, curiosities, questions and more </p> 
+                     </div>
+                  </div>
+                  <div class="Image_Section"> 
+                     <img src="../../assets/images/6.png">
+                     <p> Check Highlights from the communities </p>
+                  </div>
+               </div>
             </div>
             <div class="col-sm-3">
-               <img src="../../assets/images/7.png" style="width:250px;height:250px">
+               <div class="Animation_Section">
+                  <div class="Text_Section">
+                     <div class="Text">
+                        <img style="width: 50px;" src="../../assets//images/doublequote.png">
+                        <p> Capture your moments and memories by a short 60 seconds video and share with your community </p> 
+                     </div>
+                  </div>
+                  <div class="Image_Section"> 
+                     <img src="../../assets/images/7.png">
+                     <p> Capture your moments and memories </p>
+                  </div>
+               </div>
             </div>
             <div class="col-sm-3">
-               <img src="../../assets/images/8.png" style="width:250px;height:250px">
+               <div class="Animation_Section">
+                  <div class="Text_Section">
+                     <div class="Text">
+                        <img style="width: 50px;" src="../../assets//images/doublequote.png">
+                        <p> Voice out by starting #campaigns which create an impact in the world </p> 
+                     </div>
+                  </div>
+                  <div class="Image_Section"> 
+                     <img src="../../assets/images/8.png">
+                     <p> Start #campaigns and be the change </p>
+                  </div>
+               </div>
             </div>
          </div><br>
-         <h4 style="text-align:center;font-size: 25px;font-weight: 400;letter-spacing: 0.88px;">Bored of the Blues and tired of the Swipes? It's time to join the Cube!</h4><br>
-         <h3 style="text-align:center">Let's <span style="color:#E9472B">#MakeSocialMediaGreatAgain</span></h3><br>
-         <button class="button"><span>Join the CUBE</span></button>
+         <h3 style="text-align:center;font-family: 'Questrial', sans-serif;letter-spacing: 0.88px;color: #616161;">Bored of the Blues and tired of the Swipes? It's time to join the Cube!</h3><br>
+         <h3 style="text-align:center;font-family: 'Questrial', sans-serif;letter-spacing: 0.88px;color: #5a5a5a;">Let's <span style="color:#E9472B">#MakeSocialMediaGreatAgain</span></h3><br>
+         <button class="button"  (click)="scroll(targetOne)"><span style="font-family: 'Questrial', sans-serif;font-weight: 500;letter-spacing: 0.5px;">Join the CUBE</span></button>
       </div>
    </div>
 </div>

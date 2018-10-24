@@ -22,13 +22,13 @@
                                 <p> Users <small *ngIf="activeTab === 'Users'"> ({{Search_Users?.length}}) </small></p>
                             </div>
                             <div class="search_tab" [ngClass]="{'active': activeTab === 'Posts'}" (click)="change_activeTab('Posts')">
-                                <p> Posts <small *ngIf="activeTab === 'Posts'"> ({{Search_Posts?.length}}) </small> </p>
+                                <p> Highlights <small *ngIf="activeTab === 'Posts'"> ({{Search_Posts?.length}}) </small> </p>
                             </div>
                             <div class="search_tab" [ngClass]="{'active': activeTab === 'Captures'}" (click)="change_activeTab('Captures')">
-                                <p> Captures <small *ngIf="activeTab === 'Captures'"> ({{Search_Captures?.length}}) </small> </p>
+                                <p> Cube capture <small *ngIf="activeTab === 'Captures'"> ({{Search_Captures?.length}}) </small> </p>
                             </div>
                             <div class="search_tab" [ngClass]="{'active': activeTab === 'Trends'}" (click)="change_activeTab('Trends')">
-                                <p> Trends <small *ngIf="activeTab === 'Trends'"> ({{Search_Trends?.length}}) </small> </p>
+                                <p> #campaigns <small *ngIf="activeTab === 'Trends'"> ({{Search_Trends?.length}}) </small> </p>
                             </div>
                         </div>
                         <div class="search_result" style="height: 300px;">

@@ -79,7 +79,7 @@
                 <div class="Trends_Tags_List">
                   <span *ngFor="let Tag of Trend.Trends_Tags; let t = index" (click)="Trigger_Post(i); Tag_Filer_Change(t)" class="Trend_Tag" > {{Tag}} </span>
                 </div>
-                <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;"> {{Trend.Trends_Text}} </h5>
+                <h5 class="text-left" style="margin: 0px 10px;font-size: 15px;white-space: pre-wrap;"> {{Trend.Trends_Text}} </h5>
               </div>
             </div>
             <!-- Trends Post END -->
@@ -199,7 +199,7 @@
                     </div>
                     <hr class="m-0">
                     <div class="commentbody">
-                      <p class="commenttext"> {{Comment.Comment_Text}} </p>
+                      <p class="commenttext" style="white-space: pre-wrap;"> {{Comment.Comment_Text}} </p>
                     </div>
                   </div>
   

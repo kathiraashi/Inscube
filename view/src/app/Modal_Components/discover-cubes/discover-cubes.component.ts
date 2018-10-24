@@ -137,6 +137,10 @@ export class DiscoverCubesComponent implements OnInit {
       });
   }
 
+  GotoCubeView(_id) {
+      this.router.navigate(['Cube_View', _id ]);
+      this._bsModalRef.hide();
+  }
 
   openConfirmDialog() {
     this.Create_form_open = true;

@@ -26,10 +26,15 @@ p-autocomplete.ng-dirty.ng-invalid > .ui-autocomplete > .ui-inputtext{
     .Select_Box_Style_1 .ui-dropdown-panel .ui-dropdown-list{
         padding: 0px;
     }
+    .Select_Box_Style_1 .ui-dropdown-panel .ui-dropdown-item:not(.ui-state-highlight):hover {
+      border-color: #c0c0c0;
+      background: #DE593D;
+      color: #ffffff;
+  }
     .Select_Box_Style_1 .ui-dropdown-panel .ui-dropdown-item{
-        height: 30px;
-        line-height: 30px;
-        padding: 0px 10px;
+        /* height: 30px;
+        line-height: 30px; */
+        padding: 5px 10px;
         border-radius: 0px;
         font-size: 14px;
     }

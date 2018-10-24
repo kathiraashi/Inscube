@@ -82,26 +82,26 @@
 
                   <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item" style="max-width: 33.33%;">
                     <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
-                      <div fxFlex="55px" class="Cat_list_item_part_1">
+                      <div (click)="GotoCubeView(item._id)" fxFlex="55px" class="Cat_list_item_part_1">
                         <img class="Cat_list_item_img" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
                       </div>
-                      <div fxFlex class="Cat_list_item_part_2">
+                      <div (click)="GotoCubeView(item._id)" fxFlex class="Cat_list_item_part_2">
                         <h5> {{item.Name | slice:0:15 }}{{ item.Name?.length > 15 ? '...' : ' ' }} </h5>
                         <p> {{item.Members}} Members </p>
                       </div>
                       <div fxFlex="72px" class="Cat_list_item_part_3">
                           <ng-container *ngIf="item.Security === 'Close'">
-                              <p (click)="JoinCodeGet(i)" > Join </p>
+                              <p style="z-index: 1" (click)="JoinCodeGet(i)" > Join </p>
                           </ng-container>
                           <ng-container *ngIf="item.Security === 'Open'">
                               <p (click)="DirectJoin(i)" > Join </p>
                           </ng-container>
                         
                         <ng-container *ngIf="item.Security === 'Close'">
-                            <i class="material-icons">lock</i>
+                            <i (click)="GotoCubeView(item._id)" class="material-icons">lock</i>
                         </ng-container>
                         <ng-container *ngIf="item.Security === 'Open'">
-                            <i class="material-icons">public</i>
+                            <i (click)="GotoCubeView(item._id)" class="material-icons">public</i>
                         </ng-container>
                       </div>
                     </div>

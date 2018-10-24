@@ -1,55 +1,85 @@
-.nav_bar{
+@font-face {
+   font-family: Questrial;
+   src: url(./../../assets/fonts/Questrial-Regular.otf) format("opentype");
+ }
+
+.Header{
    width:100%;
    height:50px;
    background-color: #E9472B;
    box-shadow: 2px 2px 3px #928e8e;
 }
-.nav_bar img{
-   width: 130px;
-   margin-left: 50px;
-   margin-top: 10px;
+.Header-Menus {
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   height: 50px;
 }
-.menu{
-   list-style-type: none;
-   float:right;
-   
+.Header img{
+   width: 150px;
 }
-.menu_list{
-   color:#fff;
-   display:inline-block;
-   font-weight: 800;
-   font-size: 15px;
-   margin-right: 20px;
-   margin-top: 10px;
-   cursor:pointer;
+.menus{
+   width: 250px;
+   display: flex;
+   justify-content: space-between;
 }
+.menus span a{
+   color: #d4d4d4;
+   font-weight: 500;
+   font-size: 16px;
+   letter-spacing: 1px;
+   font-family: 'Questrial', sans-serif;
+} 
+.menus span a:hover{
+   color: #ffffff;
+   text-decoration: underline;
+} 
+
 .Content_Section{
    margin-top:100px;
 }
-.content h2{
+.content{
+   font-family: 'Questrial', sans-serif;
+   letter-spacing: 0.5px;
+}
+.content h1{
+   font-family: 'Questrial', sans-serif;
    color:#E9472B;
-   font-weight: 400;
-   font-size: 34px;
+   font-weight: 500;
+   font-size: 42px;
 }
 .content h3{
-   color:#E9472B;
+   font-family: 'Questrial', sans-serif;
+   color: #E9472B;
    font-weight: 400;
-   font-size: 21px;
+   font-size: 20px;
+   letter-spacing: 0.5px;
+}
+.content h6{
+   font-family: 'Questrial', sans-serif;
+   color: #6b6b6b;
+   font-weight: 400;
+   font-size: 18px;
 }
 .content h5{
-   color: #4e4c4c;
+   font-family: 'Questrial', sans-serif;
+   color: #6b6b6b;
    font-weight: 400;
    font-size: 18px;
 }
 .content h4{
-   color: #565050;
+   font-family: 'Questrial', sans-serif;
+   color: #6b6b6b;
    font-weight: 500;
    font-size: 16px;
 }
 .content p{
+   font-family: 'Questrial', sans-serif;
    font-size: 16px;
    font-weight: 400;
-   color: #292424;
+   color: #6b6b6b;
+   text-align: justify;
+   line-height: 25px;
 }
 .button{
    margin-left: 45%;
@@ -264,4 +294,109 @@
     font-size: 13px;
     margin-top: -20px !important;
     margin-bottom: 15px !important;
+}
+
+.arrow {
+   margin-bottom: 15px;
+   display: flex;
+   justify-content: center;
+}
+.arrow span {
+   width: 45px;
+   border-radius: 45px;
+   height: 45px;
+   background-color: #e9472a;
+   justify-content: center;
+   align-items: center;
+   display: flex;
+   cursor: pointer;
+}
+.arrow span i {
+   color: #ffffff;
+   font-size: 38px;
+}
+
+
+.Animation_Section {
+   position: relative;
+   height: 250px;
+}
+.Animation_Section:hover > .Image_Section {
+   background-color: transparent;
+   -webkit-transition-timing-function: ease-in-out;
+   transition-timing-function: ease-in-out;
+   -webkit-transition: background-color 1s;
+   transition: background-color 1s;
+}
+.Animation_Section:hover > .Image_Section > img{
+   opacity: 0;
+   transform: translate(-50%, -50%) scale(0);
+   -webkit-transition-timing-function: ease-in-out;
+   transition-timing-function: ease-in-out;
+   -webkit-transition: opacity 1s, transform 1s ;
+   transition: opacity 1s, transform 1s;
+}
+.Animation_Section:hover > .Image_Section > p{
+   color: transparent;
+   -webkit-transition-timing-function: ease-in-out;
+   transition-timing-function: ease-in-out;
+   -webkit-transition: color .5s;
+   transition: color .5s;
+}
+.Image_Section{   
+   height: 100%;
+   width: 100%;
+   position: relative;
+   background-color: #e33e2f;
+   opacity: 1;
+   -webkit-transition-timing-function: ease-in-out;
+   transition-timing-function: ease-in-out;
+   -webkit-transition-delay: 2s;
+   transition-delay: 2s;
+   -webkit-transition: background-color 1s;
+   transition: background-color 1s;
+}
+.Image_Section img{
+   width: 150px;
+   height: 150px;
+   position: absolute;
+   top: 40%;
+   left: 50%;
+   transform: translate(-50%, -50%) scale(1);
+   opacity: 1;
+   -webkit-transition: opacity 1s, transform 1s;
+   transition: opacity 1s, transform 1s;
+}
+.Image_Section p {
+   position: absolute;
+   bottom: 0px;
+   text-align: center;
+   width: 100%;
+   font-weight: 500;
+   color: #ffffff;
+   font-size: 17px;
+   letter-spacing: 1px;
+   font-family: 'Questrial', sans-serif;
+   -webkit-transition: color 1s;
+   transition: color 1s;
+}
+.Text_Section {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   z-index: -1;
+}
+.Text {
+   width: 100%;
+   text-align: center;
+   position: absolute;
+   top: 50%;
+   transform: translate(0%, -50%);
+}
+.Text p {
+   font-weight: 500;
+   color: #e9472a;
+   font-size: 18px;
+   letter-spacing: 1px;
+   font-family: 'Questrial', sans-serif;
 }

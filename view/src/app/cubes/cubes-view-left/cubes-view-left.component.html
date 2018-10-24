@@ -49,7 +49,7 @@
 
   <div class="cube_info_icon">
     <i class="material-icons" >language</i>
-    <p class="discription"> {{Cube_Info.Web}}</p>
+    <p class="discription"> <a href="{{Cube_Info.Web}}" target="blank"> {{Cube_Info.Web}} </a> </p>
   </div>
 
   <div class="cube_info_icon">
@@ -86,8 +86,6 @@
 
   <!-- Followers End  -->
 
-
-
     <ng-container *ngIf="Cube_Info.Creator">
         <div class="Left_bar_Button">  
             <button (click)="Add_Topic_Model()"> Add Topic </button>
@@ -104,8 +102,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="!Cube_Info.Followed && !Cube_Info.Creator">
-
+    <ng-container *ngIf="Cube_Info.Followed !== undefined && Cube_Info.Creator !== undefined && !Cube_Info.Followed && !Cube_Info.Creator">
         <div class="Left_bar_Button">  
             <ng-container *ngIf="Cube_Info.Security === 'Close'">
                 <button (click)="JoinCodeGet()" style="width: 94%"> Join Cube </button>
@@ -114,7 +111,6 @@
                 <button (click)="DirectJoin()" style="width: 94%"> Join Cube </button>
             </ng-container>
         </div>
-
     </ng-container>
 
     <!-- <ng-container *ngIf="Cube_Info.Creator">

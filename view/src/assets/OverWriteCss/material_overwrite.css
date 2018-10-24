@@ -43,3 +43,9 @@
     max-width: 320px !important;
     overflow: initial !important;
 }
+
+.MatTooltipStyled{
+   background-color: #e9472c;
+   color: #ffffff;
+   font-size: 12px
+}
