@@ -83,10 +83,14 @@
                   <div *ngFor="let item of Cubes_List; let i=index" class="col-sm-4 Cat_list_item" style="max-width: 33.33%;">
                     <div class=" Cat_list_item_parts" fxLayout="row" fxLayoutAlign="space-between center">
                       <div (click)="GotoCubeView(item._id)" fxFlex="55px" class="Cat_list_item_part_1">
-                        <img class="Cat_list_item_img" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                        <img [matTooltipPosition]="'above'" 
+                              matTooltipClass="MatTooltipStyled" 
+                              [matTooltip]="item.Name"
+                              class="Cat_list_item_img"
+                              src="{{CubeBaseUrl}}{{item.Image}}" alt="">
                       </div>
                       <div (click)="GotoCubeView(item._id)" fxFlex class="Cat_list_item_part_2">
-                        <h5> {{item.Name | slice:0:15 }}{{ item.Name?.length > 15 ? '...' : ' ' }} </h5>
+                        <h5> {{item.Name | slice:0:15 }}{{ item.Name?.length > 15 ? '...' : ' ' }}  </h5>
                         <p> {{item.Members}} Members </p>
                       </div>
                       <div fxFlex="72px" class="Cat_list_item_part_3">

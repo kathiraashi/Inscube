@@ -45,7 +45,8 @@
 }
 
 .MatTooltipStyled{
-   background-color: #e9472c;
-   color: #ffffff;
-   font-size: 12px
+   font-size: 13px;
+   letter-spacing: 1px;
+   padding: 3px;
+   margin: 2px 5px !important;
 }

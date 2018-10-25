@@ -41,7 +41,12 @@
         <div class="row">
             <div class="col-sm-12 listFlexDiv">
                 <div  *ngFor="let item of Cubes_List | slice:0:8; let i=index" class="col-xs-3 followPart ">
-                    <img [routerLink]="[ '/Cube_View', item._id ]" class="followimg" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                    <img [routerLink]="[ '/Cube_View', item._id ]"
+                           class="followimg"
+                           src="{{CubeBaseUrl}}{{item.Image}}" alt=""
+                           [matTooltipPosition]="'above'" 
+                           matTooltipClass="MatTooltipStyled" 
+                           [matTooltip]="item.Name">
                     <p [routerLink]="[ '/Cube_View', item._id ]" class="followname"> {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
                 </div>
             </div>
@@ -80,7 +85,11 @@
         <div class="row">
             <div class="col-sm-12 listFlexDiv">
                 <div  *ngFor="let item of User_Cubes_List | slice:0:4; let i=index" class="col-xs-3 followPart ">
-                    <img class="followimg" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                    <img class="followimg" [routerLink]="[ '/Cube_View', item._id ]"
+                           [matTooltipPosition]="'above'" 
+                           matTooltipClass="MatTooltipStyled" 
+                           [matTooltip]="item.Name"
+                           src="{{CubeBaseUrl}}{{item.Image}}" alt="">
                     <p class="followname" [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }} </p>
                 </div>
             </div>

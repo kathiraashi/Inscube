@@ -13,7 +13,7 @@
     <hr style="margin-top:3px;margin-bottom:0px">
   
     <div class="modal-body">
-            <input (input)="valuechange($event.target.value)" maxlength="11" class="postlink mb-20" placeholder=" ( Maximum 10 Characters)">
+            <input (input)="valuechange($event.target.value)" maxlength="11" class="postlink mb-20" placeholder="Express what you feel (max 10 characters)">
             <p *ngIf="Show_Alert" style="color:red;margin: 0px; font-size: 14px;"> {{Alert_Message}} </p>
             <div fxLayout fxLayoutAlign="end" style="padding: 0px 20px; height: 35px;">
                     <button type="submit" [disabled]="!Show_Submit" [ngClass]="{'disabled': !Show_Submit }" (click)="Submit()" mat-raised-button color="primary" style="background-color: #d75739"> 

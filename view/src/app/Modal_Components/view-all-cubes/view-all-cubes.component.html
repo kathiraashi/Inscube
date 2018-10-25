@@ -17,7 +17,12 @@
         <div class="row">
         <div class="col-sm-12 listFlexDiv">
             <div  *ngFor="let item of Cubes_List; let i=index" class="col-xs-3 followPart ">
-                <img class="followimg" (click)="_bsModalRef.hide()" [routerLink]="[ '/Cube_View', item._id ]" src="{{CubeBaseUrl}}{{item.Image}}" alt="">
+                <img class="followimg" (click)="_bsModalRef.hide()"
+                     [routerLink]="[ '/Cube_View', item._id ]"
+                     src="{{CubeBaseUrl}}{{item.Image}}" alt=""
+                     [matTooltipPosition]="'above'" 
+                     matTooltipClass="MatTooltipStyled" 
+                     [matTooltip]="item.Name">
                 <p class="followname" (click)="_bsModalRef.hide()" [routerLink]="[ '/Cube_View', item._id ]" > {{item.Name | slice:0:10 }}{{ item.Name?.length > 10 ? '...' : ' ' }} </p>
             </div>
         </div>
@@ -28,7 +33,12 @@
         <div class="row">
         <div class="col-sm-12 listFlexDiv User">
             <div  *ngFor="let item of Users_List; let i=index" class="col-xs-3 followPart ">
-                <img class="followimg" (click)="_bsModalRef.hide()" [routerLink]="[ '/Profile_View', item._id ]" src="{{UsersBaseUrl}}{{item.Image}}" alt="">
+                <img class="followimg" (click)="_bsModalRef.hide()"
+                     [routerLink]="[ '/Profile_View', item._id ]"
+                     src="{{UsersBaseUrl}}{{item.Image}}" alt=""
+                     [matTooltipPosition]="'above'" 
+                     matTooltipClass="MatTooltipStyled" 
+                     [matTooltip]="item.Inscube_Name">
                 <p class="followname" (click)="_bsModalRef.hide()" [routerLink]="[ '/Profile_View', item._id ]" > {{item.Inscube_Name | slice:0:10 }}{{ item.Inscube_Name?.length > 10 ? '...' : ' ' }} </p>
             </div>
         </div>

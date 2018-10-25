@@ -85,7 +85,12 @@
                     <div class="mt-10 grid_row">
     
                     <div *ngFor="let item of Cubes_List | slice:0:slice_Count; let i=index" class="cat-img-item">
-                        <img [ngClass]="{'Selected': item.Selected }" id="1" src="{{CubeBaseUrl}}{{item.Image}}" alt="" (click)="Select_Cube(i)">
+                        <img [ngClass]="{'Selected': item.Selected }"
+                              id="1" src="{{CubeBaseUrl}}{{item.Image}}" alt=""
+                              [matTooltipPosition]="'above'" 
+                              matTooltipClass="MatTooltipStyled" 
+                              [matTooltip]="item.Name"
+                              (click)="Select_Cube(i)">
                         <p (click)="Select_Cube(i)" > {{item.Name | slice:0:6 }}{{ item.Name?.length > 6 ? '...' : ' ' }}  </p>
                     </div>
 

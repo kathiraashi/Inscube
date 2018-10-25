@@ -54,7 +54,11 @@
                             <ngx-tile style="padding: 0px" NgxCarouselItem *ngFor="let Cubes of Post.Cubes_Info; let postLikes = index;">
                                 <div class="tile">
                                   <div class="cat_div">
-                                    <img [routerLink]="[ '/Cube_View', Cubes._id ]" src="{{CubeBaseUrl}}{{Cubes.Image}}" alt="">
+                                    <img [routerLink]="[ '/Cube_View', Cubes._id ]"
+                                          src="{{CubeBaseUrl}}{{Cubes.Image}}" alt=""
+                                          [matTooltipPosition]="'above'" 
+                                          matTooltipClass="MatTooltipStyled" 
+                                          [matTooltip]="Cubes.Name">
                                   </div>
                                 </div>
                             </ngx-tile>
