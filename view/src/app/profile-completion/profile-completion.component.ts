@@ -16,7 +16,7 @@ import { DataSharedVarServiceService } from './../service/data-shared-var-servic
 })
 export class ProfileCompletionComponent implements OnInit {
 
-  UsersBaseUrl = 'http://inscube.com/API/Uploads/Users/';
+  UsersBaseUrl = 'http://localhost:4000/API/Uploads/Users/';
 
   colorTheme = 'theme-red';
   bsConfig: Partial<BsDatepickerConfig>;
