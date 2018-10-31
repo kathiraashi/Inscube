@@ -24,14 +24,14 @@
    justify-content: space-between;
 }
 .menus span a{
-   color: #d4d4d4;
+   color: #ffffff;
    font-weight: 500;
    font-size: 16px;
    letter-spacing: 1px;
    font-family: 'Questrial', sans-serif;
 } 
 .menus span a:hover{
-   color: #ffffff;
+   color: #d4d4d4;
    text-decoration: underline;
 } 
 
@@ -327,6 +327,7 @@
    transition-timing-function: ease-in-out;
    -webkit-transition: background-color 1s;
    transition: background-color 1s;
+   
 }
 .Animation_Section:hover > .Image_Section > img{
    opacity: 0;
@@ -379,6 +380,7 @@
    font-family: 'Questrial', sans-serif;
    -webkit-transition: color 1s;
    transition: color 1s;
+   padding: 0px 20px;
 }
 .Text_Section {
    position: absolute;

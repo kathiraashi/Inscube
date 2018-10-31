@@ -38,12 +38,22 @@
    </ng-container>
    
    <ng-container *ngIf="!Explainer_Completed">
-      <img *ngIf="ShowingImg === '1'" src="../../../assets//images//Explainer/One.png" (click)="GoNext('2')">
-      <img *ngIf="ShowingImg === '2'" src="../../../assets//images//Explainer/Two.png" (click)="GoNext('3')">
-      <img *ngIf="ShowingImg === '3'" src="../../../assets//images//Explainer/Three.png" (click)="GoNext('4')">
-      <img *ngIf="ShowingImg === '4'" src="../../../assets//images//Explainer/Four.png" (click)="GoNext('5')">
-      <img *ngIf="ShowingImg === '5'" src="../../../assets//images//Explainer/Five.png" (click)="GoNext('6')">
-      <img *ngIf="ShowingImg === '6'" src="../../../assets//images//Explainer/Six.png" (click)="Complete()">
+      <img style="width: 100%; position: fixed" *ngIf="ShowingImg === 1" src="../../../assets/images/Explainer/One.png">
+      <img style="width: 100%; position: fixed" *ngIf="ShowingImg === 2" src="../../../assets/images/Explainer/Two.png">
+      <img style="width: 100%; position: fixed" *ngIf="ShowingImg === 3" src="../../../assets/images/Explainer/Three.png">
+      <img style="width: 100%; position: fixed" *ngIf="ShowingImg === 4" src="../../../assets/images/Explainer/Four.png">
+      <img style="width: 100%; position: fixed" *ngIf="ShowingImg === 5" src="../../../assets/images/Explainer/Five.png">
+      <img style="width: 100%; position: fixed" *ngIf="ShowingImg === 6" src="../../../assets/images/Explainer/Six.png">
+      <div class="Ship-Btn">
+         <span *ngIf="ShowingImg !== 6" (click)="GoNext()"> 
+            Next
+         </span>
+         <div *ngIf="ShowingImg !== 6"  (click)="GoNext()"></div>
+         <div *ngIf="ShowingImg === 6"  (click)="Complete()"></div>
+         <span *ngIf="ShowingImg === 6" (click)="Complete()"> 
+           Finish
+         </span>
+      </div>
    </ng-container>
 
 </div> <!-- feedsMain -->

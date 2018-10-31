@@ -298,6 +298,7 @@ exports.UserRegisterCompletion = function(req, res) {
 
 // ---------------------------------------------------------------------- User Sign in Validate ---------------------------------------------------------------
 exports.UserValidate = function(req, res) {
+   console.log(req.body);
     if(!req.body.Email || req.body.Email === ''){
         res.status(200).send({Status:"True", Output:"False", Message: "Email can not be empty" });
     }else if(!req.body.Password || req.body.Password === '' ){

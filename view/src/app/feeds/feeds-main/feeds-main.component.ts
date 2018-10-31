@@ -11,7 +11,7 @@ import { SigninSignupService } from './../../service/signin-signup/signin-signup
 export class FeedsMainComponent implements OnInit {
 
   Active_Tab = 'Highlights';
-  ShowingImg = '1';
+  ShowingImg = 1;
   LoginUser;
   Explainer_Completed: Boolean = false;
 
@@ -42,8 +42,8 @@ export class FeedsMainComponent implements OnInit {
       }
    }
 
-   GoNext(num) {
-      this.ShowingImg = num;
+   GoNext() {
+      this.ShowingImg = this.ShowingImg + 1;
    }
 
    Complete() {
