@@ -131,7 +131,7 @@
 </div>
 
     <mat-menu #ReportHighlightPost="matMenu" yPosition="below" xPosition="after" [overlapTrigger]="false" class="MatMenuReportView" >   
-        <div *ngIf="Cube_Info !== undefined " ngxClipboard  [cbContent]="'http://www.inscube.com/Invite_Cube/' + Cube_Info._id" (cbOnSuccess)="link_Copy()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
+        <div *ngIf="Cube_Info !== undefined " ngxClipboard  [cbContent]="'https://inscube.com/Invite_Cube/' + Cube_Info._id" (cbOnSuccess)="link_Copy()" style="cursor:pointer" class="dropd" fxLayout="row" fxLayoutAlign="space-between  center">
             <div class="dropd_icon" fxFlex="30px">
                 <i style="font-size: 20px" class="material-icons">content_copy</i>
             </div>
